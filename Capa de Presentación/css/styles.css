@@ -16,15 +16,12 @@
   --pos-info: #17a2b8;
 }
 
-
-
-
+/* Texto rosado */
 .light-pink {
   color: var(--light-pink) !important;
 }
 
-
-
+/* Botón con borde rosado (outline) */
 .btn-outline-light-pink {
   --bs-btn-color: var(--light-pink);
   --bs-btn-border-color: var(--light-pink);
@@ -36,7 +33,6 @@
   background-color: var(--light-pink);
   padding: 0.5rem 1rem;
 }
-
 
 .navbar-brand {
   display: flex;
@@ -58,11 +54,10 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Navbar responsive */
 .navbar-nav {
   font-family: 'Sono', sans-serif;
   font-weight: 800;
-  display: flex;
-  align-items: center;
 }
 
 .nav-link {
@@ -73,11 +68,14 @@
   padding: 0.5rem 1rem !important;
 }
 
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
 .navbar-collapse {
   flex-grow: 0 !important;
 }
-
-.navbar-toggler {
-  order: 2;
-}
-

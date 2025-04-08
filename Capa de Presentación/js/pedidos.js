@@ -338,6 +338,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 this.classList.add('active');
             });
+        console.log(products); // Esto te permitirá ver si los productos se cargan correctamente
+
         });
         
         document.getElementById('clearOrderBtn').addEventListener('click', clearOrder);
