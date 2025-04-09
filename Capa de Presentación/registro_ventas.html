@@ -2,22 +2,19 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Ventas</title>
-    <!-- Bootstrap CSS -->
-    <!-- Ícono y Fuentes -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Módulo POS de registro de ventas de Creando Recuerdos" />
+    <meta name="author" content="" />
+    <title>Creando Recuerdos</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
-
-    <!-- Estilos Bootstrap y propios -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="css/styles.css" rel="stylesheet" />
-    <link href="css/menu.css" rel="stylesheet" />
+    <link href="css/pedidos.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -305,18 +302,15 @@
                 }
             });
 
-            // Actualizar el total de la venta
-            ventas[index].totalVenta = nuevoTotal; // Se asume que el campo totalVenta es el total calculado para la venta
+            ventas[index].totalVenta = nuevoTotal;
 
-            // Vuelve a filtrar y mostrar las ventas editadas
-            filtrarVentas(); // Re-renderiza la tabla con la venta editada
+            filtrarVentas(); 
         };
 
-        // Filtrar las ventas por la fecha seleccionada
         const filtrarVentas = () => {
             const fechaFiltro = document.getElementById("filtroFecha").value;
             const historial = document.getElementById("historialVentas");
-            historial.innerHTML = ""; // Limpiar tabla
+            historial.innerHTML = ""; 
 
             const filtradas = ventas.filter(v => v.fecha === fechaFiltro);
 
@@ -327,7 +321,6 @@
                     const cantidades = venta.productos.map(p => p.cantidad).join(", ");
                     const totales = venta.productos.map(p => `₡${p.total.toFixed(2)}`).join(", ");
 
-                    // Verificar si el total de la venta es un número válido
                     if (!isNaN(venta.totalVenta)) {
                         const fila = historial.insertRow();
                         fila.innerHTML = `
@@ -357,16 +350,14 @@
             }
         };
 
-        // Función para eliminar una venta
         const eliminarVenta = (indexVenta) => {
             const confirmar = confirm("¿Estás seguro que deseas eliminar esta venta del historial?");
             if (confirmar) {
                 ventas.splice(indexVenta, 1);
-                filtrarVentas(); // Vuelve a filtrar las ventas y actualizar la tabla
+                filtrarVentas(); 
             }
         };
 
-        // Inicialización de la página
         document.addEventListener("DOMContentLoaded", () => {
             cargarProductos();
             const elemento = document.getElementById('id-del-elemento');
@@ -379,9 +370,26 @@
             document.getElementById("producto").addEventListener("change", actualizarPrecioYTotal);
             document.getElementById("cantidad").addEventListener("input", actualizarPrecioYTotal);
             document.getElementById("confirmarVenta").addEventListener("click", confirmarVenta);
-            actualizarEstadoBotonConfirmar(); // Desactivar por defecto
+            actualizarEstadoBotonConfirmar(); 
         });
     </script>
+      <div id="footer"></div>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+      <script>
+        Promise.all([
+          fetch("templates/navbar.html"),
+          fetch("templates/footer.html")
+        ])
+          .then(async ([navbarRes, footerRes]) => {
+            const navbarHTML = await navbarRes.text();
+            const footerHTML = await footerRes.text();
+            document.getElementById("navbar").innerHTML = navbarHTML;
+            document.getElementById("footer").innerHTML = footerHTML;
+          });
+      </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </body>
 
 </html>
