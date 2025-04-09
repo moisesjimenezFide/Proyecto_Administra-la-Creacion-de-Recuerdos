@@ -365,12 +365,12 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             products = menuData[category] || [];
         }
-    
+
         if (products.length === 0) {
             productGrid.innerHTML = '<p class="text-center">No hay productos en esta categoría</p>';
             return;
         }
-        
+
 
         // Crear y añadir las cards de producto
         products.forEach(product => {
@@ -378,22 +378,53 @@ document.addEventListener('DOMContentLoaded', function () {
             productCard.className = 'col-md-4 mb-4'; // 3 columnas en desktop
 
             productCard.innerHTML = `
-            <div class="card h-100 border-0 shadow-sm product-card">
-                <div class="card-img-container">
-                    <img src="${product.image}" class="card-img-top" alt="${product.name}">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title" style="font-family: 'Sono', sans-serif;">${product.name}</h5>
-                    <p class="card-text">${product.description}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold dark-violet">₡${product.price.toLocaleString()}</span>
+                <div class="card h-100 border-0 shadow-sm product-card">
+                    <div class="card-img-container">
+                        <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-family: 'Sono', sans-serif;">${product.name}</h5>
+                        <p class="card-text">${product.description}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold dark-violet">₡${product.price.toLocaleString()}</span>
+                        </div>
+                        <div class="mt-3 d-flex justify-content-end gap-2">
+                            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${product.id}">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary update-btn" data-id="${product.id}">
+                                <i class="bi bi-pencil"></i> Actualizar
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
 
             productGrid.appendChild(productCard);
         });
+
+
+        // Agregar event listeners para los botones después de crearlos
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                alert(`Se eliminó el producto`);
+            });
+        });
+
+        document.querySelectorAll('.update-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+
+                alert(`Se actualizó el producto `);
+            })
+        });
+
+
+
+
+
+
+
+
     }
 
 
