@@ -27,8 +27,8 @@
     <div id="navbar"></div>
 
     <div class="container mt-5">
-        <h2 class="mb-4" style="font-family: 'Sono', sans-serif;" >Agregar un nuevo platillo </h2>
-        <form>
+        <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">Agregar un nuevo platillo </h2>
+        <form  >
             <!-- ID (oculto para creación, visible para edición) -->
             <div class="mb-3" id="idField" style="display: none;">
                 <label for="id" class="form-label">ID</label>
@@ -51,7 +51,6 @@
             <div class="mb-3">
                 <label for="price" class="form-label">Precio (₡)</label>
                 <div class="input-group">
-                    <span class="input-group-text">₡</span>
                     <input type="number" class="form-control" id="price" required>
                 </div>
             </div>
@@ -59,25 +58,25 @@
             <div class="mb-3">
                 <label for="category" class="form-label">Categoría</label>
                 <select class="form-select" id="category">
-                  <option selected disabled>Seleccione una categoría</option>
-                  <option value="desayunos">Desayunos</option>
-                  <option value="panini">Panini</option>
-                  <option value="crepes">Crêpes</option>
-                  <option value="pasta">Pasta</option>
-                  <option value="arroz">Arroz</option>
-                  <option value="tentaciones">Tentaciones</option>
-                  <option value="postres">Delicias</option>
-                  <option value="bebidas-calientes">Bebidas Calientes</option>
-                  <option value="bebidas-frias">Bebidas Frías</option>
-                  <option value="especiales">Especiales</option>
+                    <option selected disabled>Seleccione una categoría</option>
+                    <option value="desayunos">Desayunos</option>
+                    <option value="panini">Panini</option>
+                    <option value="crepes">Crêpes</option>
+                    <option value="pasta">Pasta</option>
+                    <option value="arroz">Arroz</option>
+                    <option value="tentaciones">Tentaciones</option>
+                    <option value="postres">Delicias</option>
+                    <option value="bebidas-calientes">Bebidas Calientes</option>
+                    <option value="bebidas-frias">Bebidas Frías</option>
+                    <option value="especiales">Especiales</option>
                 </select>
-              </div>
+            </div>
             <!-- Imagen -->
             <div class="mb-3">
                 <label for="image" class="form-label">Imagen</label>
                 <div class="input-group">
                     <span class="input-group-text">Imagen</span>
-                    <input type="text" class="form-control" id="image">
+                    <input type="file" class="form-control" id="image">
                 </div>
                 <div class="form-text">Subir Imagen</div>
             </div>
@@ -85,8 +84,10 @@
 
             <!-- Botones -->
             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                <button type="button" class="btn btn-secondary me-md-2">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <!-- Botón Cancelar (rojo sólido) -->
+                <a  href="menu_admin.html" type="button" class="btn btn-danger me-md-2">Cancelar</a>
+                <!-- Botón Guardar (rosa sólido) -->
+                <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
             </div>
         </form>
 
