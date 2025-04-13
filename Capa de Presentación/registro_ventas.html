@@ -172,17 +172,39 @@
             }
         };
 
-        const editarProducto = (index) => {
-            const nuevaCantidad = prompt("Ingrese la nueva cantidad:", productosSeleccionados[index].cantidad);
-            if (nuevaCantidad === null) return; // Cancelado
+        const editarProducto = async (index) => {
+            const { value: nuevaCantidad } = await Swal.fire({
+                title: 'Ingrese la nueva cantidad',
+                input: 'number',
+                inputValue: productosSeleccionados[index].cantidad,
+                inputAttributes: {
+                    min: 1
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value || value <= 0) {
+                        return 'La cantidad debe ser un número válido y mayor a 0';
+                    }
+                }
+            });
+
+            if (nuevaCantidad === undefined) return; // Cancelado
+
+            // Recalcular total
             const cantidadNum = parseInt(nuevaCantidad);
 
             if (isNaN(cantidadNum) || cantidadNum <= 0) {
-                alert("Cantidad inválida.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Cantidad inválida',
+                    text: 'Por favor, ingresa una cantidad válida mayor a 0.'
+                });
                 return;
             }
 
-            // Recalcular total
+            // Recalcular el total del producto
             const producto = productosSeleccionados[index];
             totalVenta -= producto.total;
             producto.cantidad = cantidadNum;
@@ -202,26 +224,40 @@
             }
         };
 
-        const eliminarProducto = (productoId) => {
-            const confirmacion = confirm("¿Estás seguro que deseas eliminar este producto?");
-            if (!confirmacion) return;
+        const eliminarProducto = async (productoId) => {
+            const result = await Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Este producto será eliminado.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
 
-            const index = productosSeleccionados.findIndex(p => p.id === productoId);
-            if (index !== -1) {
-                totalVenta -= productosSeleccionados[index].total;
-                productosSeleccionados.splice(index, 1);
+            if (result.isConfirmed) {
+                const index = productosSeleccionados.findIndex(p => p.id === productoId);
+                if (index !== -1) {
+                    totalVenta -= productosSeleccionados[index].total;
+                    productosSeleccionados.splice(index, 1);
 
-                const tabla = document.getElementById("tablaProductos");
-                tabla.deleteRow(index);
+                    const tabla = document.getElementById("tablaProductos");
+                    tabla.deleteRow(index);
 
-                actualizarTotalVenta();
-                actualizarEstadoBotonConfirmar();
+                    actualizarTotalVenta();
+                    actualizarEstadoBotonConfirmar();
+                }
             }
         };
 
         const confirmarVenta = () => {
             if (productosSeleccionados.length === 0) {
-                alert("Debe seleccionar al menos un producto.");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Atención',
+                    text: 'Debe seleccionar al menos un producto.',
+                });
                 return;
             }
 
@@ -236,7 +272,10 @@
             localStorage.setItem("ventas", JSON.stringify(ventas));
 
             // Mostrar alerta de confirmación
-            alert("¡Venta confirmada exitosamente!");
+            Swal.fire({
+                icon: 'success',
+                title: '¡Venta confirmada exitosamente!',
+            });
 
             // Limpiar formulario
             productosSeleccionados = [];
