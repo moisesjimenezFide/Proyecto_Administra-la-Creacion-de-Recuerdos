@@ -2,17 +2,15 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> Gestión de Recetas - Creando Recuerdos </title>
-
-    <!-- Ícono y Fuentes -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Módulo POS de Gestion de ventas de Creando Recuerdos" />
+    <meta name="author" content="" />
+    <title>Gestión de Ventas - Creando Recuerdos</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
-
-    <!-- Estilos Bootstrap y propios -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="css/styles.css" rel="stylesheet" />
@@ -21,329 +19,305 @@
 
 <body>
 
-    <!-- Navbar dinámico -->
+    <!-- Navbar dinámico-->
     <div id="navbar"></div>
 
-    <div class="container mt-4">
-        <h2 class="text-center"> Gestión de Costos de Recetas </h2>
-        <div class="container mt-4">
+    <div class="container mt-5">
+        <h2 class="text-center"> Gestion de Ventas </h2>
+    </div>
 
-            <h4> Búsqueda de Recetas </h4>
-        </div>
-        <!-- Formulario de búsqueda -->
-        <div class="container mt-3">
-            <div class="input-group">
-                <input type="text" id="busqueda" class="form-control" placeholder="Buscar por cualquier campo...">
-                <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search"></i></button>
+    <div class="container">
+        <h4> Registro de Ventas </h4>
+
+        <!-- Formulario de venta -->
+        <form id="ventaForm">
+            <div class="mb-3">
+                <label for="producto" class="form-label"> Seleccionar Producto </label>
+                <select id="producto" class="form-select">
+                    <!-- Los productos serán cargados dinámicamente -->
+                </select>
             </div>
-        </div>
+            <div class="mb-3">
+                <label for="cantidad" class="form-label"> Cantidad </label>
+                <input type="number" id="cantidad" class="form-control" min="1">
+            </div>
 
-        <div class="container my-5">
-            <h4 class="mb-4"> Registro de Recetas </h4>
+            <div class="mb-3">
+                <label for="precioUnitario" class="form-label"> Precio Unitario: </label>
+                <span id="precioUnitario"> ₡0.00 </span>
+            </div>
+            <div class="mb-3">
+                <label for="totalProducto" class="form-label"> Total Producto: </label>
+                <span id="totalProducto"> ₡0.00 </span>
+            </div>
 
-            <!-- Formulario para agregar Recetas -->
-            <form id="form_recetas" class="row g-3">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label"> Nombre de la receta </label>
-                        <input type="text" class="form-control" id="nombre_receta" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label"> Porción </label>
-                        <input type="number" class="form-control" id="porcion" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label"> Volumen por porción (ml) </label>
-                        <input type="number" class="form-control" id="volumen" required>
-                    </div>
-                </div>
+            <button type="button" id="agregarProducto" class="btn btn-success"> Agregar Producto </button>
+        </form>
 
-                <h5>Materias primas utilizadas</h5>
-                <table class="table table-bordered table-striped table-sm table-responsive text-center "
-                    id="tabla_materias">
-                    <thead>
-                        <tr>
-                            <th> Materia </th>
-                            <th> Cantidad </th>
-                            <th> Unidad de medida </th>
-                            <th> Costo por unidad de medida (₡) </th>
-                            <th> Total costo (₡) </th>
-                            <th> Acciones </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Filas dinámicas aquí -->
-                    </tbody>
-                </table>
 
-                <button type="button" class="btn btn-success btn-sm" onclick="agregarFila()"> Agregar materia prima
-                </button>
-
-                <p><strong> Costo total receta: </strong> <span id="costo_total_receta"> ₡0.00 </span></p>
-                <p><strong> Costo por porción: </strong> <span id="costo_por_porcion"> ₡0.00 </span></p>
-
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-success w-100"> Guardar receta </button>
-                </div>
-            </form>
-
-            <!-- Tabla -->
-            <h4 class="mt-4"> Listado de Costos de Receta </h4>
-            <table class="table table-bordered table-striped table-sm table-responsive text-center">
-                <thead>
-                    <tr>
-                        <th> Nombre Receta </th>
-                        <th> Porción </th>
-                        <th> Volumen (ml) </th>
-                        <th> Materias Primas </th>
-                        <th> Costo Total Receta (₡) </th>
-                        <th> Costo x Porción (₡) </th>
-                        <th> Acciones </th>
-                    </tr>
-                </thead>
-                <tbody id="tabla_recetas"></tbody>
-            </table>
-
-            <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
-                No se encontraron coincidencias.
-            </p>
-        </div>
-
-        <script>
-            const recetas = [];
-            let edit_index = -1;
-
-            function agregarFila() {
-                const fila = `
-            <tr>
-                <td><input type="text" class="form-control materia" required></td>
-                <td><input type="number" class="form-control cantidad" min="0" required></td>
-                <td><input type="text" class="form-control unidad" required></td>
-                <td><input type="number" class="form-control costo" step="0.01" min="0" required></td>
-                <td class="total-costo">₡0.00</td>
-                <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">Eliminar</button></td>
-            </tr>`;
-                document.querySelector("#tabla_materias tbody").insertAdjacentHTML("beforeend", fila);
-            }
-
-            function eliminarFila(btn) {
-                btn.closest("tr").remove();
-                calcularTotales();
-            }
-
-            function calcularTotales() {
-                let total_receta = 0;
-                document.querySelectorAll("#tabla_materias tbody tr").forEach(row => {
-                    const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
-                    const costo = parseFloat(row.querySelector(".costo").value) || 0;
-                    const total = cantidad * costo;
-                    row.querySelector(".total-costo").textContent = `₡${total.toFixed(2)}`;
-                    total_receta += total;
-
-                    document.getElementById("costo_total_receta").textContent = `₡${total_receta.toFixed(2)}`;
-                    const porcion = parseFloat(document.getElementById("porcion").value) || 1;
-                    const costo_porcion = total_receta / porcion;
-                    document.getElementById("costo_por_porcion").textContent = `₡${costo_porcion.toFixed(2)}`;
-                });
-            }
-
-            document.addEventListener("input", function (r) {
-                if (r.target.classList.contains("cantidad") || r.target.classList.contains("costo")) {
-                    calcularTotales();
-                }
-                if (r.target.id === "porcion") {
-                    calcularTotales();
-                }
-            });
-
-            const form_recetas = document.getElementById("form_recetas");
-            const tabla_recetas = document.getElementById("tabla_recetas");
-
-            form_recetas.addEventListener("submit", function (r) {
-                r.preventDefault();
-
-                const nombre = document.getElementById("nombre_receta").value.trim();
-                const porcion = parseFloat(document.getElementById("porcion").value);
-                const volumen = parseFloat(document.getElementById("volumen").value);
-
-                if (!nombre || isNaN(porcion) || isNaN(volumen) || porcion <= 0 || volumen < 0) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Campos incompletos o inválidos',
-                        text: 'Por favor, completa los campos correctamente.'
-                    });
-                    return;
-                }
-
-                const materias = [];
-                let total_receta = 0;
-
-                document.querySelectorAll("#tabla_materias tbody tr").forEach(row => {
-                    const materia = row.querySelector(".materia").value.trim();
-                    const cantidad = parseFloat(row.querySelector(".cantidad").value);
-                    const unidad = row.querySelector(".unidad").value.trim();
-                    const costo = parseFloat(row.querySelector(".costo").value);
-                    const total = cantidad * costo;
-
-                    materias.push({ materia, cantidad, unidad, costo, total });
-                    total_receta += total;
-                });
-
-                const costo_porcion = total_receta / porcion;
-
-                const receta = { nombre, porcion, volumen, materias, total_receta, costo_porcion };
-
-                if (edit_index === -1) {
-                    recetas.push(receta);
-                } else {
-                    recetas[edit_index] = receta;
-                    edit_index = -1;
-                }
-
-                form_recetas.reset();
-                document.querySelector("#tabla_materias tbody").innerHTML = "";
-                document.getElementById("costo_total_receta").textContent = "₡ 0.00";
-                document.getElementById("costo_por_porcion").textContent = "₡ 0.00";
-                mostrar_recetas();
-            });
-
-            function mostrar_recetas() {
-                tabla_recetas.innerHTML = "";
-                recetas.forEach((r, i) => {
-                    const materias = r.materias.map(m => `${m.materia} (${m.cantidad} ${m.unidad}, ₡${m.total.toFixed(2)})`).join("<br>");
-                    tabla_recetas.innerHTML += `
+        <h6 class="mt-4">Productos Seleccionados</h6>
+        <table class="table table-bordered table-striped table-sm table-responsive text-center">
+            <thead>
                 <tr>
-                    <td>${r.nombre}</td>
-                    <td>${r.porcion}</td>
-                    <td>${r.volumen}</td>
-                    <td>${materias}</td>
-                    <td>₡${r.total_receta.toFixed(2)}</td>
-                    <td>₡${r.costo_porcion.toFixed(2)}</td>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaProductos">
+                <!-- Las filas de los productos seleccionados se agregarán dinámicamente -->
+            </tbody>
+        </table>
+
+        <h6>Total de la Venta: <span id="totalVenta">₡0.00</span></h6>
+
+        <div class="d-flex mt-4 mb-5">
+            <button type="button" class="btn btn-success" id="confirmarVenta">Confirmar Venta</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Variables globales
+        let productosSeleccionados = [];
+        let totalVenta = 0;
+        let ventas = [];
+
+        // Productos de ejemplo
+        const productos = [
+            { id: 1, nombre: "Producto A", precio: 100 },
+            { id: 2, nombre: "Producto B", precio: 200 },
+            { id: 3, nombre: "Producto C", precio: 150 },
+            { id: 4, nombre: "Producto D", precio: 250 },
+            { id: 5, nombre: "Producto E", precio: 300 },
+            { id: 6, nombre: "Producto F", precio: 500 },
+            { id: 7, nombre: "Producto G", precio: 400 },
+            { id: 8, nombre: "Producto H", precio: 600 },
+            { id: 9, nombre: "Producto I", precio: 500 },
+            { id: 10, nombre: "Producto J", precio: 350 }
+        ];
+
+        const cargarProductos = () => {
+            const productoSelect = document.getElementById("producto");
+            productos.forEach(producto => {
+                const option = document.createElement("option");
+                option.value = producto.id;
+                option.textContent = producto.nombre;
+                productoSelect.appendChild(option);
+            });
+        };
+
+        const actualizarTotalVenta = () => {
+            document.getElementById("totalVenta").textContent = `₡${totalVenta.toFixed(2)}`;
+        };
+
+        const actualizarEstadoBotonConfirmar = () => {
+            const boton = document.getElementById("confirmarVenta");
+            boton.disabled = productosSeleccionados.length === 0;
+        };
+
+        // Función para actualizar el precio y total del producto
+        const actualizarPrecioYTotal = () => {
+            const productoId = parseInt(document.getElementById("producto").value);
+            const cantidad = parseInt(document.getElementById("cantidad").value) || 0;
+            const producto = productos.find(p => p.id === productoId);
+
+            if (producto) {
+                const precio = producto.precio;
+                const total = precio * cantidad;
+                document.getElementById("precioUnitario").textContent = `₡${precio.toFixed(2)}`;
+                document.getElementById("totalProducto").textContent = `₡${total.toFixed(2)}`;
+            } else {
+                document.getElementById("precioUnitario").textContent = "₡ 0.00";
+                document.getElementById("totalProducto").textContent = "₡ 0.00";
+            }
+        };
+
+        const agregarProducto = () => {
+            const productoId = parseInt(document.getElementById("producto").value);
+            const cantidad = parseInt(document.getElementById("cantidad").value);
+
+            if (productoId && cantidad > 0) {
+                const producto = productos.find(p => p.id === productoId);
+                const totalProducto = producto.precio * cantidad;
+
+                // Verificar si totalProducto es un número válido
+                if (!isNaN(totalProducto)) {
+                    const index = productosSeleccionados.length;
+                    productosSeleccionados.push({ ...producto, cantidad, total: totalProducto });
+
+                    const tabla = document.getElementById("tablaProductos");
+                    const fila = tabla.insertRow();
+                    fila.innerHTML = `
+                <tr>
+                    <td>${producto.nombre}</td>
+                    <td>₡${producto.precio.toFixed(2)}</td>
+                    <td id="cantidad-${index}">${cantidad}</td>
+                    <td id="total-${index}">₡${totalProducto.toFixed(2)}</td>
                     <td>
-                        <button class="btn btn-sm btn-secondary" onclick="editar_receta(${i})">Editar</button>
-                        <button class="btn btn-sm btn-danger" onclick="eliminar_receta(${i})">Eliminar</button>
+                        <button class="btn btn-secondary btn-sm me-1" onclick="editarProducto(${index})">Editar</button>
+                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(${producto.id})">Eliminar</button>
                     </td>
-                </tr>`;
-                });
-            }
+                </tr>
+            `;
 
-            function editar_receta(index) {
-                const r = recetas[index];
-
-                Swal.fire({
-                    title: `¿Editar "${r.nombre}"?`,
-                    text: "Se cargarán los datos de esta receta para modificar.",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sí, editar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById("nombre_receta").value = r.nombre;
-                        document.getElementById("porcion").value = r.porcion;
-                        document.getElementById("volumen").value = r.volumen;
-                        document.querySelector("#tabla_materias tbody").innerHTML = "";
-
-                        r.materias.forEach(m => {
-                            agregarFila();
-                            const lastRow = document.querySelector("#tabla_materias tbody tr:last-child");
-                            lastRow.querySelector(".materia").value = m.materia;
-                            lastRow.querySelector(".cantidad").value = m.cantidad;
-                            lastRow.querySelector(".unidad").value = m.unidad;
-                            lastRow.querySelector(".costo").value = m.costo;
-                            lastRow.querySelector(".total-costo").textContent = `₡${m.total.toFixed(2)}`;
-                        });
-
-                        calcularTotales();
-                        edit_index = index;
-                    }
-                });
-            }
-
-            function eliminar_receta(index) {
-                Swal.fire({
-                    title: '¿Eliminar receta?',
-                    text: "Esta acción no se puede deshacer.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        recetas.splice(index, 1);
-                        mostrar_recetas();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Eliminado',
-                            text: 'La receta ha sido eliminada.'
-                        });
-                    }
-                });
-            }
-
-            document.getElementById("busqueda")?.addEventListener("input", function () {
-                const valor = this.value.toLowerCase();
-                const resultados = recetas
-                    .map((r, index) => ({ ...r, originalIndex: index }))
-                    .filter(r =>
-                        r.nombre.toLowerCase().includes(valor) ||
-                        r.materias.some(m => m.materia.toLowerCase().includes(valor))
-                    );
-
-                tabla_recetas.innerHTML = "";
-
-                if (resultados.length === 0) {
-                    document.getElementById("mensaje_no_resultados").style.display = "block";
+                    totalVenta += totalProducto;
+                    actualizarTotalVenta();
+                    actualizarEstadoBotonConfirmar();
                 } else {
-                    document.getElementById("mensaje_no_resultados").style.display = "none";
-                    resultados.forEach((r) => {
-                        const materias = r.materias.map(m => `${m.materia} (${m.cantidad} ${m.unidad}, ₡${m.total.toFixed(2)})`).join("<br>");
-                        tabla_recetas.innerHTML += `
-                        <tr>
-                            <td>${r.nombre}</td>
-                            <td>${r.porcion}</td>
-                            <td>${r.volumen}</td>
-                            <td>${materias}</td>
-                            <td>₡${r.total_receta.toFixed(2)}</td>
-                            <td>₡${r.costo_porcion.toFixed(2)}</td>
-                            <td>
-                                <button class="btn btn-sm btn-secondary" onclick="editar_receta(${r.originalIndex})">Editar</button>
-                                <button class="btn btn-sm btn-danger" onclick="eliminar_receta(${r.originalIndex})">Eliminar</button>
-                            </td>
-                        </tr>`;
-                    });
+                    console.error("El total del producto no es un número válido");
                 }
+            }
+        };
 
-                function guardarRecetaEnStorage(nombreReceta, costoTotal) {
-                    const recetas = JSON.parse(localStorage.getItem('recetasCostos')) || [];
-                    const index = recetas.findIndex(r => r.nombre === nombreReceta);
-                    if (index !== -1) {
-                        recetas[index].costo = costoTotal;
-                    } else {
-                        recetas.push({ nombre: nombreReceta, costo: costoTotal });
+        const editarProducto = async (index) => {
+            const { value: nuevaCantidad } = await Swal.fire({
+                title: 'Ingrese la nueva cantidad',
+                input: 'number',
+                inputValue: productosSeleccionados[index].cantidad,
+                inputAttributes: {
+                    min: 1
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value || value <= 0) {
+                        return 'La cantidad debe ser un número válido y mayor a 0';
                     }
-                    localStorage.setItem('recetasCostos', JSON.stringify(recetas));
                 }
             });
 
-            Promise.all([
-                fetch("templates/navbar.html"),
-                fetch("templates/footer.html")
-            ])
-                .then(async ([navbar_res, footer_res]) => {
-                    const navbar_html = await navbar_res.text();
-                    const footer_html = await footer_res.text();
-                    document.getElementById("navbar").innerHTML = navbar_html;
-                    document.getElementById("footer").innerHTML = footer_html;
+            if (nuevaCantidad === undefined) return; // Cancelado
+
+            // Recalcular total
+            const cantidadNum = parseInt(nuevaCantidad);
+
+            if (isNaN(cantidadNum) || cantidadNum <= 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Cantidad inválida',
+                    text: 'Por favor, ingresa una cantidad válida mayor a 0.'
                 });
-        </script>
+                return;
+            }
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            // Recalcular el total del producto
+            const producto = productosSeleccionados[index];
+            totalVenta -= producto.total;
+            producto.cantidad = cantidadNum;
+            producto.total = producto.precio * cantidadNum;
 
-        <!-- Footer dinámico -->
-        <div id="footer"></div>
+            // Verificar si el total es un número válido
+            if (!isNaN(producto.total)) {
+                totalVenta += producto.total;
+
+                // Actualizar visualmente
+                document.getElementById(`cantidad-${index}`).textContent = cantidadNum;
+                document.getElementById(`total-${index}`).textContent = `₡${producto.total.toFixed(2)}`;
+                actualizarTotalVenta();
+                actualizarEstadoBotonConfirmar();
+            } else {
+                console.error("El total recalculado no es un número válido");
+            }
+        };
+
+        const eliminarProducto = async (productoId) => {
+            const result = await Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Este producto será eliminado.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
+                const index = productosSeleccionados.findIndex(p => p.id === productoId);
+                if (index !== -1) {
+                    totalVenta -= productosSeleccionados[index].total;
+                    productosSeleccionados.splice(index, 1);
+
+                    const tabla = document.getElementById("tablaProductos");
+                    tabla.deleteRow(index);
+
+                    actualizarTotalVenta();
+                    actualizarEstadoBotonConfirmar();
+                }
+            }
+        };
+
+        const confirmarVenta = () => {
+            if (productosSeleccionados.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Atención',
+                    text: 'Debe seleccionar al menos un producto.',
+                });
+                return;
+            }
+
+            const fecha = new Date().toISOString().split('T')[0];
+            const productosTexto = productosSeleccionados.map(p => `${p.nombre}(${p.cantidad})`).join(", ");
+
+            ventas.push({
+                fecha,
+                productos: [...productosSeleccionados], // Guarda todos los datos de cada productototal: 
+                totalVenta
+            });
+            localStorage.setItem("ventas", JSON.stringify(ventas));
+
+            // Mostrar alerta de confirmación
+            Swal.fire({
+                icon: 'success',
+                title: '¡Venta confirmada exitosamente!',
+            });
+
+            // Limpiar formulario
+            productosSeleccionados = [];
+            totalVenta = 0;
+            document.getElementById("tablaProductos").innerHTML = "";
+            actualizarTotalVenta();
+            actualizarEstadoBotonConfirmar();
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarProductos();
+            const elemento = document.getElementById('id-del-elemento');
+            if (elemento) {
+                elemento.textContent = 'Nuevo texto';
+            } else {
+                console.log('Elemento no encontrado');
+            }
+            document.getElementById("agregarProducto").addEventListener("click", agregarProducto);
+            document.getElementById("producto").addEventListener("change", actualizarPrecioYTotal);
+            document.getElementById("cantidad").addEventListener("input", actualizarPrecioYTotal);
+            document.getElementById("confirmarVenta").addEventListener("click", confirmarVenta);
+            actualizarEstadoBotonConfirmar();
+        });
+    </script>
+    <div id="footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        Promise.all([
+            fetch("templates/navbar.html"),
+            fetch("templates/footer.html")
+        ])
+            .then(async ([navbarRes, footerRes]) => {
+                const navbarHTML = await navbarRes.text();
+                const footerHTML = await footerRes.text();
+                document.getElementById("navbar").innerHTML = navbarHTML;
+                document.getElementById("footer").innerHTML = footerHTML;
+            });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
