@@ -33,7 +33,7 @@
             <button class="btn btn-info" onclick="filtrarVentas()">Filtrar</button>
         </div>
 
-        <table class="table table-bordered table-striped table-sm text-center">
+        <table class="table table-bordered table-striped table-sm table-responsive text-center">
             <thead>
                 <tr>
                     <th> Fecha </th>
@@ -51,59 +51,176 @@
         </table>
     </div>
 
-    <!-- Footer dinámico -->
-    <div id="footer"></div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         let ventas = JSON.parse(localStorage.getItem("ventas")) || [];
 
-        const filtrarVentas = () => {
-            const fechaFiltro = document.getElementById("filtroFecha").value;
+        const renderizarVentas = (ventasAMostrar) => {
             const historial = document.getElementById("historialVentas");
             historial.innerHTML = "";
 
-            const filtradas = ventas.filter(v => v.fecha === fechaFiltro);
-
-            if (filtradas.length > 0) {
-                filtradas.forEach((venta, index) => {
-                    const nombres = venta.productos.map(p => p.nombre).join(", ");
-                    const precios = venta.productos.map(p => `₡${p.precio.toFixed(2)}`).join(", ");
-                    const cantidades = venta.productos.map(p => p.cantidad).join(", ");
-                    const totales = venta.productos.map(p => `₡${p.total.toFixed(2)}`).join(", ");
-
-                    const fila = historial.insertRow();
-                    fila.innerHTML = `
-                    <tr>
-                        <td>${venta.fecha}</td>
-                        <td>${nombres}</td>
-                        <td>${precios}</td>
-                        <td>${cantidades}</td>
-                        <td>${totales}</td>
-                        <td>₡${venta.totalVenta.toFixed(2)}</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="eliminarVenta(${index})">Eliminar</button>
-                        </td>
-                    </tr>
-                `;
-                });
-            } else {
+            if (ventasAMostrar.length === 0) {
                 const fila = historial.insertRow();
                 const celda = fila.insertCell();
                 celda.colSpan = 7;
-                celda.textContent = "No hay ventas registradas para esta fecha.";
+                celda.textContent = "No hay ventas registradas para mostrar.";
+                return;
             }
+
+            ventasAMostrar.forEach((venta, index) => {
+                const nombres = venta.productos.map(p => p.nombre).join(", ");
+                const precios = venta.productos.map(p => `₡${p.precio.toFixed(2)}`).join(", ");
+                const cantidades = venta.productos.map(p => p.cantidad).join(", ");
+                const totales = venta.productos.map(p => `₡${p.total.toFixed(2)}`).join(", ");
+
+                const fila = historial.insertRow();
+                fila.innerHTML = `
+            <td>${venta.fecha}</td>
+            <td>${nombres}</td>
+            <td>${precios}</td>
+            <td>${cantidades}</td>
+            <td>${totales}</td>
+            <td>₡${venta.totalVenta.toFixed(2)}</td>
+            <td>
+                <button class="btn btn-secondary btn-sm" onclick="editarVenta(${index})">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="eliminarVenta(${index})">Eliminar</button>
+            </td>
+        `;
+            });
         };
 
-        const eliminarVenta = (index) => {
-            if (confirm("¿Eliminar esta venta?")) {
-                ventas.splice(index, 1);
-                localStorage.setItem("ventas", JSON.stringify(ventas));
+        const filtrarVentas = () => {
+            const fechaFiltro = document.getElementById("filtroFecha").value;
+            if (!fechaFiltro) {
+                renderizarVentas(ventas);
+                return;
+            }
+
+            const ventasFiltradas = ventas.filter(v => v.fecha === fechaFiltro);
+            renderizarVentas(ventasFiltradas);
+        };
+
+        // Función para editar una venta en el historial
+        const editarVenta = async (index) => {
+            const venta = ventas[index];
+
+            // Generar el texto actual de productos
+            const productosTexto = venta.productos.map(p => `${p.nombre} (${p.cantidad})`).join(", ");
+
+            const { value: nuevosDatos } = await Swal.fire({
+                title: 'Editar productos y cantidades',
+                input: 'textarea',
+                inputLabel: 'Formato: Producto A (2), Producto B (1)',
+                inputValue: productosTexto,
+                showCancelButton: true,
+                confirmButtonText: 'Actualizar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value.trim()) {
+                        return 'El campo no puede estar vacío.';
+                    }
+                    const items = value.split(",");
+                    for (let item of items) {
+                        const match = item.trim().match(/^(.+)\s*\((\d+)\)$/);
+                        if (!match || parseInt(match[2]) <= 0) {
+                            return 'Formato inválido o cantidad no válida en: ' + item.trim();
+                        }
+                    }
+                }
+            });
+
+            if (!nuevosDatos) return;
+
+            // Parsear nuevos datos
+            const productosEditados = nuevosDatos.split(",").map(item => {
+                const [nombre, cantidad] = item.trim().split("(");
+                const cantidadValida = parseInt(cantidad.replace(")", "").trim());
+                return { nombre: nombre.trim(), cantidad: cantidadValida };
+            });
+
+            // Actualizar productos
+            const productosOriginales = ventas[index].productos;
+            ventas[index].productos = productosEditados;
+
+
+            // Recalcular total con base en los productos originales (por nombre)
+            let nuevoTotal = 0;
+            productosEditados.forEach(producto => {
+                const productoOriginal = productosOriginales.find(p => p.nombre === producto.nombre);
+                if (productoOriginal) {
+                    nuevoTotal += productoOriginal.precio * producto.cantidad;
+                } else {
+                    // En caso de que el producto no esté en el original, podrías mostrar advertencia o asumir precio 0
+                    console.warn(`No se encontró el precio original del producto: ${producto.nombre}`);
+                }
+            });
+
+            ventas[index].productos = productosEditados;
+            ventas[index].totalVenta = nuevoTotal;
+
+
+            localStorage.setItem("ventas", JSON.stringify(ventas));
+            ventas = JSON.parse(localStorage.getItem("ventas"));
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Venta actualizada',
+                text: 'Los productos y cantidades fueron modificados correctamente.',
+                timer: 1800,
+                showConfirmButton: false
+            });
+
+            ventas = JSON.parse(localStorage.getItem("ventas"));
+            const fechaFiltro = document.getElementById("filtroFecha").value;
+            if (fechaFiltro) {
                 filtrarVentas();
+            } else {
+                renderizarVentas(ventas);
             }
         };
 
+        // Función para eliminar una venta en el historial
+        const eliminarVenta = (index) => {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    ventas.splice(index, 1);
+                    localStorage.setItem("ventas", JSON.stringify(ventas));
+                    ventas = JSON.parse(localStorage.getItem("ventas")); // ← 🔄 Sincronizar variable global
+                    filtrarVentas();
+
+                    Swal.fire({
+                        title: 'Eliminado',
+                        text: 'La venta ha sido eliminada.',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        };
+
+        // Mostrar ventas automáticamente al cargar la página
+        window.addEventListener("DOMContentLoaded", () => {
+            ventas = JSON.parse(localStorage.getItem("ventas")) || [];
+            renderizarVentas(ventas);
+        });
+
+    </script>
+
+    <div id="footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
         Promise.all([
             fetch("templates/navbar.html"),
             fetch("templates/footer.html")
@@ -115,6 +232,10 @@
                 document.getElementById("footer").innerHTML = footerHTML;
             });
     </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 
 </html>
