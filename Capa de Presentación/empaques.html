@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestión de Empaques</title>
+    <title> Gestión de Empaques - Creando Recuerdos </title>
     <!-- Ícono y Fuentes -->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
@@ -23,71 +23,92 @@
     <!-- Navbar dinámico -->
     <div id="navbar"></div>
 
-    <div class="container my-5">
-        <h2 class="mb-4">Gestión de Empaques</h2>
+    <div class="container mt-5">
+        <h2 class="text-center"> Gestion de Empaques y/o Decoraciones </h2>
+    </div>
 
-        <form id="form_empaque" class="row g-3">
+    <div class="container mt-4">
+        <h4> Búsqueda de Empaques y/o Decoraciones </h4>
+    </div>
+    <!-- Formulario de búsqueda -->
+    <div class="container mt-3">
+        <div class="input-group">
+            <input type="text" id="busqueda" class="form-control" placeholder="Buscar por cualquier campo...">
+            <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <h4 class="mb-4"> Registro de Empaques y/o Decoraciones </h4>
+
+        <!-- Formulario para agregar empaques y/o decoraciones -->
+        <form id="form_empaques" class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">Nombre</label>
+                <label class="form-label"> Nombre </label>
                 <input type="text" class="form-control" required id="nombre">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Marca</label>
+                <label class="form-label"> Marca </label>
                 <input type="text" class="form-control" required id="marca">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Presentación</label>
-                <input type="text" class="form-control" id="presentacion">
+                <label class="form-label"> Presentación </label>
+                <input type="text" class="form-control" required id="presentacion">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Proveedor</label>
-                <input type="text" class="form-control" id="proveedor">
+                <label class="form-label"> Proveedor </label>
+                <input type="text" class="form-control" required id="proveedor">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Costo por Unidad ₡</label>
-                <input type="number" min="0" class="form-control" id="costo_unidad">
+                <label class="form-label"> Costo por Unidad (₡) </label>
+                <input type="number" min="0" class="form-control" required id="costo_unidad">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Cantidad</label>
-                <input type="number" min="0" class="form-control" id="cantidad">
+                <label class="form-label"> Cantidad </label>
+                <input type="number" min="0" class="form-control" required id="cantidad">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Acción</label>
-                <button type="submit" class="btn btn-success w-100">Agregar</button>
+                <label class="form-label"> Acción </label>
+                <button type="submit" class="btn btn-success w-100"> Agregar </button>
             </div>
         </form>
 
-        <hr />
+        <h4 class="mt-4"> Listado de Empaques y/o Decoraciones </h4>
 
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+        <!-- Tabla para mostrar los empaques y/o decoraciones -->
+        <table class="table table-bordered table-striped table-sm table-responsive text-center">
+            <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Marca</th>
-                    <th>Presentación</th>
-                    <th>Proveedor</th>
-                    <th>Costo por Unidad</th>
-                    <th>Cantidad</th>
-                    <th>Costo Total</th>
-                    <th>Acciones</th>
+                    <th> Nombre </th>
+                    <th> Marca </th>
+                    <th> Presentación </th>
+                    <th> Proveedor </th>
+                    <th> Costo x Unidad (₡)</th>
+                    <th> Cantidad </th>
+                    <th> Costo Total </th>
+                    <th> Acciones </th>
                 </tr>
             </thead>
             <tbody id="tabla_empaques"></tbody>
         </table>
+
+        <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
+            No se encontraron coincidencias.
+        </p>
+
     </div>
 
-    <!-- Footer dinámico -->
-    <div id="footer"></div>
 
     <script>
         const empaques = [];
         const tabla_empaques = document.getElementById('tabla_empaques');
-        const form_empaque = document.getElementById('form_empaque');
+        const form_empaques = document.getElementById('form_empaques');
 
         let edit_index = -1;
 
-        form_empaque.addEventListener('submit', e => {
+        form_empaques.addEventListener('submit', e => {
             e.preventDefault();
+
             const nombre = document.getElementById('nombre').value.trim();
             const marca = document.getElementById('marca').value.trim();
             const presentacion = document.getElementById('presentacion').value.trim();
@@ -95,29 +116,27 @@
             const costo_unidad = parseFloat(document.getElementById('costo_unidad').value);
             const cantidad = parseFloat(document.getElementById('cantidad').value);
 
-            if ([costo_unidad, cantidad].some(v => v < 0)) {
-                return alert("No se permiten valores negativos");
+            if ([costo_unidad, cantidad].some(v => isNaN(v) || v < 0)) {
+                return Swal.fire("Error", "Los valores de costo por unidad y cantidad deben ser números no negativos.", "error");
             }
 
             const costo_total = costo_unidad * cantidad;
 
             if (edit_index === -1) {
-                if (empaques.find(e => e.nombre === nombre)) return alert("Nombre duplicado");
-                empaques.push({ nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total });
-                alert("Registro exitoso");
-            } else {
-                if (empaques.find((e, i) => e.nombre === nombre && i !== edit_index)) {
-                    return alert("Ya existe otro empaque con ese nombre");
+                if (empaques.find(e => e.nombre.toLowerCase() === nombre.toLowerCase())) {
+                    return Swal.fire("Duplicado", "Ya existe un empaque con ese nombre.", "warning");
                 }
-
+                empaques.push({ nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total });
+                Swal.fire("¡Agregado!", "Empaque agregado exitosamente.", "success");
+            } else {
                 empaques[edit_index] = { nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total };
+                Swal.fire("Actualizado", "Empaque actualizado exitosamente.", "success");
                 edit_index = -1;
-                alert("Actualización exitosa");
             }
 
+            form_empaques.reset();
+            form_empaques.querySelector('button[type="submit"]').textContent = "Agregar";
             mostrar_empaques();
-            form_empaque.reset();
-            form_empaque.querySelector('button[type="submit"]').textContent = "Agregar";
         });
 
         function mostrar_empaques() {
@@ -133,34 +152,122 @@
                         <td>${e.cantidad}</td>
                         <td>₡${e.costo_total.toFixed(2)}</td>
                         <td>
-                            <button class="btn btn-secondary btn-sm" onclick="editar_empaque(${i})">Editar</button>
-                            <button class="btn btn-danger btn-sm" onclick="eliminar_empaque(${i})">Eliminar</button>
+                            <button class="btn btn-secondary btn-sm" onclick="editar_empaques(${i})">Editar</button>
+                            <button class="btn btn-danger btn-sm" onclick="eliminar_empaques(${i})">Eliminar</button>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        function eliminar_empaque(index) {
-            if (confirm("¿Está seguro de eliminar?")) {
-                empaques.splice(index, 1);
-                mostrar_empaques();
+        function eliminar_empaques(index) {
+            const e = empaques[index];
+            Swal.fire({
+                title: `¿Eliminar "${e.nombre}"?`,
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then(result => {
+                if (result.isConfirmed) {
+                    empaques.splice(index, 1);
+                    mostrar_empaques();
+                    Swal.fire("Eliminado", "El empaque ha sido eliminado.", "success");
+                }
+            });
+        }
+
+        function editar_empaques(index) {
+            const e = empaques[index];
+            Swal.fire({
+                title: `¿Editar "${e.nombre}"?`,
+                text: "Puedes modificar los datos en el formulario.",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Sí, editar",
+                cancelButtonText: "Cancelar"
+            }).then(result => {
+                if (result.isConfirmed) {
+                    document.getElementById('nombre').value = e.nombre;
+                    document.getElementById('marca').value = e.marca;
+                    document.getElementById('presentacion').value = e.presentacion;
+                    document.getElementById('proveedor').value = e.proveedor;
+                    document.getElementById('costo_unidad').value = e.costo_unidad;
+                    document.getElementById('cantidad').value = e.cantidad;
+                    edit_index = index;
+                    document.querySelector('form button[type="submit"]').textContent = "Actualizar";
+                }
+            });
+        }
+
+        function buscar_empaques(valor) {
+            valor = valor.toLowerCase();
+            return empaques.filter(e => {
+                const texto = `
+          ${e.nombre} ${e.marca} ${e.presentacion}
+          ${e.proveedor} ${e.costo_unidad} ${e.cantidad}
+        `.toLowerCase();
+                return texto.includes(valor);
+            });
+        }
+
+        function filtrar_empaques() {
+            const valorBusqueda = document.getElementById("busqueda").value.trim();
+            const resultados = buscar_empaques(valorBusqueda);
+            const tabla = document.getElementById("tabla_empaques");
+            const mensaje = document.getElementById("mensaje_no_resultados");
+
+            tabla.innerHTML = "";
+
+            if (resultados.length === 0) {
+                mensaje.style.display = "block";
+            } else {
+                mensaje.style.display = "none";
+                resultados.forEach((e, i) => {
+                    const costo_unidad = parseFloat(e.costo_unidad);
+                    const costo_total = e.costo_unidad * e.cantidad;
+                    tabla.innerHTML += `
+            <tr>
+              <td>${e.nombre}</td>
+              <td>${e.marca}</td>
+              <td>${e.presentacion}</td>
+              <td>${e.proveedor}</td>
+              <td>₡${e.costo_unidad.toFixed(2)}</td>
+              <td>${e.cantidad}</td>
+              <td>₡${costo_total.toFixed(2)}</td>
+              <td>
+                <button class="btn btn-secondary btn-sm" onclick="editar_empaques(${i})">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="eliminar_empaques(${i})">Eliminar</button>
+              </td>
+            </tr>
+          `;
+                });
             }
         }
 
-        function editar_empaque(index) {
-            const e = empaques[index];
-            document.getElementById('nombre').value = e.nombre;
-            document.getElementById('marca').value = e.marca;
-            document.getElementById('presentacion').value = e.presentacion;
-            document.getElementById('proveedor').value = e.proveedor;
-            document.getElementById('costo_unidad').value = e.costo_unidad;
-            document.getElementById('cantidad').value = e.cantidad;
-            edit_index = index;
+        const campoBusqueda = document.getElementById("busqueda");
+        const btnBuscar = document.getElementById("btn_buscar");
 
-            const btn = document.querySelector('form button[type="submit"]');
-            btn.textContent = "Actualizar";
-        }
+        campoBusqueda.addEventListener("input", () => {
+            const valor = campoBusqueda.value.trim();
+            if (valor === "") {
+                mostrar_empaques();
+            } else {
+                filtrar_empaques();
+            }
+        });
+
+        campoBusqueda.addEventListener("keydown", e => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                filtrar_empaques();
+            }
+        });
+
+        btnBuscar.addEventListener("click", () => {
+            filtrar_empaques();
+        });
 
         Promise.all([
             fetch("templates/navbar.html"),
@@ -172,12 +279,15 @@
                 document.getElementById("navbar").innerHTML = navbar_html;
                 document.getElementById("footer").innerHTML = footer_html;
             });
+
+        mostrar_empaques();
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/empaques.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Footer dinámico -->
     <div id="footer"></div>
 
 </body>
