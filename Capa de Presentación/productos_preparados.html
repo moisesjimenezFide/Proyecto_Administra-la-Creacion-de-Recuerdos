@@ -23,7 +23,8 @@
 
     <!-- Navbar dinámico -->
     <div id="navbar"></div>
-    
+
+
     <div class="container mt-4">
         <h2 class="text-center" style="font-family: 'Sono', sans-serif;"> Gestión de Productos Preparados </h2>
     </div>
@@ -71,7 +72,7 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label"> Acción </label>
-                <button type="submit"  class="btn text-white w-100"  style="background-color: #E27AB0;"> Agregar </button>
+                <button type="submit" class="btn text-black w-100" style="background-color: #E27AB0;">Agregar</button>
             </div>
         </form>
 
@@ -170,9 +171,10 @@
         }
 
         function eliminar_productos_preparados(index) {
+            const p = productos_preparados[index];
             Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Esta acción no se puede deshacer.',
+                title: `¿Desea eliminar este producto preparado "(${p.nombre})"?`,
+                text: "Esta acción no se puede deshacer.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Sí, eliminar',
@@ -193,8 +195,8 @@
         function editar_productos_preparados(index) {
             const p = productos_preparados[index];
             Swal.fire({
-                title: `Editar "${p.nombre}"`,
-                text: '¿Deseas editar este producto preparado?',
+                title: `¿Desea editar este producto preparado "(${p.nombre})"?`,
+                text: "Se cargarán los datos de este producto preparado para modificarlos.",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Sí, editar',
