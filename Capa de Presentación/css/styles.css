@@ -66,7 +66,7 @@ body {
   background-color: white;
   padding: 3px;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Navbar responsive */
@@ -93,4 +93,16 @@ body {
 
 .navbar-collapse {
   flex-grow: 0 !important;
+}
+
+.pos-header {
+  background-color: var(--pos-dark);
+  color: white;
+  padding: 10px 0;
+  font-family: 'Sono', sans-serif;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
 }

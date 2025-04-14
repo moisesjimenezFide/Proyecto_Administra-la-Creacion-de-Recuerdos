@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const menuData = {
         desayunos: [
             {
@@ -324,7 +324,86 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     let currentOrder = [];
-    
+    let allOrders = [];
+    let currentOrdersPage = 1;
+    const ordersPerPage = 10;
+    let currentRating = 0;
+
+    const mockOrders = [
+        {
+            orderNumber: 'ORD-2023-0001',
+            customerName: 'Juan Pérez',
+            customerPhone: '8888-8888',
+            items: [
+                { name: 'Típico #1', quantity: 2, price: 3995 },
+                { name: 'Café Americano', quantity: 1, price: 2100 }
+            ],
+            total: 10090,
+            status: 'pending',
+            createdAt: '2023-05-01T10:30:00',
+            paymentMethod: 'efectivo',
+            takeaway: false
+        },
+        {
+            orderNumber: 'ORD-2023-0002',
+            customerName: 'María Rodríguez',
+            customerPhone: '7777-7777',
+            items: [
+                { name: 'Panini Caprese', quantity: 1, price: 5500 },
+                { name: 'Jugo de naranja', quantity: 2, price: 1000 }
+            ],
+            total: 7500,
+            status: 'preparation',
+            createdAt: '2023-05-01T11:15:00',
+            paymentMethod: 'tarjeta',
+            takeaway: true
+        },
+        {
+            orderNumber: 'ORD-2023-0003',
+            customerName: 'Carlos Sánchez',
+            customerPhone: '6666-6666',
+            items: [
+                { name: 'Crêpe Nutella', quantity: 1, price: 2750 },
+                { name: 'Latte', quantity: 1, price: 2700 }
+            ],
+            total: 5450,
+            status: 'ready',
+            createdAt: '2023-05-01T11:45:00',
+            paymentMethod: 'sinpe',
+            takeaway: false
+        },
+        {
+            orderNumber: 'ORD-2023-0004',
+            customerName: 'Ana Martínez',
+            customerPhone: '5555-5555',
+            items: [
+                { name: 'Pasta Tornillos', quantity: 1, price: 3950 },
+                { name: 'Agua', quantity: 1, price: 1100 }
+            ],
+            total: 5050,
+            status: 'delivered',
+            createdAt: '2023-05-01T12:00:00',
+            paymentMethod: 'efectivo',
+            takeaway: true
+        }
+    ];
+
+    function toggleOrderPanel() {
+        const orderPanel = document.querySelector('.pos-order-panel');
+        const toggleBtn = document.getElementById('toggleOrderPanelBtn');
+
+        orderPanel.classList.toggle('collapsed');
+        toggleBtn.classList.toggle('collapsed');
+
+        if (orderPanel.classList.contains('collapsed')) {
+            toggleBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            toggleBtn.style.right = '0';
+        } else {
+            toggleBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            toggleBtn.style.right = '20px';
+        }
+    }
+
     function initPOS() {
         loadCategory('desayunos');
         
@@ -341,9 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         document.getElementById('clearOrderBtn').addEventListener('click', clearOrder);
-        
         document.getElementById('checkoutBtn').addEventListener('click', openPaymentModal);
-        
         document.getElementById('saveOrderBtn').addEventListener('click', saveOrder);
         
         document.querySelectorAll('.payment-method').forEach(method => {
@@ -354,23 +431,264 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         document.getElementById('cashAmount').addEventListener('input', calculateChange);
-        
         document.getElementById('confirmPaymentBtn').addEventListener('click', confirmPayment);
-        
         document.getElementById('newOrderBtn').addEventListener('click', startNewOrder);
-        
         document.getElementById('printReceiptBtn').addEventListener('click', printReceipt);
+        document.getElementById('toggleOrderPanelBtn').addEventListener('click', toggleOrderPanel);
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && (e.target.id === 'manageOrdersBtn' || e.target.closest('#manageOrdersBtn'))) {
+                e.preventDefault();
+                loadOrders();
+                const modal = new bootstrap.Modal(document.getElementById('orderStatusModal'));
+                modal.show();
+            }
+        })
+        
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const status = this.getAttribute('data-status');
+                const searchTerm = document.getElementById('orderSearch').value;
+                loadOrders(status, searchTerm);
+            });
+        });
+        
+        document.getElementById('searchOrderBtn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('orderSearch').value;
+            const activeFilter = document.querySelector('.filter-btn.active');
+            const status = activeFilter ? activeFilter.getAttribute('data-status') : 'all';
+            loadOrders(status, searchTerm);
+        });
+        
+        document.getElementById('orderSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value;
+                const activeFilter = document.querySelector('.filter-btn.active');
+                const status = activeFilter ? activeFilter.getAttribute('data-status') : 'all';
+                loadOrders(status, searchTerm);
+            }
+        });
+        
+        document.querySelectorAll('.rating-stars i').forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                setRating(rating);
+            });
+            
+            star.addEventListener('mouseover', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                highlightStars(rating);
+            });
+            
+            star.addEventListener('mouseout', function() {
+                highlightStars(currentRating);
+            });
+        });
+        
+        document.getElementById('ratingComments').addEventListener('input', function() {
+            const remaining = 500 - this.value.length;
+            document.getElementById('charsLeft').textContent = remaining;
+        });
+        
+        document.getElementById('submitRatingBtn').addEventListener('click', submitRating);
         
         updateCurrentTime();
         setInterval(updateCurrentTime, 1000);
     }
-    
+
+    function loadOrders(statusFilter = 'all', searchTerm = '') {
+        const filteredOrders = mockOrders.filter(order => {
+            const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+            const matchesSearch = searchTerm === '' || 
+                order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                order.customerPhone.includes(searchTerm);
+            return matchesStatus && matchesSearch;
+        });
+
+        allOrders = filteredOrders;
+        currentOrdersPage = 1;
+        renderOrdersTable();
+    }
+
+    function renderOrdersTable() {
+        const tbody = document.getElementById('ordersTableBody');
+        tbody.innerHTML = '';
+        
+        const startIndex = (currentOrdersPage - 1) * ordersPerPage;
+        const endIndex = Math.min(startIndex + ordersPerPage, allOrders.length);
+        const ordersToShow = allOrders.slice(startIndex, endIndex);
+        
+        ordersToShow.forEach(order => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${order.orderNumber}</td>
+                <td>${order.customerName}</td>
+                <td>${order.customerPhone}</td>
+                <td>
+                    <ul class="order-products-list">
+                        ${order.items.map(item => `<li>${item.quantity}x ${item.name}</li>`).join('')}
+                    </ul>
+                </td>
+                <td>₡${order.total.toLocaleString()}</td>
+                <td>
+                    <span class="order-status status-${order.status}">
+                        ${getStatusText(order.status)}
+                    </span>
+                </td>
+                <td>
+                    ${order.status !== 'canceled' && order.status !== 'delivered' ? `
+                    <select class="form-select form-select-sm change-status" data-order="${order.orderNumber}">
+                        <option value="" disabled selected>Cambiar estado</option>
+                        <option value="pending" ${order.status === 'pending' ? 'disabled' : ''}>Pendiente</option>
+                        <option value="preparation" ${order.status === 'preparation' ? 'disabled' : ''}>En preparación</option>
+                        <option value="ready" ${order.status === 'ready' ? 'disabled' : ''}>Listo</option>
+                        <option value="delivered" ${order.status === 'delivered' ? 'disabled' : ''}>Entregado</option>
+                        <option value="canceled">Cancelar</option>
+                    </select>
+                    ` : ''}
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+        document.querySelectorAll('.change-status').forEach(select => {
+            select.addEventListener('change', function() {
+                const orderNumber = this.getAttribute('data-order');
+                const newStatus = this.value;
+                updateOrderStatus(orderNumber, newStatus);
+            });
+        });
+        
+        renderOrdersPagination();
+    }
+
+    function renderOrdersPagination() {
+        const pagination = document.getElementById('ordersPagination');
+        pagination.innerHTML = '';
+        
+        const totalPages = Math.ceil(allOrders.length / ordersPerPage);
+        
+        if (totalPages <= 1) return;
+        
+        const prevLi = document.createElement('li');
+        prevLi.className = `page-item ${currentOrdersPage === 1 ? 'disabled' : ''}`;
+        prevLi.innerHTML = `<a class="page-link" href="#">Anterior</a>`;
+        prevLi.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentOrdersPage > 1) {
+                currentOrdersPage--;
+                renderOrdersTable();
+            }
+        });
+        pagination.appendChild(prevLi);
+        
+        for (let i = 1; i <= totalPages; i++) {
+            const li = document.createElement('li');
+            li.className = `page-item ${i === currentOrdersPage ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            li.addEventListener('click', (e) => {
+                e.preventDefault();
+                currentOrdersPage = i;
+                renderOrdersTable();
+            });
+            pagination.appendChild(li);
+        }
+        
+        const nextLi = document.createElement('li');
+        nextLi.className = `page-item ${currentOrdersPage === totalPages ? 'disabled' : ''}`;
+        nextLi.innerHTML = `<a class="page-link" href="#">Siguiente</a>`;
+        nextLi.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentOrdersPage < totalPages) {
+                currentOrdersPage++;
+                renderOrdersTable();
+            }
+        });
+        pagination.appendChild(nextLi);
+    }
+
+    function updateOrderStatus(orderNumber, newStatus) {
+        const order = mockOrders.find(o => o.orderNumber === orderNumber);
+        if (order) {
+            order.status = newStatus;
+            order.statusUpdatedAt = new Date().toISOString();
+            
+            alert(`Estado del pedido ${orderNumber} actualizado a: ${getStatusText(newStatus)}`);
+            
+            renderOrdersTable();
+        }
+    }
+
+    function getStatusText(status) {
+        const statusTexts = {
+            'pending': 'Pendiente',
+            'preparation': 'En preparación',
+            'ready': 'Listo',
+            'delivered': 'Entregado',
+            'canceled': 'Cancelado'
+        };
+        return statusTexts[status] || status;
+    }
+
+    function setRating(rating) {
+        currentRating = rating;
+        const stars = document.querySelectorAll('.rating-stars i');
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.remove('far');
+                star.classList.add('fas', 'active');
+            } else {
+                star.classList.remove('fas', 'active');
+                star.classList.add('far');
+            }
+        });
+    }
+
+    function highlightStars(rating) {
+        const stars = document.querySelectorAll('.rating-stars i');
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('hover');
+            } else {
+                star.classList.remove('hover');
+            }
+        });
+    }
+
+    function submitRating() {
+        if (currentRating === 0) {
+            alert('Por favor selecciona una calificación');
+            return;
+        }
+        
+        const comments = document.getElementById('ratingComments').value;
+        
+        console.log('Rating submitted:', {
+            rating: currentRating,
+            comments: comments,
+            orderNumber: 'ORD-2023-0001' 
+        });
+        
+        const toast = new bootstrap.Toast(document.getElementById('ratingToast'));
+        toast.show();
+        
+        const modal = bootstrap.Modal.getInstance(document.getElementById('ratingModal'));
+        modal.hide();
+        
+        setRating(0);
+        document.getElementById('ratingComments').value = '';
+        document.getElementById('charsLeft').textContent = '500';
+    }
+
     function loadCategory(category) {
         const productGrid = document.getElementById('productGrid');
         productGrid.innerHTML = '';
-        
+
         const products = menuData[category];
-        
+
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'col-md-6 col-lg-4';
@@ -384,7 +702,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             `;
-            
+
             productCard.querySelector('.product-card').addEventListener('click', () => {
                 if (product.price > 0) {
                     addToOrder(product);
@@ -392,14 +710,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     openCustomPriceModal(product);
                 }
             });
-            
+
             productGrid.appendChild(productCard);
         });
     }
-    
+
     function openCustomPriceModal(product) {
         const customPrice = prompt(`Ingrese el precio para ${product.name}:`, "0");
-        
+
         if (customPrice && !isNaN(customPrice) && parseFloat(customPrice) > 0) {
             addToOrder({
                 ...product,
@@ -409,10 +727,10 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("Por favor ingrese un precio válido");
         }
     }
-    
+
     function addToOrder(product) {
         const existingItem = currentOrder.find(item => item.id === product.id);
-        
+
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
@@ -423,13 +741,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 quantity: 1
             });
         }
-        
+
         updateOrderDisplay();
     }
-    
+
     function updateOrderDisplay() {
         const orderItemsContainer = document.getElementById('orderItems');
-        
+
         if (currentOrder.length === 0) {
             orderItemsContainer.innerHTML = `
                 <div class="empty-order">
@@ -441,11 +759,11 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             let orderHTML = '';
             let subtotal = 0;
-            
+
             currentOrder.forEach(item => {
                 const itemTotal = item.price * item.quantity;
                 subtotal += itemTotal;
-                
+
                 orderHTML += `
                     <div class="order-item" data-id="${item.id}">
                         <div class="item-name">${item.name}</div>
@@ -459,45 +777,45 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
             });
-            
+
             orderItemsContainer.innerHTML = orderHTML;
-            
+
             const tax = subtotal * 0.13;
             const total = subtotal + tax;
-            
+
             document.getElementById('orderSubtotal').textContent = `₡${subtotal.toLocaleString()}`;
             document.getElementById('orderTax').textContent = `₡${tax.toLocaleString()}`;
             document.getElementById('orderTotal').textContent = `₡${total.toLocaleString()}`;
-            
+
             document.getElementById('checkoutBtn').disabled = false;
-            
+
             document.querySelectorAll('.decrease-quantity').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const itemId = parseInt(this.closest('.order-item').getAttribute('data-id'));
                     const item = currentOrder.find(item => item.id === itemId);
-                    
+
                     if (item.quantity > 1) {
                         item.quantity -= 1;
                         updateOrderDisplay();
                     }
                 });
             });
-            
+
             document.querySelectorAll('.increase-quantity').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const itemId = parseInt(this.closest('.order-item').getAttribute('data-id'));
                     const item = currentOrder.find(item => item.id === itemId);
                     item.quantity += 1;
                     updateOrderDisplay();
                 });
             });
-            
+
             document.querySelectorAll('.quantity-input').forEach(input => {
-                input.addEventListener('change', function() {
+                input.addEventListener('change', function () {
                     const itemId = parseInt(this.closest('.order-item').getAttribute('data-id'));
                     const item = currentOrder.find(item => item.id === itemId);
                     const newQuantity = parseInt(this.value);
-                    
+
                     if (newQuantity > 0) {
                         item.quantity = newQuantity;
                         updateOrderDisplay();
@@ -506,9 +824,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             });
-            
+
             document.querySelectorAll('.item-remove').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const itemId = parseInt(this.closest('.order-item').getAttribute('data-id'));
                     currentOrder = currentOrder.filter(item => item.id !== itemId);
                     updateOrderDisplay();
@@ -516,27 +834,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-    
+
     function clearOrder() {
         if (currentOrder.length > 0 && confirm('¿Está seguro que desea limpiar el pedido actual?')) {
             currentOrder = [];
             updateOrderDisplay();
         }
     }
-    
+
     function openPaymentModal() {
         if (currentOrder.length === 0) return;
-        
+
         const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
-        
+
         const paymentOrderItems = document.getElementById('paymentOrderItems');
         let itemsHTML = '';
         let subtotal = 0;
-        
+
         currentOrder.forEach(item => {
             const itemTotal = item.price * item.quantity;
             subtotal += itemTotal;
-            
+
             itemsHTML += `
                 <div class="order-item">
                     <div class="item-name">${item.name} x${item.quantity}</div>
@@ -544,51 +862,51 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
         });
-        
+
         paymentOrderItems.innerHTML = itemsHTML;
-        
+
         const tax = subtotal * 0.13;
         const total = subtotal + tax;
-        
+
         document.getElementById('paymentSubtotal').textContent = `₡${subtotal.toLocaleString()}`;
         document.getElementById('paymentTax').textContent = `₡${tax.toLocaleString()}`;
         document.getElementById('paymentTotal').textContent = `₡${total.toLocaleString()}`;
-        
+
         selectPaymentMethod('efectivo');
         document.getElementById('cashAmount').value = '';
         document.getElementById('cashChange').value = '';
-        
+
         modal.show();
     }
-    
+
     function selectPaymentMethod(method) {
         document.querySelectorAll('.payment-method').forEach(m => {
             m.classList.remove('active');
         });
         document.querySelector(`[data-method="${method}"]`).classList.add('active');
-        
+
         document.querySelectorAll('.payment-details').forEach(d => {
             d.style.display = 'none';
         });
         document.getElementById(`${method}Details`).style.display = 'block';
     }
-    
+
     function calculateChange() {
         const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
         const total = parseFloat(document.getElementById('paymentTotal').textContent.replace('₡', '').replace(',', ''));
-        
+
         const change = cashAmount - total;
         document.getElementById('cashChange').value = change >= 0 ? `₡${change.toLocaleString()}` : '0';
     }
-    
+
     function confirmPayment() {
         const paymentMethod = document.querySelector('.payment-method.active').getAttribute('data-method');
         let paymentValid = true;
-        
+
         if (paymentMethod === 'efectivo') {
             const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
             const total = parseFloat(document.getElementById('paymentTotal').textContent.replace('₡', '').replace(',', ''));
-            
+
             if (cashAmount < total) {
                 alert('El monto recibido es menor que el total a pagar');
                 paymentValid = false;
@@ -597,7 +915,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const cardNumber = document.getElementById('cardNumber').value;
             const cardExpiry = document.getElementById('cardExpiry').value;
             const cardCVV = document.getElementById('cardCVV').value;
-            
+
             if (!cardNumber || !cardExpiry || !cardCVV) {
                 alert('Por favor complete todos los datos de la tarjeta');
                 paymentValid = false;
@@ -605,23 +923,23 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (paymentMethod === 'sinpe') {
             const sinpeNumber = document.getElementById('sinpeNumber').value;
             const sinpeConfirmation = document.getElementById('sinpeConfirmation').value;
-            
+
             if (!sinpeNumber || !sinpeConfirmation) {
                 alert('Por favor complete todos los datos del SINPE Móvil');
                 paymentValid = false;
             }
         }
-        
+
         if (paymentValid) {
             const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
             paymentModal.hide();
-            
+
             const orderCompleteModal = new bootstrap.Modal(document.getElementById('orderCompleteModal'));
             orderCompleteModal.show();
-            
+
             const orderNumber = `ORD-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
             document.querySelector('.order-number strong').textContent = orderNumber;
-            
+
             console.log('Order completed:', {
                 orderNumber,
                 items: currentOrder,
@@ -630,16 +948,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 takeaway: document.getElementById('takeawayOrder').checked,
                 paymentMethod
             });
-            
+
             if (document.getElementById('printReceipt').checked) {
                 console.log('Printing receipt...');
             }
+
+            setTimeout(() => {
+                const ratingModal = new bootstrap.Modal(document.getElementById('ratingModal'));
+                ratingModal.show();
+            }, 5000);
         }
     }
-    
+
     function saveOrder() {
         if (currentOrder.length === 0) return;
-        
+
         if (confirm('¿Guardar este pedido sin procesar pago?')) {
             console.log('Order saved:', {
                 items: currentOrder,
@@ -647,12 +970,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 phone: document.getElementById('customerPhone').value,
                 takeaway: document.getElementById('takeawayOrder').checked
             });
-            
+
             alert('Pedido guardado exitosamente');
             clearOrder();
         }
     }
-    
+
     function startNewOrder() {
         currentOrder = [];
         updateOrderDisplay();
@@ -660,17 +983,17 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('customerPhone').value = '';
         document.getElementById('takeawayOrder').checked = false;
     }
-    
+
     function printReceipt() {
         alert('Recibo impreso exitosamente');
     }
-    
+
     function updateCurrentTime() {
         const now = new Date();
         const timeString = now.toLocaleTimeString();
         const dateString = now.toLocaleDateString();
         document.getElementById('currentTime').textContent = `${dateString} ${timeString}`;
     }
-    
+
     initPOS();
 });
