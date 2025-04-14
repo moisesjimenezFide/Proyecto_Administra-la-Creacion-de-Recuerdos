@@ -23,8 +23,12 @@ body {
 }
 
 body {
-  display: flex;
+  display: grid;
   flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: auto;
+  position: relative;
+  grid-template-rows: auto 1fr auto;
 }
 
 .container {
