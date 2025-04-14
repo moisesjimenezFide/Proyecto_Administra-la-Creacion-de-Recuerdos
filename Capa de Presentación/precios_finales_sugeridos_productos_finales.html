@@ -26,8 +26,10 @@
     <!-- Navbar dinámico-->
     <div id="navbar"></div>
 
+
     <div class="container mt-4">
-        <h2 class="text-center" style="font-family: 'Sono', sans-serif;"> Gestión de Precios Finales Sugeridos de Productos Finales </h2>
+        <h2 class="text-center" style="font-family: 'Sono', sans-serif;"> Gestión de Precios Finales Sugeridos de
+            Productos Finales </h2>
     </div>
 
     <div class="container my-5">
@@ -64,7 +66,7 @@
 
             <div class="col-md-4">
                 <label class="form-label"> Acción </label>
-                <button type="submit" class="btn text-white w-100"  style="background-color: #E27AB0;"   > Agregar </button>
+                <button type="submit" class="btn text-black w-100" style="background-color: #E27AB0;">Agregar</button>
             </div>
         </form>
     </div>
@@ -261,7 +263,8 @@
             window.eliminar = function (index) {
                 const p = productos[index];
                 Swal.fire({
-                    title: `¿Seguro que quieres eliminar "${p.nombre}"?`,
+                    title: `¿Desea eliminar este producto "(${p.nombre})"?`,
+                    text: "Esta acción no se puede deshacer.",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Sí, eliminar',
@@ -282,8 +285,8 @@
             window.editar = function (index) {
                 const p = productos[index];
                 Swal.fire({
-                    title: `Editar "${p.nombre}"`,
-                    text: '¿Deseas editar este producto preparado?',
+                    title: `¿Desea editar este producto "(${p.nombre})"?`,
+                    text: "Se cargarán los datos de este producto para modificarlos.",
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: 'Sí, editar',
