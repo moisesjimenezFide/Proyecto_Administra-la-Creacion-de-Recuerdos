@@ -24,6 +24,7 @@
     <!-- Navbar dinámico -->
     <div id="navbar"></div>
 
+
     <div class="container mt-4">
         <h2 class="text-center" style="font-family: 'Sono', sans-serif;"> Gestión de Costos de Recetas </h2>
         <div class="container mt-4">
@@ -76,15 +77,17 @@
                     </tbody>
                 </table>
 
-                <button type="button"  class="btn text-white w-100"  style="background-color: #E27AB0;" onclick="agregarFila()"> Agregar materia prima
+                <button type="button" class="btn text-black" style="background-color: #E27AB0;" onclick="agregarFila()">
+                    Agregar materia prima
                 </button>
 
                 <p><strong> Costo total receta: </strong> <span id="costo_total_receta"> ₡0.00 </span></p>
                 <p><strong> Costo por porción: </strong> <span id="costo_por_porcion"> ₡0.00 </span></p>
 
                 <div class="col-md-4">
-                    <button type="submit" class="btn text-white w-100" style="background-color: #E27AB0;"
-                    > Guardar receta </button>
+                    <button type="submit" class="btn text-black w-100" style="background-color: #E27AB0;"> Guardar
+                        receta
+                    </button>
                 </div>
             </form>
 
@@ -109,14 +112,13 @@
                 No se encontraron coincidencias.
             </p>
         </div>
-    </div>
 
-    <script>
-        const recetas = [];
-        let edit_index = -1;
+        <script>
+            const recetas = [];
+            let edit_index = -1;
 
-        function agregarFila() {
-            const fila = `
+            function agregarFila() {
+                const fila = `
              <tr>
                  <td><input type="text" class="form-control materia" required></td>
                  <td><input type="number" class="form-control cantidad" min="0" required></td>
@@ -125,95 +127,95 @@
                  <td class="total-costo">₡0.00</td>
                  <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">Eliminar</button></td>
              </tr>`;
-            document.querySelector("#tabla_materias tbody").insertAdjacentHTML("beforeend", fila);
-        }
+                document.querySelector("#tabla_materias tbody").insertAdjacentHTML("beforeend", fila);
+            }
 
-        function eliminarFila(btn) {
-            btn.closest("tr").remove();
-            calcularTotales();
-        }
-
-        function calcularTotales() {
-            let total_receta = 0;
-            document.querySelectorAll("#tabla_materias tbody tr").forEach(row => {
-                const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
-                const costo = parseFloat(row.querySelector(".costo").value) || 0;
-                const total = cantidad * costo;
-                row.querySelector(".total-costo").textContent = `₡${total.toFixed(2)}`;
-                total_receta += total;
-
-                document.getElementById("costo_total_receta").textContent = `₡${total_receta.toFixed(2)}`;
-                const porcion = parseFloat(document.getElementById("porcion").value) || 1;
-                const costo_porcion = total_receta / porcion;
-                document.getElementById("costo_por_porcion").textContent = `₡${costo_porcion.toFixed(2)}`;
-            });
-        }
-
-        document.addEventListener("input", function (r) {
-            if (r.target.classList.contains("cantidad") || r.target.classList.contains("costo")) {
+            function eliminarFila(btn) {
+                btn.closest("tr").remove();
                 calcularTotales();
             }
-            if (r.target.id === "porcion") {
-                calcularTotales();
-            }
-        });
 
-        const form_recetas = document.getElementById("form_recetas");
-        const tabla_recetas = document.getElementById("tabla_recetas");
+            function calcularTotales() {
+                let total_receta = 0;
+                document.querySelectorAll("#tabla_materias tbody tr").forEach(row => {
+                    const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
+                    const costo = parseFloat(row.querySelector(".costo").value) || 0;
+                    const total = cantidad * costo;
+                    row.querySelector(".total-costo").textContent = `₡${total.toFixed(2)}`;
+                    total_receta += total;
 
-        form_recetas.addEventListener("submit", function (r) {
-            r.preventDefault();
-
-            const nombre = document.getElementById("nombre_receta").value.trim();
-            const porcion = parseFloat(document.getElementById("porcion").value);
-            const volumen = parseFloat(document.getElementById("volumen").value);
-
-            if (!nombre || isNaN(porcion) || isNaN(volumen) || porcion <= 0 || volumen < 0) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Campos incompletos o inválidos',
-                    text: 'Por favor, completa los campos correctamente.'
+                    document.getElementById("costo_total_receta").textContent = `₡${total_receta.toFixed(2)}`;
+                    const porcion = parseFloat(document.getElementById("porcion").value) || 1;
+                    const costo_porcion = total_receta / porcion;
+                    document.getElementById("costo_por_porcion").textContent = `₡${costo_porcion.toFixed(2)}`;
                 });
-                return;
             }
 
-            const materias = [];
-            let total_receta = 0;
-
-            document.querySelectorAll("#tabla_materias tbody tr").forEach(row => {
-                const materia = row.querySelector(".materia").value.trim();
-                const cantidad = parseFloat(row.querySelector(".cantidad").value);
-                const unidad = row.querySelector(".unidad").value.trim();
-                const costo = parseFloat(row.querySelector(".costo").value);
-                const total = cantidad * costo;
-
-                materias.push({ materia, cantidad, unidad, costo, total });
-                total_receta += total;
+            document.addEventListener("input", function (r) {
+                if (r.target.classList.contains("cantidad") || r.target.classList.contains("costo")) {
+                    calcularTotales();
+                }
+                if (r.target.id === "porcion") {
+                    calcularTotales();
+                }
             });
 
-            const costo_porcion = total_receta / porcion;
+            const form_recetas = document.getElementById("form_recetas");
+            const tabla_recetas = document.getElementById("tabla_recetas");
 
-            const receta = { nombre, porcion, volumen, materias, total_receta, costo_porcion };
+            form_recetas.addEventListener("submit", function (r) {
+                r.preventDefault();
 
-            if (edit_index === -1) {
-                recetas.push(receta);
-            } else {
-                recetas[edit_index] = receta;
-                edit_index = -1;
-            }
+                const nombre = document.getElementById("nombre_receta").value.trim();
+                const porcion = parseFloat(document.getElementById("porcion").value);
+                const volumen = parseFloat(document.getElementById("volumen").value);
 
-            form_recetas.reset();
-            document.querySelector("#tabla_materias tbody").innerHTML = "";
-            document.getElementById("costo_total_receta").textContent = "₡ 0.00";
-            document.getElementById("costo_por_porcion").textContent = "₡ 0.00";
-            mostrar_recetas();
-        });
+                if (!nombre || isNaN(porcion) || isNaN(volumen) || porcion <= 0 || volumen < 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Campos incompletos o inválidos',
+                        text: 'Por favor, completa los campos correctamente.'
+                    });
+                    return;
+                }
 
-        function mostrar_recetas() {
-            tabla_recetas.innerHTML = "";
-            recetas.forEach((r, i) => {
-                const materias = r.materias.map(m => `${m.materia} (${m.cantidad} ${m.unidad}, ₡${m.total.toFixed(2)})`).join("<br>");
-                tabla_recetas.innerHTML += `
+                const materias = [];
+                let total_receta = 0;
+
+                document.querySelectorAll("#tabla_materias tbody tr").forEach(row => {
+                    const materia = row.querySelector(".materia").value.trim();
+                    const cantidad = parseFloat(row.querySelector(".cantidad").value);
+                    const unidad = row.querySelector(".unidad").value.trim();
+                    const costo = parseFloat(row.querySelector(".costo").value);
+                    const total = cantidad * costo;
+
+                    materias.push({ materia, cantidad, unidad, costo, total });
+                    total_receta += total;
+                });
+
+                const costo_porcion = total_receta / porcion;
+
+                const receta = { nombre, porcion, volumen, materias, total_receta, costo_porcion };
+
+                if (edit_index === -1) {
+                    recetas.push(receta);
+                } else {
+                    recetas[edit_index] = receta;
+                    edit_index = -1;
+                }
+
+                form_recetas.reset();
+                document.querySelector("#tabla_materias tbody").innerHTML = "";
+                document.getElementById("costo_total_receta").textContent = "₡ 0.00";
+                document.getElementById("costo_por_porcion").textContent = "₡ 0.00";
+                mostrar_recetas();
+            });
+
+            function mostrar_recetas() {
+                tabla_recetas.innerHTML = "";
+                recetas.forEach((r, i) => {
+                    const materias = r.materias.map(m => `${m.materia} (${m.cantidad} ${m.unidad}, ₡${m.total.toFixed(2)})`).join("<br>");
+                    tabla_recetas.innerHTML += `
                  <tr>
                      <td>${r.nombre}</td>
                      <td>${r.porcion}</td>
@@ -226,81 +228,81 @@
                          <button class="btn btn-sm btn-danger" onclick="eliminar_receta(${i})">Eliminar</button>
                      </td>
                  </tr>`;
-            });
-        }
+                });
+            }
 
-        function editar_receta(index) {
-            const r = recetas[index];
+            function editar_receta(index) {
+                const r = recetas[index];
 
-            Swal.fire({
-                title: `¿Editar "${r.nombre}"?`,
-                text: "Se cargarán los datos de esta receta para modificar.",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, editar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById("nombre_receta").value = r.nombre;
-                    document.getElementById("porcion").value = r.porcion;
-                    document.getElementById("volumen").value = r.volumen;
-                    document.querySelector("#tabla_materias tbody").innerHTML = "";
+                Swal.fire({
+                    title: `¿Desea editar esta receta "(${r.nombre})"?`,
+                    text: "Se cargarán los datos de esta receta para modificar.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, editar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById("nombre_receta").value = r.nombre;
+                        document.getElementById("porcion").value = r.porcion;
+                        document.getElementById("volumen").value = r.volumen;
+                        document.querySelector("#tabla_materias tbody").innerHTML = "";
 
-                    r.materias.forEach(m => {
-                        agregarFila();
-                        const lastRow = document.querySelector("#tabla_materias tbody tr:last-child");
-                        lastRow.querySelector(".materia").value = m.materia;
-                        lastRow.querySelector(".cantidad").value = m.cantidad;
-                        lastRow.querySelector(".unidad").value = m.unidad;
-                        lastRow.querySelector(".costo").value = m.costo;
-                        lastRow.querySelector(".total-costo").textContent = `₡${m.total.toFixed(2)}`;
-                    });
+                        r.materias.forEach(m => {
+                            agregarFila();
+                            const lastRow = document.querySelector("#tabla_materias tbody tr:last-child");
+                            lastRow.querySelector(".materia").value = m.materia;
+                            lastRow.querySelector(".cantidad").value = m.cantidad;
+                            lastRow.querySelector(".unidad").value = m.unidad;
+                            lastRow.querySelector(".costo").value = m.costo;
+                            lastRow.querySelector(".total-costo").textContent = `₡${m.total.toFixed(2)}`;
+                        });
 
-                    calcularTotales();
-                    edit_index = index;
-                }
-            });
-        }
+                        calcularTotales();
+                        edit_index = index;
+                    }
+                });
+            }
 
-        function eliminar_receta(index) {
-            Swal.fire({
-                title: '¿Eliminar receta?',
-                text: "Esta acción no se puede deshacer.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    recetas.splice(index, 1);
-                    mostrar_recetas();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Eliminado',
-                        text: 'La receta ha sido eliminada.'
-                    });
-                }
-            });
-        }
+            function eliminar_receta(index) {
+                Swal.fire({
+                    title: `¿Desea eliminar esta receta "(${r.nombre})"?`,
+                    text: "Esta acción no se puede deshacer.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        recetas.splice(index, 1);
+                        mostrar_recetas();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Eliminado',
+                            text: 'La receta ha sido eliminada.'
+                        });
+                    }
+                });
+            }
 
-        document.getElementById("busqueda")?.addEventListener("input", function () {
-            const valor = this.value.toLowerCase();
-            const resultados = recetas
-                .map((r, index) => ({ ...r, originalIndex: index }))
-                .filter(r =>
-                    r.nombre.toLowerCase().includes(valor) ||
-                    r.materias.some(m => m.materia.toLowerCase().includes(valor))
-                );
+            document.getElementById("busqueda")?.addEventListener("input", function () {
+                const valor = this.value.toLowerCase();
+                const resultados = recetas
+                    .map((r, index) => ({ ...r, originalIndex: index }))
+                    .filter(r =>
+                        r.nombre.toLowerCase().includes(valor) ||
+                        r.materias.some(m => m.materia.toLowerCase().includes(valor))
+                    );
 
-            tabla_recetas.innerHTML = "";
+                tabla_recetas.innerHTML = "";
 
-            if (resultados.length === 0) {
-                document.getElementById("mensaje_no_resultados").style.display = "block";
-            } else {
-                document.getElementById("mensaje_no_resultados").style.display = "none";
-                resultados.forEach((r) => {
-                    const materias = r.materias.map(m => `${m.materia} (${m.cantidad} ${m.unidad}, ₡${m.total.toFixed(2)})`).join("<br>");
-                    tabla_recetas.innerHTML += `
+                if (resultados.length === 0) {
+                    document.getElementById("mensaje_no_resultados").style.display = "block";
+                } else {
+                    document.getElementById("mensaje_no_resultados").style.display = "none";
+                    resultados.forEach((r) => {
+                        const materias = r.materias.map(m => `${m.materia} (${m.cantidad} ${m.unidad}, ₡${m.total.toFixed(2)})`).join("<br>");
+                        tabla_recetas.innerHTML += `
                          <tr>
                              <td>${r.nombre}</td>
                              <td>${r.porcion}</td>
@@ -313,38 +315,38 @@
                                  <button class="btn btn-sm btn-danger" onclick="eliminar_receta(${r.originalIndex})">Eliminar</button>
                              </td>
                          </tr>`;
-                });
-            }
-
-            function guardarRecetaEnStorage(nombreReceta, costoTotal) {
-                const recetas = JSON.parse(localStorage.getItem('recetasCostos')) || [];
-                const index = recetas.findIndex(r => r.nombre === nombreReceta);
-                if (index !== -1) {
-                    recetas[index].costo = costoTotal;
-                } else {
-                    recetas.push({ nombre: nombreReceta, costo: costoTotal });
+                    });
                 }
-                localStorage.setItem('recetasCostos', JSON.stringify(recetas));
-            }
-        });
 
-        Promise.all([
-            fetch("templates/navbar.html"),
-            fetch("templates/footer.html")
-        ])
-            .then(async ([navbarRes, footerRes]) => {
-                const navbarHTML = await navbarRes.text();
-                const footerHTML = await footerRes.text();
-                document.getElementById("navbar").innerHTML = navbarHTML;
-                document.getElementById("footer").innerHTML = footerHTML;
+                function guardarRecetaEnStorage(nombreReceta, costoTotal) {
+                    const recetas = JSON.parse(localStorage.getItem('recetasCostos')) || [];
+                    const index = recetas.findIndex(r => r.nombre === nombreReceta);
+                    if (index !== -1) {
+                        recetas[index].costo = costoTotal;
+                    } else {
+                        recetas.push({ nombre: nombreReceta, costo: costoTotal });
+                    }
+                    localStorage.setItem('recetasCostos', JSON.stringify(recetas));
+                }
             });
-    </script>
+        </script>
+        <div id="footer"></div>
+        <script>
+            Promise.all([
+                fetch("templates/navbar.html"),
+                fetch("templates/footer.html")
+            ])
+                .then(async ([navbarRes, footerRes]) => {
+                    const navbarHTML = await navbarRes.text();
+                    const footerHTML = await footerRes.text();
+                    document.getElementById("navbar").innerHTML = navbarHTML;
+                    document.getElementById("footer").innerHTML = footerHTML;
+                });
+        </script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-<div id="footer"></div>
 
 </html>
