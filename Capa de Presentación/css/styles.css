@@ -58,7 +58,7 @@ body {
   align-items: center;
   font-family: 'Sono', sans-serif;
   font-weight: 800;
-  color: white !important;
+  color: black !important;
   font-size: 1.2rem;
   margin-right: 0 !important;
   flex-grow: 1;
@@ -80,7 +80,7 @@ body {
 }
 
 .nav-link {
-  color: white !important;
+  color: black !important;
   font-family: 'Sono', sans-serif;
   font-weight: 800;
   font-size: 0.9rem;
