@@ -83,7 +83,7 @@
 
       <div class="col-md-4">
         <label class="form-label"> Acción </label>
-        <button type="submit"  class="btn text-white w-100"  style="background-color: #E27AB0;"> Agregar </button>
+        <button type="submit" class="btn text-black w-100" style="background-color: #E27AB0;">Agregar</button>
       </div>
     </form>
   </div>
@@ -263,13 +263,12 @@
     }
 
     function eliminar_materias_primas(index) {
+      const m = materias_primas[index];
       Swal.fire({
-        title: '¿Está seguro?',
-        text: "Esta acción no se puede deshacer",
+        title: `¿Desea eliminar esta materia prima "(${m.nombre})"?`,
+        text: "Esta acción no se puede deshacer.",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
       }).then((result) => {
@@ -282,11 +281,10 @@
     }
 
     function editar_materias_primas(index) {
-      const m = materias_primas[index]; // Objeto original
-
+      const m = materias_primas[index];
       Swal.fire({
-        title: `¿Editar "${m.nombre}"?`,
-        text: "Puedes modificar los campos del formulario",
+        title: `¿Desea editar esta materia prima "(${m.nombre})"?`,
+        text: "Se cargarán los datos de esta materia prima para modificarlos.",
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Editar',
