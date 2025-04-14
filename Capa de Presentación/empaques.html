@@ -23,6 +23,7 @@
     <!-- Navbar dinámico -->
     <div id="navbar"></div>
 
+
     <div class="container mt-5">
         <h2 class="text-center" style="font-family: 'Sono', sans-serif;"> Gestion de Empaques y/o Decoraciones </h2>
     </div>
@@ -69,7 +70,7 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label"> Acción </label>
-                <button type="submit" class="btn text-white w-100" style="background-color: #E27AB0;" > Agregar </button>
+                <button type="submit" class="btn text-black w-100" style="background-color: #E27AB0;">Agregar</button>
             </div>
         </form>
 
@@ -163,7 +164,7 @@
         function eliminar_empaques(index) {
             const e = empaques[index];
             Swal.fire({
-                title: `¿Eliminar "${e.nombre}"?`,
+                title: `¿Desea eliminar este empaque "(${e.nombre})"?`,
                 text: "Esta acción no se puede deshacer.",
                 icon: "warning",
                 showCancelButton: true,
@@ -181,8 +182,8 @@
         function editar_empaques(index) {
             const e = empaques[index];
             Swal.fire({
-                title: `¿Editar "${e.nombre}"?`,
-                text: "Puedes modificar los datos en el formulario.",
+                title: `¿Desea editar este empaque "(${e.nombre})"?`,
+                text: "Se cargarán los datos de este empaque para modificarlos.",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Sí, editar",
@@ -200,6 +201,7 @@
                 }
             });
         }
+
 
         function buscar_empaques(valor) {
             valor = valor.toLowerCase();
