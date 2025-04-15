@@ -51,7 +51,8 @@
                 <span id="totalProducto"> ₡0.00 </span>
             </div>
 
-            <button type="button" id="agregarProducto"  class="btn text-white w-100"  style="background-color: #E27AB0;"> Agregar Producto </button>
+            <button type="button" id="agregarProducto" class="btn text-black" style="background-color: #E27AB0;">
+                Agregar Producto </button>
         </form>
 
 
@@ -74,8 +75,12 @@
         <h6>Total de la Venta: <span id="totalVenta">₡0.00</span></h6>
 
         <div class="d-flex mt-4 mb-5">
-            <button type="button"  class="btn text-white w-100"  style="background-color: #E27AB0;" id="confirmarVenta">Confirmar Venta</button>
+
+            <button type="button" id="confirmarVenta" class="btn text-black w-100" style="background-color: #E27AB0;">
+                Confirmar Venta </button>
         </div>
+
+
 
     </div>
 
@@ -306,8 +311,6 @@
         });
     </script>
     <div id="footer"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         Promise.all([
             fetch("templates/navbar.html"),
