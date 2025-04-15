@@ -20,19 +20,14 @@ html,
 body {
   height: 100%;
   margin: 0;
-}
-
-body {
-  display: grid;
+  display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  padding-bottom: auto;
-  position: relative;
-  grid-template-rows: auto 1fr auto;
 }
 
 .container {
   flex: 1;
+  margin-bottom: 100px;
+  min-height: 100vh;
 }
 
 /* Texto rosado */
@@ -107,6 +102,10 @@ body {
 }
 
 .footer {
+  height: 300px;
+  flex-shrink: 0;
+  width: 100%;
+  overflow: hidden;
   background-color: #f7f7f7;
   padding-top: 3rem;
   padding-bottom: 1rem;
