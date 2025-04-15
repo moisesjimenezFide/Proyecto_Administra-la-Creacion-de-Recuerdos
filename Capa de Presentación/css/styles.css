@@ -26,21 +26,21 @@ body {
 
 .container {
   flex: 1;
-  margin-bottom: 100px;
-  min-height: 100vh;
 }
 
-/* Texto rosado */
 .light-pink {
   color: var(--light-pink) !important;
 }
 
-/* Botón con borde rosado (outline) */
 .btn-outline-light-pink {
   --bs-btn-color: var(--light-pink);
   --bs-btn-border-color: var(--light-pink);
   --bs-btn-hover-bg: var(--light-pink);
   --bs-btn-hover-border-color: var(--light-pink);
+}
+
+.navbar {
+  background-color: var(--light-pink);
 }
 
 .navbar-brand {
@@ -63,7 +63,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Navbar responsive */
 .navbar-nav {
   font-family: 'Sono', sans-serif;
   font-weight: 800;
@@ -74,7 +73,6 @@ body {
   font-family: 'Sono', sans-serif;
   font-weight: 800;
   font-size: 0.9rem;
-  padding: 0.5rem 1rem !important;
 }
 
 .navbar-toggler {
@@ -89,49 +87,9 @@ body {
   flex-grow: 0 !important;
 }
 
-.pos-header {
-  background-color: var(--pos-dark);
-  color: white;
-  padding: 10px 0;
-  font-family: 'Sono', sans-serif;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 60px;
-}
-
 .footer {
   height: 300px;
   flex-shrink: 0;
   width: 100%;
   overflow: hidden;
-  background-color: #f7f7f7;
-  padding-top: 3rem;
-  padding-bottom: 1rem;
-  color: #2d2d2d;
-}
-
-.navbar {
-  background-color: var(--light-pink);
-  padding: 0.5rem 1rem;
-}
-
-/* Oscurece todo el texto dentro del navbar */
-.navbar-dark .navbar-brand,
-.navbar-dark .navbar-nav .nav-link,
-.navbar-dark .dropdown-menu .dropdown-item {
-  color: #2d2d2d !important; /* Gris oscuro con buen contraste */
-}
-
-/* Estilos hover/active */
-.navbar-dark .nav-link:hover,
-.navbar-dark .dropdown-item:hover {
-  color: #1a1a1a !important; /* Negro para hover */
-  text-decoration: underline;
-}
-
-/* Color del ícono hamburguesa */
-.navbar-dark .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(45, 45, 45, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
