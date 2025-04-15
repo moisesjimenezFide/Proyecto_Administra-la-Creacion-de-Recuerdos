@@ -190,7 +190,7 @@
         // Función para eliminar una venta en el historial
         const eliminarVenta = (index) => {
             Swal.fire({
-                title: '¿Desea eliminar esta venta?',
+                title: '¿Estás seguro?',
                 text: "Esta acción no se puede deshacer.",
                 icon: 'warning',
                 showCancelButton: true,
@@ -234,12 +234,6 @@
     <div id="footer"></div>
 
     <script>
-        fetch("templates/navbar.html")
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("navbar").innerHTML = html;
-            });
-
         Promise.all([
             fetch("templates/navbar.html"),
             fetch("templates/footer.html")
@@ -249,7 +243,7 @@
                 const footerHTML = await footerRes.text();
                 document.getElementById("navbar").innerHTML = navbarHTML;
                 document.getElementById("footer").innerHTML = footerHTML;
-            })
+            });
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
