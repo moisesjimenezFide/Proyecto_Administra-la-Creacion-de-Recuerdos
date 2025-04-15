@@ -112,8 +112,8 @@
                 No se encontraron coincidencias.
             </p>
         </div>
+   
     </div>
-
     <script>
         const recetas = [];
         let edit_index = -1;
@@ -330,9 +330,7 @@
                 localStorage.setItem('recetasCostos', JSON.stringify(recetas));
             }
         });
-    </script>
-    <div id="footer"></div>
-    <script>
+
         Promise.all([
             fetch("templates/navbar.html"),
             fetch("templates/footer.html")
@@ -344,6 +342,7 @@
                 document.getElementById("footer").innerHTML = footerHTML;
             });
     </script>
+    <div id="footer"></div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
