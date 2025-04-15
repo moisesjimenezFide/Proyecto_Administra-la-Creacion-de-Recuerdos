@@ -138,8 +138,8 @@ body {
 
 .list-group-item.active {
   background-color: var(--lavender);
-  color: var(--dark-violet);
-  border-left: 3px solid var(--dark-violet);
+  color: var(--light-pink);
+  border-left: 3px solid var(--light-pink);
   font-weight: bold;
 }
 
@@ -456,7 +456,7 @@ body {
 
 .product-price {
   font-family: 'Arial', sans-serif;
-  color: var(--dark-violet);
+  color: var(--light-pink);
   font-weight: bold;
   font-size: 1rem;
 }
