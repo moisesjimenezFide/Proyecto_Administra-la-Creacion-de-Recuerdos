@@ -406,19 +406,29 @@
     <div id="footer"></div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         Promise.all([
             fetch("templates/navbar.html"),
             fetch("templates/footer.html")
         ])
-            .then(async ([navbarRes, footerRes]) => {
+        .then(async ([navbarRes, footerRes]) => {
+            if (!navbarRes.ok) {
+                console.error("Error al cargar navbar.html");
+            } else {
                 const navbarHTML = await navbarRes.text();
-                const footerHTML = await footerRes.text();
                 document.getElementById("navbar").innerHTML = navbarHTML;
+            }
+    
+            if (!footerRes.ok) {
+                console.error("Error al cargar footer.html");
+            } else {
+                const footerHTML = await footerRes.text();
                 document.getElementById("footer").innerHTML = footerHTML;
-
-            });
+            }
+        })
+        .catch(error => console.error("Error al cargar archivos dinámicos:", error));
+    </script>
+    
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

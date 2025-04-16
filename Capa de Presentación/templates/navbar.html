@@ -13,33 +13,76 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link text-uppercase" href="index.html">Inicio</a></li>
+
+        <!-- Insumos dropdown menu -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-uppercase" href="#" id="dropdownInsumos" role="button"
             data-bs-toggle="dropdown" aria-expanded="false">
             Insumos
           </a>
-          <ul class="dropdown-menu " aria-labelledby="dropdownInsumos">
-            <li><a class="dropdown-item" style=" background-color: #2d2d2d; " href="materias_primas.html">Materias Primas</a></li>
-            <li><a class="dropdown-item" style=" background-color: #2d2d2d; "  href="empaques.html">Empaques y/o Decoraciones</a></li>
-            <li><a class="dropdown-item" style=" background-color: #2d2d2d; "  href="suministros.html">Suministros de Limpieza</a></li>
-            <li><a class="dropdown-item" style=" background-color: #2d2d2d; "  href="productos_preparados.html">Productos Preparados</a></li>
-            <li><a class="dropdown-item" style=" background-color: #2d2d2d; "  href="costos_recetas.html">Costos de Recetas</a></li>
-            <li><a class="dropdown-item" style=" background-color: #2d2d2d; "  href="precio_final.html">Precios
-                Finales Sugeridos de Productos Finales</a></li>
+          <ul class="dropdown-menu" aria-labelledby="dropdownInsumos" style="background-color: #333;">
+            <li><a class="dropdown-item" href="costos_recetas.html">Costos de Recetas</a></li>
+            <li><a class="dropdown-item" href="empaques.html">Empaques y/o Decoraciones</a></li>
+            <li><a class="dropdown-item" href="materias_primas.html">Materias Primas</a></li>
+            <li><a class="dropdown-item" href="productos_preparados.html">Productos Preparados</a></li>
+            <li><a class="dropdown-item" href="precio_final.html">Precios Finales Sugeridos de Productos Finales</a></li>
+            <li><a class="dropdown-item" href="suministros.html">Suministros de Limpieza</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="menu.html">Menú</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="menu_admin.html">Menú Admin</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="admin_clientes.html">Clientes Admin</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="pedidos.html">Pedidos</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="#" id="manageOrdersBtn">Gestionar Pedidos</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="registro_usuarios.html">Registro Usuarios</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="registro_ventas.html">Gestión Ventas</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="historial_ventas.html">Historial Ventas</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="reportes.html">Reportes</a></li>
+
+        <!-- Clientes section -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-uppercase" href="#" id="dropdownClientes" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Clientes
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownClientes" style="background-color: #333;">
+            <li class="nav-item"><a class="nav-link text-uppercase" href="reportes.html">Reportes</a></li>
+            <li><a class="dropdown-item" href="menu.html">Menú</a></li>
+            <li><a class="dropdown-item" href="pedidos.html">Pedidos</a></li>
+          </ul>
+        </li>
+
+        <!-- Admin section -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-uppercase" href="#" id="dropdownAdmin" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Admin
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownAdmin" style="background-color: #333;">
+            <li><a class="dropdown-item" href="admin_clientes.html">Clientes Admin</a></li>
+            <li><a class="dropdown-item" href="empleados.html">Empleados</a></li>
+            <li><a class="dropdown-item" href="gestionar_pedidos.html">Gestionar Pedidos</a></li>
+            <li><a class="dropdown-item" href="registro_ventas.html">Gestión Ventas</a></li>
+            <li><a class="dropdown-item" href="historial_ventas.html">Historial Ventas</a></li>
+            <li><a class="dropdown-item" href="menu_admin.html">Menú Admin</a></li>
+          </ul>
+        </li>
+
+        <!-- General links -->
         <li class="nav-item"><a class="nav-link text-uppercase" href="registro_usuarios.html">Registrarse</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase" href="empleados.html">Empleados</a></li>
       </ul>
     </div>
   </div>
 </nav>
+
+<style>
+  .navbar-nav .nav-item .nav-link {
+    text-transform: uppercase;
+  }
+
+  .dropdown-menu .dropdown-item {
+    background-color: #2d2d2d;
+    color: white;
+  }
+
+  .dropdown-menu .dropdown-item:hover {
+    background-color: #575757; /* Cambiar color de fondo al pasar el mouse */
+    color: #fff;
+  }
+
+  .navbar-nav .nav-item:hover .nav-link,
+  .navbar-nav .nav-item.active .nav-link {
+    color: #fff !important;
+  }
+</style>

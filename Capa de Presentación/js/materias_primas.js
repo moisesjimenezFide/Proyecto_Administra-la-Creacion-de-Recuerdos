@@ -197,6 +197,40 @@ let materias_primas = [
       });
     }
   }
+
+  // Función para llenar las listas de Marca y Proveedor
+function llenarListas() {
+  const marcasSelect = document.getElementById("marca");
+  const proveedoresSelect = document.getElementById("proveedor");
+
+  // Limpiar las opciones existentes
+  marcasSelect.innerHTML = '<option value="" disabled selected>Seleccione una marca</option>';
+  proveedoresSelect.innerHTML = '<option value="" disabled selected>Seleccione un proveedor</option>';
+
+  // Llenar las listas con las marcas y proveedores disponibles en materias_primas
+  const marcas = new Set(materias_primas.map(m => m.marca));
+  const proveedores = new Set(materias_primas.map(m => m.proveedor));
+
+  marcas.forEach(marca => {
+      const option = document.createElement("option");
+      option.value = marca;
+      option.textContent = marca;
+      marcasSelect.appendChild(option);
+  });
+
+  proveedores.forEach(proveedor => {
+      const option = document.createElement("option");
+      option.value = proveedor;
+      option.textContent = proveedor;
+      proveedoresSelect.appendChild(option);
+  });
+}
+
+// Llamar a la función al cargar la página
+document.addEventListener("DOMContentLoaded", function() {
+  llenarListas();
+});
+
   
   document.getElementById("busqueda").addEventListener("input", buscarMaterias);
   document.getElementById("btn_buscar").addEventListener("click", buscarMaterias);

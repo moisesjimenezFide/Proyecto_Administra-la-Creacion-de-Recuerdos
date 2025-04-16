@@ -42,7 +42,9 @@
       </div>
       <div class="mb-3 text-start">
         <label for="marca" class="form-label fw-bold">Marca</label>
-        <input type="text" class="form-control" id="marca" placeholder="Ingrese la marca" required>
+        <select class="form-select" id="marca" required>
+          <option value="" disabled selected>Seleccione una marca</option>
+        </select>
       </div>
       <div class="mb-3 text-start">
         <label for="presentacion" class="form-label fw-bold">Presentación</label>
@@ -50,7 +52,9 @@
       </div>
       <div class="mb-3 text-start">
         <label for="proveedor" class="form-label fw-bold">Proveedor</label>
-        <input type="text" class="form-control" id="proveedor" placeholder="Nombre del proveedor" required>
+        <select class="form-select" id="proveedor" required>
+          <option value="" disabled selected>Seleccione un proveedor</option>
+        </select>
       </div>
       <div class="mb-3 text-start">
         <label for="costo" class="form-label fw-bold">Costo (₡)</label>
