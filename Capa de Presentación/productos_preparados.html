@@ -2,308 +2,121 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> Gestión de Productos Preparados - Creando Recuerdos </title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Productos Preparados - Creando Recuerdos</title>
 
-    <!-- Ícono y Fuentes -->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
+  <!-- Ícono y Fuentes -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet" />
 
-    <!-- Estilos Bootstrap y propios -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="css/styles.css" rel="stylesheet" />
-    <link href="css/menu.css" rel="stylesheet" />
+  <!-- Estilos Bootstrap y propios -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="css/styles.css" rel="stylesheet" />
+  <link href="css/menu.css" rel="stylesheet" />
 </head>
 
 <body>
 
-    <!-- Navbar dinámico -->
-    <div id="navbar"></div>
+  <!-- Navbar dinámico -->
+  <div id="navbar"></div>
 
+  <div class="container mt-4 text-center">
+    <h2 style="font-family: 'Sono', sans-serif;">
+      <i class="fas fa-boxes-stacked me-2"></i>Gestión de Productos Preparados
+    </h2>
+  </div>
 
-    <div class="container mt-4">
-        <h2 class="text-center" style="font-family: 'Sono', sans-serif;"> Gestión de Productos Preparados </h2>
+  <!-- Búsqueda -->
+  <div class="container mt-5">
+    <h4><strong>Búsqueda de Productos Preparados</strong></h4>
+    <div class="input-group">
+      <input type="text" id="busqueda" class="form-control" placeholder="Buscar por cualquier campo...">
+      <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search ms-1"></i></button>
     </div>
+  </div>
 
-    <div class="container mt-4">
-        <h4> Búsqueda de Productos Preparados </h4>
+  <!-- Registro -->
+  <div class="container my-5">
+    <h4 class="mb-4"><strong>Registro de Productos Preparados</strong></h4>
+
+    <!-- Formulario para agregar Productos Preparados -->
+    <form id="form_productos_preparados">
+      <div class="mb-3 text-start">
+        <label class="form-label fw-bold">Nombre</label>
+        <input type="text" class="form-control" required id="nombre" placeholder="Ingrese el nombre">
+      </div>
+      <div class="mb-3 text-start">
+        <label class="form-label fw-bold">Marca</label>
+        <input type="text" class="form-control" required id="marca" placeholder="Ingrese la marca">
+      </div>
+      <div class="mb-3 text-start">
+        <label class="form-label fw-bold">Presentación</label>
+        <input type="text" class="form-control" required id="presentacion" placeholder="Ej: 250g / 2 piezas">
+      </div>
+      <div class="mb-3 text-start">
+        <label class="form-label fw-bold">Proveedor</label>
+        <input type="text" class="form-control" required id="proveedor" placeholder="Ingrese el proveedor">
+      </div>
+      <div class="mb-3 text-start">
+        <label class="form-label fw-bold">Costo por Unidad (₡)</label>
+        <input type="number" min="0" class="form-control" required id="costo_unidad" placeholder="Ej: 1500">
+      </div>
+      <div class="mb-3 text-start">
+        <label class="form-label fw-bold">Cantidad</label>
+        <input type="number" min="0" class="form-control" required id="cantidad" placeholder="Ej: 10">
+      </div>
+      <div class="d-flex justify-content-end gap-2">
+        <button type="reset" class="btn btn-danger">Cancelar</button>
+        <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Listado -->
+  <div class="container mt-4">
+    <h4><strong>Listado de Productos Preparados</strong></h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-sm text-start">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Marca</th>
+            <th>Presentación</th>
+            <th>Proveedor</th>
+            <th>Costo por Unidad (₡)</th>
+            <th>Cantidad</th>
+            <th>Costo Total (₡)</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla_productos_preparados"></tbody>
+      </table>
     </div>
+    <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
+      No se encontraron coincidencias.
+    </p>
+  </div>
 
-    <!-- Formulario de búsqueda -->
-    <div class="container mt-3">
-        <div class="input-group">
-            <input type="text" id="busqueda" class="form-control" placeholder="Buscar por cualquier campo...">
-            <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search"></i></button>
-        </div>
-    </div>
+  <!-- Footer dinámico -->
+  <div id="footer"></div>
 
-    <div class="container my-5">
-        <h4 class="mb-4"> Registro de Productos Preparados </h4>
-
-        <!-- Formulario para agregar Productos Preparados -->
-        <form id="form_productos_preparados" class="row g-3">
-            <div class="col-md-4">
-                <label class="form-label"> Nombre </label>
-                <input type="text" class="form-control" required id="nombre">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label"> Marca </label>
-                <input type="text" class="form-control" required id="marca">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label"> Presentación </label>
-                <input type="text" class="form-control" required id="presentacion">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label"> Proveedor </label>
-                <input type="text" class="form-control" required id="proveedor">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label"> Costo por Unidad (₡) </label>
-                <input type="number" min="0" class="form-control" required id="costo_unidad">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label"> Cantidad </label>
-                <input type="number" min="0" class="form-control" required id="cantidad">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label"> Acción </label>
-                <button type="submit" class="btn text-black w-100" style="background-color: #E27AB0;">Agregar</button>
-            </div>
-        </form>
-
-        <h4 class="mt-4"> Listado de Productos Preparados </h4>
-
-        <!-- Tabla para mostrar los Productos Preparados -->
-        <table class="table table-bordered table-striped table-sm table-responsive text-center">
-            <thead>
-                <tr>
-                    <th> Nombre </th>
-                    <th> Marca </th>
-                    <th> Presentación </th>
-                    <th> Proveedor </th>
-                    <th> Costo por Unidad (₡) </th>
-                    <th> Cantidad </th>
-                    <th> Costo Total (₡) </th>
-                    <th> Acciones </th>
-                </tr>
-            </thead>
-            <tbody id="tabla_productos_preparados"></tbody>
-        </table>
-
-        <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
-            No se encontraron coincidencias.
-        </p>
-
-    </div>
-
-
-    <script>
-        const productos_preparados = [];
-        const tabla_productos_preparados = document.getElementById('tabla_productos_preparados');
-        const form_productos_preparados = document.getElementById('form_productos_preparados');
-
-        let edit_index = -1;
-
-        form_productos_preparados.addEventListener('submit', p => {
-            p.preventDefault();
-
-            const nombre = document.getElementById('nombre').value.trim();
-            const marca = document.getElementById('marca').value.trim();
-            const presentacion = document.getElementById('presentacion').value.trim();
-            const proveedor = document.getElementById('proveedor').value.trim();
-            const costo_unidad = parseFloat(document.getElementById('costo_unidad').value);
-            const cantidad = parseFloat(document.getElementById('cantidad').value);
-
-            if (isNaN(costo_unidad) || isNaN(cantidad) || costo_unidad < 0 || cantidad < 0) {
-                Swal.fire('Error', 'Ingrese valores numéricos válidos y no negativos', 'error');
-                return;
-            }
-
-            const costo_total = costo_unidad * cantidad;
-
-            if (edit_index === -1 && productos_preparados.find(p => p.nombre === nombre)) {
-                Swal.fire('Error', 'Nombre duplicado', 'error');
-                return;
-            }
-
-            if (edit_index !== -1) {
-                productos_preparados[edit_index] = {
-                    nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total
-                };
-                Swal.fire('Producto actualizado', '', 'success');
-                edit_index = -1;
-                form_productos_preparados.querySelector('button[type="submit"]').textContent = "Agregar";
-            } else {
-                productos_preparados.push({
-                    nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total
-                });
-                Swal.fire('Producto agregado', '', 'success');
-            }
-
-            form_productos_preparados.reset();
-            mostrar_productos_preparados();
-        });
-
-        function mostrar_productos_preparados() {
-            tabla_productos_preparados.innerHTML = "";
-            productos_preparados.forEach((e, i) => {
-                tabla_productos_preparados.innerHTML += `
-                    <tr>
-                        <td>${e.nombre}</td>
-                        <td>${e.marca}</td>
-                        <td>${e.presentacion}</td>
-                        <td>${e.proveedor}</td>
-                        <td>₡${e.costo_unidad.toFixed(2)}</td>
-                        <td>${e.cantidad}</td>
-                        <td>₡${e.costo_total.toFixed(2)}</td>
-                        <td>
-                            <button class="btn btn-secondary btn-sm" onclick="editar_productos_preparados(${i})">Editar</button>
-                            <button class="btn btn-danger btn-sm" onclick="eliminar_productos_preparados(${i})">Eliminar</button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        function eliminar_productos_preparados(index) {
-            const p = productos_preparados[index];
-            Swal.fire({
-                title: `¿Desea eliminar este producto preparado "(${p.nombre})"?`,
-                text: "Esta acción no se puede deshacer.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    productos_preparados.splice(index, 1);
-                    mostrar_productos_preparados();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Eliminado',
-                        text: 'Producto preparado eliminado exitosamente.'
-                    });
-                }
-            });
-        }
-
-        function editar_productos_preparados(index) {
-            const p = productos_preparados[index];
-            Swal.fire({
-                title: `¿Desea editar este producto preparado "(${p.nombre})"?`,
-                text: "Se cargarán los datos de este producto preparado para modificarlos.",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, editar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('nombre').value = p.nombre;
-                    document.getElementById('marca').value = p.marca;
-                    document.getElementById('presentacion').value = p.presentacion;
-                    document.getElementById('proveedor').value = p.proveedor;
-                    document.getElementById('costo_unidad').value = p.costo_unidad;
-                    document.getElementById('cantidad').value = p.cantidad;
-                    edit_index = index;
-
-                    const btn = document.querySelector('form button[type="submit"]');
-                    btn.textContent = "Actualizar";
-                }
-            });
-        }
-
-        function buscar_productos_preparados(valor) {
-            valor = valor.toLowerCase();
-            return productos_preparados.filter(p => {
-                const texto = `
-          ${p.nombre} ${p.marca} ${p.presentacion}
-          ${p.proveedor} ${p.costo_unidad} ${p.cantidad}
-        `.toLowerCase();
-                return texto.includes(valor);
-            });
-        }
-
-        function filtrar_productos_preparados() {
-            const valorBusqueda = document.getElementById("busqueda").value.trim();
-            const resultados = buscar_productos_preparados(valorBusqueda);
-            const tabla = document.getElementById("tabla_productos_preparados");
-            const mensaje = document.getElementById("mensaje_no_resultados");
-
-            tabla.innerHTML = "";
-
-            if (resultados.length === 0) {
-                mensaje.style.display = "block";
-            } else {
-                mensaje.style.display = "none";
-                resultados.forEach((p, i) => {
-                    const costo_unidad = parseFloat(p.costo_unidad);
-                    const costo_total = p.costo_unidad * p.cantidad;
-                    tabla.innerHTML += `
-            <tr>
-              <td>${p.nombre}</td>
-              <td>${p.marca}</td>
-              <td>${p.presentacion}</td>
-              <td>${p.proveedor}</td>
-              <td>₡${p.costo_unidad.toFixed(2)}</td>
-              <td>${p.cantidad}</td>
-              <td>₡${costo_total.toFixed(2)}</td>
-              <td>
-                <button class="btn btn-secondary btn-sm" onclick="editar_productos_preparados(${i})">Editar</button>
-                <button class="btn btn-danger btn-sm" onclick="eliminar_productos_preparados(${i})">Eliminar</button>
-              </td>
-            </tr>
-          `;
-                });
-            }
-        }
-
-        const campoBusqueda = document.getElementById("busqueda");
-        const btnBuscar = document.getElementById("btn_buscar");
-
-        campoBusqueda.addEventListener("input", () => {
-            const valor = campoBusqueda.value.trim();
-            if (valor === "") {
-                mostrar_productos_preparados();
-            } else {
-                filtrar_productos_preparados();
-            }
-        });
-
-        campoBusqueda.addEventListener("keydown", p => {
-            if (p.key === "Enter") {
-                p.preventDefault();
-                filtrar_productos_preparados();
-            }
-        });
-
-        btnBuscar.addEventListener("click", () => {
-            filtrar_productos_preparados();
-        });
-
-        Promise.all([
-            fetch("templates/navbar.html"),
-            fetch("templates/footer.html")
-        ])
-            .then(async ([navbar_res, footer_res]) => {
-                const navbar_html = await navbar_res.text();
-                const footer_html = await footer_res.text();
-                document.getElementById("navbar").innerHTML = navbar_html;
-                document.getElementById("footer").innerHTML = footer_html;
-            });
-
-        mostrar_productos_preparados();
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <div id="footer"></div>
+  <!-- Scripts -->
+  <script src="js/productos_preparados.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    Promise.all([
+      fetch("templates/navbar.html"),
+      fetch("templates/footer.html")
+    ]).then(async ([navbarRes, footerRes]) => {
+      document.getElementById("navbar").innerHTML = await navbarRes.text();
+      document.getElementById("footer").innerHTML = await footerRes.text();
+    });
+  </script>
 
 </body>
 

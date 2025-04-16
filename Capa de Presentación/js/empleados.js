@@ -14,6 +14,7 @@ const tablaHorarios = document.querySelector("#seccion-horarios table tbody");
 
 const mensaje = document.getElementById("mensaje");
 
+// ----- EMPLEADOS -----
 formEmpleado.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -55,6 +56,61 @@ formEmpleado.addEventListener("submit", function (e) {
   renderTablaEmpleados();
 });
 
+function renderTablaEmpleados() {
+  tablaEmpleados.innerHTML = "";
+  empleados.forEach((emp, index) => {
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${emp.nombre} ${emp.apellido}</td>
+      <td>${emp.correo}</td>
+      <td>${emp.rol}</td>
+      <td>${emp.estado}</td>
+      <td>
+        <div class="d-flex justify-content-center gap-2">
+          <!-- Botón Eliminar con tamaño pequeño -->
+          <button class="btn btn-sm btn-danger px-2 py-1" onclick="eliminarEmpleado(${index})">
+            <i class="fas fa-trash-alt me-1"></i>Eliminar
+          </button>
+          <!-- Botón Editar con tamaño pequeño -->
+          <button class="btn btn-sm text-white px-2 py-1" style="background-color: #E27AB0;" onclick="editarEmpleado(${index})">
+            <i class="fas fa-edit me-1"></i>Editar
+          </button>
+        </div>
+      </td>
+    `;
+    tablaEmpleados.appendChild(fila);
+  });
+}
+
+window.editarEmpleado = function (index) {
+  const emp = empleados[index];
+  document.getElementById("nombre").value = emp.nombre;
+  document.getElementById("apellido").value = emp.apellido;
+  document.getElementById("correo").value = emp.correo;
+  document.getElementById("rol").value = emp.rol;
+  document.getElementById("estado").value = emp.estado;
+
+  editando = true;
+  indiceEditar = index;
+};
+
+window.eliminarEmpleado = function (index) {
+  Swal.fire({
+    title: `¿Deseás eliminar a ${empleados[index].nombre}?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  }).then(result => {
+    if (result.isConfirmed) {
+      empleados.splice(index, 1);
+      renderTablaEmpleados();
+      mostrarMensaje("Empleado eliminado.", "warning");
+    }
+  });
+};
+
+// ----- VACACIONES -----
 formVacaciones.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -75,6 +131,57 @@ formVacaciones.addEventListener("submit", function (e) {
   renderTablaVacaciones();
 });
 
+function renderTablaVacaciones() {
+  tablaVacaciones.innerHTML = "";
+  vacaciones.forEach((solicitud, index) => {
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${solicitud.inicioVacacion} - ${solicitud.finVacacion}</td>
+      <td>${solicitud.motivoVacacion}</td>
+      <td>${solicitud.estado}</td>
+      <td>
+        <div class="d-flex justify-content-center gap-2" style="flex-wrap: nowrap; white-space: nowrap;">
+          <button class="btn btn-sm btn-danger px-2 py-1" onclick="eliminarVacacion(${index})">
+            <i class="fas fa-trash-alt me-1"></i>Eliminar
+          </button>
+          <button class="btn btn-sm text-white px-2 py-1" style="background-color: #E27AB0;" onclick="editarVacacion(${index})">
+            <i class="fas fa-edit me-1"></i>Editar
+          </button>
+        </div>
+      </td>
+    `;
+    tablaVacaciones.appendChild(fila);
+  });
+}
+
+
+window.editarVacacion = function (index) {
+  const solicitud = vacaciones[index];
+  document.getElementById("inicioVacacion").value = solicitud.inicioVacacion;
+  document.getElementById("finVacacion").value = solicitud.finVacacion;
+  document.getElementById("motivoVacacion").value = solicitud.motivoVacacion;
+
+  vacaciones.splice(index, 1);
+  renderTablaVacaciones();
+};
+
+window.eliminarVacacion = function (index) {
+  Swal.fire({
+    title: `¿Deseás eliminar esta solicitud?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  }).then(result => {
+    if (result.isConfirmed) {
+      vacaciones.splice(index, 1);
+      renderTablaVacaciones();
+      mostrarMensaje("Solicitud eliminada.", "warning");
+    }
+  });
+};
+
+// ----- HORARIOS -----
 formHorarios.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -95,11 +202,6 @@ formHorarios.addEventListener("submit", function (e) {
   renderTablaHorarios();
 });
 
-function validarEmail(email) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
-}
-
 function renderTablaEmpleados() {
   tablaEmpleados.innerHTML = "";
   empleados.forEach((emp, index) => {
@@ -110,68 +212,59 @@ function renderTablaEmpleados() {
       <td>${emp.rol}</td>
       <td>${emp.estado}</td>
       <td>
-        <button class="btn btn-sm btn-outline-info me-1" onclick="editarEmpleado(${index})">Editar</button>
-        <button class="btn btn-sm btn-outline-danger" onclick="eliminarEmpleado(${index})">Eliminar</button>
+        <div class="d-flex justify-content-center gap-2" style="flex-wrap: nowrap; white-space: nowrap;">
+          <!-- Botón Eliminar con tamaño pequeño -->
+          <button class="btn btn-sm btn-danger px-2 py-1" onclick="eliminarEmpleado(${index})">
+            <i class="fas fa-trash-alt me-1"></i>Eliminar
+          </button>
+          <!-- Botón Editar con tamaño pequeño -->
+          <button class="btn btn-sm text-white px-2 py-1" style="background-color: #E27AB0;" onclick="editarEmpleado(${index})">
+            <i class="fas fa-edit me-1"></i>Editar
+          </button>
+        </div>
       </td>
     `;
     tablaEmpleados.appendChild(fila);
   });
 }
 
-function renderTablaVacaciones() {
-  tablaVacaciones.innerHTML = "";
-  vacaciones.forEach((solicitud) => {
-    const fila = document.createElement("tr");
-    fila.innerHTML = `
-      <td>${solicitud.inicioVacacion} - ${solicitud.finVacacion}</td>
-      <td>${solicitud.motivoVacacion}</td>
-      <td>${solicitud.estado}</td>
-    `;
-    tablaVacaciones.appendChild(fila);
-  });
-}
+window.editarHorario = function (index) {
+  const horario = horarios[index];
+  document.getElementById("nombreHorario").value = horario.nombreHorario;
+  document.getElementById("entrada").value = horario.entrada;
+  document.getElementById("salida").value = horario.salida;
 
-function renderTablaHorarios() {
-  tablaHorarios.innerHTML = "";
-  horarios.forEach((horario) => {
-    const fila = document.createElement("tr");
-    fila.innerHTML = `
-      <td>${horario.nombreHorario}</td>
-      <td>${horario.entrada}</td>
-      <td>${horario.salida}</td>
-    `;
-    tablaHorarios.appendChild(fila);
-  });
-}
-
-window.editarEmpleado = function (index) {
-  const emp = empleados[index];
-  document.getElementById("nombre").value = emp.nombre;
-  document.getElementById("apellido").value = emp.apellido;
-  document.getElementById("correo").value = emp.correo;
-  document.getElementById("rol").value = emp.rol;
-  document.getElementById("estado").value = emp.estado;
-
-  editando = true;
-  indiceEditar = index;
+  horarios.splice(index, 1);
+  renderTablaHorarios();
 };
 
-window.eliminarEmpleado = function (index) {
-  if (confirm("¿Deseás eliminar este empleado?")) {
-    empleados.splice(index, 1);
-    renderTablaEmpleados();
-    mostrarMensaje("Empleado eliminado.", "warning");
-  }
+window.eliminarHorario = function (index) {
+  Swal.fire({
+    title: `¿Eliminar horario de ${horarios[index].nombreHorario}?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  }).then(result => {
+    if (result.isConfirmed) {
+      horarios.splice(index, 1);
+      renderTablaHorarios();
+      mostrarMensaje("Horario eliminado.", "warning");
+    }
+  });
 };
+
+// ----- UTILITARIOS -----
+function validarEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
 
 function mostrarMensaje(texto, tipo = "success") {
   mensaje.textContent = texto;
   mensaje.className = `alert alert-${tipo} mt-3`;
   mensaje.style.display = "block";
-
-  setTimeout(() => {
-    mensaje.style.display = "none";
-  }, 3000);
+  setTimeout(() => (mensaje.style.display = "none"), 3000);
 }
 
 function cargarDatosEjemplo() {
@@ -194,6 +287,4 @@ function cargarDatosEjemplo() {
   renderTablaHorarios();
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  cargarDatosEjemplo();
-});
+document.addEventListener("DOMContentLoaded", cargarDatosEjemplo);
