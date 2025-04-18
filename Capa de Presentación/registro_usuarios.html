@@ -155,6 +155,10 @@
         registerLabel.classList.toggle('active', this.id === 'registerSwitch');
       });
     });
+
+
+    window.addEventListener('load', adjustNavbarVisibility);
+    window.addEventListener('resize', adjustNavbarVisibility);
   </script>
 
 </body>
