@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestión de Materias Primas - Creando Recuerdos</title>
+  <title> Gestión de Materias Primas - Creando Recuerdos </title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet">
@@ -16,120 +16,400 @@
 </head>
 
 <body>
+
   <!-- Navbar dinámico -->
   <div id="navbar"></div>
 
-<div id="container-wrap">
-  <div class="container my-5 text-center">
-    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
-      <i class="fas fa-warehouse me-2"></i> Gestión de Materias Primas
-    </h2>
+  <div class="container mt-5">
+    <h2 class="text-center" style="font-family: 'Sono', sans-serif;"> Gestion de Materias Primas </h2>
   </div>
 
   <div class="container mt-4">
-    <h4><strong>Búsqueda de Materias Primas</strong></h4>
-    <div class="input-group mb-4">
+    <h4> Búsqueda de Materias Primas </h4>
+  </div>
+  <!-- Formulario de búsqueda -->
+  <div class="container mt-3">
+    <div class="input-group">
       <input type="text" id="busqueda" class="form-control" placeholder="Buscar por cualquier campo...">
-      <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search ms-1"></i></button>
+      <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search"></i></button>
     </div>
   </div>
 
-  <div class="container">
-    <h4 class="mb-3"><strong>Registro de Materias Primas</strong></h4>
-    <form id="form_materias_primas" class="mb-5">
-      <div class="mb-3 text-start">
-        <label for="nombre" class="form-label fw-bold">Nombre</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" required>
+  <div class="container mt-5">
+    <h4> Registro de Materias Primas </h4>
+
+    <!-- Formulario para agregar materia prima -->
+    <form id="form_materias_primas" class="row g-3">
+
+      <div class="col-md-4">
+        <label class="form-label"> Nombre </label>
+        <input type="text" class="form-control" required id="nombre">
       </div>
-      <div class="mb-3 text-start">
-        <label for="marca" class="form-label fw-bold">Marca</label>
-        <select class="form-select" id="marca" required>
-          <option value="" disabled selected>Seleccione una marca</option>
-        </select>
+
+      <div class="col-md-4">
+        <label class="form-label"> Marca </label>
+        <input type="text" class="form-control" required id="marca">
       </div>
-      <div class="mb-3 text-start">
-        <label for="presentacion" class="form-label fw-bold">Presentación</label>
-        <input type="text" class="form-control" id="presentacion" placeholder="Ej. 500ml / Bolsa" required>
+
+      <div class="col-md-4">
+        <label class="form-label"> Presentación </label>
+        <input type="text" class="form-control" required id="presentacion">
       </div>
-      <div class="mb-3 text-start">
-        <label for="proveedor" class="form-label fw-bold">Proveedor</label>
-        <select class="form-select" id="proveedor" required>
-          <option value="" disabled selected>Seleccione un proveedor</option>
-        </select>
+
+      <div class="col-md-4">
+        <label class="form-label"> Proveedor </label>
+        <input type="text" class="form-control" required id="proveedor">
       </div>
-      <div class="mb-3 text-start">
-        <label for="costo" class="form-label fw-bold">Costo (₡)</label>
-        <input type="number" class="form-control" id="costo" placeholder="Ej. 1500" min="0" required>
+
+      <div class="col-md-4">
+        <label class="form-label"> Costo (₡) </label>
+        <input type="number" min="0" class="form-control" required id="costo">
       </div>
-      <div class="mb-3 text-start">
-        <label for="peso" class="form-label fw-bold">Peso (g)</label>
-        <input type="number" class="form-control" id="peso" placeholder="Ej. 1000" min="0" required>
+
+      <div class="col-md-4">
+        <label class="form-label"> Peso (g) </label>
+        <input type="number" min="0" class="form-control" required id="peso">
       </div>
-      <div class="mb-3 text-start">
-        <label for="unidad" class="form-label fw-bold">Unidad de medida</label>
-        <input type="text" class="form-control" id="unidad" placeholder="Ej. gramos, litros" required>
+
+      <div class="col-md-4">
+        <label class="form-label"> Unidad de medida </label>
+        <input type="text" class="form-control" required id="unidad">
       </div>
-      <div class="mb-3 text-start">
-        <label for="merma" class="form-label fw-bold">Porcentaje de Merma (%)</label>
-        <input type="number" class="form-control" id="merma" placeholder="Ej. 10" min="0" required>
+
+      <div class="col-md-4">
+        <label class="form-label"> Porcentaje de Merma (%) </label>
+        <input type="number" min="0" class="form-control" required id="merma">
       </div>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
-        <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
+
+      <div class="col-md-4">
+        <label class="form-label"> Acción </label>
+        <button type="submit" class="btn text-black w-100" style="background-color: #E27AB0;">Agregar</button>
       </div>
     </form>
   </div>
 
-  <div class="container">
-    <h4><strong>Listado de Materias Primas</strong></h4>
-  
-    <div class="table-responsive">
+  <div class="container mt-4">
+    <h3 class="mt-4"> Listado de Materias Primas </h3>
+
+    <!-- Tabla para mostrar las materias primas -->
+    <div>
       <table class="table table-bordered table-striped table-sm text-center">
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Marca</th>
-            <th>Presentación</th>
-            <th>Proveedor</th>
-            <th>Costo (₡)</th>
-            <th>Peso (g)</th>
-            <th>Unidad</th>
-            <th>Costo por Gramo (₡)</th>
-            <th>Merma (%)</th>
-            <th>Merma Total (g)</th>
-            <th>Costo Merma (₡)</th>
-            <th>Total (₡)</th>
-            <th>Costo con Merma (₡/g)</th>
-            <th>Acciones</th>
+            <th class="align-middle"> Nombre </th>
+            <th class="align-middle"> Marca </th>
+            <th class="align-middle"> Presentación </th>
+            <th class="align-middle"> Proveedor </th>
+            <th class="align-middle"> Costo (₡) </th>
+            <th class="align-middle"> Peso (g) </th>
+            <th class="align-middle"> Unidad </th>
+            <th class="align-middle"> Costo por Gramo (₡) </th>
+            <th class="align-middle"> Porcentaje de Merma (%) </th>
+            <th class="align-middle"> Merma Total (g) </th>
+            <th class="align-middle"> Costo de Merma (₡) </th>
+            <th class="align-middle"> Costo Total (₡) </th>
+            <th class="align-middle"> Costo por Gramo con Merma (₡) </th>
+            <th class="align-middle"> Acciones </th>
           </tr>
         </thead>
-        <tbody id="tabla_materias_primas"></tbody>
+        <tbody id="tabla_materias_primas">
+          <!-- Las filas se agregarán dinámicamente desde JavaScript -->
+        </tbody>
       </table>
     </div>
-  
+
     <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
       No se encontraron coincidencias.
     </p>
+
   </div>
-</div>
-  
 
-  <div id="footer"></div>
-
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/materias_primas.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    let materias_primas = [];
+    let indiceEditando = null;
+
+    function mostrar_materias_primas() {
+      const tabla_materias_primas = document.getElementById('tabla_materias_primas');
+      tabla_materias_primas.innerHTML = "";
+      materias_primas.forEach((m, i) => {
+        const merma_total = m.peso * (m.merma / 100);
+        const costo_merma = merma_total * m.costo_por_gramo;
+        const total = m.costo + costo_merma;
+        const costo_gr_merma = total / (m.peso - merma_total);
+
+        tabla_materias_primas.innerHTML += `
+          <tr>
+            <td>${m.nombre}</td>
+            <td>${m.marca}</td>
+            <td>${m.presentacion}</td>
+            <td>${m.proveedor}</td>
+            <td>₡${m.costo.toFixed(2)}</td>
+            <td>${m.peso}</td>
+            <td>${m.unidad}</td>
+            <td>₡${m.costo_por_gramo.toFixed(2)}</td>
+            <td>${m.merma}%</td>
+            <td>${merma_total.toFixed(2)}g</td>
+            <td>₡${costo_merma.toFixed(2)}</td>
+            <td>₡${total.toFixed(2)}</td>
+            <td>₡${costo_gr_merma.toFixed(2)}</td>
+            <td>
+              <div class="d-flex flex-nowrap gap-2">
+               <button class="btn btn-secondary btn-sm" onclick="editar_materias_primas(${i})">Editar</button>
+               <button class="btn btn-danger btn-sm" onclick="eliminar_materias_primas(${i})">Eliminar</button>
+              </div>
+            </td>
+          </tr>
+          `;
+      });
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const marca = document.getElementById('marca').value.trim();
+      const presentacion = document.getElementById('presentacion').value.trim();
+      const proveedor = document.getElementById('proveedor').value.trim();
+      const costo = parseFloat(document.getElementById('costo').value);
+      const peso = parseFloat(document.getElementById('peso').value);
+      const unidad = document.getElementById('unidad').value.trim();
+      const merma = parseFloat(document.getElementById('merma').value);
+
+      const merma_total = peso * (merma / 100);
+      const costo_merma = merma_total * (costo / peso);
+      const total = costo + costo_merma;
+      const costo_gr_merma = total / (peso - merma_total);
+      const costo_por_gramo = costo / peso;
+
+      materias_primas[index] = {
+        nombre,
+        marca,
+        presentacion,
+        proveedor,
+        costo,
+        peso,
+        unidad,
+        merma,
+        costo_por_gramo,
+        merma_total,
+        costo_merma,
+        total,
+        costo_gr_merma
+      };
+    }
+
+    function agregar_materia_prima(m) {
+      m.preventDefault();
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const marca = document.getElementById('marca').value.trim();
+      const presentacion = document.getElementById('presentacion').value.trim();
+      const proveedor = document.getElementById('proveedor').value.trim();
+      const costo = parseFloat(document.getElementById('costo').value);
+      const peso = parseFloat(document.getElementById('peso').value);
+      const unidad = document.getElementById('unidad').value.trim();
+      const merma = parseFloat(document.getElementById('merma').value);
+
+      if (nombre === "" || marca === "" || isNaN(costo) || isNaN(peso) || isNaN(merma)) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          text: 'Por favor, rellene todos los campos correctamente.'
+        });
+      }
+
+      const costo_por_gramo = costo / peso;
+      const merma_total = peso * (merma / 100);
+      const costo_merma = merma_total * costo_por_gramo;
+      const total = costo + costo_merma;
+      const costo_gr_merma = total / (peso - merma_total);
+
+      const materia = {
+        nombre,
+        marca,
+        presentacion,
+        proveedor,
+        costo,
+        peso,
+        unidad,
+        merma,
+        costo_por_gramo,
+        merma_total,
+        costo_merma,
+        total,
+        costo_gr_merma
+      };
+
+      if (indiceEditando !== null) {
+        materias_primas[indiceEditando] = materia;
+        indiceEditando = null;
+        Swal.fire({
+          icon: 'success',
+          title: 'Actualizado',
+          text: 'Materia prima actualizada correctamente.'
+        });
+      } else {
+        materias_primas.push(materia);
+        Swal.fire({
+          icon: 'success',
+          title: 'Agregado',
+          text: 'Materia prima agregada correctamente.'
+        });
+
+      }
+
+      form_materias_primas.reset();
+      mostrar_materias_primas();
+
+      // Volver a dejar el botón como "Agregar"
+      const btn = document.querySelector('button[type="submit"]');
+      btn.textContent = "Agregar";
+    }
+
+    function eliminar_materias_primas(index) {
+      const m = materias_primas[index];
+      Swal.fire({
+        title: `¿Desea eliminar esta materia prima "(${m.nombre})"?`,
+        text: "Esta acción no se puede deshacer.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          materias_primas.splice(index, 1);
+          mostrar_materias_primas();
+          Swal.fire('Eliminado', 'La materia prima ha sido eliminada.', 'success');
+        }
+      });
+    }
+
+    function editar_materias_primas(index) {
+      const m = materias_primas[index];
+      Swal.fire({
+        title: `¿Desea editar esta materia prima "(${m.nombre})"?`,
+        text: "Se cargarán los datos de esta materia prima para modificarlos.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Editar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('nombre').value = m.nombre;
+          document.getElementById('marca').value = m.marca;
+          document.getElementById('presentacion').value = m.presentacion;
+          document.getElementById('proveedor').value = m.proveedor;
+          document.getElementById('costo').value = m.costo;
+          document.getElementById('peso').value = m.peso;
+          document.getElementById('unidad').value = m.unidad;
+          document.getElementById('merma').value = m.merma;
+
+          indiceEditando = index;
+
+          const btn = document.querySelector('button[type="submit"]');
+          btn.textContent = "Actualizar";
+        }
+      });
+    }
+
+
+    function buscar_materias_primas(valor) {
+      valor = valor.toLowerCase();
+      return materias_primas.filter(m => {
+        const texto = `
+          ${m.nombre} ${m.marca} ${m.presentacion} ${m.proveedor} ₡${m.costo.toFixed(2)} ${m.peso} ${m.unidad} ${m.merma}
+        `.toLowerCase();
+        return texto.includes(valor);
+      });
+    }
+
+    function filtrar_materias_primas() {
+      const valorBusqueda = document.getElementById("busqueda").value.trim().toLowerCase();
+      const tabla = document.getElementById("tabla_materias_primas");
+      const mensaje = document.getElementById("mensaje_no_resultados");
+      tabla.innerHTML = "";
+
+      const resultados = materias_primas
+        .map((m, i) => ({ ...m, indexReal: i })) // Agregamos el índice real
+        .filter((m) => {
+          const texto = `
+        ${m.nombre} ${m.marca} ${m.presentacion} ${m.proveedor} 
+        ${m.costo} ${m.peso} ${m.unidad} ${m.merma}
+      `.toLowerCase();
+          return texto.includes(valorBusqueda);
+        });
+
+      if (resultados.length === 0) {
+        mensaje.style.display = "block";
+      } else {
+        mensaje.style.display = "none";
+        resultados.forEach((m) => {
+          tabla.innerHTML += `
+        <tr>
+          <td>${m.nombre}</td>
+          <td>${m.marca}</td>
+          <td>${m.presentacion}</td>
+          <td>${m.proveedor}</td>
+          <td>₡${m.costo.toFixed(2)}</td>
+          <td>${m.peso}</td>
+          <td>${m.unidad}</td>
+          <td>₡${m.costo_por_gramo.toFixed(2)}</td>
+          <td>${m.merma}%</td>
+          <td>${m.merma_total.toFixed(2)}g</td>
+          <td>₡${m.costo_merma.toFixed(2)}</td>
+          <td>₡${m.total.toFixed(2)}</td>
+          <td>₡${m.costo_gr_merma.toFixed(2)}</td>
+          <td
+            <div class="d-flex flex-nowrap gap-2">
+             <button class="btn btn-secondary btn-sm" onclick="editar_materias_primas(${m.indexReal})">Editar</button>
+             <button class="btn btn-danger btn-sm" onclick="eliminar_materias_primas(${m.indexReal})">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+      `;
+        });
+      }
+    }
+
+    document.getElementById("busqueda").addEventListener("input", m => {
+      if (m.target.value.trim() === "") {
+        mostrar_materias_primas(); // <-- mostrar todos si está vacío
+      } else {
+        filtrar_materias_primas();
+      }
+    });
+    // Buscar al presionar Enter
+    document.getElementById("busqueda").addEventListener("keydown", function (m) {
+      if (m.key === "Enter") {
+        m.preventDefault();
+        filtrar_materias_primas();
+      }
+    });
+
+    // Buscar al hacer clic en el ícono
+    document.getElementById("btn_buscar").addEventListener("click", function () {
+      filtrar_materias_primas();
+    });
+
+    const form_materias_primas = document.getElementById('form_materias_primas');
+    form_materias_primas.addEventListener('submit', agregar_materia_prima);
+
     Promise.all([
       fetch("templates/navbar.html"),
       fetch("templates/footer.html")
-    ]).then(async ([navbarRes, footerRes]) => {
-      document.getElementById("navbar").innerHTML = await navbarRes.text();
-      document.getElementById("footer").innerHTML = await footerRes.text();
-    });
+    ])
+      .then(async ([navbar_res, footer_res]) => {
+        const navbar_html = await navbar_res.text();
+        const footer_html = await footer_res.text();
+        document.getElementById("navbar").innerHTML = navbar_html;
+        document.getElementById("footer").innerHTML = footer_html;
+      });
 
   </script>
 
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Footer dinámico -->
+  <div id="footer"></div>
+
 </body>
+
 </html>

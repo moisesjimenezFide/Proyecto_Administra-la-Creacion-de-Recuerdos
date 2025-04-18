@@ -1,229 +1,208 @@
 <!DOCTYPE html>
 <html lang="es">
-  
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestión de Suministros de Limpieza</title>
 
-  <!-- Fuentes y estilos -->
-  <link rel="icon" href="assets/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="css/menu.css" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Suministros</title>
+
+    <!-- Ícono y Fuentes -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
+
+    <!-- Estilos Bootstrap y propios -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/menu.css" rel="stylesheet" />
 </head>
 
 <body>
-  <!-- Navbar dinámico -->
-  <div id="navbar"></div>
 
-<div id="container-wrap">
-  <div class="container my-5 text-center">
-    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
-      <i class="fas fa-spray-can-sparkles me-2"></i> Gestión de Suministros de Limpieza
-    </h2>
-  </div>
+    <!-- Navbar dinámico -->
+    <div id="navbar"></div>
 
-  <div class="container">
-    <form id="form_suministro" class="mb-4">
-      <div class="mb-2 text-start">
-        <label for="nombre" class="form-label fw-bold">Nombre</label>
-        <input type="text" id="nombre" class="form-control" placeholder="Ingrese el nombre" required />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="marca" class="form-label fw-bold">Marca</label>
-        <input type="text" id="marca" class="form-control" placeholder="Ingrese la marca" required />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="presentacion" class="form-label fw-bold">Presentación</label>
-        <input type="text" id="presentacion" class="form-control" placeholder="Ej: 500ml, 1L, etc." />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="proveedor" class="form-label fw-bold">Proveedor</label>
-        <input type="text" id="proveedor" class="form-control" placeholder="Nombre del proveedor" />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="costo_unidad" class="form-label fw-bold">Costo por Unidad ₡</label>
-        <input type="number" id="costo_unidad" class="form-control" placeholder="₡" min="0" />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="cantidad" class="form-label fw-bold">Cantidad</label>
-        <input type="number" id="cantidad" class="form-control" placeholder="Cantidad" min="0" />
-      </div>
-
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 mb-4">
-        <button type="button" class="btn btn-sm btn-danger me-md-2" onclick="document.getElementById('form_suministro').reset(); indice_editar = null; document.querySelector('#form_suministro button[type=submit]').textContent = 'Agregar';">Cancelar</button>
-        <button type="submit" class="btn btn-sm text-white" style="background-color: #E27AB0;">Agregar</button>
-      </div>
-    </form>
-
-    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-      <table class="table table-bordered table-striped table-sm text-center">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Marca</th>
-            <th>Presentación</th>
-            <th>Proveedor</th>
-            <th>Costo por Unidad</th>
-            <th>Cantidad</th>
-            <th>Costo Total</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tabla_suministros"></tbody>
-      </table>
+    <div class="container mt-4">
+        <h2 class="text-center" style="font-family: 'Sono', sans-serif;"> Gestión de Suministros de Limpieza </h2>
     </div>
-  </div>
-    
-  <!-- Footer dinámico -->
-  <div id="footer"></div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    const suministros = [
-      {
-        nombre: "Jabón Antibacterial",
-        marca: "CleanMax",
-        presentacion: "500ml",
-        proveedor: "Distribuidora La Limpia",
-        costo_unidad: 1200.0,
-        cantidad: 10,
-        costo_total: 12000.0
-      },
-      {
-        nombre: "Desinfectante Multiusos",
-        marca: "LimpioPlus",
-        presentacion: "1L",
-        proveedor: "Químicos del Valle",
-        costo_unidad: 1500.0,
-        cantidad: 5,
-        costo_total: 7500.0
-      },
-      {
-        nombre: "Toallas de Papel",
-        marca: "EcoWipe",
-        presentacion: "6 rollos",
-        proveedor: "Papeles San José",
-        costo_unidad: 2100.0,
-        cantidad: 7,
-        costo_total: 14700.0
-      }
-    ];
+    <div class="container my-5">
+        <h2 class="mb-4">Registro de Suministros de Limpieza</h2>
 
-    let indice_editar = null;
+        <form id="form_suministro" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" required id="nombre">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Marca</label>
+                <input type="text" class="form-control" required id="marca">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Presentación</label>
+                <input type="text" class="form-control" id="presentacion">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Proveedor</label>
+                <input type="text" class="form-control" id="proveedor">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Costo por Unidad ₡</label>
+                <input type="number" min="0" class="form-control" id="costo_unidad">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Cantidad</label>
+                <input type="number" min="0" class="form-control" id="cantidad">
+            </div>
 
-    const tabla = document.getElementById('tabla_suministros');
-    const form = document.getElementById('form_suministro');
+            <div class="col-md-4">
+                <label class="form-label">Acción</label>
+                <button type="submit" class="btn text-black w-100" style="background-color: #E27AB0;">Agregar</button>
+            </div>
+        </form>
 
-    const mostrar_suministros = () => {
-      tabla.innerHTML = "";
-      suministros.forEach((s, i) => {
-        tabla.innerHTML += `
-          <tr>
-            <td>${s.nombre}</td>
-            <td>${s.marca}</td>
-            <td>${s.presentacion}</td>
-            <td>${s.proveedor}</td>
-            <td>₡${s.costo_unidad.toFixed(2)}</td>
-            <td>${s.cantidad}</td>
-            <td>₡${s.costo_total.toFixed(2)}</td>
-            <td>
-  <div class="d-flex justify-content-start">
-    <!-- Botón Eliminar alineado a la izquierda -->
-    <button class="btn btn-danger btn-sm text-white px-2 py-1 me-1" onclick="eliminarSuministro(${i})">
-      <i class="fas fa-trash-alt me-1"></i>Eliminar
-    </button>
-    <!-- Botón Editar alineado a la derecha -->
-    <button class="btn btn-sm text-white px-2 py-1" style="background-color:#E27AB0; margin-left: auto;" onclick="editarSuministro(${i})">
-      <i class="fas fa-edit me-1"></i>Editar
-    </button>
-  </div>
-</td>
+        <hr />
 
-          </tr>
-        `;
-      });
-    };
+        <table class="table table-bordered table-striped table-sm text-center">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Presentación</th>
+                    <th>Proveedor</th>
+                    <th>Costo por Unidad</th>
+                    <th>Cantidad</th>
+                    <th>Costo Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla_suministros"></tbody>
+        </table>
+    </div>
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
+    <script>
+        const suministros = [];
+        let indice_editar = null;
 
-      const nombre = document.getElementById('nombre').value.trim();
-      const marca = document.getElementById('marca').value.trim();
-      const presentacion = document.getElementById('presentacion').value.trim();
-      const proveedor = document.getElementById('proveedor').value.trim();
-      const costo_unidad = parseFloat(document.getElementById('costo_unidad').value);
-      const cantidad = parseFloat(document.getElementById('cantidad').value);
+        const tabla = document.getElementById('tabla_suministros');
+        const form = document.getElementById('form_suministro');
 
-      if ([costo_unidad, cantidad].some(v => isNaN(v) || v < 0)) {
-        return Swal.fire("Error", "Los valores deben ser válidos y no negativos.", "error");
-      }
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value.trim();
+            const marca = document.getElementById('marca').value.trim();
+            const presentacion = document.getElementById('presentacion').value.trim();
+            const proveedor = document.getElementById('proveedor').value.trim();
+            const costo_unidad = parseFloat(document.getElementById('costo_unidad').value);
+            const cantidad = parseFloat(document.getElementById('cantidad').value);
 
-      const costo_total = costo_unidad * cantidad;
+            if ([costo_unidad, cantidad].some(v => v < 0)) {
+                return Swal.fire("Error", "Los valores de costo por unidad y cantidad deben ser números no negativos.", "error");
+            }
+            const costo_total = costo_unidad * cantidad;
 
-      if (indice_editar === null) {
-        if (suministros.find(s => s.nombre.toLowerCase() === nombre.toLowerCase())) {
-          return Swal.fire("Duplicado", "Ya existe un suministro con ese nombre.", "warning");
+            if (indice_editar === null) {
+                if (suministros.find(s => s.nombre === nombre)) {
+                    return Swal.fire("Duplicado", "Ya existe un suministro con ese nombre.", "warning");
+                }
+                suministros.push({ nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total });
+                Swal.fire("¡Agregado!", "Suministro agregado exitosamente.", "success");
+            } else {
+                suministros[indice_editar] = { nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total };
+                indice_editar = null;
+                form.querySelector("button[type='submit']").textContent = "Agregar";
+                Swal.fire("Actualizado", "Suministro actualizado exitosamente.", "success");
+            }
+
+            form.reset();
+            mostrar_suministros();
+        });
+
+        function mostrar_suministros() {
+            tabla.innerHTML = "";
+            suministros.forEach((s, i) => {
+                tabla.innerHTML += `
+                     <tr>
+                         <td>${s.nombre}</td>
+                         <td>${s.marca}</td>
+                         <td>${s.presentacion}</td>
+                         <td>${s.proveedor}</td>
+                         <td>₡${s.costo_unidad.toFixed(2)}</td>
+                         <td>${s.cantidad}</td>
+                         <td>₡${s.costo_total.toFixed(2)}</td>
+                         <td>
+                             <button class="btn btn-secondary btn-sm" onclick="editar_suministros(${i})">Editar</button>
+                             <button class="btn btn-danger btn-sm" onclick="eliminar_suministros(${i})">Eliminar</button>
+                         </td>
+                     </tr>
+                 `;
+            });
         }
-        suministros.push({ nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total });
-        Swal.fire("¡Agregado!", "Suministro agregado exitosamente.", "success");
-      } else {
-        suministros[indice_editar] = { nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total };
-        indice_editar = null;
-        form.querySelector("button[type='submit']").textContent = "Agregar";
-        Swal.fire("Actualizado", "Suministro actualizado exitosamente.", "success");
-      }
 
-      form.reset();
-      mostrar_suministros();
-    });
-
-    function editar_suministros(index) {
-      const s = suministros[index];
-      document.getElementById('nombre').value = s.nombre;
-      document.getElementById('marca').value = s.marca;
-      document.getElementById('presentacion').value = s.presentacion;
-      document.getElementById('proveedor').value = s.proveedor;
-      document.getElementById('costo_unidad').value = s.costo_unidad;
-      document.getElementById('cantidad').value = s.cantidad;
-      indice_editar = index;
-      form.querySelector("button[type='submit']").textContent = "Actualizar";
-    }
-
-    function eliminar_suministros(index) {
-      Swal.fire({
-        title: `¿Eliminar "${suministros[index].nombre}"?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar"
-      }).then(result => {
-        if (result.isConfirmed) {
-          suministros.splice(index, 1);
-          mostrar_suministros();
-          Swal.fire("Eliminado", "El suministro ha sido eliminado.", "success");
+        function eliminar_suministros(index) {
+            Swal.fire({
+                title: `¿Desea eliminar "(${suministros[index].nombre})"?`,
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then(result => {
+                if (result.isConfirmed) {
+                    suministros.splice(index, 1);
+                    mostrar_suministros();
+                    Swal.fire("Eliminado", "El suministro ha sido eliminado.", "success");
+                }
+            });
         }
-      });
-    }
 
-    // Mostrar datos precargados
-    document.addEventListener("DOMContentLoaded", mostrar_suministros);
+        function editar_suministros(index) {
+            const s = suministros[index];
+            Swal.fire({
+                title: `¿Desea editar este suministro "(${s.nombre})"?`,
+                text: "Se cargarán los datos de este suministro para modificarlos.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Editar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('nombre').value = s.nombre;
+                    document.getElementById('marca').value = s.marca;
+                    document.getElementById('presentacion').value = s.presentacion;
+                    document.getElementById('proveedor').value = s.proveedor;
+                    document.getElementById('costo_unidad').value = s.costo_unidad;
+                    document.getElementById('cantidad').value = s.cantidad;
 
-    // Navbar y footer
-    Promise.all([
-      fetch("templates/navbar.html"),
-      fetch("templates/footer.html")
-    ]).then(async ([navbarRes, footerRes]) => {
-      const navbarHTML = await navbarRes.text();
-      const footerHTML = await footerRes.text();
-      document.getElementById("navbar").innerHTML = navbarHTML;
-      document.getElementById("footer").innerHTML = footerHTML;
-    });
-  </script>
+                    indice_editar = index;
+
+                    const btn = document.querySelector('form button[type="submit"]');
+                    btn.textContent = "Actualizar";
+                }
+            });
+        }
+
+        // Carga dinámica del navbar y footer
+        Promise.all([
+            fetch("templates/navbar.html"),
+            fetch("templates/footer.html")
+        ])
+            .then(async ([navbar_res, footer_res]) => {
+                const navbar_html = await navbar_res.text();
+                const footer_html = await footer_res.text();
+                document.getElementById("navbar").innerHTML = navbar_html;
+                document.getElementById("footer").innerHTML = footer_html;
+            });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <div id="footer"></div>
 </body>
+
 </html>

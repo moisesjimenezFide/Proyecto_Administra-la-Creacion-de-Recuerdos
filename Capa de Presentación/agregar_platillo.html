@@ -2,115 +2,118 @@
 <html lang="es">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="Sistema POS de Creando Recuerdos" />
-  <meta name="author" content="" />
-  <title>Inicio - Creando Recuerdos</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Sistema POS de Creando Recuerdos" />
+    <meta name="author" content="" />
+    <title>Inicio - Creando Recuerdos</title>
 
-  <!-- Ícono y Fuentes -->
-  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-  <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
+    <!-- Ícono y Fuentes -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
 
-  <!-- Estilos Bootstrap y propios -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link href="css/styles.css" rel="stylesheet" />
-  <link href="css/menu.css" rel="stylesheet" />
+    <!-- Estilos Bootstrap y propios -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/menu.css" rel="stylesheet" />
 </head>
 
 <body>
 
-  <div id="navbar"></div>
+    <div id="navbar"></div>
 
-<div id="container-wrap">
-  <div class="container mt-5 text-center">
-    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
-      <i class="fas fa-utensils me-2"></i> Agregar un nuevo platillo
-    </h2>
-        <form>
-      <!-- ID oculto -->
-      <div class="mb-3 text-start" id="idField" style="display: none;">
-        <label for="id" class="form-label fw-bold">ID</label>
-        <input type="number" class="form-control" id="id" value="1">
-      </div>
+    <div class="container mt-5 text-center">
+        <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">Agregar un nuevo platillo </h2>
+        <form  >
+            <!-- ID (oculto para creación, visible para edición) -->
+            <div class="mb-3" id="idField" style="display: none;">
+                <label for="id" class="form-label">ID</label>
+                <input type="number" class="form-control" id="id" value="1">
+            </div>
 
-      <!-- Nombre -->
-      <div class="mb-3 text-start">
-        <label for="name" class="form-label fw-bold">Nombre del platillo</label>
-        <input type="text" class="form-control" id="name" placeholder="Ingrese el nombre del platillo" required>
-      </div>
+            <!-- Nombre -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre del platillo</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
 
-      <!-- Descripción -->
-      <div class="mb-3 text-start">
-        <label for="description" class="form-label fw-bold">Descripción</label>
-        <textarea class="form-control" id="description" rows="3" placeholder="Ingrese una breve descripción" required></textarea>
-      </div>
+            <!-- Descripción -->
+            <div class="mb-3">
+                <label for="description" class="form-label">Descripción</label>
+                <textarea class="form-control" id="description" rows="3" required></textarea>
+            </div>
 
-      <!-- Precio -->
-      <div class="mb-3 text-start">
-        <label for="price" class="form-label fw-bold">Precio (₡)</label>
-        <input type="number" class="form-control" id="price" placeholder="Ingrese el precio en colones" required>
-      </div>
+            <!-- Precio -->
+            <div class="mb-3">
+                <label for="price" class="form-label">Precio (₡)</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" id="price" required>
+                </div>
+            </div>
+            <!-- Categoria -->
+            <div class="mb-3">
+                <label for="category" class="form-label">Categoría</label>
+                <select class="form-select" id="category">
+                    <option selected disabled>Seleccione una categoría</option>
+                    <option value="desayunos">Desayunos</option>
+                    <option value="panini">Panini</option>
+                    <option value="crepes">Crêpes</option>
+                    <option value="pasta">Pasta</option>
+                    <option value="arroz">Arroz</option>
+                    <option value="tentaciones">Tentaciones</option>
+                    <option value="postres">Delicias</option>
+                    <option value="bebidas-calientes">Bebidas Calientes</option>
+                    <option value="bebidas-frias">Bebidas Frías</option>
+                    <option value="especiales">Especiales</option>
+                </select>
+            </div>
+            <!-- Imagen -->
+            <div class="mb-3">
+                <label for="image" class="form-label">Imagen</label>
+                <div class="input-group">
+                    <span class="input-group-text">Imagen</span>
+                    <input type="file" class="form-control" id="image">
+                </div>
+                <div class="form-text">Subir Imagen</div>
+            </div>
 
-      <!-- Categoría -->
-      <div class="mb-3 text-start">
-        <label for="category" class="form-label fw-bold">Categoría</label>
-        <select class="form-select" id="category" required>
-          <option selected disabled value="">Seleccione una categoría</option>
-          <option value="desayunos">Desayunos</option>
-          <option value="panini">Panini</option>
-          <option value="crepes">Crêpes</option>
-          <option value="pasta">Pasta</option>
-          <option value="arroz">Arroz</option>
-          <option value="tentaciones">Tentaciones</option>
-          <option value="postres">Delicias</option>
-          <option value="bebidas-calientes">Bebidas Calientes</option>
-          <option value="bebidas-frias">Bebidas Frías</option>
-          <option value="especiales">Especiales</option>
-        </select>
-      </div>
 
-      <!-- Imagen -->
-      <div class="mb-3 text-start">
-        <label for="image" class="form-label fw-bold">Imagen</label>
-        <input type="file" class="form-control" id="image">
-        <div class="form-text">Subir imagen del platillo</div>
-      </div>
+            <!-- Botones -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <!-- Botón Cancelar (rojo sólido) -->
+                <a  href="menu_admin.html" type="button" class="btn btn-danger me-md-2">Cancelar</a>
+                <!-- Botón Guardar (rosa sólido) -->
+                <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
+            </div>
+        </form>
 
-      <!-- Botones -->
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-        <a href="menu_admin.html" type="button" class="btn btn-danger me-md-2">Cancelar</a>
-        <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
-      </div>
-    </form>
+        <br><br>
+    </div>
 
-    <br><br>
-  </div>
-</div>
+    <!-- Footer dinámico -->
+    <div id="footer"></div>
 
-  <!-- Footer dinámico -->
-  <div id="footer"></div>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/menu_admin.js"></script>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/menu_admin.js"></script>
-
-  <script>
-    // Carga dinámica del navbar y footer
-    Promise.all([
-      fetch("templates/navbar.html"),
-      fetch("templates/footer.html")
-    ]).then(async ([navbarRes, footerRes]) => {
-      const navbarHTML = await navbarRes.text();
-      const footerHTML = await footerRes.text();
-      document.getElementById("navbar").innerHTML = navbarHTML;
-      document.getElementById("footer").innerHTML = footerHTML;
-    });
-  </script>
+    <script>
+        // Carga dinámica del navbar y footer
+        Promise.all([
+            fetch("templates/navbar.html"),
+            fetch("templates/footer.html")
+        ])
+            .then(async ([navbarRes, footerRes]) => {
+                const navbarHTML = await navbarRes.text();
+                const footerHTML = await footerRes.text();
+                document.getElementById("navbar").innerHTML = navbarHTML;
+                document.getElementById("footer").innerHTML = footerHTML;
+            });
+    </script>
 </body>
 
 </html>

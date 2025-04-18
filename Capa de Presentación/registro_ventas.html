@@ -2,146 +2,330 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestión de Ventas - Creando Recuerdos</title>
-
-  <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet" />
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-  <link href="css/styles.css" rel="stylesheet" />
-  <link href="css/menu.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Módulo POS de Gestion de ventas de Creando Recuerdos" />
+    <meta name="author" content="" />
+    <title>Gestión de Ventas - Creando Recuerdos</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Allura:400" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/menu.css" rel="stylesheet" />
 </head>
 
 <body>
 
-  <!-- Navbar dinámico -->
-  <div id="navbar"></div>
+    <!-- Navbar dinámico-->
+    <div id="navbar"></div>
 
-<div id="container-wrap">
-  <div class="container my-5 text-center">
-    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
-      <i class="fas fa-shopping-cart me-2"></i> Gestión de Ventas
-    </h2>
-  </div>
-
-  <div class="container">
-    <h4 class="mb-3"><strong>Registro de Ventas</strong></h4>
-    <form id="ventaForm" class="mb-4">
-      <div class="mb-3 text-start">
-        <label for="producto" class="form-label fw-bold">Seleccionar Producto</label>
-        <select id="producto" class="form-select"></select>
-      </div>
-      <div class="mb-3 text-start">
-        <label for="cantidad" class="form-label fw-bold">Cantidad</label>
-        <input type="number" id="cantidad" class="form-control" min="1" placeholder="Ingrese la cantidad" />
-      </div>
-      <div class="mb-3 text-start">
-        <label class="form-label fw-bold">Precio Unitario:</label>
-        <span id="precioUnitario">₡0.00</span>
-      </div>
-      <div class="mb-3 text-start">
-        <label class="form-label fw-bold">Total Producto:</label>
-        <span id="totalProducto">₡0.00</span>
-      </div>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button type="reset" class="btn btn-danger px-3 py-1">Cancelar</button>
-        <button type="button" id="agregarProducto" class="btn text-white px-3 py-1" style="background-color: #E27AB0;">Agregar Producto</button>
-      </div>
-    </form>
-
-    <h4 class="mb-3"><strong>Productos Seleccionados</strong></h4>
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-sm text-center">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Precio Unitario</th>
-            <th>Cantidad</th>
-            <th>Total</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tablaProductos"></tbody>
-      </table>
+    <div class="container mt-5">
+        <h2 class="text-center" style="font-family: 'Sono', sans-serif;"> Gestion de Ventas </h2>
     </div>
 
-    <h5 class="text-end mt-3"><strong>Total de la Venta:</strong> <span id="totalVenta">₡0.00</span></h5>
+    <div class="container">
+        <h4> Registro de Ventas </h4>
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 mb-5">
-      <button type="button" class="btn btn-danger px-3 py-2" onclick="cancelarVenta()">Cancelar Venta</button>
-      <button type="button" id="confirmarVenta" class="btn text-white px-3 py-2" style="background-color: #E27AB0;">Confirmar Venta</button>
+        <!-- Formulario de venta -->
+        <form id="ventaForm">
+            <div class="mb-3">
+                <label for="producto" class="form-label"> Seleccionar Producto </label>
+                <select id="producto" class="form-select">
+                    <!-- Los productos serán cargados dinámicamente -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="cantidad" class="form-label"> Cantidad </label>
+                <input type="number" id="cantidad" class="form-control" min="1">
+            </div>
+
+            <div class="mb-3">
+                <label for="precioUnitario" class="form-label"> Precio Unitario: </label>
+                <span id="precioUnitario"> ₡0.00 </span>
+            </div>
+            <div class="mb-3">
+                <label for="totalProducto" class="form-label"> Total Producto: </label>
+                <span id="totalProducto"> ₡0.00 </span>
+            </div>
+
+            <button type="button" id="agregarProducto" class="btn text-black" style="background-color: #E27AB0;">
+                Agregar Producto </button>
+        </form>
+
+
+        <h6 class="mt-4">Productos Seleccionados</h6>
+        <table class="table table-bordered table-striped table-sm table-responsive text-center">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaProductos">
+                <!-- Las filas de los productos seleccionados se agregarán dinámicamente -->
+            </tbody>
+        </table>
+
+        <h6>Total de la Venta: <span id="totalVenta">₡0.00</span></h6>
+
+        <div class="d-flex mt-4 mb-5">
+
+            <button type="button" id="confirmarVenta" class="btn text-black w-100" style="background-color: #E27AB0;">
+                Confirmar Venta </button>
+        </div>
+
+
+
     </div>
-  </div>
-</div>
 
-  <!-- Footer dinámico -->
-  <div id="footer"></div>
+    <script>
+        // Variables globales
+        let productosSeleccionados = [];
+        let totalVenta = 0;
+        let ventas = [];
 
-  <!-- Scripts -->
-  <script src="js/registro_ventas.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    Promise.all([
-      fetch("templates/navbar.html"),
-      fetch("templates/footer.html")
-    ]).then(async ([navbarRes, footerRes]) => {
-      const navbarHTML = await navbarRes.text();
-      const footerHTML = await footerRes.text();
-      document.getElementById("navbar").innerHTML = navbarHTML;
-      document.getElementById("footer").innerHTML = footerHTML;
-    });
+        // Productos de ejemplo
+        const productos = [
+            { id: 1, nombre: "Producto A", precio: 100 },
+            { id: 2, nombre: "Producto B", precio: 200 },
+            { id: 3, nombre: "Producto C", precio: 150 },
+            { id: 4, nombre: "Producto D", precio: 250 },
+            { id: 5, nombre: "Producto E", precio: 300 },
+            { id: 6, nombre: "Producto F", precio: 500 },
+            { id: 7, nombre: "Producto G", precio: 400 },
+            { id: 8, nombre: "Producto H", precio: 600 },
+            { id: 9, nombre: "Producto I", precio: 500 },
+            { id: 10, nombre: "Producto J", precio: 350 }
+        ];
 
-    function adjustNavbarVisibility() {
-      const zoomLevel = Math.round(window.devicePixelRatio * 100);
-      const windowWidth = window.innerWidth;
-      const screenWidth = screen.width; // Ancho de la pantalla
-      const navbarToggler = document.getElementById('navbarToggler');
-      const navbarNav = document.querySelector('.navbar-nav');
-      const iconElement = document.getElementById('iconElement');
+        const cargarProductos = () => {
+            const productoSelect = document.getElementById("producto");
+            productos.forEach(producto => {
+                const option = document.createElement("option");
+                option.value = producto.id;
+                option.textContent = producto.nombre;
+                productoSelect.appendChild(option);
+            });
+        };
 
-      // Mostrar opciones del menú si la ventana está completamente abierta y el zoom está entre 25% y 67%
-      if (windowWidth >= screenWidth && zoomLevel >= 25 && zoomLevel <= 67) {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-      // Mostrar ícono del menú en otras condiciones
-      else if (windowWidth <= 768 ||
-        (zoomLevel >= 25 && zoomLevel <= 90 && windowWidth >= 1080) ||
-        (zoomLevel >= 100 && zoomLevel <= 500) ||
-        windowWidth > 768) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      }
-      // Mostrar opciones del menú por defecto
-      else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
+        const actualizarTotalVenta = () => {
+            document.getElementById("totalVenta").textContent = `₡${totalVenta.toFixed(2)}`;
+        };
 
-      // Mostrar el ícono si el ancho es <= 810 o el zoom está entre 100% y 500%
-      if (windowWidth <= 810 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        iconElement.style.display = 'block'; // Muestra el ícono
-      } else {
-        iconElement.style.display = 'none'; // Oculta el ícono
-      }
+        const actualizarEstadoBotonConfirmar = () => {
+            const boton = document.getElementById("confirmarVenta");
+            boton.disabled = productosSeleccionados.length === 0;
+        };
 
-      // Lógica adicional para el navbar
-      if (windowWidth <= 768 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      } else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-    }
-    window.addEventListener('load', adjustNavbarVisibility);
-    window.addEventListener('resize', adjustNavbarVisibility);
-  </script>
+        // Función para actualizar el precio y total del producto
+        const actualizarPrecioYTotal = () => {
+            const productoId = parseInt(document.getElementById("producto").value);
+            const cantidad = parseInt(document.getElementById("cantidad").value) || 0;
+            const producto = productos.find(p => p.id === productoId);
+
+            if (producto) {
+                const precio = producto.precio;
+                const total = precio * cantidad;
+                document.getElementById("precioUnitario").textContent = `₡${precio.toFixed(2)}`;
+                document.getElementById("totalProducto").textContent = `₡${total.toFixed(2)}`;
+            } else {
+                document.getElementById("precioUnitario").textContent = "₡ 0.00";
+                document.getElementById("totalProducto").textContent = "₡ 0.00";
+            }
+        };
+
+        const agregarProducto = () => {
+            const productoId = parseInt(document.getElementById("producto").value);
+            const cantidad = parseInt(document.getElementById("cantidad").value);
+
+            if (productoId && cantidad > 0) {
+                const producto = productos.find(p => p.id === productoId);
+                const totalProducto = producto.precio * cantidad;
+
+                // Verificar si totalProducto es un número válido
+                if (!isNaN(totalProducto)) {
+                    const index = productosSeleccionados.length;
+                    productosSeleccionados.push({ ...producto, cantidad, total: totalProducto });
+
+                    const tabla = document.getElementById("tablaProductos");
+                    const fila = tabla.insertRow();
+                    fila.innerHTML = `
+                <tr>
+                    <td>${producto.nombre}</td>
+                    <td>₡${producto.precio.toFixed(2)}</td>
+                    <td id="cantidad-${index}">${cantidad}</td>
+                    <td id="total-${index}">₡${totalProducto.toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm me-1" onclick="editarProducto(${index})">Editar</button>
+                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(${producto.id})">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+
+                    totalVenta += totalProducto;
+                    actualizarTotalVenta();
+                    actualizarEstadoBotonConfirmar();
+                } else {
+                    console.error("El total del producto no es un número válido");
+                }
+            }
+        };
+
+        const editarProducto = async (index) => {
+            const { value: nuevaCantidad } = await Swal.fire({
+                title: 'Ingrese la nueva cantidad',
+                input: 'number',
+                inputValue: productosSeleccionados[index].cantidad,
+                inputAttributes: {
+                    min: 1
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value || value <= 0) {
+                        return 'La cantidad debe ser un número válido y mayor a 0';
+                    }
+                }
+            });
+
+            if (nuevaCantidad === undefined) return; // Cancelado
+
+            // Recalcular total
+            const cantidadNum = parseInt(nuevaCantidad);
+
+            if (isNaN(cantidadNum) || cantidadNum <= 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Cantidad inválida',
+                    text: 'Por favor, ingresa una cantidad válida mayor a 0.'
+                });
+                return;
+            }
+
+            // Recalcular el total del producto
+            const producto = productosSeleccionados[index];
+            totalVenta -= producto.total;
+            producto.cantidad = cantidadNum;
+            producto.total = producto.precio * cantidadNum;
+
+            // Verificar si el total es un número válido
+            if (!isNaN(producto.total)) {
+                totalVenta += producto.total;
+
+                // Actualizar visualmente
+                document.getElementById(`cantidad-${index}`).textContent = cantidadNum;
+                document.getElementById(`total-${index}`).textContent = `₡${producto.total.toFixed(2)}`;
+                actualizarTotalVenta();
+                actualizarEstadoBotonConfirmar();
+            } else {
+                console.error("El total recalculado no es un número válido");
+            }
+        };
+
+        const eliminarProducto = async (productoId) => {
+            const result = await Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Este producto será eliminado.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
+                const index = productosSeleccionados.findIndex(p => p.id === productoId);
+                if (index !== -1) {
+                    totalVenta -= productosSeleccionados[index].total;
+                    productosSeleccionados.splice(index, 1);
+
+                    const tabla = document.getElementById("tablaProductos");
+                    tabla.deleteRow(index);
+
+                    actualizarTotalVenta();
+                    actualizarEstadoBotonConfirmar();
+                }
+            }
+        };
+
+        const confirmarVenta = () => {
+            if (productosSeleccionados.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Atención',
+                    text: 'Debe seleccionar al menos un producto.',
+                });
+                return;
+            }
+
+            const fecha = new Date().toISOString().split('T')[0];
+            const productosTexto = productosSeleccionados.map(p => `${p.nombre}(${p.cantidad})`).join(", ");
+
+            ventas.push({
+                fecha,
+                productos: [...productosSeleccionados], // Guarda todos los datos de cada productototal: 
+                totalVenta
+            });
+            sessionStorage.setItem("ventas", JSON.stringify(ventas));
+            sessionStorage.setItem("productosOriginales", JSON.stringify(productosSeleccionados));
+
+            // Mostrar alerta de confirmación
+            Swal.fire({
+                icon: 'success',
+                title: '¡Venta confirmada exitosamente!',
+            });
+
+            // Limpiar formulario
+            productosSeleccionados = [];
+            totalVenta = 0;
+            document.getElementById("tablaProductos").innerHTML = "";
+            actualizarTotalVenta();
+            actualizarEstadoBotonConfirmar();
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Guardar la lista de productos en sessionStorage
+            sessionStorage.setItem("productos", JSON.stringify(productos));
+
+            // Cargar productos en el dropdown
+            cargarProductos();
+            const elemento = document.getElementById('id-del-elemento');
+            if (elemento) {
+                elemento.textContent = 'Nuevo texto';
+            } else {
+                console.log('Elemento no encontrado');
+            }
+            document.getElementById("agregarProducto").addEventListener("click", agregarProducto);
+            document.getElementById("producto").addEventListener("change", actualizarPrecioYTotal);
+            document.getElementById("cantidad").addEventListener("input", actualizarPrecioYTotal);
+            document.getElementById("confirmarVenta").addEventListener("click", confirmarVenta);
+            actualizarEstadoBotonConfirmar();
+        });
+    </script>
+    <div id="footer"></div>
+    <script>
+        Promise.all([
+            fetch("templates/navbar.html"),
+            fetch("templates/footer.html")
+        ])
+            .then(async ([navbarRes, footerRes]) => {
+                const navbarHTML = await navbarRes.text();
+                const footerHTML = await footerRes.text();
+                document.getElementById("navbar").innerHTML = navbarHTML;
+                document.getElementById("footer").innerHTML = footerHTML;
+            });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
