@@ -95,7 +95,8 @@ body {
 }
 
 .navbar-collapse {
-  display: flex !important;
+  display: none;
+  flex-grow: 0 !important;
 }
 
 .footer {
