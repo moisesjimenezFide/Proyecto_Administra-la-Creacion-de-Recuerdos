@@ -19,6 +19,10 @@
   <!-- Navbar dinámico -->
   <div id="navbar"></div>
 
+<<<<<<< HEAD
+=======
+<div id="container-wrap">
+>>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
   <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
       <i class="fas fa-spray-can-sparkles me-2"></i> Gestión de Suministros de Limpieza
@@ -75,6 +79,10 @@
         <tbody id="tabla_suministros"></tbody>
       </table>
     </div>
+<<<<<<< HEAD
+=======
+  </div>
+>>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
     
   <!-- Footer dinámico -->
   <div id="footer"></div>
@@ -209,6 +217,7 @@
       });
     }
 
+<<<<<<< HEAD
     // Navbar y footer
     Promise.all([
       fetch("templates/navbar.html"),
@@ -222,6 +231,21 @@
 
     // Mostrar datos precargados
     document.addEventListener("DOMContentLoaded", mostrar_suministros);
+=======
+    // Mostrar datos precargados
+    document.addEventListener("DOMContentLoaded", mostrar_suministros);
+
+    // Navbar y footer
+    Promise.all([
+      fetch("templates/navbar.html"),
+      fetch("templates/footer.html")
+    ]).then(async ([navbarRes, footerRes]) => {
+      const navbarHTML = await navbarRes.text();
+      const footerHTML = await footerRes.text();
+      document.getElementById("navbar").innerHTML = navbarHTML;
+      document.getElementById("footer").innerHTML = footerHTML;
+    });
+>>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
   </script>
 </body>
 </html>
