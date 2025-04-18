@@ -327,105 +327,82 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // Elementos del DOM
-    const productGrid = document.getElementById('productGrid');
-    const categoryButtons = document.querySelectorAll('[data-category]');
+const productGrid = document.getElementById('productGrid');
+const categoryButtons = document.querySelectorAll('[data-category]');
 
-    // Cargar categoría inicial
-    loadCategory('todos');
+// Cargar categoría inicial
+loadCategory('todos');
 
-    // Event listeners para los botones de categoría
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            // Remover clase active de todos los botones
-            categoryButtons.forEach(btn => btn.classList.remove('active'));
+// Event listeners para los botones de categoría
+categoryButtons.forEach(button => {
+    button.addEventListener('click', function () {
+        categoryButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        const category = this.getAttribute('data-category');
+        loadCategory(category);
+    });
+});
 
-            // Añadir clase active al botón clickeado
-            this.classList.add('active');
+// Función para cargar productos por categoría
+function loadCategory(category) {
+    productGrid.innerHTML = '';
 
-            // Obtener la categoría seleccionada
-            const category = this.getAttribute('data-category');
+    let products = [];
 
-            // Cargar los productos de esa categoría
-            loadCategory(category);
+    if (category === 'todos') {
+        Object.values(menuData).forEach(catProducts => {
+            products = products.concat(catProducts);
+        });
+    } else {
+        products = menuData[category] || [];
+    }
+
+    if (products.length === 0) {
+        productGrid.innerHTML = '<p class="text-center">No hay productos en esta categoría</p>';
+        return;
+    }
+
+    products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'col-md-4 mb-4';
+
+        productCard.innerHTML = `
+            <div class="card h-100 border-0 shadow-sm product-card">
+                <div class="card-img-container">
+                    <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" style="font-family: 'Sono', sans-serif;">${product.name}</h5>
+                    <p class="card-text">${product.description}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold dark-violet">₡${product.price.toLocaleString()}</span>
+                    </div>
+                    <div class="mt-3 d-flex flex-nowrap justify-content-end gap-2">
+                        <button class="btn btn-danger btn-sm text-white delete-btn" data-id="${product.id}">
+                            <i class="fas fa-trash-alt me-1"></i>Eliminar
+                        </button>
+                        <button class="btn btn-sm text-white update-btn" data-id="${product.id}" style="background-color: #E27AB0;">
+                            <i class="fas fa-edit me-1"></i>Actualizar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        productGrid.appendChild(productCard);
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            alert(`Se eliminó el producto`);
         });
     });
 
-    // Función para cargar productos por categoría
-    function loadCategory(category) {
-        // Limpiar el grid de productos
-        productGrid.innerHTML = '';
-
-        let products = [];
-
-        if (category === 'todos') {
-            // Unir todos los productos de todas las categorías
-            Object.values(menuData).forEach(catProducts => {
-                products = products.concat(catProducts);
-            });
-        } else {
-            products = menuData[category] || [];
-        }
-
-        if (products.length === 0) {
-            productGrid.innerHTML = '<p class="text-center">No hay productos en esta categoría</p>';
-            return;
-        }
-
-
-        // Crear y añadir las cards de producto
-        products.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.className = 'col-md-4 mb-4'; // 3 columnas en desktop
-
-            productCard.innerHTML = `
-                <div class="card h-100 border-0 shadow-sm product-card">
-                    <div class="card-img-container">
-                        <img src="${product.image}" class="card-img-top" alt="${product.name}">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title" style="font-family: 'Sono', sans-serif;">${product.name}</h5>
-                        <p class="card-text">${product.description}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="fw-bold dark-violet">₡${product.price.toLocaleString()}</span>
-                        </div>
-                        <div class="mt-3 d-flex justify-content-end gap-2">
-                            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${product.id}">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </button>
-                            <button class="btn btn-sm btn-outline-primary update-btn" data-id="${product.id}">
-                                <i class="bi bi-pencil"></i> Actualizar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            productGrid.appendChild(productCard);
+    document.querySelectorAll('.update-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            alert(`Se actualizó el producto`);
         });
-
-
-        // Agregar event listeners para los botones después de crearlos
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                alert(`Se eliminó el producto`);
-            });
-        });
-
-        document.querySelectorAll('.update-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-
-                alert(`Se actualizó el producto `);
-            })
-        });
-
-
-
-
-
-
-
-
-    }
-
+    });
+}
 
 });
