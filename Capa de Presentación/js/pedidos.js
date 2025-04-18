@@ -613,25 +613,14 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateOrderStatus(orderNumber, newStatus) {
         const order = mockOrders.find(o => o.orderNumber === orderNumber);
         if (order) {
-            // Verifica si la acción es válida
-            if (newStatus === 'delivered' && order.status !== 'ready') {
-                // Mostrar el mensaje de error si se intenta entregar un pedido que no está listo
-                document.getElementById('error-message').style.display = 'block';
-                document.getElementById('error-message').textContent = 'El pedido no está listo para ser entregado';
-                return;
-            } else {
-                document.getElementById('error-message').style.display = 'none';
-            }
-        
-            // Actualizar el estado si no hay error
             order.status = newStatus;
             order.statusUpdatedAt = new Date().toISOString();
             
-            // Eliminar el alert y solo actualizar la tabla
+            alert(`Estado del pedido ${orderNumber} actualizado a: ${getStatusText(newStatus)}`);
+            
             renderOrdersTable();
         }
     }
-    
 
     function getStatusText(status) {
         const statusTexts = {
@@ -670,47 +659,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function submitRating() {
-        // Verificar si se ha seleccionado una calificación
         if (currentRating === 0) {
-            // Mostrar el mensaje de error si no se selecciona ninguna calificación
-            document.getElementById('error-message').style.display = 'block';
-            return; // Detener la ejecución si no se selecciona una calificación
+            alert('Por favor selecciona una calificación');
+            return;
         }
-    
-        // Si hay una calificación seleccionada, ocultar el mensaje de error
-        document.getElementById('error-message').style.display = 'none';
-    
-        // Obtener los comentarios del usuario
+        
         const comments = document.getElementById('ratingComments').value;
-    
-        // Mostrar en la consola los datos de la valoración (esto puede ser reemplazado por lógica para enviarlo a un servidor)
-        console.log('Valoración enviada:', {
+        
+        console.log('Rating submitted:', {
             rating: currentRating,
             comments: comments,
-            orderNumber: 'ORD-2023-0001'  // Aquí se podría poner un número de pedido dinámico
+            orderNumber: 'ORD-2023-0001' 
         });
-    
-        // Mostrar el mensaje de agradecimiento debajo del formulario de valoración
-        const thanksMessage = document.getElementById('thanksMessage');
-        thanksMessage.style.display = 'block';  // Mostrar el mensaje
-    
-        // Opcional: Ocultar el mensaje después de un tiempo
-        setTimeout(function() {
-            thanksMessage.style.display = 'none'; // Ocultar el mensaje después de 5 segundos
-        }, 5000);
-    
-        // Ocultar el modal de valoración después de enviar la información
+        
+        const toast = new bootstrap.Toast(document.getElementById('ratingToast'));
+        toast.show();
+        
         const modal = bootstrap.Modal.getInstance(document.getElementById('ratingModal'));
         modal.hide();
-    
-        // Reiniciar los campos del formulario
-        setRating(0); // Resetear las estrellas
-        document.getElementById('ratingComments').value = '';  // Limpiar el campo de comentarios
-        document.getElementById('charsLeft').textContent = '500';  // Restablecer el contador de caracteres
+        
+        setRating(0);
+        document.getElementById('ratingComments').value = '';
+        document.getElementById('charsLeft').textContent = '500';
     }
-    
-    
-    
+
     function loadCategory(category) {
         const productGrid = document.getElementById('productGrid');
         productGrid.innerHTML = '';
@@ -930,31 +902,20 @@ document.addEventListener('DOMContentLoaded', function () {
     function confirmPayment() {
         const paymentMethod = document.querySelector('.payment-method.active').getAttribute('data-method');
         let paymentValid = true;
-        
-        const total = parseFloat(document.getElementById('paymentTotal').textContent.replace('₡', '').replace(',', ''));
-        const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
-        
-        // Verifica si el monto recibido es menor que el total
-        const errorMessage = document.getElementById('error-message');
-        
+
         if (paymentMethod === 'efectivo') {
+            const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+            const total = parseFloat(document.getElementById('paymentTotal').textContent.replace('₡', '').replace(',', ''));
+
             if (cashAmount < total) {
-                // Si el monto recibido es menor que el total, muestra el mensaje de error
-                errorMessage.textContent = 'El monto recibido es menor que el total a pagar';
-                errorMessage.style.display = 'block';
+                alert('El monto recibido es menor que el total a pagar');
                 paymentValid = false;
-            } else if (cashAmount >= total) {
-                // Si el monto recibido es mayor o igual al total, oculta el mensaje de error
-                errorMessage.style.display = 'none';
             }
-        }
-        
-        // Verificación adicional para otros métodos de pago
-        if (paymentMethod === 'tarjeta') {
+        } else if (paymentMethod === 'tarjeta') {
             const cardNumber = document.getElementById('cardNumber').value;
             const cardExpiry = document.getElementById('cardExpiry').value;
             const cardCVV = document.getElementById('cardCVV').value;
-            
+
             if (!cardNumber || !cardExpiry || !cardCVV) {
                 alert('Por favor complete todos los datos de la tarjeta');
                 paymentValid = false;
@@ -962,25 +923,23 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (paymentMethod === 'sinpe') {
             const sinpeNumber = document.getElementById('sinpeNumber').value;
             const sinpeConfirmation = document.getElementById('sinpeConfirmation').value;
-            
+
             if (!sinpeNumber || !sinpeConfirmation) {
                 alert('Por favor complete todos los datos del SINPE Móvil');
                 paymentValid = false;
             }
         }
-        
-        // Si la validación fue correcta, continúa con el proceso
+
         if (paymentValid) {
-            // Proceder con el pago
             const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
             paymentModal.hide();
-        
+
             const orderCompleteModal = new bootstrap.Modal(document.getElementById('orderCompleteModal'));
             orderCompleteModal.show();
-        
+
             const orderNumber = `ORD-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
             document.querySelector('.order-number strong').textContent = orderNumber;
-        
+
             console.log('Order completed:', {
                 orderNumber,
                 items: currentOrder,
@@ -989,38 +948,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 takeaway: document.getElementById('takeawayOrder').checked,
                 paymentMethod
             });
-        }
-    }
 
-    // Función para abrir el modal de valoración
-    function openRatingModal() {
-        const ratingModal = new bootstrap.Modal(document.getElementById('ratingModal'));
-        ratingModal.show();
-    }
-
-    // Añadir un event listener al botón "Valorar Pedido"
-    document.getElementById('rateOrderBtn').addEventListener('click', openRatingModal);
-
-    
-    // Agregar un evento de input para la validación dinámica
-    document.getElementById('cashAmount').addEventListener('input', function() {
-        const paymentMethod = document.querySelector('.payment-method.active').getAttribute('data-method');
-        const total = parseFloat(document.getElementById('paymentTotal').textContent.replace('₡', '').replace(',', ''));
-        const cashAmount = parseFloat(this.value) || 0;
-        const errorMessage = document.getElementById('error-message');
-        
-        if (paymentMethod === 'efectivo') {
-            if (cashAmount < total) {
-                // Muestra el mensaje de error si el monto es menor que el total
-                errorMessage.textContent = 'El monto recibido es menor que el total a pagar';
-                errorMessage.style.display = 'block';
-            } else if (cashAmount >= total) {
-                // Si el monto es mayor o igual, oculta el mensaje
-                errorMessage.style.display = 'none';
+            if (document.getElementById('printReceipt').checked) {
+                console.log('Printing receipt...');
             }
+
+            setTimeout(() => {
+                const ratingModal = new bootstrap.Modal(document.getElementById('ratingModal'));
+                ratingModal.show();
+            }, 5000);
         }
-    });
-    
+    }
 
     function saveOrder() {
         if (currentOrder.length === 0) return;
@@ -1039,46 +977,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function startNewOrder() {
-        // Cierra el modal de "Pedido Completado"
-        const orderCompleteModal = bootstrap.Modal.getInstance(document.getElementById('orderCompleteModal'));
-        if (orderCompleteModal) {
-            orderCompleteModal.hide();  // Cierra el modal
-        }
-    
-        // Limpia el pedido actual y reinicia los campos
         currentOrder = [];
         updateOrderDisplay();
         document.getElementById('customerName').value = '';
         document.getElementById('customerPhone').value = '';
         document.getElementById('takeawayOrder').checked = false;
-    
-        // Ocultar el mensaje de error al iniciar un nuevo pedido
-        document.getElementById('error-message').style.display = 'none';
     }
-    
 
     function printReceipt() {
-        // Muestra el mensaje debajo del botón "Imprimir Factura"
-        const printMessage = document.getElementById('printMessage');
-        printMessage.style.display = 'block'; // Muestra el mensaje
-    
-        console.log("Factura enviada a imprimir");
-    
-        // Ocultar el mensaje después de un tiempo
-        setTimeout(function() {
-            printMessage.style.display = 'none'; // Oculta el mensaje después de 5 segundos
-        }, 5000);
+        alert('Recibo impreso exitosamente');
     }
-    
-    
+
     function updateCurrentTime() {
         const now = new Date();
         const timeString = now.toLocaleTimeString();
         const dateString = now.toLocaleDateString();
         document.getElementById('currentTime').textContent = `${dateString} ${timeString}`;
     }
-
-    
 
     initPOS();
 });

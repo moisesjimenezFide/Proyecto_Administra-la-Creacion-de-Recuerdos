@@ -23,7 +23,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Arial&display=swap');
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Black Ops One', cursive;
   background-color: #f5f5f5;
   color: #333;
   overflow-x: hidden;
@@ -42,10 +42,19 @@ body {
   align-items: center;
   font-family: 'Sono', sans-serif;
   font-weight: 800;
-  color: black !important;
+  color: white !important;
   font-size: 1.2rem;
   margin-right: 0 !important;
   flex-grow: 1;
+}
+
+.logo-navbar {
+  height: 40px;
+  margin-right: 10px;
+  background-color: white;
+  padding: 3px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .navbar-nav {
@@ -56,27 +65,28 @@ body {
 }
 
 .nav-link {
-  color: black !important;
+  color: white !important;
   font-family: 'Sono', sans-serif;
   font-weight: 800;
   font-size: 0.9rem;
   padding: 0.5rem 1rem !important;
 }
 
-.navbar-toggler {
-  order: 2;
-}
-
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-}
-
 .navbar-collapse {
   flex-grow: 0 !important;
 }
 
+.navbar-toggler {
+  order: 2;
+}
+
+.container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 .page-title {
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-size: 2rem;
   color: white;
   margin: 0;
@@ -179,7 +189,7 @@ body {
 }
 
 .customer-info h5 {
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-size: 1.3rem;
   margin-bottom: 15px;
 }
@@ -290,7 +300,7 @@ body {
 }
 
 .summary-row.total span {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Sono', sans-serif;
   font-weight: 800;
 }
 
@@ -302,7 +312,7 @@ body {
 
 .order-actions .btn {
   flex: 1;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Sono', sans-serif;
   font-weight: 800;
 }
 
@@ -339,7 +349,7 @@ body {
 }
 
 .payment-method span {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Sono', sans-serif;
   font-weight: 800;
 }
 
@@ -357,7 +367,7 @@ body {
 }
 
 .order-number {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Sono', sans-serif;
   font-weight: 800;
   font-size: 1.2rem;
   margin: 15px 0;
@@ -619,15 +629,9 @@ body {
   }
   
   .filter-btn {
-    background-color: white;
-    color: var(--hot-pink);
-    border: 2px solid var(--hot-pink);
-    padding: 10px 15px;
-    font-weight: bold;
-    border-radius: 5px;
-    margin: 5px;
-    transition: background-color 0.3s, color 0.3s;
-}
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+  }
 }
 
 .navbar-dark .navbar-nav .nav-link:hover,
@@ -646,21 +650,19 @@ body {
 
 #orderStatusModal .modal-content {
   border-radius: 15px;
-  border: 2px solid var(--pos-dark); /* Fondo oscuro */
-  background-color: white; /* Fondo blanco */
-  color: black; /* Texto negro */
+  border: 2px solid var(--light-pink);
 }
 
 #orderStatusModal .modal-header {
-  background-color: black; /* Barra de título negra */
-  color: white; /* Texto blanco */
-  border-bottom: 2px solid var(light-pink); /* Borde en color rosado */
+  background-color: var(--light-pink);
+  color: white;
+  border-bottom: 2px solid var(--deep-pink);
 }
 
 #orderStatusModal .modal-title {
   font-family: 'Sono', sans-serif;
   font-weight: 800;
-  color: white; /* Título en blanco */
+  color: white;
 }
 
 #orderStatusModal .btn-close {
@@ -669,105 +671,78 @@ body {
 
 #orderStatusModal .table {
   font-family: 'Arial', sans-serif;
-  background-color: white; /* Fondo blanco */
-  color: black; /* Texto negro */
 }
 
 #orderStatusModal .table thead th {
-  background-color: var(--pos-dark); /* Fondo oscuro */
-  color: white; /* Texto blanco */
+  background-color: var(--lavender);
+  color: var(--indigo);
   font-weight: bold;
   position: sticky;
   top: 0;
 }
 
 #orderStatusModal .table tbody tr:hover {
-  background-color: rgba(255, 105, 180, 0.1);
+  background-color: rgba(226, 122, 176, 0.1);
 }
 
 #orderStatusModal .filter-btn {
-  font-family: 'Arial', sans-serif;
-  border-color: var(--hot-pink); /* Borde rosado */
-  color: var(--hot-pink); /* Texto rosado */
-  background-color: white; /* Fondo blanco */
-  padding: 10px 15px;
-  font-weight: bold;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
+  border-color: var(--light-pink);
+  color: var(--indigo);
 }
 
-/* Cambiar la fuente de los elementos seleccionados en el filtro */
 #orderStatusModal .filter-btn.active {
-  background-color: var(--hot-pink);
+  background-color: var(--light-pink);
   color: white;
-  border-color: var(--hot-pink);
+  border-color: var(--deep-pink);
 }
 
-/* Cambiar la fuente de los botones de la tabla */
-#orderStatusModal .modal-title,
-#orderStatusModal .modal-header {
-  font-family: 'Arial', sans-serif;  /* Fuente más legible */
-}
-
-#orderStatusModal .page-link {
-  font-family: 'Arial', sans-serif;  /* Fuente más legible */
-}
-
-
-#orderStatusModal .filter-btn.active {
-  background-color: var(--light-pink); /* Fondo rosado cuando está seleccionado */
-  color: white; /* Texto blanco */
-  border-color: var(--light-pink); /* Borde rosado */
-}
-
-#orderStatusModal .filter-btn:hover {
-  background-color: rgba(255, 105, 180, 0.1); /* Fondo rosado claro */
-  color: var(--hot-pink);
+#orderStatusModal .filter-btn:hover:not(.active) {
+  background-color: rgba(226, 122, 176, 0.2);
+  border-color: var(--deep-pink);
 }
 
 #orderStatusModal .page-item.active .page-link {
-  background-color: var(--deep-pink); /* Fondo rosado */
-  border-color: var(--deep-pink); /* Borde rosado */
-  color: white; /* Texto blanco */
+  background-color: var(--light-pink);
+  border-color: var(--deep-pink);
+  color: white;
 }
 
 #orderStatusModal .page-link {
-  color: var(--indigo); /* Texto en color índigo */
+  color: var(--indigo);
 }
 
 #orderStatusModal .form-select {
-  border-color: var(--pos-dark); /* Borde oscuro */
-  color: black; /* Texto negro */
+  border-color: var(--light-pink);
 }
 
 #orderStatusModal .form-select:focus {
-  border-color: var(--deep-pink); /* Borde rosado */
+  border-color: var(--deep-pink);
   box-shadow: 0 0 0 0.25rem rgba(255, 105, 180, 0.25);
 }
 
 #orderStatusModal .status-pending {
-  background-color: var(--pos-warning); /* Fondo amarillo */
-  color: #000; /* Texto negro */
+  background-color: var(--pos-warning);
+  color: #000;
 }
 
 #orderStatusModal .status-preparation {
-  background-color: var(--pos-info); /* Fondo azul */
-  color: #fff; /* Texto blanco */
+  background-color: var(--pos-info);
+  color: #fff;
 }
 
 #orderStatusModal .status-ready {
-  background-color: var(--pos-success); /* Fondo verde */
-  color: #fff; /* Texto blanco */
+  background-color: var(--pos-success);
+  color: #fff;
 }
 
 #orderStatusModal .status-delivered {
-  background-color: var(--pos-dark); /* Fondo oscuro */
-  color: white; /* Texto blanco */
+  background-color: var(--lavender);
+  color: var(--indigo);
 }
 
 #orderStatusModal .status-canceled {
-  background-color: var(--pos-danger); /* Fondo rojo */
-  color: #fff; /* Texto blanco */
+  background-color: var(--pos-danger);
+  color: #fff;
 }
 
 #orderStatusModal .input-group {
@@ -776,45 +751,16 @@ body {
 }
 
 #orderStatusModal .input-group input {
-  border-color: var(--pos-dark); /* Borde oscuro */
-  background-color: var(--pos-light); /* Fondo claro */
-  color: black; /* Texto negro */
+  border-color: var(--light-pink);
 }
 
 #orderStatusModal .input-group button {
-  background-color: var(--pos-dark); /* Fondo rosado */
-  color: white; /* Texto blanco */
-  border-color: var(--deep-pink); /* Borde rosado */
+  background-color: var(--light-pink);
+  color: white;
+  border-color: var(--light-pink);
 }
 
 #orderStatusModal .input-group button:hover {
-  background-color: var(--pos-warning); /* Hover amarillo */
-  border-color: var(--pos-warning); /* Borde amarillo */
-}
-
-/* Botón de búsqueda (lupa) */
-#orderStatusModal .search-bar {
-  background-color: black; /* Fondo negro */
-  color: white; /* Texto blanco */
-  padding: 10px;
-  border-radius: 5px;
-}
-
-#orderStatusModal .search-bar input {
-  background-color: black; /* Fondo negro */
-  color: white; /* Texto blanco */
-  border: none;
-  padding: 5px;
-}
-
-#orderStatusModal .search-bar button {
-  background-color: black; /* Fondo negro */
-  color: white; /* Texto blanco */
-  border: none;
-  padding: 5px;
-}
-
-#orderStatusModal .search-bar button:hover {
-  background-color: var(--deep-pink); /* Fondo rosado en hover */
-  color: white; /* Texto blanco */
+  background-color: var(--deep-pink);
+  border-color: var(--deep-pink);
 }
