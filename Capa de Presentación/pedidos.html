@@ -24,8 +24,10 @@
 
     <div class="container mt-5">
         <h2 class="text-center" style="font-family: 'Sono', sans-serif;">
+            <i class="fas fa-box-open" style="font-size: 24px; margin-right: 10px;"></i>
             Sistema de Pedidos
         </h2>
+        
     </div>
     <div class="container-fluid pos-container">
         <div class="row">
@@ -176,7 +178,10 @@
                                 <div class="mb-3">
                                     <label for="cashAmount" class="form-label">Monto Recibido</label>
                                     <input type="number" class="form-control" id="cashAmount" placeholder="0.00">
+                                    <!-- Error message -->
+                                    <div id="error-message" class="text-danger" style="display: none;">El monto recibido es menor que el total a pagar</div>
                                 </div>
+                                
                                 <div class="mb-3">
                                     <label for="cashChange" class="form-label">Cambio</label>
                                     <input type="text" class="form-control" id="cashChange" placeholder="0.00" readonly>
@@ -220,36 +225,59 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn text-white"  style="background-color: #E27AB0;" id="confirmPaymentBtn">Confirmar Pago</button>
+                    <!-- Botón de Cancelar con data-bs-dismiss para que se cierre el modal -->
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" aria-label="Close" id="cancelBtn">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn text-white" style="background-color: #E27AB0;" id="confirmPaymentBtn">
+                        Confirmar Pago
+                    </button>
                 </div>
+                
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="orderCompleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title">Pedido Completado</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal Pedido Completado -->
+<div class="modal fade" id="orderCompleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #000; color: white;">
+                <h5 class="modal-title">Pedido Completado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+                <h4>¡Pedido procesado con éxito!</h4>
+                <p class="order-number">Número de pedido: <strong>ORD-2025-0015</strong></p>
+                
+                <!-- Aquí los botones para "Imprimir Factura", "Nuevo Pedido" y "Valorar Pedido" -->
+                <button class="btn" style="background-color: #E27AB0; color: white;" id="rateOrderBtn">
+                    <i class="fas fa-star me-2"></i>Valorar Pedido
+                </button>
+                <button class="btn" style="background-color: #E27AB0; color: white;" id="newOrderBtn">
+                    <i class="fas fa-plus me-2"></i>Nuevo Pedido
+                </button>
+                <button class="btn" style="background-color: #000; color: white; margin-top: 10px;" id="printReceiptBtn">
+                    <i class="fas fa-print me-2"></i>Imprimir Factura
+                </button>
+                
+                <!-- Mensaje que aparece cuando se imprime la factura -->
+                <div id="printMessage" style="display:none; color: #28a745; margin-top: 10px;">
+                    <strong>Se ha enviado la factura a imprimir.</strong>
                 </div>
-                <div class="modal-body text-center">
-                    <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
-                    <h4>¡Pedido procesado con éxito!</h4>
-                    <p class="order-number">Número de pedido: <strong>ORD-2025-0015</strong></p>
-                    <div class="d-flex justify-content-center mt-4">
-                        <button class="btn btn-outline-secondary me-2" id="printReceiptBtn">
-                            <i class="fas fa-print me-2"></i>Imprimir Recibo
-                        </button>
-                        <button class="btn btn-primary" id="newOrderBtn" data-bs-dismiss="modal">
-                            <i class="fas fa-plus me-2"></i>Nuevo Pedido
-                        </button>
-                    </div>
-                </div>
+                                <!-- Mensaje de agradecimiento que aparecerá después de valorar el pedido -->
+                                <div id="thanksMessage" style="display:none; margin-top: 10px; color: #28a745;">
+                                    <strong>Gracias por tu retroalimentación.</strong>
+                                </div>
+                
             </div>
         </div>
     </div>
+</div>
+
+
+
 
     <div class="modal fade" id="orderStatusModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -316,36 +344,47 @@
         </div>
     </div>
 
-    <div class="modal fade" id="ratingModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Valorar Pedido</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modal Valoración del Pedido -->
+<div class="modal fade" id="ratingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Valorar Pedido</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>¿Cómo calificarías tu experiencia con este pedido?</p>
+                <div class="rating-stars mb-4">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
                 </div>
-                <div class="modal-body text-center">
-                    <p>¿Cómo calificarías tu experiencia con este pedido?</p>
-                    <div class="rating-stars mb-4">
-                        <i class="far fa-star" data-rating="1"></i>
-                        <i class="far fa-star" data-rating="2"></i>
-                        <i class="far fa-star" data-rating="3"></i>
-                        <i class="far fa-star" data-rating="4"></i>
-                        <i class="far fa-star" data-rating="5"></i>
-                    </div>
-                    <div class="mb-3">
-                        <label for="ratingComments" class="form-label">Comentarios (opcional)</label>
-                        <textarea class="form-control" id="ratingComments" rows="3" maxlength="500"
-                            placeholder="¿Algo que nos quieras contar sobre tu experiencia?"></textarea>
-                        <small class="text-muted"><span id="charsLeft">500</span> caracteres restantes</small>
-                    </div>
+
+                <!-- Mensaje de error debajo de las estrellas -->
+                <div id="error-message" class="text-danger" style="display: none;">Por favor selecciona una calificación</div>
+
+                <div class="mb-3">
+                    <label for="ratingComments" class="form-label">Comentarios (opcional)</label>
+                    <textarea class="form-control" id="ratingComments" rows="3" maxlength="500"
+                        placeholder="¿Algo que nos quieras contar sobre tu experiencia?"></textarea>
+                    <small class="text-muted"><span id="charsLeft">500</span> caracteres restantes</small>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="submitRatingBtn">Enviar Valoración</button>
+
+                <!-- Mensaje de agradecimiento que aparece después de enviar la valoración -->
+                <div id="thanksMessage" style="display: none; color: #28a745; margin-top: 10px;">
+                    <strong>Gracias por tu retroalimentación. ¡Tu opinión nos ayuda a mejorar!</strong>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn" style="background-color: #E27AB0; color: white;" id="submitRatingBtn">Enviar Valoración</button>
             </div>
         </div>
     </div>
+</div>
+
 
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
         <div id="ratingToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
