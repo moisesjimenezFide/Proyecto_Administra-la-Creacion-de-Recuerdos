@@ -26,69 +26,71 @@
 
   <div id="navbar"></div>
 
-  <div class="container mt-5 text-center">
-    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
-      <i class="fas fa-utensils me-2"></i> Agregar un nuevo platillo
-    </h2>
-    <form>
-      <!-- ID oculto -->
-      <div class="mb-3 text-start" id="idField" style="display: none;">
-        <label for="id" class="form-label fw-bold">ID</label>
-        <input type="number" class="form-control" id="id" value="1">
-      </div>
+  <div id="container-wrap">
+    <div class="container mt-5 text-center">
+      <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-utensils me-2"></i> Agregar un nuevo platillo
+      </h2>
+      <form>
+        <!-- ID oculto -->
+        <div class="mb-3 text-start" id="idField" style="display: none;">
+          <label for="id" class="form-label fw-bold">ID</label>
+          <input type="number" class="form-control" id="id" value="1">
+        </div>
 
-      <!-- Nombre -->
-      <div class="mb-3 text-start">
-        <label for="name" class="form-label fw-bold">Nombre del platillo</label>
-        <input type="text" class="form-control" id="name" placeholder="Ingrese el nombre del platillo" required>
-      </div>
+        <!-- Nombre -->
+        <div class="mb-3 text-start">
+          <label for="name" class="form-label fw-bold">Nombre del platillo</label>
+          <input type="text" class="form-control" id="name" placeholder="Ingrese el nombre del platillo" required>
+        </div>
 
-      <!-- Descripción -->
-      <div class="mb-3 text-start">
-        <label for="description" class="form-label fw-bold">Descripción</label>
-        <textarea class="form-control" id="description" rows="3" placeholder="Ingrese una breve descripción"
-          required></textarea>
-      </div>
+        <!-- Descripción -->
+        <div class="mb-3 text-start">
+          <label for="description" class="form-label fw-bold">Descripción</label>
+          <textarea class="form-control" id="description" rows="3" placeholder="Ingrese una breve descripción"
+            required></textarea>
+        </div>
 
-      <!-- Precio -->
-      <div class="mb-3 text-start">
-        <label for="price" class="form-label fw-bold">Precio (₡)</label>
-        <input type="number" class="form-control" id="price" placeholder="Ingrese el precio en colones" required>
-      </div>
+        <!-- Precio -->
+        <div class="mb-3 text-start">
+          <label for="price" class="form-label fw-bold">Precio (₡)</label>
+          <input type="number" class="form-control" id="price" placeholder="Ingrese el precio en colones" required>
+        </div>
 
-      <!-- Categoría -->
-      <div class="mb-3 text-start">
-        <label for="category" class="form-label fw-bold">Categoría</label>
-        <select class="form-select" id="category" required>
-          <option selected disabled value="">Seleccione una categoría</option>
-          <option value="desayunos">Desayunos</option>
-          <option value="panini">Panini</option>
-          <option value="crepes">Crêpes</option>
-          <option value="pasta">Pasta</option>
-          <option value="arroz">Arroz</option>
-          <option value="tentaciones">Tentaciones</option>
-          <option value="postres">Delicias</option>
-          <option value="bebidas-calientes">Bebidas Calientes</option>
-          <option value="bebidas-frias">Bebidas Frías</option>
-          <option value="especiales">Especiales</option>
-        </select>
-      </div>
+        <!-- Categoría -->
+        <div class="mb-3 text-start">
+          <label for="category" class="form-label fw-bold">Categoría</label>
+          <select class="form-select" id="category" required>
+            <option selected disabled value="">Seleccione una categoría</option>
+            <option value="desayunos">Desayunos</option>
+            <option value="panini">Panini</option>
+            <option value="crepes">Crêpes</option>
+            <option value="pasta">Pasta</option>
+            <option value="arroz">Arroz</option>
+            <option value="tentaciones">Tentaciones</option>
+            <option value="postres">Delicias</option>
+            <option value="bebidas-calientes">Bebidas Calientes</option>
+            <option value="bebidas-frias">Bebidas Frías</option>
+            <option value="especiales">Especiales</option>
+          </select>
+        </div>
 
-      <!-- Imagen -->
-      <div class="mb-3 text-start">
-        <label for="image" class="form-label fw-bold">Imagen</label>
-        <input type="file" class="form-control" id="image">
-        <div class="form-text">Subir imagen del platillo</div>
-      </div>
+        <!-- Imagen -->
+        <div class="mb-3 text-start">
+          <label for="image" class="form-label fw-bold">Imagen</label>
+          <input type="file" class="form-control" id="image">
+          <div class="form-text">Subir imagen del platillo</div>
+        </div>
 
-      <!-- Botones -->
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-        <a href="menu_admin.html" type="button" class="btn btn-danger me-md-2">Cancelar</a>
-        <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
-      </div>
-    </form>
+        <!-- Botones -->
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+          <a href="menu_admin.html" type="button" class="btn btn-danger me-md-2">Cancelar</a>
+          <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
+        </div>
+      </form>
 
-    <br><br>
+      <br><br>
+    </div>
   </div>
 
   <!-- Footer dinámico -->

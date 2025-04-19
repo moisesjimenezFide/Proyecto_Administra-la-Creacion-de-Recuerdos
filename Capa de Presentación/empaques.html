@@ -42,73 +42,76 @@
 
 <body>
     <div id="navbar"></div>
-    <div class="container mt-5">
-        <h2 class="text-center mb-4" style="font-family: 'Sono', sans-serif;">
-            <i class="fas fa-box-open me-2"></i> Gestión de Empaques y/o Decoraciones
-        </h2>
-        <div class="mb-4">
-            <h4>Búsqueda de Empaques y/o Decoraciones</h4>
-            <div class="input-group">
-                <input type="text" id="busqueda" class="form-control" placeholder="Buscar por cualquier campo...">
-                <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search ms-1"></i></button>
+
+    <div id="container-wrap">
+        <div class="container mt-5">
+            <h2 class="text-center mb-4" style="font-family: 'Sono', sans-serif;">
+                <i class="fas fa-box-open me-2"></i> Gestión de Empaques y/o Decoraciones
+            </h2>
+            <div class="mb-4">
+                <h4>Búsqueda de Empaques y/o Decoraciones</h4>
+                <div class="input-group">
+                    <input type="text" id="busqueda" class="form-control" placeholder="Buscar por cualquier campo...">
+                    <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search ms-1"></i></button>
+                </div>
             </div>
+
+            <h4 class="mb-3">Registro de Empaques y/o Decoraciones</h4>
+            <form id="form_empaques" class="mb-4">
+                <div class="mb-3 text-start">
+                    <label for="nombre" class="form-label fw-bold">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="marca" class="form-label fw-bold">Marca</label>
+                    <input type="text" class="form-control" id="marca" placeholder="Ingrese la marca" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="presentacion" class="form-label fw-bold">Presentación</label>
+                    <input type="text" class="form-control" id="presentacion" placeholder="Ej. 500ml / Caja" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="proveedor" class="form-label fw-bold">Proveedor</label>
+                    <input type="text" class="form-control" id="proveedor" placeholder="Nombre del proveedor" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="costo_unidad" class="form-label fw-bold">Costo por unidad (₡)</label>
+                    <input type="number" class="form-control" id="costo_unidad" min="0" placeholder="Ej. 200" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="cantidad" class="form-label fw-bold">Cantidad</label>
+                    <input type="number" class="form-control" id="cantidad" min="0" placeholder="Ej. 100" required>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
+                    <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Agregar</button>
+                </div>
+            </form>
+
+            <h4 class="mt-5">Listado de Empaques y/o Decoraciones</h4>
+            <div class="table-container">
+                <table class="table table-bordered table-striped table-sm text-center">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Marca</th>
+                            <th>Presentación</th>
+                            <th>Proveedor</th>
+                            <th>Costo x Unidad (₡)</th>
+                            <th>Cantidad</th>
+                            <th>Costo Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_empaques"></tbody>
+                </table>
+            </div>
+
+
+            <p id="mensaje_no_resultados" class="text-center text-muted" style="display: none;">
+                No se encontraron coincidencias.
+            </p>
         </div>
-
-        <h4 class="mb-3">Registro de Empaques y/o Decoraciones</h4>
-        <form id="form_empaques" class="mb-4">
-            <div class="mb-3 text-start">
-                <label for="nombre" class="form-label fw-bold">Nombre</label>
-                <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" required>
-            </div>
-            <div class="mb-3 text-start">
-                <label for="marca" class="form-label fw-bold">Marca</label>
-                <input type="text" class="form-control" id="marca" placeholder="Ingrese la marca" required>
-            </div>
-            <div class="mb-3 text-start">
-                <label for="presentacion" class="form-label fw-bold">Presentación</label>
-                <input type="text" class="form-control" id="presentacion" placeholder="Ej. 500ml / Caja" required>
-            </div>
-            <div class="mb-3 text-start">
-                <label for="proveedor" class="form-label fw-bold">Proveedor</label>
-                <input type="text" class="form-control" id="proveedor" placeholder="Nombre del proveedor" required>
-            </div>
-            <div class="mb-3 text-start">
-                <label for="costo_unidad" class="form-label fw-bold">Costo por unidad (₡)</label>
-                <input type="number" class="form-control" id="costo_unidad" min="0" placeholder="Ej. 200" required>
-            </div>
-            <div class="mb-3 text-start">
-                <label for="cantidad" class="form-label fw-bold">Cantidad</label>
-                <input type="number" class="form-control" id="cantidad" min="0" placeholder="Ej. 100" required>
-            </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
-                <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Agregar</button>
-            </div>
-        </form>
-
-        <h4 class="mt-5">Listado de Empaques y/o Decoraciones</h4>
-        <div class="table-container">
-            <table class="table table-bordered table-striped table-sm text-center">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Marca</th>
-                        <th>Presentación</th>
-                        <th>Proveedor</th>
-                        <th>Costo x Unidad (₡)</th>
-                        <th>Cantidad</th>
-                        <th>Costo Total</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla_empaques"></tbody>
-            </table>
-        </div>
-
-
-        <p id="mensaje_no_resultados" class="text-center text-muted" style="display: none;">
-            No se encontraron coincidencias.
-        </p>
     </div>
 
     <script src="js/navbar.js"></script>

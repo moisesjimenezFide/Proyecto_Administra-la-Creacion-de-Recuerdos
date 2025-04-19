@@ -62,44 +62,46 @@
 
   <div id="navbar"></div>
 
-  <div class="container mt-5 text-center">
-    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
-      <i class="fas fa-file-invoice-dollar me-2"></i> Historial de Ventas
-    </h2>
+  <div id="container-wrap">
+    <div class="container mt-5 text-center">
+      <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-file-invoice-dollar me-2"></i> Historial de Ventas
+      </h2>
 
-    <div class="mb-3 text-start">
-      <label for="filtroFecha" class="form-label fw-bold">Filtrar por Fecha</label>
-      <input type="date" id="filtroFecha" class="form-control" />
+      <div class="mb-3 text-start">
+        <label for="filtroFecha" class="form-label fw-bold">Filtrar por Fecha</label>
+        <input type="date" id="filtroFecha" class="form-control" />
+      </div>
+
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
+        <button class="btn text-white" style="background-color: #E27AB0;" onclick="filtrarVentas()">
+          <i class="fas fa-search me-1"></i> Filtrar
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm text-center">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Productos Vendidos</th>
+              <th>Precio Unitario</th>
+              <th>Cantidad</th>
+              <th>Precio Total</th>
+              <th>Total Venta</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="historialVentas">
+            <!-- Ventas dinámicas -->
+          </tbody>
+        </table>
+      </div>
+
+      <p id="mensaje_no_resultados" class="text-center text-muted mt-3" style="display: none;">
+        No hay ventas registradas para mostrar.
+      </p>
     </div>
-
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
-      <button class="btn text-white" style="background-color: #E27AB0;" onclick="filtrarVentas()">
-        <i class="fas fa-search me-1"></i> Filtrar
-      </button>
-    </div>
-
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-sm text-center">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Productos Vendidos</th>
-            <th>Precio Unitario</th>
-            <th>Cantidad</th>
-            <th>Precio Total</th>
-            <th>Total Venta</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="historialVentas">
-          <!-- Ventas dinámicas -->
-        </tbody>
-      </table>
-    </div>
-
-    <p id="mensaje_no_resultados" class="text-center text-muted mt-3" style="display: none;">
-      No hay ventas registradas para mostrar.
-    </p>
   </div>
 
   <div id="footer"></div>

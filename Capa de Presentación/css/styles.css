@@ -47,6 +47,27 @@ body {
   --bs-btn-hover-border-color: var(--light-pink);
 }
 
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-family: 'Sono', sans-serif;
+  font-weight: 800;
+  color: black !important;
+  font-size: 1.2rem;
+  margin-right: 0 !important;
+  flex-grow: 1;
+}
+
+.logo-navbar {
+  height: 40px;
+  margin-right: 10px;
+  background-color: white;
+  padding: 3px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar responsive */
 .navbar-nav {
   font-family: 'Sono', sans-serif;
   font-weight: 800;
@@ -71,6 +92,7 @@ body {
 .navbar-collapse {
   flex-grow: 0 !important;
 }
+
 
 .footer {
   height: 300px;

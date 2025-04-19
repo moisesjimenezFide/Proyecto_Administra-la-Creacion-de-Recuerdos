@@ -56,83 +56,85 @@
   <!-- Navbar -->
   <div id="navbar"></div>
 
-  <div class="container mt-4">
-    <h2 class="text-center" style="font-family: 'Sono', sans-serif;">
-      <i class="fas fa-calculator me-2"></i> Gestión de Costos de Recetas
-    </h2>
+  <div id="container-wrap">
+    <div class="container mt-4">
+      <h2 class="text-center" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-calculator me-2"></i> Gestión de Costos de Recetas
+      </h2>
 
-    <!-- Sección de Registro de Recetas -->
-    <div class="my-5">
-      <h4 class="mb-4"><strong>Registro de Recetas</strong></h4>
-      <form id="form_recetas" class="row g-3">
-        <div class="mb-3 text-start">
-          <label for="nombre_receta" class="form-label">Nombre de la receta</label>
-          <input type="text" class="form-control" id="nombre_receta" placeholder="Ingrese el nombre de la receta"
-            required>
-        </div>
-        <div class="mb-3 text-start">
-          <label for="porcion" class="form-label">Porción</label>
-          <input type="number" class="form-control" id="porcion" placeholder="Cantidad de porciones" required>
-        </div>
-        <div class="mb-3 text-start">
-          <label for="volumen" class="form-label">Volumen por porción (ml)</label>
-          <input type="number" class="form-control" id="volumen" placeholder="Ej. 250" required>
-        </div>
+      <!-- Sección de Registro de Recetas -->
+      <div class="my-5">
+        <h4 class="mb-4"><strong>Registro de Recetas</strong></h4>
+        <form id="form_recetas" class="row g-3">
+          <div class="mb-3 text-start">
+            <label for="nombre_receta" class="form-label">Nombre de la receta</label>
+            <input type="text" class="form-control" id="nombre_receta" placeholder="Ingrese el nombre de la receta"
+              required>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="porcion" class="form-label">Porción</label>
+            <input type="number" class="form-control" id="porcion" placeholder="Cantidad de porciones" required>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="volumen" class="form-label">Volumen por porción (ml)</label>
+            <input type="number" class="form-control" id="volumen" placeholder="Ej. 250" required>
+          </div>
 
-        <h5 class="mt-4">Materias primas utilizadas</h5>
+          <h5 class="mt-4">Materias primas utilizadas</h5>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm text-center" id="tabla_materias">
+              <thead>
+                <tr>
+                  <th>Materia</th>
+                  <th>Cantidad</th>
+                  <th>Unidad de medida</th>
+                  <th>Costo por unidad (₡)</th>
+                  <th>Total costo (₡)</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tbody_materias"></tbody>
+            </table>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
+            <button type="button" class="btn text-white" style="background-color: #E27AB0;"
+              onclick="agregarFila()">Agregar materia prima</button>
+          </div>
+
+          <p class="mt-3"><strong>Costo total receta:</strong> <span id="costo_total_receta">₡0.00</span></p>
+          <p><strong>Costo por porción:</strong> <span id="costo_por_porcion">₡0.00</span></p>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+            <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
+            <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar receta</button>
+          </div>
+        </form>
+
+        <!-- Listado de Costos de Receta -->
+        <h4 class="mt-5"><strong>Listado de Costos de Receta</strong></h4>
         <div class="table-responsive">
-          <table class="table table-bordered table-striped table-sm text-center" id="tabla_materias">
+          <table class="table table-bordered table-striped table-sm text-center">
             <thead>
               <tr>
-                <th>Materia</th>
-                <th>Cantidad</th>
-                <th>Unidad de medida</th>
-                <th>Costo por unidad (₡)</th>
-                <th>Total costo (₡)</th>
+                <th>Nombre Receta</th>
+                <th>Porción</th>
+                <th>Volumen (ml)</th>
+                <th>Materias Primas</th>
+                <th>Costo Total Receta (₡)</th>
+                <th>Costo x Porción (₡)</th>
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody id="tbody_materias"></tbody>
+            <tbody id="tabla_recetas"></tbody>
           </table>
         </div>
 
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
-          <button type="button" class="btn text-white" style="background-color: #E27AB0;"
-            onclick="agregarFila()">Agregar materia prima</button>
-        </div>
-
-        <p class="mt-3"><strong>Costo total receta:</strong> <span id="costo_total_receta">₡0.00</span></p>
-        <p><strong>Costo por porción:</strong> <span id="costo_por_porcion">₡0.00</span></p>
-
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-          <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
-          <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar receta</button>
-        </div>
-      </form>
-
-      <!-- Listado de Costos de Receta -->
-      <h4 class="mt-5"><strong>Listado de Costos de Receta</strong></h4>
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm text-center">
-          <thead>
-            <tr>
-              <th>Nombre Receta</th>
-              <th>Porción</th>
-              <th>Volumen (ml)</th>
-              <th>Materias Primas</th>
-              <th>Costo Total Receta (₡)</th>
-              <th>Costo x Porción (₡)</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tabla_recetas"></tbody>
-        </table>
+        <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
+          No se encontraron coincidencias.
+        </p>
       </div>
-
-      <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
-        No se encontraron coincidencias.
-      </p>
     </div>
   </div>
 

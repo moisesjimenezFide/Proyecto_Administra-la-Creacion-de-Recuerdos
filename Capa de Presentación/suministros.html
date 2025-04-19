@@ -19,62 +19,64 @@
   <!-- Navbar dinámico -->
   <div id="navbar"></div>
 
-  <div class="container my-5 text-center">
-    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
-      <i class="fas fa-spray-can-sparkles me-2"></i> Gestión de Suministros de Limpieza
-    </h2>
-  </div>
+  <div id="container-wrap">
+    <div class="container my-5 text-center">
+      <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-spray-can-sparkles me-2"></i> Gestión de Suministros de Limpieza
+      </h2>
+    </div>
 
-  <div class="container">
-    <form id="form_suministro" class="mb-4">
-      <div class="mb-2 text-start">
-        <label for="nombre" class="form-label fw-bold">Nombre</label>
-        <input type="text" id="nombre" class="form-control" placeholder="Ingrese el nombre" required />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="marca" class="form-label fw-bold">Marca</label>
-        <input type="text" id="marca" class="form-control" placeholder="Ingrese la marca" required />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="presentacion" class="form-label fw-bold">Presentación</label>
-        <input type="text" id="presentacion" class="form-control" placeholder="Ej: 500ml, 1L, etc." />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="proveedor" class="form-label fw-bold">Proveedor</label>
-        <input type="text" id="proveedor" class="form-control" placeholder="Nombre del proveedor" />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="costo_unidad" class="form-label fw-bold">Costo por Unidad ₡</label>
-        <input type="number" id="costo_unidad" class="form-control" placeholder="₡" min="0" />
-      </div>
-      <div class="mb-2 text-start">
-        <label for="cantidad" class="form-label fw-bold">Cantidad</label>
-        <input type="number" id="cantidad" class="form-control" placeholder="Cantidad" min="0" />
-      </div>
+    <div class="container">
+      <form id="form_suministro" class="mb-4">
+        <div class="mb-2 text-start">
+          <label for="nombre" class="form-label fw-bold">Nombre</label>
+          <input type="text" id="nombre" class="form-control" placeholder="Ingrese el nombre" required />
+        </div>
+        <div class="mb-2 text-start">
+          <label for="marca" class="form-label fw-bold">Marca</label>
+          <input type="text" id="marca" class="form-control" placeholder="Ingrese la marca" required />
+        </div>
+        <div class="mb-2 text-start">
+          <label for="presentacion" class="form-label fw-bold">Presentación</label>
+          <input type="text" id="presentacion" class="form-control" placeholder="Ej: 500ml, 1L, etc." />
+        </div>
+        <div class="mb-2 text-start">
+          <label for="proveedor" class="form-label fw-bold">Proveedor</label>
+          <input type="text" id="proveedor" class="form-control" placeholder="Nombre del proveedor" />
+        </div>
+        <div class="mb-2 text-start">
+          <label for="costo_unidad" class="form-label fw-bold">Costo por Unidad ₡</label>
+          <input type="number" id="costo_unidad" class="form-control" placeholder="₡" min="0" />
+        </div>
+        <div class="mb-2 text-start">
+          <label for="cantidad" class="form-label fw-bold">Cantidad</label>
+          <input type="number" id="cantidad" class="form-control" placeholder="Cantidad" min="0" />
+        </div>
 
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 mb-4">
-        <button type="button" class="btn btn-sm btn-danger me-md-2"
-          onclick="document.getElementById('form_suministro').reset(); indice_editar = null; document.querySelector('#form_suministro button[type=submit]').textContent = 'Agregar';">Cancelar</button>
-        <button type="submit" class="btn btn-sm text-white" style="background-color: #E27AB0;">Agregar</button>
-      </div>
-    </form>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 mb-4">
+          <button type="button" class="btn btn-sm btn-danger me-md-2"
+            onclick="document.getElementById('form_suministro').reset(); indice_editar = null; document.querySelector('#form_suministro button[type=submit]').textContent = 'Agregar';">Cancelar</button>
+          <button type="submit" class="btn btn-sm text-white" style="background-color: #E27AB0;">Agregar</button>
+        </div>
+      </form>
 
-    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-      <table class="table table-bordered table-striped table-sm text-center">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Marca</th>
-            <th>Presentación</th>
-            <th>Proveedor</th>
-            <th>Costo por Unidad</th>
-            <th>Cantidad</th>
-            <th>Costo Total</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tabla_suministros"></tbody>
-      </table>
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-bordered table-striped table-sm text-center">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Marca</th>
+              <th>Presentación</th>
+              <th>Proveedor</th>
+              <th>Costo por Unidad</th>
+              <th>Cantidad</th>
+              <th>Costo Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla_suministros"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Footer dinámico -->
