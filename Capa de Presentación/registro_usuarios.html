@@ -40,7 +40,6 @@
 
   <div id="navbar"></div>
 
-<div id="container-wrap">
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
@@ -69,7 +68,8 @@
 
               <div class="mb-3">
                 <label for="login-password" class="form-label fw-bold">Contraseña</label>
-                <input type="password" class="form-control" id="login-password" placeholder="Ingrese su Contraseña" required>
+                <input type="password" class="form-control" id="login-password" placeholder="Ingrese su Contraseña"
+                  required>
               </div>
 
               <div class="d-grid mb-3">
@@ -97,21 +97,25 @@
 
               <div class="mb-3">
                 <label for="username" class="form-label fw-bold">Nombre de Usuario</label>
-                <input type="text" class="form-control" id="username" placeholder="Ingrese un Nombre de Usuario" required>
+                <input type="text" class="form-control" id="username" placeholder="Ingrese un Nombre de Usuario"
+                  required>
               </div>
 
               <div class="mb-3">
                 <label for="password" class="form-label fw-bold">Contraseña</label>
-                <input type="password" class="form-control" id="password" placeholder="Cree una Contraseña Segura" required>
+                <input type="password" class="form-control" id="password" placeholder="Cree una Contraseña Segura"
+                  required>
               </div>
 
               <div class="mb-3">
                 <label for="confirm-password" class="form-label fw-bold">Confirmar Contraseña</label>
-                <input type="password" class="form-control" id="confirm-password" placeholder="Repita su Contraseña" required>
+                <input type="password" class="form-control" id="confirm-password" placeholder="Repita su Contraseña"
+                  required>
               </div>
 
               <div class="d-grid gap-2">
-                <button type="submit" class="btn text-white w-100" style="background-color: #E27AB0;">Registrarse</button>
+                <button type="submit" class="btn text-white w-100"
+                  style="background-color: #E27AB0;">Registrarse</button>
               </div>
             </form>
 
@@ -120,12 +124,12 @@
       </div>
     </div>
   </div>
-</div>
 
   <!-- Footer dinámico -->
   <div id="footer"></div>
 
   <!-- Scripts -->
+  <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Carga navbar y footer dinámicos
@@ -155,84 +159,6 @@
         registerLabel.classList.toggle('active', this.id === 'registerSwitch');
       });
     });
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-    function adjustNavbarVisibility() {
-      const zoomLevel = Math.round(window.devicePixelRatio * 100);
-      const windowWidth = window.innerWidth;
-      const screenWidth = screen.width; // Ancho de la pantalla
-      const navbarToggler = document.getElementById('navbarToggler');
-      const navbarNav = document.querySelector('.navbar-nav');
-      const iconElement = document.getElementById('iconElement');
-
-      // Mostrar opciones del menú si la ventana está completamente abierta y el zoom está entre 25% y 67%
-      if (windowWidth >= screenWidth && zoomLevel >= 25 && zoomLevel <= 67) {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-      // Mostrar ícono del menú en otras condiciones
-      else if (windowWidth <= 768 ||
-        (zoomLevel >= 25 && zoomLevel <= 90 && windowWidth >= 1080) ||
-        (zoomLevel >= 100 && zoomLevel <= 500) ||
-        windowWidth > 768) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      }
-      // Mostrar opciones del menú por defecto
-      else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-
-      // Mostrar el ícono si el ancho es <= 810 o el zoom está entre 100% y 500%
-      if (windowWidth <= 810 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        iconElement.style.display = 'block'; // Muestra el ícono
-      } else {
-        iconElement.style.display = 'none'; // Oculta el ícono
-      }
-
-      // Lógica adicional para el navbar
-      if (windowWidth <= 768 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      } else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-    }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 731904c (Update registro_usuarios.html)
-=======
-
->>>>>>> parent of 731904c (Update registro_usuarios.html)
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-    window.addEventListener('load', adjustNavbarVisibility);
-    window.addEventListener('resize', adjustNavbarVisibility);
   </script>
 
 </body>

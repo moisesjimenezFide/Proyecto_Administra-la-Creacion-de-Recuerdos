@@ -25,7 +25,6 @@
   <!-- Navbar dinámico -->
   <div id="navbar"></div>
 
-<div id="container-wrap">
   <header class="hero-section bg-light py-5 bg-white">
     <div class="container text-center py-5">
       <div class="col-lg-8 col-md-10 mx-auto mb-4">
@@ -60,7 +59,7 @@
               <i class="fas fa-users fa-3x mb-3 light-pink"></i>
               <h5 class="card-title" style="font-family: 'Sono', sans-serif;">Clientes</h5>
               <p class="card-text">Registra y gestiona clientes.</p>
-              <a href="registro_usuarios.html" class="btn btn-outline-light-pink">Ver Clientes</a>
+              <a href="registrousuarios.html" class="btn btn-outline-light-pink">Ver Clientes</a>
             </div>
           </div>
         </div>
@@ -72,19 +71,19 @@
               <i class="fas fa-file-invoice-dollar fa-3x mb-3 light-pink"></i>
               <h5 class="card-title" style="font-family: 'Sono', sans-serif;">Ventas</h5>
               <p class="card-text">Historial de transacciones.</p>
-              <a href="registro_ventas.html" class="btn btn-outline-light-pink">Ver Ventas</a>
+              <a href="registroventas.html" class="btn btn-outline-light-pink">Ver Ventas</a>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-</div>
 
   <!-- Footer dinámico -->
   <div id="footer"></div>
 
   <!-- Scripts -->
+  <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Carga dinámica del navbar y footer
@@ -98,64 +97,6 @@
         document.getElementById("navbar").innerHTML = navbarHTML;
         document.getElementById("footer").innerHTML = footerHTML;
       });
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    function adjustNavbarVisibility() {
-      const zoomLevel = Math.round(window.devicePixelRatio * 100);
-      const windowWidth = window.innerWidth;
-      const screenWidth = screen.width; // Ancho de la pantalla
-      const navbarToggler = document.getElementById('navbarToggler');
-      const navbarNav = document.querySelector('.navbar-nav');
-      const iconElement = document.getElementById('iconElement');
-
-      // Mostrar opciones del menú si la ventana está completamente abierta y el zoom está entre 25% y 67%
-      if (windowWidth >= screenWidth && zoomLevel >= 25 && zoomLevel <= 67) {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-      // Mostrar ícono del menú en otras condiciones
-      else if (windowWidth <= 768 ||
-        (zoomLevel >= 25 && zoomLevel <= 90 && windowWidth >= 1080) ||
-        (zoomLevel >= 100 && zoomLevel <= 500) ||
-        windowWidth > 768) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      }
-      // Mostrar opciones del menú por defecto
-      else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-
-      // Mostrar el ícono si el ancho es <= 810 o el zoom está entre 100% y 500%
-      if (windowWidth <= 810 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        iconElement.style.display = 'block'; // Muestra el ícono
-      } else {
-        iconElement.style.display = 'none'; // Oculta el ícono
-      }
-
-      // Lógica adicional para el navbar
-      if (windowWidth <= 768 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      } else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-    }
-    window.addEventListener('load', adjustNavbarVisibility);
-    window.addEventListener('resize', adjustNavbarVisibility);
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
   </script>
 </body>
 

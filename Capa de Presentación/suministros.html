@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-  
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,22 +19,6 @@
   <!-- Navbar dinámico -->
   <div id="navbar"></div>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<div id="container-wrap">
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-<div id="container-wrap">
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-<div id="container-wrap">
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-<div id="container-wrap">
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
   <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
       <i class="fas fa-spray-can-sparkles me-2"></i> Gestión de Suministros de Limpieza
@@ -69,7 +53,8 @@
       </div>
 
       <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 mb-4">
-        <button type="button" class="btn btn-sm btn-danger me-md-2" onclick="document.getElementById('form_suministro').reset(); indice_editar = null; document.querySelector('#form_suministro button[type=submit]').textContent = 'Agregar';">Cancelar</button>
+        <button type="button" class="btn btn-sm btn-danger me-md-2"
+          onclick="document.getElementById('form_suministro').reset(); indice_editar = null; document.querySelector('#form_suministro button[type=submit]').textContent = 'Agregar';">Cancelar</button>
         <button type="submit" class="btn btn-sm text-white" style="background-color: #E27AB0;">Agregar</button>
       </div>
     </form>
@@ -91,69 +76,54 @@
         <tbody id="tabla_suministros"></tbody>
       </table>
     </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  </div>
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-  </div>
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-  </div>
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-  </div>
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-    
-  <!-- Footer dinámico -->
-  <div id="footer"></div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    const suministros = [
-      {
-        nombre: "Jabón Antibacterial",
-        marca: "CleanMax",
-        presentacion: "500ml",
-        proveedor: "Distribuidora La Limpia",
-        costo_unidad: 1200.0,
-        cantidad: 10,
-        costo_total: 12000.0
-      },
-      {
-        nombre: "Desinfectante Multiusos",
-        marca: "LimpioPlus",
-        presentacion: "1L",
-        proveedor: "Químicos del Valle",
-        costo_unidad: 1500.0,
-        cantidad: 5,
-        costo_total: 7500.0
-      },
-      {
-        nombre: "Toallas de Papel",
-        marca: "EcoWipe",
-        presentacion: "6 rollos",
-        proveedor: "Papeles San José",
-        costo_unidad: 2100.0,
-        cantidad: 7,
-        costo_total: 14700.0
-      }
-    ];
+    <!-- Footer dinámico -->
+    <div id="footer"></div>
 
-    let indice_editar = null;
+    <!-- Scripts -->
+    <script src="js/navbar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      const suministros = [
+        {
+          nombre: "Jabón Antibacterial",
+          marca: "CleanMax",
+          presentacion: "500ml",
+          proveedor: "Distribuidora La Limpia",
+          costo_unidad: 1200.0,
+          cantidad: 10,
+          costo_total: 12000.0
+        },
+        {
+          nombre: "Desinfectante Multiusos",
+          marca: "LimpioPlus",
+          presentacion: "1L",
+          proveedor: "Químicos del Valle",
+          costo_unidad: 1500.0,
+          cantidad: 5,
+          costo_total: 7500.0
+        },
+        {
+          nombre: "Toallas de Papel",
+          marca: "EcoWipe",
+          presentacion: "6 rollos",
+          proveedor: "Papeles San José",
+          costo_unidad: 2100.0,
+          cantidad: 7,
+          costo_total: 14700.0
+        }
+      ];
 
-    const tabla = document.getElementById('tabla_suministros');
-    const form = document.getElementById('form_suministro');
+      let indice_editar = null;
 
-    const mostrar_suministros = () => {
-      tabla.innerHTML = "";
-      suministros.forEach((s, i) => {
-        tabla.innerHTML += `
+      const tabla = document.getElementById('tabla_suministros');
+      const form = document.getElementById('form_suministro');
+
+      const mostrar_suministros = () => {
+        tabla.innerHTML = "";
+        suministros.forEach((s, i) => {
+          tabla.innerHTML += `
           <tr>
             <td>${s.nombre}</td>
             <td>${s.marca}</td>
@@ -177,126 +147,84 @@
 
           </tr>
         `;
+        });
+      };
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        const nombre = document.getElementById('nombre').value.trim();
+        const marca = document.getElementById('marca').value.trim();
+        const presentacion = document.getElementById('presentacion').value.trim();
+        const proveedor = document.getElementById('proveedor').value.trim();
+        const costo_unidad = parseFloat(document.getElementById('costo_unidad').value);
+        const cantidad = parseFloat(document.getElementById('cantidad').value);
+
+        if ([costo_unidad, cantidad].some(v => isNaN(v) || v < 0)) {
+          return Swal.fire("Error", "Los valores deben ser válidos y no negativos.", "error");
+        }
+
+        const costo_total = costo_unidad * cantidad;
+
+        if (indice_editar === null) {
+          if (suministros.find(s => s.nombre.toLowerCase() === nombre.toLowerCase())) {
+            return Swal.fire("Duplicado", "Ya existe un suministro con ese nombre.", "warning");
+          }
+          suministros.push({ nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total });
+          Swal.fire("¡Agregado!", "Suministro agregado exitosamente.", "success");
+        } else {
+          suministros[indice_editar] = { nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total };
+          indice_editar = null;
+          form.querySelector("button[type='submit']").textContent = "Agregar";
+          Swal.fire("Actualizado", "Suministro actualizado exitosamente.", "success");
+        }
+
+        form.reset();
+        mostrar_suministros();
       });
-    };
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-
-      const nombre = document.getElementById('nombre').value.trim();
-      const marca = document.getElementById('marca').value.trim();
-      const presentacion = document.getElementById('presentacion').value.trim();
-      const proveedor = document.getElementById('proveedor').value.trim();
-      const costo_unidad = parseFloat(document.getElementById('costo_unidad').value);
-      const cantidad = parseFloat(document.getElementById('cantidad').value);
-
-      if ([costo_unidad, cantidad].some(v => isNaN(v) || v < 0)) {
-        return Swal.fire("Error", "Los valores deben ser válidos y no negativos.", "error");
+      function editar_suministros(index) {
+        const s = suministros[index];
+        document.getElementById('nombre').value = s.nombre;
+        document.getElementById('marca').value = s.marca;
+        document.getElementById('presentacion').value = s.presentacion;
+        document.getElementById('proveedor').value = s.proveedor;
+        document.getElementById('costo_unidad').value = s.costo_unidad;
+        document.getElementById('cantidad').value = s.cantidad;
+        indice_editar = index;
+        form.querySelector("button[type='submit']").textContent = "Actualizar";
       }
 
-      const costo_total = costo_unidad * cantidad;
-
-      if (indice_editar === null) {
-        if (suministros.find(s => s.nombre.toLowerCase() === nombre.toLowerCase())) {
-          return Swal.fire("Duplicado", "Ya existe un suministro con ese nombre.", "warning");
-        }
-        suministros.push({ nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total });
-        Swal.fire("¡Agregado!", "Suministro agregado exitosamente.", "success");
-      } else {
-        suministros[indice_editar] = { nombre, marca, presentacion, proveedor, costo_unidad, cantidad, costo_total };
-        indice_editar = null;
-        form.querySelector("button[type='submit']").textContent = "Agregar";
-        Swal.fire("Actualizado", "Suministro actualizado exitosamente.", "success");
+      function eliminar_suministros(index) {
+        Swal.fire({
+          title: `¿Eliminar "${suministros[index].nombre}"?`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Sí, eliminar",
+          cancelButtonText: "Cancelar"
+        }).then(result => {
+          if (result.isConfirmed) {
+            suministros.splice(index, 1);
+            mostrar_suministros();
+            Swal.fire("Eliminado", "El suministro ha sido eliminado.", "success");
+          }
+        });
       }
 
-      form.reset();
-      mostrar_suministros();
-    });
-
-    function editar_suministros(index) {
-      const s = suministros[index];
-      document.getElementById('nombre').value = s.nombre;
-      document.getElementById('marca').value = s.marca;
-      document.getElementById('presentacion').value = s.presentacion;
-      document.getElementById('proveedor').value = s.proveedor;
-      document.getElementById('costo_unidad').value = s.costo_unidad;
-      document.getElementById('cantidad').value = s.cantidad;
-      indice_editar = index;
-      form.querySelector("button[type='submit']").textContent = "Actualizar";
-    }
-
-    function eliminar_suministros(index) {
-      Swal.fire({
-        title: `¿Eliminar "${suministros[index].nombre}"?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Sí, eliminar",
-        cancelButtonText: "Cancelar"
-      }).then(result => {
-        if (result.isConfirmed) {
-          suministros.splice(index, 1);
-          mostrar_suministros();
-          Swal.fire("Eliminado", "El suministro ha sido eliminado.", "success");
-        }
+      // Navbar y footer
+      Promise.all([
+        fetch("templates/navbar.html"),
+        fetch("templates/footer.html")
+      ]).then(async ([navbarRes, footerRes]) => {
+        const navbarHTML = await navbarRes.text();
+        const footerHTML = await footerRes.text();
+        document.getElementById("navbar").innerHTML = navbarHTML;
+        document.getElementById("footer").innerHTML = footerHTML;
       });
-    }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    // Navbar y footer
-    Promise.all([
-      fetch("templates/navbar.html"),
-      fetch("templates/footer.html")
-    ]).then(async ([navbarRes, footerRes]) => {
-      const navbarHTML = await navbarRes.text();
-      const footerHTML = await footerRes.text();
-      document.getElementById("navbar").innerHTML = navbarHTML;
-      document.getElementById("footer").innerHTML = footerHTML;
-    });
-
-    // Mostrar datos precargados
-    document.addEventListener("DOMContentLoaded", mostrar_suministros);
-=======
-    // Mostrar datos precargados
-    document.addEventListener("DOMContentLoaded", mostrar_suministros);
-
-=======
-    // Mostrar datos precargados
-    document.addEventListener("DOMContentLoaded", mostrar_suministros);
-
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-    // Mostrar datos precargados
-    document.addEventListener("DOMContentLoaded", mostrar_suministros);
-
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-    // Mostrar datos precargados
-    document.addEventListener("DOMContentLoaded", mostrar_suministros);
-
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-    // Navbar y footer
-    Promise.all([
-      fetch("templates/navbar.html"),
-      fetch("templates/footer.html")
-    ]).then(async ([navbarRes, footerRes]) => {
-      const navbarHTML = await navbarRes.text();
-      const footerHTML = await footerRes.text();
-      document.getElementById("navbar").innerHTML = navbarHTML;
-      document.getElementById("footer").innerHTML = footerHTML;
-    });
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-  </script>
+      // Mostrar datos precargados
+      document.addEventListener("DOMContentLoaded", mostrar_suministros);
+    </script>
 </body>
+
 </html>

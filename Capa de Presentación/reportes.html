@@ -18,7 +18,6 @@
   <!-- Navbar -->
   <div id="navbar"></div>
 
-<div id="container-wrap">
   <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
       <i class="fas fa-chart-bar me-2"></i> Reportes del Sistema
@@ -46,7 +45,10 @@
       <h4 class="mb-3 text-start">Ventas Mensuales</h4>
       <table class="table table-striped table-bordered text-center">
         <thead class="table-light">
-          <tr><th>Mes</th><th>Total en ₡</th></tr>
+          <tr>
+            <th>Mes</th>
+            <th>Total en ₡</th>
+          </tr>
         </thead>
         <tbody id="tabla-ventas"></tbody>
       </table>
@@ -56,7 +58,10 @@
       <h4 class="mb-3 text-start">Empleados Disponibles</h4>
       <table class="table table-striped table-bordered text-center">
         <thead class="table-light">
-          <tr><th>Mes</th><th>Disponibles</th></tr>
+          <tr>
+            <th>Mes</th>
+            <th>Disponibles</th>
+          </tr>
         </thead>
         <tbody id="tabla-empleados"></tbody>
       </table>
@@ -66,7 +71,10 @@
       <h4 class="mb-3 text-start">Productos en Menú</h4>
       <table class="table table-striped table-bordered text-center">
         <thead class="table-light">
-          <tr><th>Mes</th><th>Cantidad Disponible</th></tr>
+          <tr>
+            <th>Mes</th>
+            <th>Cantidad Disponible</th>
+          </tr>
         </thead>
         <tbody id="tabla-productos"></tbody>
       </table>
@@ -76,7 +84,10 @@
       <h4 class="mb-3 text-start">Costos Promedio</h4>
       <table class="table table-striped table-bordered text-center">
         <thead class="table-light">
-          <tr><th>Mes</th><th>Costo Promedio en ₡</th></tr>
+          <tr>
+            <th>Mes</th>
+            <th>Costo Promedio en ₡</th>
+          </tr>
         </thead>
         <tbody id="tabla-costos"></tbody>
       </table>
@@ -87,59 +98,28 @@
         <i class="fas fa-file-excel me-1"></i> Descargar en Excel
       </button>
     </div>
-</div>
   </div>
-</div>
+  </div>
 
   <!-- Footer -->
   <div id="footer"></div>
 
   <!-- Scripts -->
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
   <script src="js/reportes.js"></script>
+  <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
-=======
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/reportes.js"></script>
-  
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/reportes.js"></script>
-  
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/reportes.js"></script>
-  
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/reportes.js"></script>
-  
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
   <!-- Navbar & Footer dinámico -->
   <script>
     Promise.all([
       fetch("templates/navbar.html"),
       fetch("templates/footer.html")
-    ])
-      .then(async ([navbarRes, footerRes]) => {
-        const navbarHTML = await navbarRes.text();
-        const footerHTML = await footerRes.text();
-        document.getElementById("navbar").innerHTML = navbarHTML;
-        document.getElementById("footer").innerHTML = footerHTML;
-
-        // Re-inicializa los scripts de Bootstrap después de cargar el navbar
-        const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js";
-        document.body.appendChild(script);
-      })
-      .catch(error => console.error("Error al cargar el navbar o footer:", error));
+    ]).then(async ([navbarRes, footerRes]) => {
+      const navbarHTML = await navbarRes.text();
+      const footerHTML = await footerRes.text();
+      document.getElementById("navbar").innerHTML = navbarHTML;
+      document.getElementById("footer").innerHTML = footerHTML;
+    });
 
     // Lógica para cambiar de reporte
     document.querySelectorAll("[data-reporte]").forEach(btn => {
@@ -153,80 +133,10 @@
       });
     });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    // Lógica para cambiar de reporte
-    document.querySelectorAll("[data-reporte]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const reporte = btn.getAttribute("data-reporte");
-        document.querySelectorAll(".reporte").forEach(r => r.style.display = "none");
-        document.querySelector(`#reporte-${reporte}`).style.display = "block";
-
-        document.querySelectorAll("[data-reporte]").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-      });
-    });
-
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
     // Mostrar por defecto
     window.addEventListener("DOMContentLoaded", () => {
       document.querySelector("[data-reporte='ventas']").click();
     });
-
-    function adjustNavbarVisibility() {
-      const zoomLevel = Math.round(window.devicePixelRatio * 100);
-      const windowWidth = window.innerWidth;
-      const screenWidth = screen.width; // Ancho de la pantalla
-      const navbarToggler = document.getElementById('navbarToggler');
-      const navbarNav = document.querySelector('.navbar-nav');
-      const iconElement = document.getElementById('iconElement');
-
-      // Mostrar opciones del menú si la ventana está completamente abierta y el zoom está entre 25% y 67%
-      if (windowWidth >= screenWidth && zoomLevel >= 25 && zoomLevel <= 67) {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-      // Mostrar ícono del menú en otras condiciones
-      else if (windowWidth <= 768 ||
-        (zoomLevel >= 25 && zoomLevel <= 90 && windowWidth >= 1080) ||
-        (zoomLevel >= 100 && zoomLevel <= 500) ||
-        windowWidth > 768) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      }
-      // Mostrar opciones del menú por defecto
-      else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-
-      // Mostrar el ícono si el ancho es <= 810 o el zoom está entre 100% y 500%
-      if (windowWidth <= 810 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        iconElement.style.display = 'block'; // Muestra el ícono
-      } else {
-        iconElement.style.display = 'none'; // Oculta el ícono
-      }
-
-      // Lógica adicional para el navbar
-      if (windowWidth <= 768 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      } else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-    }
-    window.addEventListener('load', adjustNavbarVisibility);
-    window.addEventListener('resize', adjustNavbarVisibility);
   </script>
 </body>
 

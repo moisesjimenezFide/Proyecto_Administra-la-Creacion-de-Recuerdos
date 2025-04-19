@@ -22,13 +22,12 @@
 
     <div id="navbar"></div>
 
-<div id="container-wrap">
     <div class="container mt-5">
         <h2 class="text-center" style="font-family: 'Sono', sans-serif;">
             <i class="fas fa-box-open" style="font-size: 24px; margin-right: 10px;"></i>
             Sistema de Pedidos
         </h2>
-        
+
     </div>
     <div class="container-fluid pos-container">
         <div class="row">
@@ -119,8 +118,8 @@
                 </div>
 
                 <div class="order-actions">
-                    <button class="btn text-white"  style="background-color: #E27AB0;"  id="checkoutBtn">
-                        <i class="fas fa-cash-register me-2"  ></i> Procesar Pago
+                    <button class="btn text-white" style="background-color: #E27AB0;" id="checkoutBtn">
+                        <i class="fas fa-cash-register me-2"></i> Procesar Pago
                     </button>
                     <button class="btn btn-secondary" id="saveOrderBtn">
                         <i class="fas fa-save me-2"></i> Guardar Pedido
@@ -180,9 +179,10 @@
                                     <label for="cashAmount" class="form-label">Monto Recibido</label>
                                     <input type="number" class="form-control" id="cashAmount" placeholder="0.00">
                                     <!-- Error message -->
-                                    <div id="error-message" class="text-danger" style="display: none;">El monto recibido es menor que el total a pagar</div>
+                                    <div id="error-message" class="text-danger" style="display: none;">El monto recibido
+                                        es menor que el total a pagar</div>
                                 </div>
-                                
+
                                 <div class="mb-3">
                                     <label for="cashChange" class="form-label">Cambio</label>
                                     <input type="text" class="form-control" id="cashChange" placeholder="0.00" readonly>
@@ -227,58 +227,58 @@
                 </div>
                 <div class="modal-footer">
                     <!-- Botón de Cancelar con data-bs-dismiss para que se cierre el modal -->
-                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" aria-label="Close" id="cancelBtn">
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" aria-label="Close"
+                        id="cancelBtn">
                         Cancelar
                     </button>
-                    <button type="button" class="btn text-white" style="background-color: #E27AB0;" id="confirmPaymentBtn">
+                    <button type="button" class="btn text-white" style="background-color: #E27AB0;"
+                        id="confirmPaymentBtn">
                         Confirmar Pago
                     </button>
                 </div>
-                
+
             </div>
         </div>
     </div>
 
-<!-- Modal Pedido Completado -->
-<div class="modal fade" id="orderCompleteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #000; color: white;">
-                <h5 class="modal-title">Pedido Completado</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
-                <h4>¡Pedido procesado con éxito!</h4>
-                <p class="order-number">Número de pedido: <strong>ORD-2025-0015</strong></p>
-                
-                <!-- Aquí los botones para "Imprimir Factura", "Nuevo Pedido" y "Valorar Pedido" -->
-                <button class="btn" style="background-color: #E27AB0; color: white;" id="rateOrderBtn">
-                    <i class="fas fa-star me-2"></i>Valorar Pedido
-                </button>
-                <button class="btn" style="background-color: #E27AB0; color: white;" id="newOrderBtn">
-                    <i class="fas fa-plus me-2"></i>Nuevo Pedido
-                </button>
-                <button class="btn" style="background-color: #000; color: white; margin-top: 10px;" id="printReceiptBtn">
-                    <i class="fas fa-print me-2"></i>Imprimir Factura
-                </button>
-                
-                <!-- Mensaje que aparece cuando se imprime la factura -->
-                <div id="printMessage" style="display:none; color: #28a745; margin-top: 10px;">
-                    <strong>Se ha enviado la factura a imprimir.</strong>
+    <!-- Modal Pedido Completado -->
+    <div class="modal fade" id="orderCompleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #000; color: white;">
+                    <h5 class="modal-title">Pedido Completado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                                <!-- Mensaje de agradecimiento que aparecerá después de valorar el pedido -->
-                                <div id="thanksMessage" style="display:none; margin-top: 10px; color: #28a745;">
-                                    <strong>Gracias por tu retroalimentación.</strong>
-                                </div>
-                
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+                    <h4>¡Pedido procesado con éxito!</h4>
+                    <p class="order-number">Número de pedido: <strong>ORD-2025-0015</strong></p>
+
+                    <!-- Aquí los botones para "Imprimir Factura", "Nuevo Pedido" y "Valorar Pedido" -->
+                    <button class="btn" style="background-color: #E27AB0; color: white;" id="rateOrderBtn">
+                        <i class="fas fa-star me-2"></i>Valorar Pedido
+                    </button>
+                    <button class="btn" style="background-color: #E27AB0; color: white;" id="newOrderBtn">
+                        <i class="fas fa-plus me-2"></i>Nuevo Pedido
+                    </button>
+                    <button class="btn" style="background-color: #000; color: white; margin-top: 10px;"
+                        id="printReceiptBtn">
+                        <i class="fas fa-print me-2"></i>Imprimir Factura
+                    </button>
+
+                    <!-- Mensaje que aparece cuando se imprime la factura -->
+                    <div id="printMessage" style="display:none; color: #28a745; margin-top: 10px;">
+                        <strong>Se ha enviado la factura a imprimir.</strong>
+                    </div>
+                    <!-- Mensaje de agradecimiento que aparecerá después de valorar el pedido -->
+                    <div id="thanksMessage" style="display:none; margin-top: 10px; color: #28a745;">
+                        <strong>Gracias por tu retroalimentación.</strong>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-
-
 
     <div class="modal fade" id="orderStatusModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -346,45 +346,47 @@
     </div>
 
     <!-- Modal Valoración del Pedido -->
-<div class="modal fade" id="ratingModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Valorar Pedido</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <p>¿Cómo calificarías tu experiencia con este pedido?</p>
-                <div class="rating-stars mb-4">
-                    <i class="far fa-star" data-rating="1"></i>
-                    <i class="far fa-star" data-rating="2"></i>
-                    <i class="far fa-star" data-rating="3"></i>
-                    <i class="far fa-star" data-rating="4"></i>
-                    <i class="far fa-star" data-rating="5"></i>
+    <div class="modal fade" id="ratingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Valorar Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body text-center">
+                    <p>¿Cómo calificarías tu experiencia con este pedido?</p>
+                    <div class="rating-stars mb-4">
+                        <i class="far fa-star" data-rating="1"></i>
+                        <i class="far fa-star" data-rating="2"></i>
+                        <i class="far fa-star" data-rating="3"></i>
+                        <i class="far fa-star" data-rating="4"></i>
+                        <i class="far fa-star" data-rating="5"></i>
+                    </div>
 
-                <!-- Mensaje de error debajo de las estrellas -->
-                <div id="error-message" class="text-danger" style="display: none;">Por favor selecciona una calificación</div>
+                    <!-- Mensaje de error debajo de las estrellas -->
+                    <div id="error-message" class="text-danger" style="display: none;">Por favor selecciona una
+                        calificación</div>
 
-                <div class="mb-3">
-                    <label for="ratingComments" class="form-label">Comentarios (opcional)</label>
-                    <textarea class="form-control" id="ratingComments" rows="3" maxlength="500"
-                        placeholder="¿Algo que nos quieras contar sobre tu experiencia?"></textarea>
-                    <small class="text-muted"><span id="charsLeft">500</span> caracteres restantes</small>
+                    <div class="mb-3">
+                        <label for="ratingComments" class="form-label">Comentarios (opcional)</label>
+                        <textarea class="form-control" id="ratingComments" rows="3" maxlength="500"
+                            placeholder="¿Algo que nos quieras contar sobre tu experiencia?"></textarea>
+                        <small class="text-muted"><span id="charsLeft">500</span> caracteres restantes</small>
+                    </div>
+
+                    <!-- Mensaje de agradecimiento que aparece después de enviar la valoración -->
+                    <div id="thanksMessage" style="display: none; color: #28a745; margin-top: 10px;">
+                        <strong>Gracias por tu retroalimentación. ¡Tu opinión nos ayuda a mejorar!</strong>
+                    </div>
                 </div>
-
-                <!-- Mensaje de agradecimiento que aparece después de enviar la valoración -->
-                <div id="thanksMessage" style="display: none; color: #28a745; margin-top: 10px;">
-                    <strong>Gracias por tu retroalimentación. ¡Tu opinión nos ayuda a mejorar!</strong>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn" style="background-color: #E27AB0; color: white;"
+                        id="submitRatingBtn">Enviar Valoración</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn" style="background-color: #E27AB0; color: white;" id="submitRatingBtn">Enviar Valoración</button>
             </div>
         </div>
     </div>
-</div>
 
 
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
@@ -403,7 +405,6 @@
     <button class="toggle-order-panel" id="toggleOrderPanelBtn">
         <i class="fas fa-chevron-right"></i>
     </button>
-</div>
 
     <div id="footer"></div>
 
@@ -413,88 +414,27 @@
             fetch("templates/navbar.html"),
             fetch("templates/footer.html")
         ])
-        .then(async ([navbarRes, footerRes]) => {
-            if (!navbarRes.ok) {
-                console.error("Error al cargar navbar.html");
-            } else {
-                const navbarHTML = await navbarRes.text();
-                document.getElementById("navbar").innerHTML = navbarHTML;
-            }
-    
-            if (!footerRes.ok) {
-                console.error("Error al cargar footer.html");
-            } else {
-                const footerHTML = await footerRes.text();
-                document.getElementById("footer").innerHTML = footerHTML;
-            }
-        })
-        .catch(error => console.error("Error al cargar archivos dinámicos:", error));
+            .then(async ([navbarRes, footerRes]) => {
+                if (!navbarRes.ok) {
+                    console.error("Error al cargar navbar.html");
+                } else {
+                    const navbarHTML = await navbarRes.text();
+                    document.getElementById("navbar").innerHTML = navbarHTML;
+                }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    function adjustNavbarVisibility() {
-      const zoomLevel = Math.round(window.devicePixelRatio * 100);
-      const windowWidth = window.innerWidth;
-      const screenWidth = screen.width; // Ancho de la pantalla
-      const navbarToggler = document.getElementById('navbarToggler');
-      const navbarNav = document.querySelector('.navbar-nav');
-      const iconElement = document.getElementById('iconElement');
-
-      // Mostrar opciones del menú si la ventana está completamente abierta y el zoom está entre 25% y 67%
-      if (windowWidth >= screenWidth && zoomLevel >= 25 && zoomLevel <= 67) {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-      // Mostrar ícono del menú en otras condiciones
-      else if (windowWidth <= 768 ||
-        (zoomLevel >= 25 && zoomLevel <= 90 && windowWidth >= 1080) ||
-        (zoomLevel >= 100 && zoomLevel <= 500) ||
-        windowWidth > 768) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      }
-      // Mostrar opciones del menú por defecto
-      else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-
-      // Mostrar el ícono si el ancho es <= 810 o el zoom está entre 100% y 500%
-      if (windowWidth <= 810 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        iconElement.style.display = 'block'; // Muestra el ícono
-      } else {
-        iconElement.style.display = 'none'; // Oculta el ícono
-      }
-
-      // Lógica adicional para el navbar
-      if (windowWidth <= 768 || (zoomLevel >= 100 && zoomLevel <= 500)) {
-        navbarToggler.style.display = 'block';
-        navbarNav.style.display = 'none';
-      } else {
-        navbarToggler.style.display = 'none';
-        navbarNav.style.display = 'flex';
-      }
-    }
-    window.addEventListener('load', adjustNavbarVisibility);
-    window.addEventListener('resize', adjustNavbarVisibility);
-=======
-    
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-    
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-    
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-=======
-    
->>>>>>> parent of a3d6623 (Revert "Cambio en los colores del navbar y footer")
-    </script>
-    
+                if (!footerRes.ok) {
+                    console.error("Error al cargar footer.html");
+                } else {
+                    const footerHTML = await footerRes.text();
+                    document.getElementById("footer").innerHTML = footerHTML;
+                }
+            })
+            .catch(error => console.error("Error al cargar archivos dinámicos:", error));
     </script>
 
+    </script>
+
+    <script src="js/navbar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/pedidos.js"></script>
 
