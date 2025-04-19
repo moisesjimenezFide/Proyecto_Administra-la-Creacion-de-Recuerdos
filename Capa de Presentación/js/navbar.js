@@ -27,6 +27,5 @@ function adjustNavbarVisibility() {
         iconElement.style.display = 'none';
     }
 }
-
 window.addEventListener('load', adjustNavbarVisibility);
 window.addEventListener('resize', adjustNavbarVisibility);
