@@ -94,18 +94,6 @@ body {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.pos-header {
-  background-color: var(--pos-dark);
-  color: white;
-  padding: 10px 0;
-  font-family: 'Sono', sans-serif;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 60px;
-}
-
 .pos-container {
   padding: 0;
   height: calc(100vh - 150px);
