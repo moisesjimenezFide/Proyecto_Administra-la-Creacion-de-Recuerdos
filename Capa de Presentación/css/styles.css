@@ -18,8 +18,10 @@
 
 html,
 body {
-  height: 100%;
-  margin: 0;
+  min-height: auto;
+  height: auto;
+  padding: 0;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
@@ -29,9 +31,26 @@ body {
 }
 
 #container-wrap {
+  transform: scale(1);
+  transform-origin: top center;
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+#container-wrap,
+.navbar.navbar-expand-lg.navbar-dark {
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  width: auto;
+}
+
+#container-wrap2 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
 }
 
 /* Texto rosado */
@@ -55,7 +74,7 @@ body {
   color: black !important;
   font-size: 1.2rem;
   margin-right: 0 !important;
-  flex-grow: 1;
+  transition: margin-left 0.3s ease-in-out;
 }
 
 .logo-navbar {
@@ -65,12 +84,26 @@ body {
   padding: 3px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: margin-left 0.3s ease-in-out;
 }
 
 /* Navbar responsive */
 .navbar-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   font-family: 'Sono', sans-serif;
   font-weight: 800;
+  top: 10px;
+  right: 10px;
+  z-index: 1050;
+  transform: none !important;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
 }
 
 .nav-link {
@@ -79,10 +112,19 @@ body {
   font-weight: 800;
   font-size: 0.9rem;
   padding: 0.5rem 1rem !important;
+  font-size: 1rem;
 }
 
 .navbar-toggler {
   border-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  top: 10px;
+  right: 10px;
+  z-index: 1050;
+  transform: none !important;
+  margin-left: auto;
+  padding: 0.5rem;
+  box-sizing: border-box;
 }
 
 .navbar-toggler-icon {
@@ -99,11 +141,20 @@ body {
   color: white;
   width: 100%;
   flex-shrink: 0;
+  transition: transform 0.3s ease-in-out;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 .navbar {
+  overflow: hidden;
   background-color: var(--pos-dark);
   padding: 0.5rem 1rem;
+  position: relative;
+  z-index: 1000;
+  transform: none !important;
+  width: auto;
+  height: auto;
 }
 
 /* Oscurece todo el texto dentro del navbar */
@@ -125,4 +176,47 @@ body {
 /* Color del ícono hamburguesa */
 .navbar-dark .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 810px) {
+  .navbar-nav {
+    display: none;
+  }
+
+  .navbar-toggler {
+    display: block;
+  }
+
+  .nav-link {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .navbar-collapse.show .navbar-nav {
+    display: flex;
+  }
+}
+
+/* Ajustes para zoom entre 50% y 25% */
+@media (max-width: 1920px) and (min-width: 960px) {
+  .navbar-brand {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 960px) and (min-width: 480px) {
+  body {
+    transform: scale(1);
+    transform-origin: top center;
+  }
+
+  .navbar-brand {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-brand {
+    font-size: 0.8rem;
+  }
 }

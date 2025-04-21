@@ -16,109 +16,108 @@
 </head>
 
 <body>
-  <!-- Navbar dinámico -->
-  <div id="navbar"></div>
-
   <div id="container-wrap">
-    <div class="container my-5 text-center">
-      <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
-        <i class="fas fa-warehouse me-2"></i> Gestión de Materias Primas
-      </h2>
-    </div>
+    <!-- Navbar dinámico -->
+    <div id="navbar"></div>
 
-    <div class="container mt-4">
-      <h4><strong>Búsqueda de Materias Primas</strong></h4>
-      <div class="input-group mb-4">
-        <input type="text" id="busqueda" class="form-control" placeholder="Buscar por cualquier campo...">
-        <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search ms-1"></i></button>
+    <div id="container-wrap2">
+      <div class="container my-5 text-center">
+        <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+          <i class="fas fa-warehouse me-2"></i> Gestión de Materias Primas
+        </h2>
+      </div>
+
+      <div class="container mt-4">
+        <h4><strong>Búsqueda de Materias Primas</strong></h4>
+        <div class="input-group mb-4">
+          <input type="text" id="busqueda" class="form-control" placeholder="Buscar por cualquier campo...">
+          <button class="input-group-text" id="btn_buscar">Buscar <i class="fas fa-search ms-1"></i></button>
+        </div>
+      </div>
+
+      <div class="container">
+        <h4 class="mb-3"><strong>Registro de Materias Primas</strong></h4>
+        <form id="form_materias_primas" class="mb-5">
+          <div class="mb-3 text-start">
+            <label for="nombre" class="form-label fw-bold">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" required>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="marca" class="form-label fw-bold">Marca</label>
+            <select class="form-select" id="marca" required>
+              <option value="" disabled selected>Seleccione una marca</option>
+            </select>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="presentacion" class="form-label fw-bold">Presentación</label>
+            <input type="text" class="form-control" id="presentacion" placeholder="Ej. 500ml / Bolsa" required>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="proveedor" class="form-label fw-bold">Proveedor</label>
+            <select class="form-select" id="proveedor" required>
+              <option value="" disabled selected>Seleccione un proveedor</option>
+            </select>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="costo" class="form-label fw-bold">Costo (₡)</label>
+            <input type="number" class="form-control" id="costo" placeholder="Ej. 1500" min="0" required>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="peso" class="form-label fw-bold">Peso (g)</label>
+            <input type="number" class="form-control" id="peso" placeholder="Ej. 1000" min="0" required>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="unidad" class="form-label fw-bold">Unidad de medida</label>
+            <input type="text" class="form-control" id="unidad" placeholder="Ej. gramos, litros" required>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="merma" class="form-label fw-bold">Porcentaje de Merma (%)</label>
+            <input type="number" class="form-control" id="merma" placeholder="Ej. 10" min="0" required>
+          </div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
+            <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="container">
+        <h4><strong>Listado de Materias Primas</strong></h4>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-sm text-center">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Marca</th>
+                <th>Presentación</th>
+                <th>Proveedor</th>
+                <th>Costo (₡)</th>
+                <th>Peso (g)</th>
+                <th>Unidad</th>
+                <th>Costo por Gramo (₡)</th>
+                <th>Merma (%)</th>
+                <th>Merma Total (g)</th>
+                <th>Costo Merma (₡)</th>
+                <th>Total (₡)</th>
+                <th>Costo con Merma (₡/g)</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla_materias_primas"></tbody>
+          </table>
+        </div>
+        <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
+          No se encontraron coincidencias.
+        </p>
       </div>
     </div>
 
-    <div class="container">
-      <h4 class="mb-3"><strong>Registro de Materias Primas</strong></h4>
-      <form id="form_materias_primas" class="mb-5">
-        <div class="mb-3 text-start">
-          <label for="nombre" class="form-label fw-bold">Nombre</label>
-          <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" required>
-        </div>
-        <div class="mb-3 text-start">
-          <label for="marca" class="form-label fw-bold">Marca</label>
-          <select class="form-select" id="marca" required>
-            <option value="" disabled selected>Seleccione una marca</option>
-          </select>
-        </div>
-        <div class="mb-3 text-start">
-          <label for="presentacion" class="form-label fw-bold">Presentación</label>
-          <input type="text" class="form-control" id="presentacion" placeholder="Ej. 500ml / Bolsa" required>
-        </div>
-        <div class="mb-3 text-start">
-          <label for="proveedor" class="form-label fw-bold">Proveedor</label>
-          <select class="form-select" id="proveedor" required>
-            <option value="" disabled selected>Seleccione un proveedor</option>
-          </select>
-        </div>
-        <div class="mb-3 text-start">
-          <label for="costo" class="form-label fw-bold">Costo (₡)</label>
-          <input type="number" class="form-control" id="costo" placeholder="Ej. 1500" min="0" required>
-        </div>
-        <div class="mb-3 text-start">
-          <label for="peso" class="form-label fw-bold">Peso (g)</label>
-          <input type="number" class="form-control" id="peso" placeholder="Ej. 1000" min="0" required>
-        </div>
-        <div class="mb-3 text-start">
-          <label for="unidad" class="form-label fw-bold">Unidad de medida</label>
-          <input type="text" class="form-control" id="unidad" placeholder="Ej. gramos, litros" required>
-        </div>
-        <div class="mb-3 text-start">
-          <label for="merma" class="form-label fw-bold">Porcentaje de Merma (%)</label>
-          <input type="number" class="form-control" id="merma" placeholder="Ej. 10" min="0" required>
-        </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
-          <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
-        </div>
-      </form>
-    </div>
-
-    <div class="container">
-      <h4><strong>Listado de Materias Primas</strong></h4>
-
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm text-center">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Marca</th>
-              <th>Presentación</th>
-              <th>Proveedor</th>
-              <th>Costo (₡)</th>
-              <th>Peso (g)</th>
-              <th>Unidad</th>
-              <th>Costo por Gramo (₡)</th>
-              <th>Merma (%)</th>
-              <th>Merma Total (g)</th>
-              <th>Costo Merma (₡)</th>
-              <th>Total (₡)</th>
-              <th>Costo con Merma (₡/g)</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tabla_materias_primas"></tbody>
-        </table>
-      </div>
-
-      <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
-        No se encontraron coincidencias.
-      </p>
-    </div>
+    <div id="footer"></div>
   </div>
 
-
-  <div id="footer"></div>
-
-
   <!-- Scripts -->
-  <script src="js/navbar.js"></script>
+  <script src="js/navbar_visibilty_content_zoom_out.js"></script>
   <script src="js/materias_primas.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

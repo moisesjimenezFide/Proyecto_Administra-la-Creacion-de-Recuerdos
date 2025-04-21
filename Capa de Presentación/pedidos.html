@@ -19,401 +19,406 @@
 </head>
 
 <body>
-
-    <div id="navbar"></div>
-
     <div id="container-wrap">
-        <div class="container mt-5">
-            <h2 class="text-center" style="font-family: 'Sono', sans-serif;">
-                <i class="fas fa-box-open" style="font-size: 24px; margin-right: 10px;"></i>
-                Sistema de Pedidos
-            </h2>
+        <div id="navbar"></div>
 
-        </div>
-        <div class="container-fluid pos-container">
-            <div class="row">
-                <div class="col-md-2 pos-categories">
-                    <div class="list-group">
-                        <button class="list-group-item list-group-item-action active" data-category="desayunos">
-                            <i class="fas fa-coffee me-2"></i>Desayunos
-                        </button>
-                        <button class="list-group-item list-group-item-action" data-category="panini">
-                            <i class="fas fa-bread-slice me-2"></i>Panini
-                        </button>
-                        <button class="list-group-item list-group-item-action" data-category="crepes">
-                            <i class="fas fa-blender me-2"></i>Crêpes
-                        </button>
-                        <button class="list-group-item list-group-item-action" data-category="pasta">
-                            <i class="fas fa-pizza-slice me-2"></i>Pasta
-                        </button>
-                        <button class="list-group-item list-group-item-action" data-category="arroz">
-                            <i class="fas fa-utensils me-2"></i>Arroz
-                        </button>
-                        <button class="list-group-item list-group-item-action" data-category="tentaciones">
-                            <i class="fas fa-apple-alt me-2"></i>Tentaciones
-                        </button>
-                        <button class="list-group-item list-group-item-action" data-category="postres">
-                            <i class="fas fa-ice-cream me-2"></i>Delicias
-                        </button>
-                        <button class="list-group-item list-group-item-action" data-category="bebidas-calientes">
-                            <i class="fas fa-mug-hot me-2"></i>Bebidas Calientes
-                        </button>
-                        <button class="list-group-item list-group-item-action" data-category="bebidas-frias">
-                            <i class="fas fa-glass-whiskey me-2"></i>Bebidas Frías
-                        </button>
-                        <button class="list-group-item list-group-item-action" data-category="especiales">
-                            <i class="fas fa-star me-2"></i>Especiales
-                        </button>
-                    </div>
-                </div>
+        <div id="container-wrap2">
+            <div class="container mt-5">
+                <h2 class="text-center" style="font-family: 'Sono', sans-serif;">
+                    <i class="fas fa-box-open" style="font-size: 24px; margin-right: 10px;"></i>
+                    Sistema de Pedidos
+                </h2>
 
-                <div class="col-md-6 pos-products">
-                    <div class="row" id="productGrid">
-                    </div>
-                </div>
-
-                <div class="col-md-4 pos-order-panel">
-                    <div class="customer-info">
-                        <h5><i class="fas fa-user me-2"></i> Información del Cliente</h5>
-                        <div class="mb-2">
-                            <label for="customerName" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="customerName" placeholder="Nombre del cliente">
-                        </div>
-                        <div class="mb-2">
-                            <label for="customerPhone" class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" id="customerPhone" placeholder="8888-8888">
-                        </div>
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="takeawayOrder">
-                            <label class="form-check-label" for="takeawayOrder">Para llevar</label>
+            </div>
+            <div class="container-fluid pos-container">
+                <div class="row">
+                    <div class="col-md-2 pos-categories">
+                        <div class="list-group">
+                            <button class="list-group-item list-group-item-action active" data-category="desayunos">
+                                <i class="fas fa-coffee me-2"></i>Desayunos
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-category="panini">
+                                <i class="fas fa-bread-slice me-2"></i>Panini
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-category="crepes">
+                                <i class="fas fa-blender me-2"></i>Crêpes
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-category="pasta">
+                                <i class="fas fa-pizza-slice me-2"></i>Pasta
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-category="arroz">
+                                <i class="fas fa-utensils me-2"></i>Arroz
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-category="tentaciones">
+                                <i class="fas fa-apple-alt me-2"></i>Tentaciones
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-category="postres">
+                                <i class="fas fa-ice-cream me-2"></i>Delicias
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-category="bebidas-calientes">
+                                <i class="fas fa-mug-hot me-2"></i>Bebidas Calientes
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-category="bebidas-frias">
+                                <i class="fas fa-glass-whiskey me-2"></i>Bebidas Frías
+                            </button>
+                            <button class="list-group-item list-group-item-action" data-category="especiales">
+                                <i class="fas fa-star me-2"></i>Especiales
+                            </button>
                         </div>
                     </div>
 
-                    <div class="order-header">
-                        <h3><i class="fas fa-receipt me-2"></i> Pedido Actual</h3>
-                        <button class="btn btn-sm btn-outline-danger" id="clearOrderBtn">
-                            <i class="fas fa-trash"></i> Limpiar
-                        </button>
-                    </div>
-
-                    <div class="order-items" id="orderItems">
-                        <div class="empty-order">
-                            <i class="fas fa-shopping-cart"></i>
-                            <p>No hay productos en el pedido</p>
+                    <div class="col-md-6 pos-products">
+                        <div class="row" id="productGrid">
                         </div>
                     </div>
 
-                    <div class="order-summary">
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span id="orderSubtotal">₡0</span>
+                    <div class="col-md-4 pos-order-panel">
+                        <div class="customer-info">
+                            <h5><i class="fas fa-user me-2"></i> Información del Cliente</h5>
+                            <div class="mb-2">
+                                <label for="customerName" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="customerName"
+                                    placeholder="Nombre del cliente">
+                            </div>
+                            <div class="mb-2">
+                                <label for="customerPhone" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="customerPhone" placeholder="8888-8888">
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="takeawayOrder">
+                                <label class="form-check-label" for="takeawayOrder">Para llevar</label>
+                            </div>
                         </div>
-                        <div class="summary-row">
-                            <span>Impuestos (13%):</span>
-                            <span id="orderTax">₡0</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total:</span>
-                            <span id="orderTotal">₡0</span>
-                        </div>
-                    </div>
 
-                    <div class="order-actions">
-                        <button class="btn text-white" style="background-color: #E27AB0;" id="checkoutBtn">
-                            <i class="fas fa-cash-register me-2"></i> Procesar Pago
-                        </button>
-                        <button class="btn btn-secondary" id="saveOrderBtn">
-                            <i class="fas fa-save me-2"></i> Guardar Pedido
-                        </button>
+                        <div class="order-header">
+                            <h3><i class="fas fa-receipt me-2"></i> Pedido Actual</h3>
+                            <button class="btn btn-sm btn-outline-danger" id="clearOrderBtn">
+                                <i class="fas fa-trash"></i> Limpiar
+                            </button>
+                        </div>
+
+                        <div class="order-items" id="orderItems">
+                            <div class="empty-order">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>No hay productos en el pedido</p>
+                            </div>
+                        </div>
+
+                        <div class="order-summary">
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="orderSubtotal">₡0</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Impuestos (13%):</span>
+                                <span id="orderTax">₡0</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span id="orderTotal">₡0</span>
+                            </div>
+                        </div>
+
+                        <div class="order-actions">
+                            <button class="btn text-white" style="background-color: #E27AB0;" id="checkoutBtn">
+                                <i class="fas fa-cash-register me-2"></i> Procesar Pago
+                            </button>
+                            <button class="btn btn-secondary" id="saveOrderBtn">
+                                <i class="fas fa-save me-2"></i> Guardar Pedido
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Procesar Pago</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>Resumen del Pedido</h5>
-                                <div id="paymentOrderItems">
-                                </div>
-                                <div class="payment-summary">
-                                    <div class="summary-row">
-                                        <span>Subtotal:</span>
-                                        <span id="paymentSubtotal">₡0</span>
+            <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Procesar Pago</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Resumen del Pedido</h5>
+                                    <div id="paymentOrderItems">
                                     </div>
-                                    <div class="summary-row">
-                                        <span>Impuestos (10%):</span>
-                                        <span id="paymentTax">₡0</span>
-                                    </div>
-                                    <div class="summary-row total">
-                                        <span>Total:</span>
-                                        <span id="paymentTotal">₡0</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Método de Pago</h5>
-                                <div class="payment-methods">
-                                    <div class="payment-method active" data-method="efectivo">
-                                        <i class="fas fa-money-bill-wave"></i>
-                                        <span>Efectivo</span>
-                                    </div>
-                                    <div class="payment-method" data-method="tarjeta">
-                                        <i class="fas fa-credit-card"></i>
-                                        <span>Tarjeta</span>
-                                    </div>
-                                    <div class="payment-method" data-method="sinpe">
-                                        <i class="fas fa-mobile-alt"></i>
-                                        <span>SINPE Móvil</span>
-                                    </div>
-                                </div>
-
-                                <div class="payment-details" id="efectivoDetails">
-                                    <div class="mb-3">
-                                        <label for="cashAmount" class="form-label">Monto Recibido</label>
-                                        <input type="number" class="form-control" id="cashAmount" placeholder="0.00">
-                                        <!-- Error message -->
-                                        <div id="error-message" class="text-danger" style="display: none;">El monto
-                                            recibido
-                                            es menor que el total a pagar</div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="cashChange" class="form-label">Cambio</label>
-                                        <input type="text" class="form-control" id="cashChange" placeholder="0.00"
-                                            readonly>
-                                    </div>
-                                </div>
-
-                                <div class="payment-details" id="tarjetaDetails" style="display: none;">
-                                    <div class="mb-3">
-                                        <label for="cardNumber" class="form-label">Número de Tarjeta</label>
-                                        <input type="text" class="form-control" id="cardNumber"
-                                            placeholder="1234 5678 9012 3456">
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="cardExpiry" class="form-label">Expiración</label>
-                                            <input type="text" class="form-control" id="cardExpiry" placeholder="MM/AA">
+                                    <div class="payment-summary">
+                                        <div class="summary-row">
+                                            <span>Subtotal:</span>
+                                            <span id="paymentSubtotal">₡0</span>
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="cardCVV" class="form-label">CVV</label>
-                                            <input type="text" class="form-control" id="cardCVV" placeholder="123">
+                                        <div class="summary-row">
+                                            <span>Impuestos (10%):</span>
+                                            <span id="paymentTax">₡0</span>
+                                        </div>
+                                        <div class="summary-row total">
+                                            <span>Total:</span>
+                                            <span id="paymentTotal">₡0</span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="payment-details" id="sinpeDetails" style="display: none;">
-                                    <div class="mb-3">
-                                        <label for="sinpeNumber" class="form-label">Número de Teléfono</label>
-                                        <input type="text" class="form-control" id="sinpeNumber" placeholder="88888888">
+                                <div class="col-md-6">
+                                    <h5>Método de Pago</h5>
+                                    <div class="payment-methods">
+                                        <div class="payment-method active" data-method="efectivo">
+                                            <i class="fas fa-money-bill-wave"></i>
+                                            <span>Efectivo</span>
+                                        </div>
+                                        <div class="payment-method" data-method="tarjeta">
+                                            <i class="fas fa-credit-card"></i>
+                                            <span>Tarjeta</span>
+                                        </div>
+                                        <div class="payment-method" data-method="sinpe">
+                                            <i class="fas fa-mobile-alt"></i>
+                                            <span>SINPE Móvil</span>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="sinpeConfirmation" class="form-label">Código de Confirmación</label>
-                                        <input type="text" class="form-control" id="sinpeConfirmation"
-                                            placeholder="1234">
+
+                                    <div class="payment-details" id="efectivoDetails">
+                                        <div class="mb-3">
+                                            <label for="cashAmount" class="form-label">Monto Recibido</label>
+                                            <input type="number" class="form-control" id="cashAmount"
+                                                placeholder="0.00">
+                                            <!-- Error message -->
+                                            <div id="error-message" class="text-danger" style="display: none;">El monto
+                                                recibido
+                                                es menor que el total a pagar</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="cashChange" class="form-label">Cambio</label>
+                                            <input type="text" class="form-control" id="cashChange" placeholder="0.00"
+                                                readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="payment-details" id="tarjetaDetails" style="display: none;">
+                                        <div class="mb-3">
+                                            <label for="cardNumber" class="form-label">Número de Tarjeta</label>
+                                            <input type="text" class="form-control" id="cardNumber"
+                                                placeholder="1234 5678 9012 3456">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="cardExpiry" class="form-label">Expiración</label>
+                                                <input type="text" class="form-control" id="cardExpiry"
+                                                    placeholder="MM/AA">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="cardCVV" class="form-label">CVV</label>
+                                                <input type="text" class="form-control" id="cardCVV" placeholder="123">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="payment-details" id="sinpeDetails" style="display: none;">
+                                        <div class="mb-3">
+                                            <label for="sinpeNumber" class="form-label">Número de Teléfono</label>
+                                            <input type="text" class="form-control" id="sinpeNumber"
+                                                placeholder="88888888">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="sinpeConfirmation" class="form-label">Código de
+                                                Confirmación</label>
+                                            <input type="text" class="form-control" id="sinpeConfirmation"
+                                                placeholder="1234">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="printReceipt">
+                                        <label class="form-check-label" for="printReceipt">Imprimir recibo</label>
                                     </div>
                                 </div>
-
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="printReceipt">
-                                    <label class="form-check-label" for="printReceipt">Imprimir recibo</label>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <!-- Botón de Cancelar con data-bs-dismiss para que se cierre el modal -->
-                        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" aria-label="Close"
-                            id="cancelBtn">
-                            Cancelar
-                        </button>
-                        <button type="button" class="btn text-white" style="background-color: #E27AB0;"
-                            id="confirmPaymentBtn">
-                            Confirmar Pago
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal Pedido Completado -->
-        <div class="modal fade" id="orderCompleteModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color: #000; color: white;">
-                        <h5 class="modal-title">Pedido Completado</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
-                        <h4>¡Pedido procesado con éxito!</h4>
-                        <p class="order-number">Número de pedido: <strong>ORD-2025-0015</strong></p>
-
-                        <!-- Aquí los botones para "Imprimir Factura", "Nuevo Pedido" y "Valorar Pedido" -->
-                        <button class="btn" style="background-color: #E27AB0; color: white;" id="rateOrderBtn">
-                            <i class="fas fa-star me-2"></i>Valorar Pedido
-                        </button>
-                        <button class="btn" style="background-color: #E27AB0; color: white;" id="newOrderBtn">
-                            <i class="fas fa-plus me-2"></i>Nuevo Pedido
-                        </button>
-                        <button class="btn" style="background-color: #000; color: white; margin-top: 10px;"
-                            id="printReceiptBtn">
-                            <i class="fas fa-print me-2"></i>Imprimir Factura
-                        </button>
-
-                        <!-- Mensaje que aparece cuando se imprime la factura -->
-                        <div id="printMessage" style="display:none; color: #28a745; margin-top: 10px;">
-                            <strong>Se ha enviado la factura a imprimir.</strong>
-                        </div>
-                        <!-- Mensaje de agradecimiento que aparecerá después de valorar el pedido -->
-                        <div id="thanksMessage" style="display:none; margin-top: 10px; color: #28a745;">
-                            <strong>Gracias por tu retroalimentación.</strong>
+                        <div class="modal-footer">
+                            <!-- Botón de Cancelar con data-bs-dismiss para que se cierre el modal -->
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal"
+                                aria-label="Close" id="cancelBtn">
+                                Cancelar
+                            </button>
+                            <button type="button" class="btn text-white" style="background-color: #E27AB0;"
+                                id="confirmPaymentBtn">
+                                Confirmar Pago
+                            </button>
                         </div>
 
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="modal fade" id="orderStatusModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-clipboard-list me-2"></i>Gestión de Pedidos</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal Pedido Completado -->
+            <div class="modal fade" id="orderCompleteModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #000; color: white;">
+                            <h5 class="modal-title">Pedido Completado</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+                            <h4>¡Pedido procesado con éxito!</h4>
+                            <p class="order-number">Número de pedido: <strong>ORD-2025-0015</strong></p>
+
+                            <!-- Aquí los botones para "Imprimir Factura", "Nuevo Pedido" y "Valorar Pedido" -->
+                            <button class="btn" style="background-color: #E27AB0; color: white;" id="rateOrderBtn">
+                                <i class="fas fa-star me-2"></i>Valorar Pedido
+                            </button>
+                            <button class="btn" style="background-color: #E27AB0; color: white;" id="newOrderBtn">
+                                <i class="fas fa-plus me-2"></i>Nuevo Pedido
+                            </button>
+                            <button class="btn" style="background-color: #000; color: white; margin-top: 10px;"
+                                id="printReceiptBtn">
+                                <i class="fas fa-print me-2"></i>Imprimir Factura
+                            </button>
+
+                            <!-- Mensaje que aparece cuando se imprime la factura -->
+                            <div id="printMessage" style="display:none; color: #28a745; margin-top: 10px;">
+                                <strong>Se ha enviado la factura a imprimir.</strong>
+                            </div>
+                            <!-- Mensaje de agradecimiento que aparecerá después de valorar el pedido -->
+                            <div id="thanksMessage" style="display:none; margin-top: 10px; color: #28a745;">
+                                <strong>Gracias por tu retroalimentación.</strong>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="modal-body p-4">
-                        <div class="row mb-4 g-3 align-items-center">
-                            <div class="col-md-6">
-                                <div class="input-group shadow-sm">
-                                    <input type="text" class="form-control" id="orderSearch"
-                                        placeholder="Buscar pedido...">
-                                    <button class="btn" type="button" id="searchOrderBtn">
-                                        <i class="fas fa-search"></i>
-                                    </button>
+                </div>
+            </div>
+
+            <div class="modal fade" id="orderStatusModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fas fa-clipboard-list me-2"></i>Gestión de Pedidos</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <div class="row mb-4 g-3 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="input-group shadow-sm">
+                                        <input type="text" class="form-control" id="orderSearch"
+                                            placeholder="Buscar pedido...">
+                                        <button class="btn" type="button" id="searchOrderBtn">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex flex-wrap gap-2 justify-content-end">
+                                        <button type="button" class="btn btn-sm filter-btn active"
+                                            data-status="all">Todos</button>
+                                        <button type="button" class="btn btn-sm filter-btn"
+                                            data-status="pending">Pendientes</button>
+                                        <button type="button" class="btn btn-sm filter-btn" data-status="preparation">En
+                                            preparación</button>
+                                        <button type="button" class="btn btn-sm filter-btn"
+                                            data-status="ready">Listos</button>
+                                        <button type="button" class="btn btn-sm filter-btn"
+                                            data-status="delivered">Entregados</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="d-flex flex-wrap gap-2 justify-content-end">
-                                    <button type="button" class="btn btn-sm filter-btn active"
-                                        data-status="all">Todos</button>
-                                    <button type="button" class="btn btn-sm filter-btn"
-                                        data-status="pending">Pendientes</button>
-                                    <button type="button" class="btn btn-sm filter-btn" data-status="preparation">En
-                                        preparación</button>
-                                    <button type="button" class="btn btn-sm filter-btn"
-                                        data-status="ready">Listos</button>
-                                    <button type="button" class="btn btn-sm filter-btn"
-                                        data-status="delivered">Entregados</button>
-                                </div>
+
+                            <div class="table-responsive rounded-3 shadow-sm">
+                                <table class="table table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap">N° Pedido</th>
+                                            <th class="text-nowrap">Cliente</th>
+                                            <th class="text-nowrap">Teléfono</th>
+                                            <th>Productos</th>
+                                            <th class="text-nowrap text-end">Total</th>
+                                            <th class="text-nowrap">Estado</th>
+                                            <th class="text-nowrap">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ordersTableBody" class="border-top-0">
+                                        <!-- Las órdenes se cargarán aquí dinámicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <nav aria-label="Page navigation" class="mt-4">
+                                <ul class="pagination justify-content-center" id="ordersPagination">
+                                    <!-- Paginación se generará dinámicamente -->
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm"
+                                style="background-color: var(--light-pink); color: white;"
+                                data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Valoración del Pedido -->
+            <div class="modal fade" id="ratingModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Valorar Pedido</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <p>¿Cómo calificarías tu experiencia con este pedido?</p>
+                            <div class="rating-stars mb-4">
+                                <i class="far fa-star" data-rating="1"></i>
+                                <i class="far fa-star" data-rating="2"></i>
+                                <i class="far fa-star" data-rating="3"></i>
+                                <i class="far fa-star" data-rating="4"></i>
+                                <i class="far fa-star" data-rating="5"></i>
+                            </div>
+
+                            <!-- Mensaje de error debajo de las estrellas -->
+                            <div id="error-message" class="text-danger" style="display: none;">Por favor selecciona una
+                                calificación</div>
+
+                            <div class="mb-3">
+                                <label for="ratingComments" class="form-label">Comentarios (opcional)</label>
+                                <textarea class="form-control" id="ratingComments" rows="3" maxlength="500"
+                                    placeholder="¿Algo que nos quieras contar sobre tu experiencia?"></textarea>
+                                <small class="text-muted"><span id="charsLeft">500</span> caracteres restantes</small>
+                            </div>
+
+                            <!-- Mensaje de agradecimiento que aparece después de enviar la valoración -->
+                            <div id="thanksMessage" style="display: none; color: #28a745; margin-top: 10px;">
+                                <strong>Gracias por tu retroalimentación. ¡Tu opinión nos ayuda a mejorar!</strong>
                             </div>
                         </div>
-
-                        <div class="table-responsive rounded-3 shadow-sm">
-                            <table class="table table-hover mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-nowrap">N° Pedido</th>
-                                        <th class="text-nowrap">Cliente</th>
-                                        <th class="text-nowrap">Teléfono</th>
-                                        <th>Productos</th>
-                                        <th class="text-nowrap text-end">Total</th>
-                                        <th class="text-nowrap">Estado</th>
-                                        <th class="text-nowrap">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="ordersTableBody" class="border-top-0">
-                                    <!-- Las órdenes se cargarán aquí dinámicamente -->
-                                </tbody>
-                            </table>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn" style="background-color: #E27AB0; color: white;"
+                                id="submitRatingBtn">Enviar Valoración</button>
                         </div>
-
-                        <nav aria-label="Page navigation" class="mt-4">
-                            <ul class="pagination justify-content-center" id="ordersPagination">
-                                <!-- Paginación se generará dinámicamente -->
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm"
-                            style="background-color: var(--light-pink); color: white;"
-                            data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Modal Valoración del Pedido -->
-        <div class="modal fade" id="ratingModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Valorar Pedido</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                <div id="ratingToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header bg-success text-white">
+                        <strong class="me-auto">¡Gracias!</strong>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
                     </div>
-                    <div class="modal-body text-center">
-                        <p>¿Cómo calificarías tu experiencia con este pedido?</p>
-                        <div class="rating-stars mb-4">
-                            <i class="far fa-star" data-rating="1"></i>
-                            <i class="far fa-star" data-rating="2"></i>
-                            <i class="far fa-star" data-rating="3"></i>
-                            <i class="far fa-star" data-rating="4"></i>
-                            <i class="far fa-star" data-rating="5"></i>
-                        </div>
-
-                        <!-- Mensaje de error debajo de las estrellas -->
-                        <div id="error-message" class="text-danger" style="display: none;">Por favor selecciona una
-                            calificación</div>
-
-                        <div class="mb-3">
-                            <label for="ratingComments" class="form-label">Comentarios (opcional)</label>
-                            <textarea class="form-control" id="ratingComments" rows="3" maxlength="500"
-                                placeholder="¿Algo que nos quieras contar sobre tu experiencia?"></textarea>
-                            <small class="text-muted"><span id="charsLeft">500</span> caracteres restantes</small>
-                        </div>
-
-                        <!-- Mensaje de agradecimiento que aparece después de enviar la valoración -->
-                        <div id="thanksMessage" style="display: none; color: #28a745; margin-top: 10px;">
-                            <strong>Gracias por tu retroalimentación. ¡Tu opinión nos ayuda a mejorar!</strong>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn" style="background-color: #E27AB0; color: white;"
-                            id="submitRatingBtn">Enviar Valoración</button>
+                    <div class="toast-body">
+                        Apreciamos tu feedback. ¡Tu opinión nos ayuda a mejorar!
                     </div>
                 </div>
             </div>
+            <button class="toggle-order-panel" id="toggleOrderPanelBtn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
 
-        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-            <div id="ratingToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header bg-success text-white">
-                    <strong class="me-auto">¡Gracias!</strong>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    Apreciamos tu feedback. ¡Tu opinión nos ayuda a mejorar!
-                </div>
-            </div>
-        </div>
-
-        <button class="toggle-order-panel" id="toggleOrderPanelBtn">
-            <i class="fas fa-chevron-right"></i>
-        </button>
+        <div id="footer"></div>
     </div>
-
-    <div id="footer"></div>
 
     <!-- Scripts -->
     <script>
@@ -441,7 +446,7 @@
 
     </script>
 
-    <script src="js/navbar.js"></script>
+    <script src="js/navbar_visibilty_content_zoom_out.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/pedidos.js"></script>
 
