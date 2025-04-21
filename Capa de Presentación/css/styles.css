@@ -38,6 +38,7 @@ body {
   flex-direction: column;
   margin-bottom: 0;
   padding-bottom: 0;
+  overflow: visible;
 }
 
 #container-wrap,
@@ -51,6 +52,9 @@ body {
   display: flex;
   flex-direction: column;
   padding-bottom: 0;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
 }
 
 /* Texto rosado */
@@ -135,6 +139,18 @@ body {
   flex-grow: 0 !important;
 }
 
+.dropdown-menu {
+  background-color: var(--pos-dark);
+  color: white;
+  position: absolute;
+  z-index: 1100;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #575757;
+  color: #ffff;
+}
+
 .footer {
   height: 300px;
   background-color: var(--pos-dark);
@@ -147,7 +163,6 @@ body {
 }
 
 .navbar {
-  overflow: hidden;
   background-color: var(--pos-dark);
   padding: 0.5rem 1rem;
   position: relative;
@@ -161,7 +176,7 @@ body {
 .navbar-dark .navbar-brand,
 .navbar-dark .navbar-nav .nav-link,
 .navbar-dark .dropdown-menu .dropdown-item {
-  color: #ffffff !important;
+  color: #ffff !important;
   /* Gris oscuro con buen contraste */
 }
 
@@ -169,18 +184,11 @@ body {
 .navbar-dark .nav-link:hover,
 .navbar-dark .dropdown-item:hover {
   color: #1a1a1a !important;
-  /* Negro para hover */
-  text-decoration: underline;
-}
-
-/* Color del ícono hamburguesa */
-.navbar-dark .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 @media (max-width: 810px) {
   .navbar-nav {
-    display: none;
+    display: flex !important;
   }
 
   .navbar-toggler {
@@ -194,6 +202,10 @@ body {
 
   .navbar-collapse.show .navbar-nav {
     display: flex;
+  }
+
+  .dropdown-menu {
+    display: block !important;
   }
 }
 

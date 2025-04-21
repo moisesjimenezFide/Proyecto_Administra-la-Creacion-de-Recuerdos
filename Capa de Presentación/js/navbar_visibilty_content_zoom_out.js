@@ -56,43 +56,43 @@ window.addEventListener('resize', adjustNavbarVisibility);
 
 function adjustZoom() {
     const zoomLevel = Math.round(window.devicePixelRatio * 100);
-    const content = document.getElementById('container-wrap'); // Selecciona el contenedor del contenido principal incluyendo el navbar y footer
-    const footer = document.getElementById('footer'); // Selecciona el footer
+    const content = document.getElementById('container-wrap');
+    const footer = document.getElementById('footer');
 
     if (zoomLevel === 50) {
-        const scale = 67 / zoomLevel; // Escala inversa para simular 67%
-        content.style.transform = `scale(${scale})`; // Aplica el escalado al contenido principal
-        content.style.transformOrigin = 'top center'; // Ajusta el punto de origen del escalado
-        content.style.width = '74.9%'; // Asegúrate de que el ancho sea del 100%
-        content.style.marginLeft = '12.7%'; // Asegúrate de que el ancho sea del 100%
-        const adjustedMarginBottom = `${footer.offsetHeight / scale}px`; // Calcula el margen inferior dinámico basado en el footer
-        content.style.marginBottom = adjustedMarginBottom; // Ajusta el margen inferior para que el footer esté visible
-        content.style.overflow = 'hidden'; // Oculta cualquier contenido fuera de los límites
+        const scale = 67 / zoomLevel;
+        content.style.transform = `scale(${scale})`;
+        content.style.transformOrigin = 'top center';
+        content.style.width = '74.9%';
+        content.style.marginLeft = '12.7%';
+        const adjustedMarginBottom = `${footer.offsetHeight / scale}px`;
+        content.style.marginBottom = adjustedMarginBottom;
+        content.style.overflow = 'visible';
     } else if (zoomLevel === 33) {
         const scale = 67 / zoomLevel;
         content.style.transform = `scale(${scale})`;
         content.style.transformOrigin = 'top center';
-        content.style.width = '49.5%'; // Asegúrate de que el ancho sea del 100%
-        content.style.marginLeft = '25.5%'; // Asegúrate de que el ancho sea del 100%
-        const adjustedMarginBottom = `${footer.offsetHeight / scale}px`; // Calcula el margen inferior dinámico basado en el footer
-        content.style.marginBottom = adjustedMarginBottom; // Ajusta el margen inferior para que el footer esté visible
-        content.style.overflow = 'hidden'; // Oculta cualquier contenido fuera de los límites
+        content.style.width = '49.5%';
+        content.style.marginLeft = '25.5%';
+        const adjustedMarginBottom = `${footer.offsetHeight / scale}px`;
+        content.style.marginBottom = adjustedMarginBottom;
+        content.style.overflow = 'visible';
     } else if (zoomLevel === 25) {
         const scale = 67 / zoomLevel;
         content.style.transform = `scale(${scale})`;
         content.style.transformOrigin = 'top center';
-        content.style.width = '38%'; // Asegúrate de que el ancho sea del 100%
-        content.style.marginLeft = '31.8%'; // Asegúrate de que el ancho sea del 100%
-        const adjustedMarginBottom = `${footer.offsetHeight / scale}px`; // Calcula el margen inferior dinámico basado en el footer
-        content.style.marginBottom = adjustedMarginBottom; // Ajusta el margen inferior para que el footer esté visible
-        content.style.overflow = 'hidden'; // Oculta cualquier contenido fuera de los límites
+        content.style.width = '38%';
+        content.style.marginLeft = '31.8%';
+        const adjustedMarginBottom = `${footer.offsetHeight / scale}px`;
+        content.style.marginBottom = adjustedMarginBottom;
+        content.style.overflow = 'visible';
     } else {
-        content.style.transform = ''; // Restablece el escalado al valor original
-        content.style.transformOrigin = ''; // Ajusta el punto de origen del escalado
-        content.style.width = '100%'; // Asegúrate de que el ancho sea del 100%
-        content.style.marginLeft = ''; // Asegúrate de que el ancho sea del 100%
-        content.style.marginBottom = ''; // Restablece el margen inferior al valor predeterminado
-        content.style.overflow = 'hidden'; // Oculta cualquier contenido fuera de los límites
+        content.style.transform = '';
+        content.style.transformOrigin = '';
+        content.style.width = '100%';
+        content.style.marginLeft = '';
+        content.style.marginBottom = '';
+        content.style.overflow = 'visible';
     }
 }
 window.addEventListener('resize', adjustZoom);
