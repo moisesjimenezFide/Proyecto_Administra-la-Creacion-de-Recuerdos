@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Gestión de Ventas";
+}
+
+@section Styles {
+    <style>
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .btn-light-pink {
+            background-color: #E27AB0;
+            color: white;
+        }
+
+            .btn-light-pink:hover {
+                background-color: #d66da3;
+                color: white;
+            }
+    </style>
+}
+
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-shopping-cart me-2"></i> Gestión de Ventas
+    </h2>
+</div>
+
+<div class="container">
+    <h4 class="mb-3"><strong>Registro de Ventas</strong></h4>
+    <form id="ventaForm" class="mb-4">
+        <div class="mb-3 text-start">
+            <label for="producto" class="form-label fw-bold">Seleccionar Producto</label>
+            <select id="producto" class="form-select"></select>
+        </div>
+        <div class="mb-3 text-start">
+            <label for="cantidad" class="form-label fw-bold">Cantidad</label>
+            <input type="number" id="cantidad" class="form-control" min="1" placeholder="Ingrese la cantidad" />
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Precio Unitario:</label>
+            <span id="precioUnitario">₡0.00</span>
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Total Producto:</label>
+            <span id="totalProducto">₡0.00</span>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="reset" class="btn btn-danger px-3 py-1">Cancelar</button>
+            <button type="button" id="agregarProducto" class="btn text-white px-3 py-1" style="background-color: #E27AB0;">Agregar Producto</button>
+        </div>
+    </form>
+
+    <h4 class="mb-3"><strong>Productos Seleccionados</strong></h4>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm text-center">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaProductos"></tbody>
+        </table>
+    </div>
+
+    <h5 class="text-end mt-3"><strong>Total de la Venta:</strong> <span id="totalVenta">₡0.00</span></h5>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 mb-5">
+        <button type="button" class="btn btn-danger px-3 py-2" onclick="cancelarVenta()">Cancelar Venta</button>
+        <button type="button" id="confirmarVenta" class="btn text-white px-3 py-2" style="background-color: #E27AB0;">Confirmar Venta</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Templates/js/registro_ventas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}

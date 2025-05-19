@@ -1,0 +1,151 @@
+:root {
+    --dark-violet: #9400D3;
+    /* Para precios/botones */
+    --hot-pink: #FF69B4;
+    /* Para hovers/bordes */
+    --lavender: #E6E6FA;
+    /* Para fondos activos */
+}
+
+
+.pos-products {
+    background-color: #f8f9fa;
+    padding: 15px;
+    height: 100%;
+    overflow-y: auto;
+    /* Permite scroll si hay muchos productos */
+}
+
+.product-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    margin-bottom: 15px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(148, 0, 211, 0.1);
+    /* Borde sutil morado */
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    border-color: var(--hot-pink);
+    /* Efecto al pasar el mouse */
+}
+
+.product-card:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(148, 0, 211, 0.05) 100%);
+    pointer-events: none;
+}
+
+.product-img-container {
+    height: 120px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f8f9fa;
+}
+
+.product-img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    /* Opcional: recorta los bordes que sobran */
+}
+
+.product-body {
+    padding: 10px;
+}
+
+.product-title {
+    font-family: 'Sono', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    height: 40px;
+    /* Altura fija para títulos */
+    overflow: hidden;
+    /* Evita desbordamiento */
+}
+
+.product-description {
+    font-family: 'Arial', sans-serif;
+    font-size: 0.8rem;
+    color: #6c757d;
+    /* Texto secundario */
+}
+
+.product-price {
+    color: var(--dark-violet);
+    /* Morado oscuro */
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .product-card {
+        margin-bottom: 10px;
+        /* Más compacto en móviles */
+    }
+}
+
+/* Contenedor de la card - Añade esto */
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Contenedor de la imagen - Modificado */
+.card-img-container {
+    flex: 0 0 auto;
+    /* No crece ni se reduce */
+    max-height: 150px;
+    /* Altura máxima ajustable */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+    /* Línea divisora opcional */
+}
+
+/* Imagen - Modificado */
+.card-img-top {
+    max-height: 130px;
+    /* 20px menos que el contenedor */
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    /* Muestra imagen completa */
+}
+
+/* Cuerpo de la card - Añade esto */
+.card-body {
+    flex: 1;
+    /* Ocupa todo el espacio restante */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Contenedor del precio/botón - Añade esto */
+.card-body>div {
+    margin-top: auto;
+    /* Empuja hacia abajo */
+}

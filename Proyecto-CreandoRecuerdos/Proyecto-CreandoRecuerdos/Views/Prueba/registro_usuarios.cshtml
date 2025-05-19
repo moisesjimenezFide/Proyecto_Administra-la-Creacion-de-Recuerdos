@@ -1,0 +1,138 @@
+﻿@{
+    ViewData["Title"] = "Registro de Usuario";
+}
+
+@section Styles {
+    <style>
+        .form-container {
+            display: none;
+        }
+
+        .active-form {
+            display: block;
+        }
+
+        .btn-outline-light-pink {
+            color: #E27AB0;
+            border-color: #E27AB0;
+        }
+
+            .btn-outline-light-pink:hover {
+                background-color: #E27AB0;
+                color: white;
+            }
+
+            .btn-outline-light-pink.active {
+                background-color: #E27AB0 !important;
+                color: white !important;
+                border-color: #E27AB0 !important;
+            }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .switch-label {
+            min-width: 120px;
+        }
+    </style>
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <!-- Switch -->
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="formSwitch" id="loginSwitch" autocomplete="off" checked>
+                            <label class="btn btn-outline-light-pink switch-label active" for="loginSwitch">Iniciar Sesión</label>
+
+                            <input type="radio" class="btn-check" name="formSwitch" id="registerSwitch" autocomplete="off">
+                            <label class="btn btn-outline-light-pink switch-label" for="registerSwitch">Registrarse</label>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de iniciar sesión -->
+                    <form id="loginForm" class="form-container active-form">
+                        <h2 class="mb-4 text-center" style="font-family: 'Sono', sans-serif;">Iniciar Sesión</h2>
+
+                        <div class="mb-3">
+                            <label for="login-username" class="form-label fw-bold">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="login-username" placeholder="Ingrese su Correo" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="login-password" class="form-label fw-bold">Contraseña</label>
+                            <input type="password" class="form-control" id="login-password" placeholder="Ingrese su Contraseña" required>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn text-white w-100" style="background-color: #E27AB0;">Ingresar</button>
+                        </div>
+
+                        <div class="text-center">
+                            <p><a href="#!" class="text-decoration-none">¿Olvidaste tu contraseña?</a></p>
+                        </div>
+                    </form>
+
+                    <!-- Formulario de Registro -->
+                    <form id="registerForm" class="form-container">
+                        <h2 class="mb-4 text-center" style="font-family: 'Sono', sans-serif;">Registro de Usuario</h2>
+
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label fw-bold">Nombre Completo</label>
+                            <input type="text" class="form-control" id="fullname" placeholder="Ingrese su Nombre" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-bold">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" placeholder="Ingrese su Correo" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label fw-bold">Nombre de Usuario</label>
+                            <input type="text" class="form-control" id="username" placeholder="Ingrese un Nombre de Usuario" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-bold">Contraseña</label>
+                            <input type="password" class="form-control" id="password" placeholder="Cree una Contraseña Segura" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirm-password" class="form-label fw-bold">Confirmar Contraseña</label>
+                            <input type="password" class="form-control" id="confirm-password" placeholder="Repita su Contraseña" required>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn text-white w-100" style="background-color: #E27AB0;">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Switch entre formularios con estilo activo
+        document.querySelectorAll('input[name="formSwitch"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                const loginForm = document.getElementById('loginForm');
+                const registerForm = document.getElementById('registerForm');
+                const loginLabel = document.querySelector('label[for="loginSwitch"]');
+                const registerLabel = document.querySelector('label[for="registerSwitch"]');
+
+                loginForm.classList.toggle('active-form', this.id === 'loginSwitch');
+                registerForm.classList.toggle('active-form', this.id === 'registerSwitch');
+
+                loginLabel.classList.toggle('active', this.id === 'loginSwitch');
+                registerLabel.classList.toggle('active', this.id === 'registerSwitch');
+            });
+        });
+    </script>
+}

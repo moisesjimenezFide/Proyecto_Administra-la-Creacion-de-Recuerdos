@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "Gestión de Empaques";
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+
+    <style>
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table th,
+        .table td {
+            word-wrap: break-word;
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .btn-custom-pink {
+            background-color: #E27AB0;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-pink:hover {
+                background-color: #d66da3;
+                color: white;
+            }
+    </style>
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-box-open me-2"></i> Gestión de Empaques y/o Decoraciones
+    </h2>
+    <div class="mb-4">
+        <h4>Búsqueda de Empaques y/o Decoraciones</h4>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Buscar por cualquier campo...">
+            <button class="input-group-text">Buscar <i class="fas fa-search ms-1"></i></button>
+        </div>
+    </div>
+
+    <h4 class="mb-3">Registro de Empaques y/o Decoraciones</h4>
+    <form class="mb-4">
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Nombre</label>
+            <input type="text" class="form-control" placeholder="Ingrese el nombre">
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Marca</label>
+            <input type="text" class="form-control" placeholder="Ingrese la marca">
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Presentación</label>
+            <input type="text" class="form-control" placeholder="Ej. 500ml / Caja">
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Proveedor</label>
+            <input type="text" class="form-control" placeholder="Nombre del proveedor">
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Costo por unidad (₡)</label>
+            <input type="number" class="form-control" placeholder="Ej. 200">
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Cantidad</label>
+            <input type="number" class="form-control" placeholder="Ej. 100">
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
+            <button type="submit" class="btn btn-custom-pink">Agregar</button>
+        </div>
+    </form>
+
+    <h4 class="mt-5">Listado de Empaques y/o Decoraciones</h4>
+    <div class="table-container">
+        <table class="table table-bordered table-striped table-sm text-center">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Presentación</th>
+                    <th>Proveedor</th>
+                    <th>Costo x Unidad (₡)</th>
+                    <th>Cantidad</th>
+                    <th>Costo Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Caja pequeña</td>
+                    <td>Empaques CR</td>
+                    <td>15x15cm</td>
+                    <td>Distribuidora XYZ</td>
+                    <td>150</td>
+                    <td>50</td>
+                    <td>₡7,500</td>
+                    <td>
+                        <button class="btn btn-custom-pink">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cinta decorativa</td>
+                    <td>Decoraciones SA</td>
+                    <td>Rollos 5m</td>
+                    <td>Arte y Más</td>
+                    <td>500</td>
+                    <td>20</td>
+                    <td>₡10,000</td>
+                    <td>
+                        <button class="btn btn-custom-pink">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="text-center text-muted">
+        Mostrando 2 registros
+    </p>
+</div>

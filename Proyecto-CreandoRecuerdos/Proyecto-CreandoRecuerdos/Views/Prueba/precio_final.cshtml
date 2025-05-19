@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Gestión de Precios Finales";
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+
+    <style>
+        .table-responsive {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
+}
+
+<div class="container mt-4 text-center">
+    <h2 style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-tags me-2"></i>Gestión de Precios Finales Sugeridos
+    </h2>
+</div>
+
+<div class="container my-5">
+    <h4 class="mb-4"><strong>Registro de Productos Finales</strong></h4>
+    <form id="form-precio-final">
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Nombre del producto</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" required />
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Costo total de receta (₡)</label>
+            <input type="number" class="form-control" id="costoReceta" placeholder="Ingrese el costo" required min="0" step="0.01" />
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Margen de Utilidad (%)</label>
+            <input type="number" class="form-control" id="utilidad" placeholder="Ingrese el porcentaje" required min="0" step="0.01" />
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Costo de empaque (₡)</label>
+            <input type="number" class="form-control" id="empaque" placeholder="Ingrese el costo de empaque" required min="0" step="0.01" />
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">IVA (%)</label>
+            <input type="number" class="form-control" id="iva" placeholder="Ingrese el porcentaje de IVA" required min="0" step="0.01" />
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Servicios (%)</label>
+            <input type="number" class="form-control" id="servicio" placeholder="Ingrese el porcentaje de servicios" required min="0" step="0.01" />
+        </div>
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">Envío (%)</label>
+            <input type="number" class="form-control" id="envio" placeholder="Ingrese el porcentaje de envío" required min="0" step="0.01" />
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+            <button type="reset" class="btn btn-danger">Cancelar</button>
+            <button type="submit" class="btn text-white" style="background-color: #E27AB0;">Guardar</button>
+        </div>
+    </form>
+</div>
+
+<div class="container mt-4">
+    <h4><strong>Búsqueda de Productos Finales</strong></h4>
+    <div class="input-group">
+        <input type="text" id="busqueda" class="form-control" placeholder="Buscar producto..." />
+        <button class="input-group-text" id="btn_busqueda">Buscar <i class="fas fa-search ms-1"></i></button>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <h4><strong>Listado de Productos Finales</strong></h4>
+    <div class="table-responsive">
+        <table id="tabla_precios" class="table table-bordered table-striped table-sm text-start">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Costo de receta</th>
+                    <th>Margen Utilidad (%)</th>
+                    <th>Costo Margen</th>
+                    <th>Empaque</th>
+                    <th>IVA (%)</th>
+                    <th>Servicios (%)</th>
+                    <th>Envío (%)</th>
+                    <th>Canal Propio</th>
+                    <th>Uber</th>
+                    <th>Rappi</th>
+                    <th>Didi</th>
+                    <th>PedidosYa!</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p id="mensaje_no_resultados" class="text-center mt-3 text-muted" style="display: none;">
+            No se encontraron coincidencias.
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Templates/js/precio_final.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
