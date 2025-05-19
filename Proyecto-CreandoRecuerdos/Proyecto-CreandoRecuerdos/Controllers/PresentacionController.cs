@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
-    public class PruebaController : Controller
+    public class PresentacionController : Controller
     {
         public ActionResult admin_clientes()
         {

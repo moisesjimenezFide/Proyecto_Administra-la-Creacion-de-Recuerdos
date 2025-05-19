@@ -120,7 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\PruebaController.cs" />
+    <Compile Include="Controllers\PresentacionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -239,23 +239,23 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Prueba\admin_clientes.cshtml" />
-    <Content Include="Views\Prueba\agregar_platillo.cshtml" />
-    <Content Include="Views\Prueba\costos_recetas.cshtml" />
-    <Content Include="Views\Prueba\empaques.cshtml" />
-    <Content Include="Views\Prueba\empleados.cshtml" />
-    <Content Include="Views\Prueba\historial_ventas.cshtml" />
-    <Content Include="Views\Prueba\index.cshtml" />
-    <Content Include="Views\Prueba\menu.cshtml" />
-    <Content Include="Views\Prueba\menu_admin.cshtml" />
-    <Content Include="Views\Prueba\pedidos.cshtml" />
-    <Content Include="Views\Prueba\precio_final.cshtml" />
-    <Content Include="Views\Prueba\productos_preparados.cshtml" />
-    <Content Include="Views\Prueba\registro_usuarios.cshtml" />
-    <Content Include="Views\Prueba\registro_ventas.cshtml" />
-    <Content Include="Views\Prueba\reportes.cshtml" />
-    <Content Include="Views\Prueba\suministros.cshtml" />
-    <Content Include="Views\Prueba\materias_primas.cshtml" />
+    <Content Include="Views\Presentacion\admin_clientes.cshtml" />
+    <Content Include="Views\Presentacion\agregar_platillo.cshtml" />
+    <Content Include="Views\Presentacion\costos_recetas.cshtml" />
+    <Content Include="Views\Presentacion\empaques.cshtml" />
+    <Content Include="Views\Presentacion\empleados.cshtml" />
+    <Content Include="Views\Presentacion\historial_ventas.cshtml" />
+    <Content Include="Views\Presentacion\index.cshtml" />
+    <Content Include="Views\Presentacion\menu.cshtml" />
+    <Content Include="Views\Presentacion\menu_admin.cshtml" />
+    <Content Include="Views\Presentacion\pedidos.cshtml" />
+    <Content Include="Views\Presentacion\precio_final.cshtml" />
+    <Content Include="Views\Presentacion\productos_preparados.cshtml" />
+    <Content Include="Views\Presentacion\registro_usuarios.cshtml" />
+    <Content Include="Views\Presentacion\registro_ventas.cshtml" />
+    <Content Include="Views\Presentacion\reportes.cshtml" />
+    <Content Include="Views\Presentacion\suministros.cshtml" />
+    <Content Include="Views\Presentacion\materias_primas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
