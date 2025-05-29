@@ -1,0 +1,169 @@
+﻿/* Variables globales con nueva paleta pastel */
+:root {
+    --rosa-claro: #FFE6EE; /* Rosa pastel muy claro */
+    --rosa-principal: #FFB3C6; /* Rosa principal suave */
+    --rosa-oscuro: #FF8FAB; /* Rosa más intenso pero pastel */
+    --dorado: #E8C495; /* Dorado mantiene igual */
+    --beige: #FFF0F3; /* Beige rosado muy claro */
+    --texto-oscuro: #5A3E36; /* Texto mantiene igual */
+    --hover-rosa: #FFD1DC; /* Hover más suave */
+}
+
+/* Estructura base - Manteniendo fuente Sono */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Sono', sans-serif; /* Fuente original */
+    background-color: var(--beige);
+    color: var(--texto-oscuro);
+}
+
+/* Navbar con nuevos tonos pastel */
+.navbar {
+    background: linear-gradient(135deg, var(--rosa-principal), var(--rosa-oscuro));
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    color: white !important;
+}
+
+.logo-navbar {
+    height: 40px; /* Tamaño fijo mejorado */
+    width: auto;
+    margin-right: 10px;
+    object-fit: contain;
+}
+
+.navbar-nav .nav-link {
+    text-transform: uppercase;
+    color: white !important;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+        color: var(--dorado) !important;
+    }
+
+/* Dropdowns con nuevos colores */
+.dropdown-menu {
+    background-color: white;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.dropdown-item {
+    color: var(--texto-oscuro) !important;
+    transition: all 0.2s;
+    padding: 0.5rem 1.5rem;
+}
+
+    .dropdown-item:hover {
+        background-color: var(--rosa-claro) !important;
+        color: var(--rosa-oscuro) !important;
+    }
+
+/* Footer con nueva paleta */
+.footer {
+    background: linear-gradient(135deg, var(--rosa-principal), var(--rosa-oscuro));
+    color: white;
+    padding: 3rem 0;
+    position: relative;
+}
+
+    .footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background: var(--dorado);
+    }
+
+    .footer a {
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+        .footer a:hover {
+            color: var(--dorado);
+        }
+
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    margin: 0 8px;
+    transition: all 0.3s;
+}
+
+    .social-icons a:hover {
+        background-color: var(--dorado);
+    }
+
+/* Botones */
+.btn-primary {
+    background-color: var(--rosa-principal);
+    border-color: var(--rosa-principal);
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: var(--rosa-oscuro);
+        border-color: var(--rosa-oscuro);
+    }
+
+/* Responsive */
+@media (max-width: 992px) {
+    .navbar-collapse {
+        padding-top: 1rem;
+        background-color: var(--rosa-oscuro);
+        border-radius: 0 0 10px 10px;
+    }
+
+    .navbar-toggler {
+        border-color: white;
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+}
+/* Adropdown-menu */
+@media (min-width: 992px) {
+    .navbar-nav .dropdown-menu {
+        position: absolute;
+    }
+
+    .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    #dropdownAdmin + .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+}
+
+/* Previene el desplazamiento horizontal */
+html, body {
+    overflow-x: hidden;
+}

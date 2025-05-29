@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PresentacionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -165,6 +166,8 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Templates\css\a.css" />
     <Content Include="Templates\css\admin_cliente.css" />
+    <Content Include="Templates\css\home.css" />
+    <Content Include="Templates\css\index.css" />
     <Content Include="Templates\css\menu.css" />
     <Content Include="Templates\css\pedidos.css" />
     <Content Include="Templates\css\styles.css" />
@@ -256,6 +259,7 @@
     <Content Include="Views\Presentacion\reportes.cshtml" />
     <Content Include="Views\Presentacion\suministros.cshtml" />
     <Content Include="Views\Presentacion\materias_primas.cshtml" />
+    <Content Include="Views\Home\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
