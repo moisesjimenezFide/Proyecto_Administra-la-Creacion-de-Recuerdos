@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="11d78d356ae7406dbf3041b3ab5fee2e" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.sysdiagrams" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_categorias" Width="1.5" PointX="3" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_clientes" Width="1.5" PointX="3" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_detalle_venta" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_empaque_decoracion" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_ingredientes_recetas" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_materias_primas" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_procedimientos_recetas" Width="1.5" PointX="0.5" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_productos" Width="1.5" PointX="5.25" PointY="21" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_productos_preparados" Width="1.5" PointX="8.25" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_proveedores" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_recetas" Width="1.5" PointX="3" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_roles" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_suministros" Width="1.5" PointX="5.25" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_usuarios" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_ventas" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_pro__id_ca__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_ven__id_cl__6A30C649" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_det__id_pr__6E01572D" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_det__id_ve__6D0D32F4" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_emp__id_ma__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_ing__id_ma__0D7A0286" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_ing__id_pr__0E6E26BF" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_ing__id_re__0C85DE4D" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_mat__id_pr__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_pro__id_ma__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_sum__id_ma__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_pro__id_re__123EB7A3" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_pro__id_pr__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_usu__id_ro__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_ven__id_us__693CA210" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

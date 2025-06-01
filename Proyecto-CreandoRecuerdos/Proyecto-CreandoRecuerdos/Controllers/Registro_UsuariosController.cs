@@ -6,13 +6,14 @@ using System.Web.Mvc;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
-    public class HomeController : Controller
+    public class Registro_UsuariosController : Controller
     {
-        // GET: Home
-        public ActionResult Home()
+        // GET: Login
+        public ActionResult registro_usuarios()
         {
             return View();
         }
 
+     
     }
 }

@@ -34,9 +34,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-uppercase" asp-controller="Home" asp-action="Index">Inicio</a>
+                        <a class="nav-link text-uppercase" asp-controller="Home" href="@Url.Action("Inicio", "inicio")" asp-action="Index">Inicio</a>
                     </li>
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-uppercase" href="#" id="dropdownInsumos" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
@@ -78,6 +77,11 @@
                             <li><a class="dropdown-item" asp-controller="Menu" asp-action="Admin">Menú Admin</a></li>
                         </ul>
                     </li>
+                    <!-- Boton visible solo para admin -->
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" href="@Url.Action("Registro_Usuarios", "registro_usuarios")">Registrarse</a>
+                    </li>
+                    <!-- Boton visible solo para admin -->
                 </ul>
             </div>
         </div>

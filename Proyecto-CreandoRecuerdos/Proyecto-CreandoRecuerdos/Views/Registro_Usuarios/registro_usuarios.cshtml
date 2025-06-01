@@ -1,0 +1,231 @@
+﻿@{
+    ViewBag.Title = "registro_usuarios";
+}
+
+<style>
+    .form-container {
+        display: none;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease-out;
+    }
+
+    .active-form {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .btn-outline-light-pink {
+        color: #E27AB0;
+        border-color: #E27AB0;
+    }
+
+        .btn-outline-light-pink:hover {
+            background-color: #E27AB0;
+            color: white;
+        }
+
+        .btn-outline-light-pink.active {
+            background-color: #E27AB0 !important;
+            color: white !important;
+            border-color: #E27AB0 !important;
+        }
+
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(226, 122, 176, 0.15);
+        overflow: hidden;
+        background: linear-gradient(to bottom right, #fffafc, #fff0f5);
+        border: 1px solid rgba(226, 122, 176, 0.2);
+    }
+
+    .switch-label {
+        min-width: 120px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .form-header {
+        position: relative;
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+        .form-header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, #ffd6e6, #E27AB0);
+            border-radius: 10px;
+        }
+
+    .form-control {
+        border: 1px solid rgba(226, 122, 176, 0.3);
+        border-radius: 8px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+
+        .form-control:focus {
+            border-color: #E27AB0;
+            box-shadow: 0 0 0 3px rgba(226, 122, 176, 0.2);
+        }
+
+    .submit-btn {
+        background: linear-gradient(to right, #E27AB0, #d15a9c);
+        border: none;
+        border-radius: 30px;
+        padding: 12px 0;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(226, 122, 176, 0.3);
+    }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(226, 122, 176, 0.4);
+        }
+
+    .form-footer {
+        position: relative;
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+        .form-footer:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, #ffd6e6, #E27AB0);
+            border-radius: 10px;
+        }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <!-- Switch -->
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="formSwitch" id="loginSwitch" autocomplete="off" checked>
+                            <label class="btn btn-outline-light-pink switch-label active" for="loginSwitch">
+                                Iniciar Sesión
+                            </label>
+
+                            <input type="radio" class="btn-check" name="formSwitch" id="registerSwitch" autocomplete="off">
+                            <label class="btn btn-outline-light-pink switch-label" for="registerSwitch">
+                                Registrarse
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de iniciar sesión -->
+                    <form id="loginForm" class="form-container active-form">
+                        <div class="form-header">
+                            <h2 class="text-center" style="font-family: 'Sono', sans-serif; color: #E27AB0;">Bienvenid❀ de nuevo</h2>
+                            <p class="text-center mb-0">Ingresa a tu cuenta para continuar</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="login-username" class="form-label fw-bold">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="login-username" placeholder="correo@ejemplo.com" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="login-password" class="form-label fw-bold">Contraseña</label>
+                            <input type="password" class="form-control" id="login-password" placeholder="••••••••" required>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn submit-btn text-white w-100">
+                                Ingresar
+                            </button>
+                        </div>
+
+                        <div class="form-footer text-center">
+                            <p class="mb-0"><a href="#!" class="text-decoration-none" style="color: #E27AB0;">¿Olvidaste tu contraseña?</a></p>
+                        </div>
+                    </form>
+
+                    <!-- Formulario de Registro -->
+                    <form id="registerForm" class="form-container">
+                        <div class="form-header">
+                            <h2 class="text-center" style="font-family: 'Sono', sans-serif; color: #E27AB0;">Únete a nuestra comunidad</h2>
+                            <p class="text-center mb-0">Crea tu cuenta para disfrutar de todas las ventajas</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="fullname" class="form-label fw-bold">Nombre Completo</label>
+                            <input type="text" class="form-control" id="fullname" placeholder="Tu nombre completo" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-bold">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" placeholder="correo@ejemplo.com" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="username" class="form-label fw-bold">Nombre de Usuario</label>
+                            <input type="text" class="form-control" id="username" placeholder="Nombre de usuario único" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-bold">Contraseña</label>
+                            <input type="password" class="form-control" id="password" placeholder="Mínimo 8 caracteres" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="confirm-password" class="form-label fw-bold">Confirmar Contraseña</label>
+                            <input type="password" class="form-control" id="confirm-password" placeholder="Repite tu contraseña" required>
+                        </div>
+
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn submit-btn text-white w-100">
+                                Crear Cuenta
+                            </button>
+                        </div>
+
+                        <div class="form-footer text-center">
+                            <p class="mb-0">Al registrarte, aceptas nuestros <a href="#" class="text-decoration-none" style="color: #E27AB0;">Términos</a> y <a href="#" class="text-decoration-none" style="color: #E27AB0;">Privacidad</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Switch entre formularios con estilo activo
+    document.querySelectorAll('input[name="formSwitch"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const loginLabel = document.querySelector('label[for="loginSwitch"]');
+            const registerLabel = document.querySelector('label[for="registerSwitch"]');
+
+            // Animación de transición suave
+            loginForm.style.transition = 'all 0.4s ease-out';
+            registerForm.style.transition = 'all 0.4s ease-out';
+
+            loginForm.classList.toggle('active-form', this.id === 'loginSwitch');
+            registerForm.classList.toggle('active-form', this.id === 'registerSwitch');
+
+            loginLabel.classList.toggle('active', this.id === 'loginSwitch');
+            registerLabel.classList.toggle('active', this.id === 'registerSwitch');
+        });
+    });
+</script>

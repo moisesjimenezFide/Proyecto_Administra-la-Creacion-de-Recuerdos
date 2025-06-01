@@ -120,7 +120,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InicioController.cs" />
+    <Compile Include="Controllers\Registro_UsuariosController.cs" />
     <Compile Include="Controllers\PresentacionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -259,7 +260,8 @@
     <Content Include="Views\Presentacion\reportes.cshtml" />
     <Content Include="Views\Presentacion\suministros.cshtml" />
     <Content Include="Views\Presentacion\materias_primas.cshtml" />
-    <Content Include="Views\Home\Home.cshtml" />
+    <Content Include="Views\Inicio\inicio.cshtml" />
+    <Content Include="Views\Registro_Usuarios\registro_usuarios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
