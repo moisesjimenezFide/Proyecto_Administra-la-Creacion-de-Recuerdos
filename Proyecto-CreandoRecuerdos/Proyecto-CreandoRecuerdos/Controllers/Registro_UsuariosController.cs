@@ -8,7 +8,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 {
     public class Registro_UsuariosController : Controller
     {
-        // GET: Login
+        [HttpGet]
         public ActionResult registro_usuarios()
         {
             return View();

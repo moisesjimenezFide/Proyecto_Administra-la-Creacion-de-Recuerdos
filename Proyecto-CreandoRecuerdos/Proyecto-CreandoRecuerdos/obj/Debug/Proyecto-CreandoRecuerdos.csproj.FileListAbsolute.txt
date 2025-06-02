@@ -156,3 +156,5 @@ C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyec
 C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto.E04E3056.Up2Date
 C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.dll
 C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.pdb
+C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\EntityFramework.dll
+C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\EntityFramework.xml
