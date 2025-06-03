@@ -2,6 +2,9 @@
 
 @{
     ViewBag.Title = "registro_usuarios";
+    var errorMessage = TempData["ErrorMessage"] as string;
+    var successMessage = TempData["SuccessMessage"] as string;
+    
 }
 
 <style>
@@ -130,9 +133,8 @@
                             <label class="btn btn-outline-light-pink switch-label" for="registerSwitch">Registrarse</label>
                         </div>
                     </div>
-
                     <!-- Formulario de iniciar sesión -->
-                    @using (Html.BeginForm("Login", "Usuario", FormMethod.Post, new { @id = "loginForm", @class = "form-container active-form" }))
+                    @using (Html.BeginForm("iniciar_sesion", "Registro_Usuarios", FormMethod.Post, new { @id = "loginForm", @class = "form-container active-form" }))
                     {
                         <div class="form-header">
                             <h2 class="text-center" style="font-family: 'Sono', sans-serif; color: #E27AB0;">Bienvenid❀ de nuevo</h2>
@@ -141,13 +143,14 @@
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Correo Electrónico</label>
-                            @Html.TextBoxFor(x => x.correo, new {@class = "form-control",@id = "login-username",@placeholder = "correo@ejemplo.com",@type = "email",@required = "true"})
+                            @Html.TextBoxFor(x => x.correo, new { @class = "form-control", @id = "login-username", @placeholder = "correo@ejemplo.com", @type = "email", @required = "true" })
                             @Html.ValidationMessageFor(x => x.correo, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Contraseña</label>
-                            @Html.Password("Password", null, new {@class = "form-control", @id = "login-password", @placeholder = "••••••••", @required = "true"})
+                            @Html.TextBoxFor(x => x.contrasenna, new { @class = "form-control", @type = "password", @id = "Password", @placeholder = "**********", @required = "true" })
+                            @Html.ValidationMessageFor(x => x.contrasenna, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="d-grid mb-3">
@@ -160,7 +163,7 @@
                     }
 
                     <!-- Formulario de Registro -->
-                    @using (Html.BeginForm("crear_cuenta", "Usuario", FormMethod.Post, new { @id = "registerForm", @class = "form-container"}))
+                    @using (Html.BeginForm("crear_cuenta", "Registro_Usuarios", FormMethod.Post, new { @id = "registerForm", @class = "form-container" }))
                     {
                         <div class="form-header">
                             <h2 class="text-center" style="font-family: 'Sono', sans-serif; color: #E27AB0;">Únete a nuestra comunidad</h2>
@@ -169,24 +172,25 @@
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Nombre</label>
-                            @Html.TextBoxFor(x => x.nombre, new { @class = "form-control", @placeholder = "Tu nombre completo", @required = "true"})
+                            @Html.TextBoxFor(x => x.nombre, new { @class = "form-control", @placeholder = "Tu nombre completo", @required = "true" })
                             @Html.ValidationMessageFor(x => x.nombre, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Correo Electrónico</label>
-                            @Html.TextBoxFor(x => x.correo, new { @class = "form-control", @type = "email", @placeholder = "correo@ejemplo.com", @required = "true"})
+                            @Html.TextBoxFor(x => x.correo, new { @class = "form-control", @type = "email", @placeholder = "correo@ejemplo.com", @required = "true" })
                             @Html.ValidationMessageFor(x => x.correo, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Contraseña</label>
-                            @Html.Password("password", null, new {@class = "form-control", @placeholder = "Mínimo 8 caracteres", @required = "true"})
+                            @Html.Password("password", null, new { @class = "form-control", @id = "password", @placeholder = "Mínimo 8 caracteres", @required = "true" })
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Confirmar Contraseña</label>
-                            @Html.Password("confirm-password", null, new { @class = "form-control", @placeholder = "Repite tu contraseña",@required = "true"})
+                            @Html.TextBoxFor(x => x.contrasenna, new { @class = "form-control", @type = "password", @id = "confirmPassword", @placeholder = "Repetir cotraseña", @required = "true" })
+                            @Html.ValidationMessageFor(x => x.contrasenna, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="d-grid gap-2 mb-3">
@@ -207,22 +211,4 @@
     </div>
 </div>
 
-<script>
-    document.querySelectorAll('input[name="formSwitch"]').forEach(radio => {
-        radio.addEventListener('change', function () {
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-            const loginLabel = document.querySelector('label[for="loginSwitch"]');
-            const registerLabel = document.querySelector('label[for="registerSwitch"]');
-
-            loginForm.style.transition = 'all 0.4s ease-out';
-            registerForm.style.transition = 'all 0.4s ease-out';
-
-            loginForm.classList.toggle('active-form', this.id === 'loginSwitch');
-            registerForm.classList.toggle('active-form', this.id === 'registerSwitch');
-
-            loginLabel.classList.toggle('active', this.id === 'loginSwitch');
-            registerLabel.classList.toggle('active', this.id === 'registerSwitch');
-        });
-    });
-</script>
+<script src="~/Templates/js/registrar_usuario.js"></script>

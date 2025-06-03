@@ -1,0 +1,448 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tabla_categorias">
+    <Key>
+      <PropertyRef Name="id_categoria" />
+    </Key>
+    <Property Name="id_categoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tabla_clientes">
+    <Key>
+      <PropertyRef Name="id_cliente" />
+    </Key>
+    <Property Name="id_cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="apellido" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tabla_detalle_venta">
+    <Key>
+      <PropertyRef Name="id_detalle_venta" />
+    </Key>
+    <Property Name="id_detalle_venta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_venta" Type="int" Nullable="false" />
+    <Property Name="id_producto" Type="int" Nullable="false" />
+    <Property Name="cantidad" Type="int" Nullable="false" />
+    <Property Name="precio_unitario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="subtotal" Type="decimal" Precision="21" Scale="2" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="tabla_empaque_decoracion">
+    <Key>
+      <PropertyRef Name="id_empaque" />
+    </Key>
+    <Property Name="id_empaque" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_materia_prima" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="presentacion" Type="nvarchar" MaxLength="50" />
+    <Property Name="unidad_cantidad" Type="int" Nullable="false" />
+    <Property Name="costo" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="costo_por_unidad" Type="decimal" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="tabla_ingredientes_recetas">
+    <Key>
+      <PropertyRef Name="id_ingrediente" />
+    </Key>
+    <Property Name="id_ingrediente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_receta" Type="int" Nullable="false" />
+    <Property Name="id_materia_prima" Type="int" Nullable="false" />
+    <Property Name="id_producto_preparado" Type="int" Nullable="false" />
+    <Property Name="cantidad" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="presentacion" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tabla_materias_primas">
+    <Key>
+      <PropertyRef Name="id_materia_prima" />
+    </Key>
+    <Property Name="id_materia_prima" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="marca" Type="nvarchar" MaxLength="100" />
+    <Property Name="presentacion" Type="nvarchar" MaxLength="50" />
+    <Property Name="peso" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="unidad_medida" Type="nvarchar" MaxLength="20" />
+    <Property Name="costo" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="costo_por_gramo" Type="decimal" Precision="10" Scale="4" />
+    <Property Name="costo_por_porcion" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="porcentaje_merma" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="costo_por_merma" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="costo_por_gramo_con_merma" Type="decimal" Precision="10" Scale="4" />
+    <Property Name="costo_por_porcion_con_merma" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="costo_total_mas_merma" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="id_proveedor" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tabla_procedimientos_recetas">
+    <Key>
+      <PropertyRef Name="id_procedimiento" />
+    </Key>
+    <Property Name="id_procedimiento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_receta" Type="int" Nullable="false" />
+    <Property Name="tipo" Type="nvarchar" MaxLength="50" />
+    <Property Name="descripcion" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="tabla_productos">
+    <Key>
+      <PropertyRef Name="id_producto" />
+    </Key>
+    <Property Name="id_producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="descripcion" Type="nvarchar" MaxLength="255" />
+    <Property Name="id_categoria" Type="int" Nullable="false" />
+    <Property Name="precio_por_unidad" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tabla_productos_preparados">
+    <Key>
+      <PropertyRef Name="id_producto_preparado" />
+    </Key>
+    <Property Name="id_producto_preparado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_materia_prima" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="marca" Type="nvarchar" MaxLength="100" />
+    <Property Name="presentacion" Type="nvarchar" MaxLength="50" />
+    <Property Name="id_proveedor" Type="int" Nullable="false" />
+    <Property Name="costo" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="cantidad" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="unidad_medida" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="costo_por_unidad" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="costo_total" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tabla_proveedores">
+    <Key>
+      <PropertyRef Name="id_proveedor" />
+    </Key>
+    <Property Name="id_proveedor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="contacto" Type="nvarchar" MaxLength="100" />
+    <Property Name="telefono" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="tabla_recetas">
+    <Key>
+      <PropertyRef Name="id_receta" />
+    </Key>
+    <Property Name="id_receta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="cantidad" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="unidad_medida" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="costo_por_unidad" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="costo_total" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="costo_total_receta" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="costo_por_porcion" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tabla_roles">
+    <Key>
+      <PropertyRef Name="id_rol" />
+    </Key>
+    <Property Name="id_rol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tabla_suministros">
+    <Key>
+      <PropertyRef Name="id_suministro" />
+    </Key>
+    <Property Name="id_suministro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_materia_prima" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="presentacion" Type="nvarchar" MaxLength="50" />
+    <Property Name="unidad_cantidad" Type="int" Nullable="false" />
+    <Property Name="costo" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="costo_por_unidad" Type="decimal" Precision="10" Scale="2" />
+  </EntityType>
+  <EntityType Name="tabla_usuarios">
+    <Key>
+      <PropertyRef Name="id_usuario" />
+    </Key>
+    <Property Name="id_usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="id_rol" Type="int" Nullable="false" />
+    <Property Name="correo" Type="varchar" MaxLength="100" />
+    <Property Name="activo" Type="bit" />
+    <Property Name="fecha_creacion" Type="datetime" />
+    <Property Name="contrasenna" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tabla_ventas">
+    <Key>
+      <PropertyRef Name="id_venta" />
+    </Key>
+    <Property Name="id_venta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_usuario" Type="int" Nullable="false" />
+    <Property Name="id_cliente" Type="int" Nullable="false" />
+    <Property Name="fecha" Type="datetime" />
+    <Property Name="total" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__tabla_det__id_pr__6E01572D">
+    <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="1" />
+    <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_productos">
+        <PropertyRef Name="id_producto" />
+      </Principal>
+      <Dependent Role="tabla_detalle_venta">
+        <PropertyRef Name="id_producto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_det__id_ve__6D0D32F4">
+    <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="1" />
+    <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_ventas">
+        <PropertyRef Name="id_venta" />
+      </Principal>
+      <Dependent Role="tabla_detalle_venta">
+        <PropertyRef Name="id_venta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_emp__id_ma__75A278F5">
+    <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="1" />
+    <End Role="tabla_empaque_decoracion" Type="Self.tabla_empaque_decoracion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_materias_primas">
+        <PropertyRef Name="id_materia_prima" />
+      </Principal>
+      <Dependent Role="tabla_empaque_decoracion">
+        <PropertyRef Name="id_materia_prima" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_ing__id_ma__0D7A0286">
+    <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="1" />
+    <End Role="tabla_ingredientes_recetas" Type="Self.tabla_ingredientes_recetas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_materias_primas">
+        <PropertyRef Name="id_materia_prima" />
+      </Principal>
+      <Dependent Role="tabla_ingredientes_recetas">
+        <PropertyRef Name="id_materia_prima" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_ing__id_pr__0E6E26BF">
+    <End Role="tabla_productos_preparados" Type="Self.tabla_productos_preparados" Multiplicity="1" />
+    <End Role="tabla_ingredientes_recetas" Type="Self.tabla_ingredientes_recetas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_productos_preparados">
+        <PropertyRef Name="id_producto_preparado" />
+      </Principal>
+      <Dependent Role="tabla_ingredientes_recetas">
+        <PropertyRef Name="id_producto_preparado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_ing__id_re__0C85DE4D">
+    <End Role="tabla_recetas" Type="Self.tabla_recetas" Multiplicity="1" />
+    <End Role="tabla_ingredientes_recetas" Type="Self.tabla_ingredientes_recetas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_recetas">
+        <PropertyRef Name="id_receta" />
+      </Principal>
+      <Dependent Role="tabla_ingredientes_recetas">
+        <PropertyRef Name="id_receta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_mat__id_pr__72C60C4A">
+    <End Role="tabla_proveedores" Type="Self.tabla_proveedores" Multiplicity="1" />
+    <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_proveedores">
+        <PropertyRef Name="id_proveedor" />
+      </Principal>
+      <Dependent Role="tabla_materias_primas">
+        <PropertyRef Name="id_proveedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_pro__id_ca__656C112C">
+    <End Role="tabla_categorias" Type="Self.tabla_categorias" Multiplicity="1" />
+    <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_categorias">
+        <PropertyRef Name="id_categoria" />
+      </Principal>
+      <Dependent Role="tabla_productos">
+        <PropertyRef Name="id_categoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_pro__id_ma__01142BA1">
+    <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="1" />
+    <End Role="tabla_productos_preparados" Type="Self.tabla_productos_preparados" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_materias_primas">
+        <PropertyRef Name="id_materia_prima" />
+      </Principal>
+      <Dependent Role="tabla_productos_preparados">
+        <PropertyRef Name="id_materia_prima" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_pro__id_pr__00200768">
+    <End Role="tabla_proveedores" Type="Self.tabla_proveedores" Multiplicity="1" />
+    <End Role="tabla_productos_preparados" Type="Self.tabla_productos_preparados" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_proveedores">
+        <PropertyRef Name="id_proveedor" />
+      </Principal>
+      <Dependent Role="tabla_productos_preparados">
+        <PropertyRef Name="id_proveedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_pro__id_re__123EB7A3">
+    <End Role="tabla_recetas" Type="Self.tabla_recetas" Multiplicity="1" />
+    <End Role="tabla_procedimientos_recetas" Type="Self.tabla_procedimientos_recetas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_recetas">
+        <PropertyRef Name="id_receta" />
+      </Principal>
+      <Dependent Role="tabla_procedimientos_recetas">
+        <PropertyRef Name="id_receta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_sum__id_ma__787EE5A0">
+    <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="1" />
+    <End Role="tabla_suministros" Type="Self.tabla_suministros" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_materias_primas">
+        <PropertyRef Name="id_materia_prima" />
+      </Principal>
+      <Dependent Role="tabla_suministros">
+        <PropertyRef Name="id_materia_prima" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_usu__id_ro__5EBF139D">
+    <End Role="tabla_roles" Type="Self.tabla_roles" Multiplicity="1" />
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_roles">
+        <PropertyRef Name="id_rol" />
+      </Principal>
+      <Dependent Role="tabla_usuarios">
+        <PropertyRef Name="id_rol" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_ven__id_cl__6A30C649">
+    <End Role="tabla_clientes" Type="Self.tabla_clientes" Multiplicity="1" />
+    <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_clientes">
+        <PropertyRef Name="id_cliente" />
+      </Principal>
+      <Dependent Role="tabla_ventas">
+        <PropertyRef Name="id_cliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_ven__id_us__693CA210">
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
+    <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_ventas">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_autenticar_usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="correo" Type="varchar" Mode="In" />
+    <Parameter Name="contrasenna" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="sp_crear_cuenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="nombre" Type="varchar" Mode="In" />
+    <Parameter Name="correo" Type="varchar" Mode="In" />
+    <Parameter Name="contrasenna" Type="varchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="BD_CREANDO_RECUERDOSModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_categorias" EntityType="Self.tabla_categorias" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_clientes" EntityType="Self.tabla_clientes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_detalle_venta" EntityType="Self.tabla_detalle_venta" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_empaque_decoracion" EntityType="Self.tabla_empaque_decoracion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_ingredientes_recetas" EntityType="Self.tabla_ingredientes_recetas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_materias_primas" EntityType="Self.tabla_materias_primas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_procedimientos_recetas" EntityType="Self.tabla_procedimientos_recetas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_productos" EntityType="Self.tabla_productos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_productos_preparados" EntityType="Self.tabla_productos_preparados" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_proveedores" EntityType="Self.tabla_proveedores" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_recetas" EntityType="Self.tabla_recetas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_roles" EntityType="Self.tabla_roles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_suministros" EntityType="Self.tabla_suministros" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_usuarios" EntityType="Self.tabla_usuarios" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_ventas" EntityType="Self.tabla_ventas" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__tabla_det__id_pr__6E01572D" Association="Self.FK__tabla_det__id_pr__6E01572D">
+      <End Role="tabla_productos" EntitySet="tabla_productos" />
+      <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_det__id_ve__6D0D32F4" Association="Self.FK__tabla_det__id_ve__6D0D32F4">
+      <End Role="tabla_ventas" EntitySet="tabla_ventas" />
+      <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_emp__id_ma__75A278F5" Association="Self.FK__tabla_emp__id_ma__75A278F5">
+      <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
+      <End Role="tabla_empaque_decoracion" EntitySet="tabla_empaque_decoracion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_ing__id_ma__0D7A0286" Association="Self.FK__tabla_ing__id_ma__0D7A0286">
+      <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
+      <End Role="tabla_ingredientes_recetas" EntitySet="tabla_ingredientes_recetas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_ing__id_pr__0E6E26BF" Association="Self.FK__tabla_ing__id_pr__0E6E26BF">
+      <End Role="tabla_productos_preparados" EntitySet="tabla_productos_preparados" />
+      <End Role="tabla_ingredientes_recetas" EntitySet="tabla_ingredientes_recetas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_ing__id_re__0C85DE4D" Association="Self.FK__tabla_ing__id_re__0C85DE4D">
+      <End Role="tabla_recetas" EntitySet="tabla_recetas" />
+      <End Role="tabla_ingredientes_recetas" EntitySet="tabla_ingredientes_recetas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_mat__id_pr__72C60C4A" Association="Self.FK__tabla_mat__id_pr__72C60C4A">
+      <End Role="tabla_proveedores" EntitySet="tabla_proveedores" />
+      <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_pro__id_ca__656C112C" Association="Self.FK__tabla_pro__id_ca__656C112C">
+      <End Role="tabla_categorias" EntitySet="tabla_categorias" />
+      <End Role="tabla_productos" EntitySet="tabla_productos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_pro__id_ma__01142BA1" Association="Self.FK__tabla_pro__id_ma__01142BA1">
+      <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
+      <End Role="tabla_productos_preparados" EntitySet="tabla_productos_preparados" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_pro__id_pr__00200768" Association="Self.FK__tabla_pro__id_pr__00200768">
+      <End Role="tabla_proveedores" EntitySet="tabla_proveedores" />
+      <End Role="tabla_productos_preparados" EntitySet="tabla_productos_preparados" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_pro__id_re__123EB7A3" Association="Self.FK__tabla_pro__id_re__123EB7A3">
+      <End Role="tabla_recetas" EntitySet="tabla_recetas" />
+      <End Role="tabla_procedimientos_recetas" EntitySet="tabla_procedimientos_recetas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_sum__id_ma__787EE5A0" Association="Self.FK__tabla_sum__id_ma__787EE5A0">
+      <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
+      <End Role="tabla_suministros" EntitySet="tabla_suministros" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_usu__id_ro__5EBF139D" Association="Self.FK__tabla_usu__id_ro__5EBF139D">
+      <End Role="tabla_roles" EntitySet="tabla_roles" />
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_ven__id_cl__6A30C649" Association="Self.FK__tabla_ven__id_cl__6A30C649">
+      <End Role="tabla_clientes" EntitySet="tabla_clientes" />
+      <End Role="tabla_ventas" EntitySet="tabla_ventas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_ven__id_us__693CA210" Association="Self.FK__tabla_ven__id_us__693CA210">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_ventas" EntitySet="tabla_ventas" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

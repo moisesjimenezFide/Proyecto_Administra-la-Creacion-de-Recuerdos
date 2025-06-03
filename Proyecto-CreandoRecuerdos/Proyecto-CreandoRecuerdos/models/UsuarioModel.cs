@@ -13,5 +13,6 @@ namespace Proyecto_CreandoRecuerdos.Models
         public string correo { get; set; }
         public bool activo { get; set; }
         public DateTime fecha_creacion { get; set; }
+        public string contrasenna { get; set; }
     }
 }
