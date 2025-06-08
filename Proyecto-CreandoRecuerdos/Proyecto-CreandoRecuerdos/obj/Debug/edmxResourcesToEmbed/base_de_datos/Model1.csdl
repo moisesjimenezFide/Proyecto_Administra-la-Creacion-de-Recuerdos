@@ -10,6 +10,22 @@
     <Property Name="version" Type="Int32" />
     <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
+  <EntityType Name="tabla_actividades">
+    <Key>
+      <PropertyRef Name="id_actividad" />
+    </Key>
+    <Property Name="id_actividad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" Nullable="false" />
+    <Property Name="tipo_accion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="fecha_hora" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="tabla_afectada" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="id_registro_afectado" Type="Int32" />
+    <Property Name="valores_anteriores" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="valores_nuevos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ip_solicitud" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_act__id_us__4F47C5E3" FromRole="tabla_actividades" ToRole="tabla_usuarios" />
+  </EntityType>
   <EntityType Name="tabla_categorias">
     <Key>
       <PropertyRef Name="id_categoria" />
@@ -191,6 +207,7 @@
     <Property Name="activo" Type="Boolean" />
     <Property Name="fecha_creacion" Type="DateTime" Precision="3" />
     <Property Name="contrasenna" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="tabla_actividades" Relationship="Self.FK__tabla_act__id_us__4F47C5E3" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
     <NavigationProperty Name="tabla_roles" Relationship="Self.FK__tabla_usu__id_ro__5EBF139D" FromRole="tabla_usuarios" ToRole="tabla_roles" />
     <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_us__693CA210" FromRole="tabla_usuarios" ToRole="tabla_ventas" />
   </EntityType>
@@ -207,6 +224,18 @@
     <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_ve__6D0D32F4" FromRole="tabla_ventas" ToRole="tabla_detalle_venta" />
     <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_ven__id_us__693CA210" FromRole="tabla_ventas" ToRole="tabla_usuarios" />
   </EntityType>
+  <Association Name="FK__tabla_act__id_us__4F47C5E3">
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
+    <End Role="tabla_actividades" Type="Self.tabla_actividades" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_actividades">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__tabla_pro__id_ca__656C112C">
     <End Role="tabla_categorias" Type="Self.tabla_categorias" Multiplicity="1" />
     <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="*" />
@@ -389,6 +418,7 @@
   </Association>
   <EntityContainer Name="BD_CREANDO_RECUERDOSEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="tabla_actividades" EntityType="Self.tabla_actividades" />
     <EntitySet Name="tabla_categorias" EntityType="Self.tabla_categorias" />
     <EntitySet Name="tabla_clientes" EntityType="Self.tabla_clientes" />
     <EntitySet Name="tabla_detalle_venta" EntityType="Self.tabla_detalle_venta" />
@@ -404,6 +434,10 @@
     <EntitySet Name="tabla_suministros" EntityType="Self.tabla_suministros" />
     <EntitySet Name="tabla_usuarios" EntityType="Self.tabla_usuarios" />
     <EntitySet Name="tabla_ventas" EntityType="Self.tabla_ventas" />
+    <AssociationSet Name="FK__tabla_act__id_us__4F47C5E3" Association="Self.FK__tabla_act__id_us__4F47C5E3">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_actividades" EntitySet="tabla_actividades" />
+    </AssociationSet>
     <AssociationSet Name="FK__tabla_pro__id_ca__656C112C" Association="Self.FK__tabla_pro__id_ca__656C112C">
       <End Role="tabla_categorias" EntitySet="tabla_categorias" />
       <End Role="tabla_productos" EntitySet="tabla_productos" />
@@ -464,6 +498,14 @@
       <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
       <End Role="tabla_ventas" EntitySet="tabla_ventas" />
     </AssociationSet>
+    <FunctionImport Name="sp_actualizar_empleado">
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+      <Parameter Name="nombre" Mode="In" Type="String" />
+      <Parameter Name="id_rol" Mode="In" Type="Int32" />
+      <Parameter Name="correo" Mode="In" Type="String" />
+      <Parameter Name="contrasenna" Mode="In" Type="String" />
+      <Parameter Name="activo" Mode="In" Type="Boolean" />
+    </FunctionImport>
     <FunctionImport Name="sp_autenticar_usuario" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_autenticar_usuario_Result)">
       <Parameter Name="correo" Mode="In" Type="String" />
       <Parameter Name="contrasenna" Mode="In" Type="String" />
@@ -473,11 +515,76 @@
       <Parameter Name="correo" Mode="In" Type="String" />
       <Parameter Name="contrasenna" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="sp_crear_empleado">
+      <Parameter Name="nombre" Mode="In" Type="String" />
+      <Parameter Name="id_rol" Mode="In" Type="Int32" />
+      <Parameter Name="correo" Mode="In" Type="String" />
+      <Parameter Name="contrasenna" Mode="In" Type="String" />
+      <Parameter Name="activo" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="sp_eliminar_empleado">
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_obtener_empleado" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleado_Result)">
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_obtener_empleados" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleados_Result)" />
+    <FunctionImport Name="sp_obtener_historial_actividades" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_historial_actividades_Result)">
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+      <Parameter Name="fecha_inicio" Mode="In" Type="DateTime" />
+      <Parameter Name="fecha_fin" Mode="In" Type="DateTime" />
+      <Parameter Name="tipo_accion" Mode="In" Type="String" />
+      <Parameter Name="tabla_afectada" Mode="In" Type="String" />
+      <Parameter Name="id_registro_afectado" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_registrar_actividad">
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+      <Parameter Name="tipo_accion" Mode="In" Type="String" />
+      <Parameter Name="descripcion" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_registrar_auditoria">
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+      <Parameter Name="tipo_accion" Mode="In" Type="String" />
+      <Parameter Name="tabla_afectada" Mode="In" Type="String" />
+      <Parameter Name="id_registro_afectado" Mode="In" Type="Int32" />
+      <Parameter Name="valores_anteriores" Mode="In" Type="String" />
+      <Parameter Name="valores_nuevos" Mode="In" Type="String" />
+      <Parameter Name="ip_solicitud" Mode="In" Type="String" />
+      <Parameter Name="descripcion" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="sp_autenticar_usuario_Result">
     <Property Type="Int32" Name="Resultado" Nullable="true" />
     <Property Type="Int32" Name="UsuarioID" Nullable="true" />
     <Property Type="String" Name="NombreUsuario" Nullable="true" MaxLength="100" />
     <Property Type="Int32" Name="RolID" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_obtener_empleado_Result">
+    <Property Type="Int32" Name="id_usuario" Nullable="false" />
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="id_rol" Nullable="false" />
+    <Property Type="String" Name="correo" Nullable="true" MaxLength="100" />
+    <Property Type="Boolean" Name="activo" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_obtener_empleados_Result">
+    <Property Type="Int32" Name="id_usuario" Nullable="false" />
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="id_rol" Nullable="false" />
+    <Property Type="String" Name="correo" Nullable="true" MaxLength="100" />
+    <Property Type="Boolean" Name="activo" Nullable="true" />
+    <Property Type="DateTime" Name="fecha_creacion" Nullable="true" Precision="23" />
+  </ComplexType>
+  <ComplexType Name="sp_obtener_historial_actividades_Result">
+    <Property Type="Int32" Name="id_actividad" Nullable="false" />
+    <Property Type="Int32" Name="id_usuario" Nullable="false" />
+    <Property Type="String" Name="nombre_usuario" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="tipo_accion" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="tabla_afectada" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="id_registro_afectado" Nullable="true" />
+    <Property Type="String" Name="valores_anteriores" Nullable="true" />
+    <Property Type="String" Name="valores_nuevos" Nullable="true" />
+    <Property Type="String" Name="ip_solicitud" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="descripcion" Nullable="false" />
+    <Property Type="DateTime" Name="fecha_hora" Nullable="false" Precision="23" />
   </ComplexType>
 </Schema>

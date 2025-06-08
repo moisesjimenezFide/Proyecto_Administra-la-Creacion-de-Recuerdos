@@ -12,6 +12,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tabla_actividades">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_actividades">
+        <MappingFragment StoreEntitySet="tabla_actividades">
+          <ScalarProperty Name="id_actividad" ColumnName="id_actividad" />
+          <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+          <ScalarProperty Name="tipo_accion" ColumnName="tipo_accion" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="fecha_hora" ColumnName="fecha_hora" />
+          <ScalarProperty Name="tabla_afectada" ColumnName="tabla_afectada" />
+          <ScalarProperty Name="id_registro_afectado" ColumnName="id_registro_afectado" />
+          <ScalarProperty Name="valores_anteriores" ColumnName="valores_anteriores" />
+          <ScalarProperty Name="valores_nuevos" ColumnName="valores_nuevos" />
+          <ScalarProperty Name="ip_solicitud" ColumnName="ip_solicitud" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tabla_categorias">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_categorias">
         <MappingFragment StoreEntitySet="tabla_categorias">
@@ -194,6 +210,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_actualizar_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_empleado" />
     <FunctionImportMapping FunctionImportName="sp_autenticar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_autenticar_usuario">
       <ResultMapping>
         <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_autenticar_usuario_Result">
@@ -205,5 +222,49 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_crear_cuenta" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_crear_cuenta" />
+    <FunctionImportMapping FunctionImportName="sp_crear_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_crear_empleado" />
+    <FunctionImportMapping FunctionImportName="sp_eliminar_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_eliminar_empleado" />
+    <FunctionImportMapping FunctionImportName="sp_obtener_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_empleado">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_obtener_empleado_Result">
+          <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id_rol" ColumnName="id_rol" />
+          <ScalarProperty Name="correo" ColumnName="correo" />
+          <ScalarProperty Name="activo" ColumnName="activo" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_obtener_empleados" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_empleados">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_obtener_empleados_Result">
+          <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id_rol" ColumnName="id_rol" />
+          <ScalarProperty Name="correo" ColumnName="correo" />
+          <ScalarProperty Name="activo" ColumnName="activo" />
+          <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_obtener_historial_actividades" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_historial_actividades">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_obtener_historial_actividades_Result">
+          <ScalarProperty Name="id_actividad" ColumnName="id_actividad" />
+          <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+          <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
+          <ScalarProperty Name="tipo_accion" ColumnName="tipo_accion" />
+          <ScalarProperty Name="tabla_afectada" ColumnName="tabla_afectada" />
+          <ScalarProperty Name="id_registro_afectado" ColumnName="id_registro_afectado" />
+          <ScalarProperty Name="valores_anteriores" ColumnName="valores_anteriores" />
+          <ScalarProperty Name="valores_nuevos" ColumnName="valores_nuevos" />
+          <ScalarProperty Name="ip_solicitud" ColumnName="ip_solicitud" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="fecha_hora" ColumnName="fecha_hora" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_registrar_actividad" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_registrar_actividad" />
+    <FunctionImportMapping FunctionImportName="sp_registrar_auditoria" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_registrar_auditoria" />
   </EntityContainerMapping>
 </Mapping>

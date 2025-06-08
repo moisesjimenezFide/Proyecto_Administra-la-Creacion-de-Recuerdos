@@ -1,0 +1,103 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.FiltroActividadesModel
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
+
+@{
+    ViewBag.Title = "Historial de Actividades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Historial de Actividades</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Filtros</h5>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("FiltrarActividades", "Admin", FormMethod.Post, new
+            {
+                id = "filtroForm",
+                data_export_url = Url.Action("ExportarHistorial", "Admin")
+            }))
+            {
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="IdUsuario">Usuario</label>
+                            @Html.DropDownListFor(m => m.IdUsuario, (SelectList)ViewBag.Usuarios, "Todos los usuarios", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="TablaAfectada">Tabla Afectada</label>
+                            @Html.DropDownListFor(m => m.TablaAfectada, (SelectList)ViewBag.TablasAfectadas, "Todas las tablas", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="FechaInicio">Fecha Inicio</label>
+                            @Html.TextBoxFor(m => m.FechaInicio, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="FechaFin">Fecha Fin</label>
+                            @Html.TextBoxFor(m => m.FechaFin, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="TipoAccion">Tipo de Acción</label>
+                            @Html.DropDownListFor(m => m.TipoAccion, (SelectList)ViewBag.TiposAccion, "Todos los tipos", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 text-end">
+                        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                        <button type="button" id="btnExportar" class="btn btn-success">Exportar</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="actividadesContainer">
+        @Html.Partial("_Actividades", new List<Proyecto_CreandoRecuerdos.Models.ActividadModel>())
+    </div>
+</div>
+
+<!-- Modal para seleccionar formato de exportación -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Exportar Historial</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Seleccione el formato de exportación:</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exportFormat" id="pdfFormat" value="PDF" checked>
+                    <label class="form-check-label" for="pdfFormat">PDF</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exportFormat" id="excelFormat" value="Excel">
+                    <label class="form-check-label" for="excelFormat">Excel</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="confirmExport" class="btn btn-primary">Exportar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Templates/js/historialactividades.js"></script>
+}

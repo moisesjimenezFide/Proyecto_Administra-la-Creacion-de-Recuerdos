@@ -1,0 +1,160 @@
+﻿@model List<Proyecto_CreandoRecuerdos.Models.EmpleadoModel>
+@{
+    ViewData["Title"] = "Gestión de Empleados";
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        .btn-outline-light-pink {
+            color: #E27AB0;
+            border-color: #E27AB0;
+        }
+
+            .btn-outline-light-pink:hover {
+                background-color: #E27AB0;
+                color: white;
+            }
+
+            .btn-outline-light-pink.active {
+                background-color: #E27AB0;
+                color: white;
+            }
+
+        .btn-custom-pink {
+            background-color: #E27AB0;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-pink:hover {
+                background-color: #d66da3;
+                color: white;
+            }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
+    </style>
+}
+
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-user-cog me-2"></i> Gestión de Empleados
+    </h2>
+
+    <!-- Formulario -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form id="formEmpleado" class="needs-validation" novalidate>
+                <input type="hidden" id="id_usuario" name="id_usuario" value="0">
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3 text-start form-group">
+                        <label for="nombre" class="form-label fw-bold">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required maxlength="100">
+                        <span class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3 text-start form-group">
+                        <label for="correo" class="form-label fw-bold">Correo electrónico</label>
+                        <input type="email" class="form-control" id="correo" name="correo" required maxlength="100">
+                        <span class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3 text-start form-group">
+                        <label for="contrasenna" class="form-label fw-bold">Contraseña</label>
+                        <input type="password" class="form-control" id="contrasenna" name="contrasenna" minlength="8" maxlength="100">
+                        <small class="text-muted">Mínimo 8 caracteres.</small>
+                        <span class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="col-md-3 mb-3 text-start form-group">
+                        <label for="idRol" class="form-label fw-bold">Rol</label>
+                        <select class="form-select" id="idRol" name="idRol" required>
+                            <option value="" selected disabled>Seleccione un rol</option>
+                            <option value="1">Administrador</option>
+                            <option value="2">Trabajador</option>
+                        </select>
+                        <span class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="col-md-3 mb-3 text-start form-group">
+                        <label for="activo" class="form-label fw-bold">Estado</label>
+                        <select class="form-select" id="activo" name="activo" required>
+                            <option value="" selected disabled>Seleccione estado</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                        <span class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button type="reset" class="btn btn-danger" id="btnCancelar">Cancelar</button>
+                    <button type="submit" class="btn btn-custom-pink" id="btnGuardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de empleados -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var empleado in Model)
+                {
+                    <tr>
+                        <td>@empleado.nombre</td>
+                        <td>@empleado.correo</td>
+                        <td>@(empleado.idRol == 1 ? "Administrador" : "Trabajador")</td>
+                        <td>
+                            <span class="badge @(empleado.activo ? "bg-success" : "bg-secondary")">
+                                @(empleado.activo ? "Activo" : "Inactivo")
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-custom-pink btn-sm btn-editar" data-id="@empleado.id_usuario">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-eliminar" data-id="@empleado.id_usuario">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Templates/js/empleados.js"></script>
+}
