@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Proyecto_CreandoRecuerdos.base_de_datos.tabla_solicitudes_ausencias>
+
+@{
+    ViewBag.Title = "Aprobación / Rechazo de Solicitud de Ausencia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Solicitudes de Ausencia</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Empleado (ID)</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Tipo</th>
+            <th>Motivo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.id_usuario</td>
+                <td>@item.fecha_inicio.ToShortDateString()</td>
+                <td>@item.fecha_fin.ToShortDateString()</td>
+                <td>@item.tipo</td>
+                <td>@item.motivo</td>
+                <td>@item.estado</td>
+                <td>
+                    @if (item.estado == "Pendiente")
+                    {
+                        using (Html.BeginForm("Aprobar", "Ausencias", new { id = item.id_solicitud }, FormMethod.Post, new { style = "display:inline;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
+                        }
+                        using (Html.BeginForm("Rechazar", "Ausencias", new { id = item.id_solicitud }, FormMethod.Post, new { style = "display:inline;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                        }
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

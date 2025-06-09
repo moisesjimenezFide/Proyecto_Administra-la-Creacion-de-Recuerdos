@@ -183,6 +183,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="base_de_datos\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -252,6 +253,9 @@
     <Compile Include="base_de_datos\tabla_roles.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="base_de_datos\tabla_solicitudes_ausencias.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="base_de_datos\tabla_suministros.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -262,6 +266,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AusenciasController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
@@ -272,6 +277,7 @@
     <Compile Include="Helpers\ActividadHelper.cs" />
     <Compile Include="Models\ActividadModel.cs" />
     <Compile Include="Models\EmpleadoModel.cs" />
+    <Compile Include="Models\SolicitudAusenciaModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -430,6 +436,8 @@
     <Content Include="Views\Admin\HistorialActividades.cshtml" />
     <Content Include="Views\Admin\_Actividades.cshtml" />
     <Content Include="Views\Empleados\Empleados.cshtml" />
+    <Content Include="Views\Ausencias\SolicitudAusencia.cshtml" />
+    <Content Include="Views\Ausencias\AprobacionRechazoSolicitudAusencia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

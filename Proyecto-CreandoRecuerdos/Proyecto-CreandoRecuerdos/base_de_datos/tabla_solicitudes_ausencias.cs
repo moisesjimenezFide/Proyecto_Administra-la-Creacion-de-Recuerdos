@@ -12,13 +12,15 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     using System;
     using System.Collections.Generic;
     
-    public partial class tabla_procedimientos_recetas
+    public partial class tabla_solicitudes_ausencias
     {
-        public int id_procedimiento { get; set; }
-        public int id_receta { get; set; }
-        public string tipo { get; set; }
-        public string descripcion { get; set; }
+        public int id_solicitud { get; set; }
+        public int id_usuario { get; set; }
+        public System.DateTime fecha_inicio { get; set; }
+        public System.DateTime fecha_fin { get; set; }
+        public string motivo { get; set; }
+        public string estado { get; set; }
     
-        public virtual tabla_recetas tabla_recetas { get; set; }
+        public virtual tabla_usuarios tabla_usuarios { get; set; }
     }
 }

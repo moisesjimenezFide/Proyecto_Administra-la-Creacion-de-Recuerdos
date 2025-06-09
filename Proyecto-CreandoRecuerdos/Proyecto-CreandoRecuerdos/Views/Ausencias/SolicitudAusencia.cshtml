@@ -1,0 +1,31 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.
+
+@{
+    ViewBag.Title = "Solicitud Ausencia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Solicitud Ausencia</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FechaInicio)
+        @Html.TextBoxFor(model => model.FechaInicio, new { @class = "form-control", type = "date" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.FechaFin)
+        @Html.TextBoxFor(model => model.FechaFin, new { @class = "form-control", type = "date" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Tipo)
+        @Html.DropDownListFor(model => model.Tipo, new SelectList(new[] { "Vacaciones", "Permiso" }), "Seleccione un tipo", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Motivo)
+        @Html.TextAreaFor(model => model.Motivo, new { @class = "form-control", rows = 3 })
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+}

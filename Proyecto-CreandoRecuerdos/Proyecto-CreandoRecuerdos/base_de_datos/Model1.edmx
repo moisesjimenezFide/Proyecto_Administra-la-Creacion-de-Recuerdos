@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -162,6 +162,17 @@
           </Key>
           <Property Name="id_rol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tabla_solicitudes_ausencias">
+          <Key>
+            <PropertyRef Name="id_solicitud" />
+          </Key>
+          <Property Name="id_solicitud" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="fecha_inicio" Type="date" Nullable="false" />
+          <Property Name="fecha_fin" Type="date" Nullable="false" />
+          <Property Name="motivo" Type="nvarchar" MaxLength="255" />
+          <Property Name="estado" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tabla_suministros">
           <Key>
@@ -389,6 +400,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_usuario">
+          <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
+          <End Role="tabla_solicitudes_ausencias" Type="Self.tabla_solicitudes_ausencias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_usuarios">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="tabla_solicitudes_ausencias">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_actualizar_empleado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_usuario" Type="int" Mode="In" />
@@ -459,6 +482,7 @@
           <EntitySet Name="tabla_proveedores" EntityType="Self.tabla_proveedores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tabla_recetas" EntityType="Self.tabla_recetas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tabla_roles" EntityType="Self.tabla_roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tabla_solicitudes_ausencias" EntityType="Self.tabla_solicitudes_ausencias" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tabla_suministros" EntityType="Self.tabla_suministros" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tabla_usuarios" EntityType="Self.tabla_usuarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tabla_ventas" EntityType="Self.tabla_ventas" Schema="dbo" store:Type="Tables" />
@@ -526,9 +550,12 @@
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
+          <AssociationSet Name="FK_usuario" Association="Self.FK_usuario">
+            <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+            <End Role="tabla_solicitudes_ausencias" EntitySet="tabla_solicitudes_ausencias" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BD_CREANDO_RECUERDOSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -742,6 +769,7 @@
           <NavigationProperty Name="tabla_actividades" Relationship="Self.FK__tabla_act__id_us__4F47C5E3" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
           <NavigationProperty Name="tabla_roles" Relationship="Self.FK__tabla_usu__id_ro__5EBF139D" FromRole="tabla_usuarios" ToRole="tabla_roles" />
           <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_us__693CA210" FromRole="tabla_usuarios" ToRole="tabla_ventas" />
+          <NavigationProperty Name="tabla_solicitudes_ausencias" Relationship="BD_CREANDO_RECUERDOSModel.FK_usuario" FromRole="tabla_usuarios" ToRole="tabla_solicitudes_ausencias" />
         </EntityType>
         <EntityType Name="tabla_ventas">
           <Key>
@@ -1055,10 +1083,10 @@
             <Parameter Name="activo" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_empleado">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleado" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleado_Result)">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleados" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleados_Result)" />
           <FunctionImport Name="sp_obtener_historial_actividades" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_historial_actividades_Result)">
@@ -1084,6 +1112,11 @@
             <Parameter Name="ip_solicitud" Mode="In" Type="String" />
             <Parameter Name="descripcion" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="tabla_solicitudes_ausencias" EntityType="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias" />
+          <AssociationSet Name="FK_usuario" Association="BD_CREANDO_RECUERDOSModel.FK_usuario">
+            <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+            <End Role="tabla_solicitudes_ausencias" EntitySet="tabla_solicitudes_ausencias" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_autenticar_usuario_Result">
           <Property Type="Int32" Name="Resultado" Nullable="true" />
@@ -1119,6 +1152,30 @@
           <Property Type="String" Name="descripcion" Nullable="false" />
           <Property Type="DateTime" Name="fecha_hora" Nullable="false" Precision="23" />
         </ComplexType>
+        <EntityType Name="tabla_solicitudes_ausencias">
+          <Key>
+            <PropertyRef Name="id_solicitud" />
+          </Key>
+          <Property Name="id_solicitud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="fecha_inicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fecha_fin" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="motivo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tabla_usuarios" Relationship="BD_CREANDO_RECUERDOSModel.FK_usuario" FromRole="tabla_solicitudes_ausencias" ToRole="tabla_usuarios" />
+        </EntityType>
+        <Association Name="FK_usuario">
+          <End Type="BD_CREANDO_RECUERDOSModel.tabla_usuarios" Role="tabla_usuarios" Multiplicity="1" />
+          <End Type="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias" Role="tabla_solicitudes_ausencias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_usuarios">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="tabla_solicitudes_ausencias">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1390,6 +1447,18 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_registrar_actividad" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_registrar_actividad" />
           <FunctionImportMapping FunctionImportName="sp_registrar_auditoria" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_registrar_auditoria" />
+          <EntitySetMapping Name="tabla_solicitudes_ausencias">
+            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias">
+              <MappingFragment StoreEntitySet="tabla_solicitudes_ausencias">
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="motivo" ColumnName="motivo" />
+                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="id_solicitud" ColumnName="id_solicitud" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

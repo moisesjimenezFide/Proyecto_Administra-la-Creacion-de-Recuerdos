@@ -38,6 +38,8 @@
         <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_pro__id_pr__00200768" ManuallyRouted="false" />
         <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_usu__id_ro__5EBF139D" ManuallyRouted="false" />
         <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_ven__id_us__693CA210" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias" Width="1.5" PointX="15.25" PointY="11.5" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK_usuario" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
