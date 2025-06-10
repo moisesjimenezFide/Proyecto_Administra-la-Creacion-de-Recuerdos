@@ -20,6 +20,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public System.DateTime fecha_fin { get; set; }
         public string motivo { get; set; }
         public string estado { get; set; }
+        public string tipo { get; set; }
     
         public virtual tabla_usuarios tabla_usuarios { get; set; }
     }

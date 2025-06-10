@@ -15,7 +15,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         public ActionResult Index()
         {
-            var solicitudes = db.tabla_solicitudes_ausencia.ToList();
+            var solicitudes = db.tabla_solicitudes_ausencias.ToList();
             return View("AprobacionRechazoSolicitudAusencia", solicitudes);
         }
 
@@ -23,7 +23,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Aprobar(int id)
         {
-            var solicitud = db.tabla_solicitudes_ausencia.Find(id);
+            var solicitud = db.tabla_solicitudes_ausencias.Find(id);
             if (solicitud != null && solicitud.estado == "Pendiente")
             {
                 solicitud.estado = "Aprobado";
@@ -37,7 +37,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Rechazar(int id)
         {
-            var solicitud = db.tabla_solicitudes_ausencia.Find(id);
+            var solicitud = db.tabla_solicitudes_ausencias.Find(id);
             if (solicitud != null && solicitud.estado == "Pendiente")
             {
                 solicitud.estado = "Rechazado";
@@ -63,7 +63,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 // Aquí deberías obtener el IdUsuario del usuario autenticado
                 // model.IdUsuario = ...;
 
-                var entidad = new tabla_solicitudes_ausencia
+                var entidad = new tabla_solicitudes_ausencias
                 {
                     id_usuario = model.IdUsuario,
                     fecha_inicio = model.FechaInicio,
@@ -73,7 +73,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     estado = "Pendiente"
                 };
 
-                db.tabla_solicitudes_ausencia.Add(entidad);
+                db.tabla_solicitudes_ausencias.Add(entidad);
                 db.SaveChanges();
 
                 TempData["Mensaje"] = "Solicitud enviada correctamente.";

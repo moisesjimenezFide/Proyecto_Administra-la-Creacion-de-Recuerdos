@@ -173,6 +173,7 @@
           <Property Name="fecha_fin" Type="date" Nullable="false" />
           <Property Name="motivo" Type="nvarchar" MaxLength="255" />
           <Property Name="estado" Type="nvarchar" MaxLength="50" />
+          <Property Name="tipo" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tabla_suministros">
           <Key>
@@ -1163,6 +1164,7 @@
           <Property Name="motivo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tabla_usuarios" Relationship="BD_CREANDO_RECUERDOSModel.FK_usuario" FromRole="tabla_solicitudes_ausencias" ToRole="tabla_usuarios" />
+          <Property Name="tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_usuario">
           <End Type="BD_CREANDO_RECUERDOSModel.tabla_usuarios" Role="tabla_usuarios" Multiplicity="1" />
@@ -1450,6 +1452,7 @@
           <EntitySetMapping Name="tabla_solicitudes_ausencias">
             <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias">
               <MappingFragment StoreEntitySet="tabla_solicitudes_ausencias">
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
                 <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="motivo" ColumnName="motivo" />
                 <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
