@@ -40,6 +40,9 @@
         <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_ven__id_us__693CA210" ManuallyRouted="false" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias" Width="1.5" PointX="15.25" PointY="11.5" />
         <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK_usuario" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_horarios" Width="1.5" PointX="15.25" PointY="15.625" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.database_firewall_rules" Width="1.5" PointX="3.375" PointY="0.75" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_hor__id_us__0D44F85C" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

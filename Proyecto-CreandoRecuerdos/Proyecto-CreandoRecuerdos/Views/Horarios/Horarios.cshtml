@@ -1,0 +1,149 @@
+﻿@model List<Proyecto_CreandoRecuerdos.base_de_datos.tabla_horarios>
+@{
+    ViewData["Title"] = "Gestión de Horarios";
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        .btn-outline-light-pink {
+            color: #E27AB0;
+            border-color: #E27AB0;
+        }
+
+            .btn-outline-light-pink:hover {
+                background-color: #E27AB0;
+                color: white;
+            }
+
+            .btn-outline-light-pink.active {
+                background-color: #E27AB0;
+                color: white;
+            }
+
+        .btn-custom-pink {
+            background-color: #E27AB0;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-pink:hover {
+                background-color: #d66da3;
+                color: white;
+            }
+
+        .nav-tabs .nav-link {
+            color: #E27AB0;
+            border: 1px solid #E27AB0;
+            font-weight: 500;
+            background-color: white;
+        }
+
+            .nav-tabs .nav-link.active {
+                background-color: #E27AB0;
+                color: white;
+                border-color: #E27AB0 #E27AB0 white;
+            }
+    </style>
+}
+
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-clock me-2"></i> Gestión de Horarios
+    </h2>
+
+    <!-- Tabs superiores -->
+    <ul class="nav nav-tabs mb-4 justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Empleados", "Empleados")">Empleados</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Horarios</a>
+        </li>
+    </ul>
+
+    <!-- Formulario -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form action="@Url.Action("GuardarHorario", "Horarios")" method="post">
+                <input type="hidden" name="id_horario" value="0" />
+
+                <div class="row mb-3">
+                    <div class="col-md-3 mb-3 text-start">
+                        <label class="form-label fw-bold">Empleado</label>
+                        @Html.DropDownList("id_usuario", ViewBag.Empleados as List<SelectListItem>, "-- Seleccione --", new { @class = "form-select", required = "required" })
+                    </div>
+
+                    <div class="col-md-6 mb-3 text-start">
+                        <label class="form-label fw-bold">Días de la semana</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            @foreach (var dia in new[] { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo" })
+                            {
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" name="dias_semana" value="@dia" id="check_@dia" />
+                                    <label class="form-check-label" for="check_@dia">@dia</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 ms-auto mb-3 text-start d-flex flex-column">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Hora Entrada</label>
+                            <input type="time" name="hora_entrada" class="form-control" required />
+                        </div>
+                        <div>
+                            <label class="form-label fw-bold">Hora Salida</label>
+                            <input type="time" name="hora_salida" class="form-control" required />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="reset" class="btn btn-danger">Cancelar</button>
+                    <button type="submit" class="btn btn-custom-pink">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>Empleado</th>
+                    <th>Día</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var h in Model)
+                {
+                    <tr>
+                        <td>@h.id_usuario</td>
+                        <td>@h.dia_semana</td>
+                        <td>@h.hora_entrada</td>
+                        <td>@h.hora_salida</td>
+                        <td>
+                            <form method="post" action="@Url.Action("EliminarHorario", "Horarios")" style="display:inline;">
+                                <input type="hidden" name="id" value="@h.id_horario" />
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}

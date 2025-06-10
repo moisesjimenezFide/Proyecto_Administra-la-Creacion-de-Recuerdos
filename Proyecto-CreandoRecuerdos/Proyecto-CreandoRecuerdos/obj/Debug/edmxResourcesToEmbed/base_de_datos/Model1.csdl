@@ -211,6 +211,7 @@
     <NavigationProperty Name="tabla_roles" Relationship="Self.FK__tabla_usu__id_ro__5EBF139D" FromRole="tabla_usuarios" ToRole="tabla_roles" />
     <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_us__693CA210" FromRole="tabla_usuarios" ToRole="tabla_ventas" />
     <NavigationProperty Name="tabla_solicitudes_ausencias" Relationship="BD_CREANDO_RECUERDOSModel.FK_usuario" FromRole="tabla_usuarios" ToRole="tabla_solicitudes_ausencias" />
+    <NavigationProperty Name="tabla_horarios" Relationship="BD_CREANDO_RECUERDOSModel.FK__tabla_hor__id_us__0D44F85C" FromRole="tabla_usuarios" ToRole="tabla_horarios" />
   </EntityType>
   <EntityType Name="tabla_ventas">
     <Key>
@@ -558,6 +559,12 @@
       <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
       <End Role="tabla_solicitudes_ausencias" EntitySet="tabla_solicitudes_ausencias" />
     </AssociationSet>
+    <EntitySet Name="tabla_horarios" EntityType="BD_CREANDO_RECUERDOSModel.tabla_horarios" />
+    <EntitySet Name="database_firewall_rules" EntityType="BD_CREANDO_RECUERDOSModel.database_firewall_rules" />
+    <AssociationSet Name="FK__tabla_hor__id_us__0D44F85C" Association="BD_CREANDO_RECUERDOSModel.FK__tabla_hor__id_us__0D44F85C">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_horarios" EntitySet="tabla_horarios" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="sp_autenticar_usuario_Result">
     <Property Type="Int32" Name="Resultado" Nullable="true" />
@@ -614,6 +621,46 @@
         <PropertyRef Name="id_usuario" />
       </Principal>
       <Dependent Role="tabla_solicitudes_ausencias">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tabla_horarios">
+    <Key>
+      <PropertyRef Name="id_horario" />
+    </Key>
+    <Property Name="id_horario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" Nullable="false" />
+    <Property Name="dia_semana" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="hora_entrada" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="hora_salida" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="activo" Type="Boolean" />
+    <NavigationProperty Name="tabla_usuarios" Relationship="BD_CREANDO_RECUERDOSModel.FK__tabla_hor__id_us__0D44F85C" FromRole="tabla_horarios" ToRole="tabla_usuarios" />
+  </EntityType>
+  <EntityType Name="database_firewall_rules">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="start_ip_address" />
+      <PropertyRef Name="end_ip_address" />
+      <PropertyRef Name="create_date" />
+      <PropertyRef Name="modify_date" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="start_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="end_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <Association Name="FK__tabla_hor__id_us__0D44F85C">
+    <End Type="BD_CREANDO_RECUERDOSModel.tabla_usuarios" Role="tabla_usuarios" Multiplicity="1" />
+    <End Type="BD_CREANDO_RECUERDOSModel.tabla_horarios" Role="tabla_horarios" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_horarios">
         <PropertyRef Name="id_usuario" />
       </Dependent>
     </ReferentialConstraint>

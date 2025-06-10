@@ -48,6 +48,19 @@
         .is-invalid ~ .invalid-feedback {
             display: block;
         }
+
+        .nav-tabs .nav-link {
+            color: #E27AB0;
+            border: 1px solid #E27AB0;
+            font-weight: 500;
+            background-color: white;
+        }
+
+            .nav-tabs .nav-link.active {
+                background-color: #E27AB0;
+                color: white;
+                border-color: #E27AB0 #E27AB0 white;
+            }
     </style>
 }
 
@@ -55,6 +68,16 @@
     <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
         <i class="fas fa-user-cog me-2"></i> Gestión de Empleados
     </h2>
+
+    <!-- Tabs superiores -->
+    <ul class="nav nav-tabs mb-4 justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Empleados</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Horarios", "Horarios")">Horarios</a>
+        </li>
+    </ul>
 
     <!-- Formulario -->
     <div class="card mb-4">

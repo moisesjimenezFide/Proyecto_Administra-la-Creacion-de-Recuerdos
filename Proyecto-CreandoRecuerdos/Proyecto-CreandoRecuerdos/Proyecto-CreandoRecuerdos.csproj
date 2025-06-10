@@ -194,6 +194,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="base_de_datos\database_firewall_rules.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="base_de_datos\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -239,6 +242,9 @@
     <Compile Include="base_de_datos\tabla_empaque_decoracion.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="base_de_datos\tabla_horarios.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="base_de_datos\tabla_ingredientes_recetas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -278,6 +284,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AusenciasController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
+    <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
     <Compile Include="Controllers\PresentacionController.cs" />
@@ -286,6 +293,7 @@
     </Compile>
     <Compile Include="Helpers\ActividadHelper.cs" />
     <Compile Include="Models\ActividadModel.cs" />
+    <Compile Include="Models\HorarioModel.cs" />
     <Compile Include="Models\EmpleadoModel.cs" />
     <Compile Include="Models\SolicitudAusenciaModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
@@ -448,6 +456,7 @@
     <Content Include="Views\Empleados\Empleados.cshtml" />
     <Content Include="Views\Ausencias\SolicitudAusencia.cshtml" />
     <Content Include="Views\Ausencias\AprobacionRechazoSolicitudAusencia.cshtml" />
+    <Content Include="Views\Horarios\Horarios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
