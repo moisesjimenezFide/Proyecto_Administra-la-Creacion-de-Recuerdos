@@ -47,194 +47,194 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public DbSet<tabla_ventas> tabla_ventas { get; set; }
         public DbSet<tabla_solicitudes_ausencias> tabla_solicitudes_ausencias { get; set; }
     
-        public virtual int sp_actualizar_empleado(Nullable<int> id_usuario, string nombre, Nullable<int> id_rol, string correo, string contrasenna, Nullable<bool> activo)
+public virtual int sp_actualizar_empleado(Nullable<int> id_usuario, string nombre, Nullable<int> id_rol, string correo, string contrasenna, Nullable<bool> activo)
         {
             var id_usuarioParameter = id_usuario.HasValue ?
-                new ObjectParameter("id_usuario", id_usuario) :
-                new ObjectParameter("id_usuario", typeof(int));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", id_usuario) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", typeof(int));
+
             var nombreParameter = nombre != null ?
-                new ObjectParameter("nombre", nombre) :
-                new ObjectParameter("nombre", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("nombre", nombre) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("nombre", typeof(string));
+
             var id_rolParameter = id_rol.HasValue ?
-                new ObjectParameter("id_rol", id_rol) :
-                new ObjectParameter("id_rol", typeof(int));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_rol", id_rol) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_rol", typeof(int));
+
             var correoParameter = correo != null ?
-                new ObjectParameter("correo", correo) :
-                new ObjectParameter("correo", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("correo", correo) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("correo", typeof(string));
+
             var contrasennaParameter = contrasenna != null ?
-                new ObjectParameter("contrasenna", contrasenna) :
-                new ObjectParameter("contrasenna", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("contrasenna", contrasenna) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("contrasenna", typeof(string));
+
             var activoParameter = activo.HasValue ?
-                new ObjectParameter("activo", activo) :
-                new ObjectParameter("activo", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_actualizar_empleado", id_usuarioParameter, nombreParameter, id_rolParameter, correoParameter, contrasennaParameter, activoParameter);
+                new System.Data.Entity.Core.Objects.ObjectParameter("activo", activo) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("activo", typeof(bool));
+
+            return ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_actualizar_empleado", id_usuarioParameter, nombreParameter, id_rolParameter, correoParameter, contrasennaParameter, activoParameter);
         }
     
-        public virtual ObjectResult<sp_autenticar_usuario_Result> sp_autenticar_usuario(string correo, string contrasenna)
+public virtual System.Data.Entity.Core.Objects.ObjectResult<sp_autenticar_usuario_Result> sp_autenticar_usuario(string correo, string contrasenna)
         {
             var correoParameter = correo != null ?
-                new ObjectParameter("correo", correo) :
-                new ObjectParameter("correo", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("correo", correo) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("correo", typeof(string));
+
             var contrasennaParameter = contrasenna != null ?
-                new ObjectParameter("contrasenna", contrasenna) :
-                new ObjectParameter("contrasenna", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_autenticar_usuario_Result>("sp_autenticar_usuario", correoParameter, contrasennaParameter);
+                new System.Data.Entity.Core.Objects.ObjectParameter("contrasenna", contrasenna) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("contrasenna", typeof(string));
+
+            return ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_autenticar_usuario_Result>("sp_autenticar_usuario", correoParameter, contrasennaParameter);
         }
     
-        public virtual int sp_crear_cuenta(string nombre, string correo, string contrasenna)
+public virtual int sp_crear_cuenta(string nombre, string correo, string contrasenna)
         {
             var nombreParameter = nombre != null ?
-                new ObjectParameter("nombre", nombre) :
-                new ObjectParameter("nombre", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("nombre", nombre) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("nombre", typeof(string));
+
             var correoParameter = correo != null ?
-                new ObjectParameter("correo", correo) :
-                new ObjectParameter("correo", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("correo", correo) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("correo", typeof(string));
+
             var contrasennaParameter = contrasenna != null ?
-                new ObjectParameter("contrasenna", contrasenna) :
-                new ObjectParameter("contrasenna", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("contrasenna", contrasenna) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("contrasenna", typeof(string));
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_crear_cuenta", nombreParameter, correoParameter, contrasennaParameter);
         }
     
-        public virtual int sp_crear_empleado(string nombre, Nullable<int> id_rol, string correo, string contrasenna, Nullable<bool> activo)
+public virtual int sp_crear_empleado(string nombre, Nullable<int> id_rol, string correo, string contrasenna, Nullable<bool> activo)
         {
             var nombreParameter = nombre != null ?
-                new ObjectParameter("nombre", nombre) :
-                new ObjectParameter("nombre", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("nombre", nombre) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("nombre", typeof(string));
+
             var id_rolParameter = id_rol.HasValue ?
-                new ObjectParameter("id_rol", id_rol) :
-                new ObjectParameter("id_rol", typeof(int));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_rol", id_rol) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_rol", typeof(int));
+
             var correoParameter = correo != null ?
-                new ObjectParameter("correo", correo) :
-                new ObjectParameter("correo", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("correo", correo) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("correo", typeof(string));
+
             var contrasennaParameter = contrasenna != null ?
-                new ObjectParameter("contrasenna", contrasenna) :
-                new ObjectParameter("contrasenna", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("contrasenna", contrasenna) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("contrasenna", typeof(string));
+
             var activoParameter = activo.HasValue ?
-                new ObjectParameter("activo", activo) :
-                new ObjectParameter("activo", typeof(bool));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("activo", activo) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("activo", typeof(bool));
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_crear_empleado", nombreParameter, id_rolParameter, correoParameter, contrasennaParameter, activoParameter);
         }
     
-        public virtual int sp_eliminar_empleado(Nullable<int> id_usuario)
+public virtual int sp_eliminar_empleado(Nullable<int> id_usuario)
         {
             var id_usuarioParameter = id_usuario.HasValue ?
-                new ObjectParameter("id_usuario", id_usuario) :
-                new ObjectParameter("id_usuario", typeof(int));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", id_usuario) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", typeof(int));
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_eliminar_empleado", id_usuarioParameter);
         }
     
-        public virtual ObjectResult<sp_obtener_empleado_Result> sp_obtener_empleado(Nullable<int> id_usuario)
+public virtual System.Data.Entity.Core.Objects.ObjectResult<sp_obtener_empleado_Result> sp_obtener_empleado(Nullable<int> id_usuario)
         {
             var id_usuarioParameter = id_usuario.HasValue ?
-                new ObjectParameter("id_usuario", id_usuario) :
-                new ObjectParameter("id_usuario", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_obtener_empleado_Result>("sp_obtener_empleado", id_usuarioParameter);
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", id_usuario) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", typeof(int));
+
+            return ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_obtener_empleado_Result>("sp_obtener_empleado", id_usuarioParameter);
         }
     
-        public virtual ObjectResult<sp_obtener_empleados_Result> sp_obtener_empleados()
+public virtual System.Data.Entity.Core.Objects.ObjectResult<sp_obtener_empleados_Result> sp_obtener_empleados()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_obtener_empleados_Result>("sp_obtener_empleados");
+            return ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_obtener_empleados_Result>("sp_obtener_empleados");
         }
     
-        public virtual ObjectResult<sp_obtener_historial_actividades_Result> sp_obtener_historial_actividades(Nullable<int> id_usuario, Nullable<System.DateTime> fecha_inicio, Nullable<System.DateTime> fecha_fin, string tipo_accion, string tabla_afectada, Nullable<int> id_registro_afectado)
+public virtual System.Data.Entity.Core.Objects.ObjectResult<sp_obtener_historial_actividades_Result> sp_obtener_historial_actividades(Nullable<int> id_usuario, Nullable<System.DateTime> fecha_inicio, Nullable<System.DateTime> fecha_fin, string tipo_accion, string tabla_afectada, Nullable<int> id_registro_afectado)
         {
             var id_usuarioParameter = id_usuario.HasValue ?
-                new ObjectParameter("id_usuario", id_usuario) :
-                new ObjectParameter("id_usuario", typeof(int));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", id_usuario) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", typeof(int));
+
             var fecha_inicioParameter = fecha_inicio.HasValue ?
-                new ObjectParameter("fecha_inicio", fecha_inicio) :
-                new ObjectParameter("fecha_inicio", typeof(System.DateTime));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("fecha_inicio", fecha_inicio) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("fecha_inicio", typeof(System.DateTime));
+
             var fecha_finParameter = fecha_fin.HasValue ?
-                new ObjectParameter("fecha_fin", fecha_fin) :
-                new ObjectParameter("fecha_fin", typeof(System.DateTime));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("fecha_fin", fecha_fin) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("fecha_fin", typeof(System.DateTime));
+
             var tipo_accionParameter = tipo_accion != null ?
-                new ObjectParameter("tipo_accion", tipo_accion) :
-                new ObjectParameter("tipo_accion", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("tipo_accion", tipo_accion) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("tipo_accion", typeof(string));
+
             var tabla_afectadaParameter = tabla_afectada != null ?
-                new ObjectParameter("tabla_afectada", tabla_afectada) :
-                new ObjectParameter("tabla_afectada", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("tabla_afectada", tabla_afectada) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("tabla_afectada", typeof(string));
+
             var id_registro_afectadoParameter = id_registro_afectado.HasValue ?
-                new ObjectParameter("id_registro_afectado", id_registro_afectado) :
-                new ObjectParameter("id_registro_afectado", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_obtener_historial_actividades_Result>("sp_obtener_historial_actividades", id_usuarioParameter, fecha_inicioParameter, fecha_finParameter, tipo_accionParameter, tabla_afectadaParameter, id_registro_afectadoParameter);
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_registro_afectado", id_registro_afectado) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_registro_afectado", typeof(int));
+
+            return ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_obtener_historial_actividades_Result>("sp_obtener_historial_actividades", id_usuarioParameter, fecha_inicioParameter, fecha_finParameter, tipo_accionParameter, tabla_afectadaParameter, id_registro_afectadoParameter);
         }
-    
+
         public virtual int sp_registrar_actividad(Nullable<int> id_usuario, string tipo_accion, string descripcion)
         {
             var id_usuarioParameter = id_usuario.HasValue ?
-                new ObjectParameter("id_usuario", id_usuario) :
-                new ObjectParameter("id_usuario", typeof(int));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", id_usuario) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", typeof(int));
+
             var tipo_accionParameter = tipo_accion != null ?
-                new ObjectParameter("tipo_accion", tipo_accion) :
-                new ObjectParameter("tipo_accion", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("tipo_accion", tipo_accion) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("tipo_accion", typeof(string));
+
             var descripcionParameter = descripcion != null ?
-                new ObjectParameter("descripcion", descripcion) :
-                new ObjectParameter("descripcion", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_registrar_actividad", id_usuarioParameter, tipo_accionParameter, descripcionParameter);
+                new System.Data.Entity.Core.Objects.ObjectParameter("descripcion", descripcion) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("descripcion", typeof(string));
+
+            return ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_registrar_actividad", id_usuarioParameter, tipo_accionParameter, descripcionParameter);
         }
     
-        public virtual int sp_registrar_auditoria(Nullable<int> id_usuario, string tipo_accion, string tabla_afectada, Nullable<int> id_registro_afectado, string valores_anteriores, string valores_nuevos, string ip_solicitud, string descripcion)
+public virtual int sp_registrar_auditoria(Nullable<int> id_usuario, string tipo_accion, string tabla_afectada, Nullable<int> id_registro_afectado, string valores_anteriores, string valores_nuevos, string ip_solicitud, string descripcion)
         {
             var id_usuarioParameter = id_usuario.HasValue ?
-                new ObjectParameter("id_usuario", id_usuario) :
-                new ObjectParameter("id_usuario", typeof(int));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", id_usuario) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_usuario", typeof(int));
+
             var tipo_accionParameter = tipo_accion != null ?
-                new ObjectParameter("tipo_accion", tipo_accion) :
-                new ObjectParameter("tipo_accion", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("tipo_accion", tipo_accion) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("tipo_accion", typeof(string));
+
             var tabla_afectadaParameter = tabla_afectada != null ?
-                new ObjectParameter("tabla_afectada", tabla_afectada) :
-                new ObjectParameter("tabla_afectada", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("tabla_afectada", tabla_afectada) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("tabla_afectada", typeof(string));
+
             var id_registro_afectadoParameter = id_registro_afectado.HasValue ?
-                new ObjectParameter("id_registro_afectado", id_registro_afectado) :
-                new ObjectParameter("id_registro_afectado", typeof(int));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_registro_afectado", id_registro_afectado) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("id_registro_afectado", typeof(int));
+
             var valores_anterioresParameter = valores_anteriores != null ?
-                new ObjectParameter("valores_anteriores", valores_anteriores) :
-                new ObjectParameter("valores_anteriores", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("valores_anteriores", valores_anteriores) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("valores_anteriores", typeof(string));
+
             var valores_nuevosParameter = valores_nuevos != null ?
-                new ObjectParameter("valores_nuevos", valores_nuevos) :
-                new ObjectParameter("valores_nuevos", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("valores_nuevos", valores_nuevos) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("valores_nuevos", typeof(string));
+
             var ip_solicitudParameter = ip_solicitud != null ?
-                new ObjectParameter("ip_solicitud", ip_solicitud) :
-                new ObjectParameter("ip_solicitud", typeof(string));
-    
+                new System.Data.Entity.Core.Objects.ObjectParameter("ip_solicitud", ip_solicitud) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("ip_solicitud", typeof(string));
+
             var descripcionParameter = descripcion != null ?
-                new ObjectParameter("descripcion", descripcion) :
-                new ObjectParameter("descripcion", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_registrar_auditoria", id_usuarioParameter, tipo_accionParameter, tabla_afectadaParameter, id_registro_afectadoParameter, valores_anterioresParameter, valores_nuevosParameter, ip_solicitudParameter, descripcionParameter);
+                new System.Data.Entity.Core.Objects.ObjectParameter("descripcion", descripcion) :
+                new System.Data.Entity.Core.Objects.ObjectParameter("descripcion", typeof(string));
+
+            return ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_registrar_auditoria", id_usuarioParameter, tipo_accionParameter, tabla_afectadaParameter, id_registro_afectadoParameter, valores_anterioresParameter, valores_nuevosParameter, ip_solicitudParameter, descripcionParameter);
         }
     }
 }
