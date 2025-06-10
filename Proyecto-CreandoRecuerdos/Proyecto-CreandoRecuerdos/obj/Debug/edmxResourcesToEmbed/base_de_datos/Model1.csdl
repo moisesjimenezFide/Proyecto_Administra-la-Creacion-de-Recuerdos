@@ -210,6 +210,7 @@
     <NavigationProperty Name="tabla_actividades" Relationship="Self.FK__tabla_act__id_us__4F47C5E3" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
     <NavigationProperty Name="tabla_roles" Relationship="Self.FK__tabla_usu__id_ro__5EBF139D" FromRole="tabla_usuarios" ToRole="tabla_roles" />
     <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_us__693CA210" FromRole="tabla_usuarios" ToRole="tabla_ventas" />
+    <NavigationProperty Name="tabla_solicitudes_ausencias" Relationship="BD_CREANDO_RECUERDOSModel.FK_usuario" FromRole="tabla_usuarios" ToRole="tabla_solicitudes_ausencias" />
   </EntityType>
   <EntityType Name="tabla_ventas">
     <Key>
@@ -552,6 +553,11 @@
       <Parameter Name="ip_solicitud" Mode="In" Type="String" />
       <Parameter Name="descripcion" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="tabla_solicitudes_ausencias" EntityType="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias" />
+    <AssociationSet Name="FK_usuario" Association="BD_CREANDO_RECUERDOSModel.FK_usuario">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_solicitudes_ausencias" EntitySet="tabla_solicitudes_ausencias" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="sp_autenticar_usuario_Result">
     <Property Type="Int32" Name="Resultado" Nullable="true" />
@@ -587,4 +593,29 @@
     <Property Type="String" Name="descripcion" Nullable="false" />
     <Property Type="DateTime" Name="fecha_hora" Nullable="false" Precision="23" />
   </ComplexType>
+  <EntityType Name="tabla_solicitudes_ausencias">
+    <Key>
+      <PropertyRef Name="id_solicitud" />
+    </Key>
+    <Property Name="id_solicitud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" Nullable="false" />
+    <Property Name="fecha_inicio" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="fecha_fin" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="motivo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tabla_usuarios" Relationship="BD_CREANDO_RECUERDOSModel.FK_usuario" FromRole="tabla_solicitudes_ausencias" ToRole="tabla_usuarios" />
+    <Property Name="tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_usuario">
+    <End Type="BD_CREANDO_RECUERDOSModel.tabla_usuarios" Role="tabla_usuarios" Multiplicity="1" />
+    <End Type="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias" Role="tabla_solicitudes_ausencias" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_solicitudes_ausencias">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

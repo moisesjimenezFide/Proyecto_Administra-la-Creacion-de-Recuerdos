@@ -158,6 +158,18 @@
     <Property Name="id_rol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
+  <EntityType Name="tabla_solicitudes_ausencias">
+    <Key>
+      <PropertyRef Name="id_solicitud" />
+    </Key>
+    <Property Name="id_solicitud" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_usuario" Type="int" Nullable="false" />
+    <Property Name="fecha_inicio" Type="date" Nullable="false" />
+    <Property Name="fecha_fin" Type="date" Nullable="false" />
+    <Property Name="motivo" Type="nvarchar" MaxLength="255" />
+    <Property Name="estado" Type="nvarchar" MaxLength="50" />
+    <Property Name="tipo" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="tabla_suministros">
     <Key>
       <PropertyRef Name="id_suministro" />
@@ -384,6 +396,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_usuario">
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
+    <End Role="tabla_solicitudes_ausencias" Type="Self.tabla_solicitudes_ausencias" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_solicitudes_ausencias">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
   <Function Name="sp_actualizar_empleado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="id_usuario" Type="int" Mode="In" />
@@ -454,6 +478,7 @@
     <EntitySet Name="tabla_proveedores" EntityType="Self.tabla_proveedores" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_recetas" EntityType="Self.tabla_recetas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_roles" EntityType="Self.tabla_roles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_solicitudes_ausencias" EntityType="Self.tabla_solicitudes_ausencias" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_suministros" EntityType="Self.tabla_suministros" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_usuarios" EntityType="Self.tabla_usuarios" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_ventas" EntityType="Self.tabla_ventas" Schema="dbo" store:Type="Tables" />
@@ -520,6 +545,10 @@
     <AssociationSet Name="FK__tabla_ven__id_us__693CA210" Association="Self.FK__tabla_ven__id_us__693CA210">
       <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
       <End Role="tabla_ventas" EntitySet="tabla_ventas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usuario" Association="Self.FK_usuario">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_solicitudes_ausencias" EntitySet="tabla_solicitudes_ausencias" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

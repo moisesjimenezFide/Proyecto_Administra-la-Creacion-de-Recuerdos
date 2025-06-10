@@ -200,3 +200,7 @@ C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyect
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto.E04E3056.Up2Date
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.pdb
+C:\Diseño y Desarrollo\moisesjimenezFide\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.csproj.AssemblyReference.cache
+C:\Diseño y Desarrollo\moisesjimenezFide\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.csproj.CoreCompileInputs.cache
+C:\Diseño y Desarrollo\moisesjimenezFide\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.dll
+C:\Diseño y Desarrollo\moisesjimenezFide\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.pdb
