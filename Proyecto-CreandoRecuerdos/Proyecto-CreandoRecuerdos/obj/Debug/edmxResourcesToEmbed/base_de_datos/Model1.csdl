@@ -69,6 +69,18 @@
     <Property Name="costo_por_unidad" Type="Decimal" Precision="10" Scale="2" />
     <NavigationProperty Name="tabla_materias_primas" Relationship="Self.FK__tabla_emp__id_ma__75A278F5" FromRole="tabla_empaque_decoracion" ToRole="tabla_materias_primas" />
   </EntityType>
+  <EntityType Name="tabla_horarios">
+    <Key>
+      <PropertyRef Name="id_horario" />
+    </Key>
+    <Property Name="id_horario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" Nullable="false" />
+    <Property Name="dia_semana" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="hora_entrada" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="hora_salida" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="activo" Type="Boolean" />
+    <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_hor__id_us__0D44F85C" FromRole="tabla_horarios" ToRole="tabla_usuarios" />
+  </EntityType>
   <EntityType Name="tabla_ingredientes_recetas">
     <Key>
       <PropertyRef Name="id_ingrediente" />
@@ -183,6 +195,19 @@
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_usu__id_ro__5EBF139D" FromRole="tabla_roles" ToRole="tabla_usuarios" />
   </EntityType>
+  <EntityType Name="tabla_solicitudes_ausencias">
+    <Key>
+      <PropertyRef Name="id_solicitud" />
+    </Key>
+    <Property Name="id_solicitud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_usuario" Type="Int32" Nullable="false" />
+    <Property Name="fecha_inicio" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="fecha_fin" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="motivo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK_usuario" FromRole="tabla_solicitudes_ausencias" ToRole="tabla_usuarios" />
+  </EntityType>
   <EntityType Name="tabla_suministros">
     <Key>
       <PropertyRef Name="id_suministro" />
@@ -208,10 +233,10 @@
     <Property Name="fecha_creacion" Type="DateTime" Precision="3" />
     <Property Name="contrasenna" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="tabla_actividades" Relationship="Self.FK__tabla_act__id_us__4F47C5E3" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
+    <NavigationProperty Name="tabla_horarios" Relationship="Self.FK__tabla_hor__id_us__0D44F85C" FromRole="tabla_usuarios" ToRole="tabla_horarios" />
     <NavigationProperty Name="tabla_roles" Relationship="Self.FK__tabla_usu__id_ro__5EBF139D" FromRole="tabla_usuarios" ToRole="tabla_roles" />
+    <NavigationProperty Name="tabla_solicitudes_ausencias" Relationship="Self.FK_usuario" FromRole="tabla_usuarios" ToRole="tabla_solicitudes_ausencias" />
     <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_us__693CA210" FromRole="tabla_usuarios" ToRole="tabla_ventas" />
-    <NavigationProperty Name="tabla_solicitudes_ausencias" Relationship="BD_CREANDO_RECUERDOSModel.FK_usuario" FromRole="tabla_usuarios" ToRole="tabla_solicitudes_ausencias" />
-    <NavigationProperty Name="tabla_horarios" Relationship="BD_CREANDO_RECUERDOSModel.FK__tabla_hor__id_us__0D44F85C" FromRole="tabla_usuarios" ToRole="tabla_horarios" />
   </EntityType>
   <EntityType Name="tabla_ventas">
     <Key>
@@ -295,6 +320,18 @@
       </Principal>
       <Dependent Role="tabla_empaque_decoracion">
         <PropertyRef Name="id_materia_prima" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tabla_hor__id_us__0D44F85C">
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
+    <End Role="tabla_horarios" Type="Self.tabla_horarios" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_horarios">
+        <PropertyRef Name="id_usuario" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -406,6 +443,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_usuario">
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
+    <End Role="tabla_solicitudes_ausencias" Type="Self.tabla_solicitudes_ausencias" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_solicitudes_ausencias">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__tabla_ven__id_us__693CA210">
     <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
     <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
@@ -425,6 +474,7 @@
     <EntitySet Name="tabla_clientes" EntityType="Self.tabla_clientes" />
     <EntitySet Name="tabla_detalle_venta" EntityType="Self.tabla_detalle_venta" />
     <EntitySet Name="tabla_empaque_decoracion" EntityType="Self.tabla_empaque_decoracion" />
+    <EntitySet Name="tabla_horarios" EntityType="Self.tabla_horarios" />
     <EntitySet Name="tabla_ingredientes_recetas" EntityType="Self.tabla_ingredientes_recetas" />
     <EntitySet Name="tabla_materias_primas" EntityType="Self.tabla_materias_primas" />
     <EntitySet Name="tabla_procedimientos_recetas" EntityType="Self.tabla_procedimientos_recetas" />
@@ -433,6 +483,7 @@
     <EntitySet Name="tabla_proveedores" EntityType="Self.tabla_proveedores" />
     <EntitySet Name="tabla_recetas" EntityType="Self.tabla_recetas" />
     <EntitySet Name="tabla_roles" EntityType="Self.tabla_roles" />
+    <EntitySet Name="tabla_solicitudes_ausencias" EntityType="Self.tabla_solicitudes_ausencias" />
     <EntitySet Name="tabla_suministros" EntityType="Self.tabla_suministros" />
     <EntitySet Name="tabla_usuarios" EntityType="Self.tabla_usuarios" />
     <EntitySet Name="tabla_ventas" EntityType="Self.tabla_ventas" />
@@ -459,6 +510,10 @@
     <AssociationSet Name="FK__tabla_emp__id_ma__75A278F5" Association="Self.FK__tabla_emp__id_ma__75A278F5">
       <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
       <End Role="tabla_empaque_decoracion" EntitySet="tabla_empaque_decoracion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tabla_hor__id_us__0D44F85C" Association="Self.FK__tabla_hor__id_us__0D44F85C">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_horarios" EntitySet="tabla_horarios" />
     </AssociationSet>
     <AssociationSet Name="FK__tabla_ing__id_ma__0D7A0286" Association="Self.FK__tabla_ing__id_ma__0D7A0286">
       <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
@@ -496,10 +551,17 @@
       <End Role="tabla_roles" EntitySet="tabla_roles" />
       <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
     </AssociationSet>
+    <AssociationSet Name="FK_usuario" Association="Self.FK_usuario">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_solicitudes_ausencias" EntitySet="tabla_solicitudes_ausencias" />
+    </AssociationSet>
     <AssociationSet Name="FK__tabla_ven__id_us__693CA210" Association="Self.FK__tabla_ven__id_us__693CA210">
       <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
       <End Role="tabla_ventas" EntitySet="tabla_ventas" />
     </AssociationSet>
+    <FunctionImport Name="sp_activar_usuario">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+    </FunctionImport>
     <FunctionImport Name="sp_actualizar_empleado">
       <Parameter Name="id_usuario" Mode="In" Type="Int32" />
       <Parameter Name="nombre" Mode="In" Type="String" />
@@ -507,6 +569,11 @@
       <Parameter Name="correo" Mode="In" Type="String" />
       <Parameter Name="contrasenna" Mode="In" Type="String" />
       <Parameter Name="activo" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="sp_actualizar_usuario">
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+      <Parameter Name="nombre" Mode="In" Type="String" />
+      <Parameter Name="id_rol" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="sp_autenticar_usuario" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_autenticar_usuario_Result)">
       <Parameter Name="correo" Mode="In" Type="String" />
@@ -527,6 +594,9 @@
     <FunctionImport Name="sp_eliminar_empleado">
       <Parameter Name="id_usuario" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="sp_inactivar_usuario">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+    </FunctionImport>
     <FunctionImport Name="sp_obtener_empleado" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleado_Result)">
       <Parameter Name="id_usuario" Mode="In" Type="Int32" />
     </FunctionImport>
@@ -539,6 +609,8 @@
       <Parameter Name="tabla_afectada" Mode="In" Type="String" />
       <Parameter Name="id_registro_afectado" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="sp_obtener_roles" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_roles_Result)" />
+    <FunctionImport Name="sp_obtener_usuarios" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_usuarios_Result)" />
     <FunctionImport Name="sp_registrar_actividad">
       <Parameter Name="id_usuario" Mode="In" Type="Int32" />
       <Parameter Name="tipo_accion" Mode="In" Type="String" />
@@ -554,17 +626,6 @@
       <Parameter Name="ip_solicitud" Mode="In" Type="String" />
       <Parameter Name="descripcion" Mode="In" Type="String" />
     </FunctionImport>
-    <EntitySet Name="tabla_solicitudes_ausencias" EntityType="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias" />
-    <AssociationSet Name="FK_usuario" Association="BD_CREANDO_RECUERDOSModel.FK_usuario">
-      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
-      <End Role="tabla_solicitudes_ausencias" EntitySet="tabla_solicitudes_ausencias" />
-    </AssociationSet>
-    <EntitySet Name="tabla_horarios" EntityType="BD_CREANDO_RECUERDOSModel.tabla_horarios" />
-    <EntitySet Name="database_firewall_rules" EntityType="BD_CREANDO_RECUERDOSModel.database_firewall_rules" />
-    <AssociationSet Name="FK__tabla_hor__id_us__0D44F85C" Association="BD_CREANDO_RECUERDOSModel.FK__tabla_hor__id_us__0D44F85C">
-      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
-      <End Role="tabla_horarios" EntitySet="tabla_horarios" />
-    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="sp_autenticar_usuario_Result">
     <Property Type="Int32" Name="Resultado" Nullable="true" />
@@ -600,69 +661,17 @@
     <Property Type="String" Name="descripcion" Nullable="false" />
     <Property Type="DateTime" Name="fecha_hora" Nullable="false" Precision="23" />
   </ComplexType>
-  <EntityType Name="tabla_solicitudes_ausencias">
-    <Key>
-      <PropertyRef Name="id_solicitud" />
-    </Key>
-    <Property Name="id_solicitud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="id_usuario" Type="Int32" Nullable="false" />
-    <Property Name="fecha_inicio" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="fecha_fin" Type="DateTime" Nullable="false" Precision="0" />
-    <Property Name="motivo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="tabla_usuarios" Relationship="BD_CREANDO_RECUERDOSModel.FK_usuario" FromRole="tabla_solicitudes_ausencias" ToRole="tabla_usuarios" />
-    <Property Name="tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <Association Name="FK_usuario">
-    <End Type="BD_CREANDO_RECUERDOSModel.tabla_usuarios" Role="tabla_usuarios" Multiplicity="1" />
-    <End Type="BD_CREANDO_RECUERDOSModel.tabla_solicitudes_ausencias" Role="tabla_solicitudes_ausencias" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tabla_usuarios">
-        <PropertyRef Name="id_usuario" />
-      </Principal>
-      <Dependent Role="tabla_solicitudes_ausencias">
-        <PropertyRef Name="id_usuario" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="tabla_horarios">
-    <Key>
-      <PropertyRef Name="id_horario" />
-    </Key>
-    <Property Name="id_horario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="id_usuario" Type="Int32" Nullable="false" />
-    <Property Name="dia_semana" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="hora_entrada" Type="Time" Nullable="false" Precision="7" />
-    <Property Name="hora_salida" Type="Time" Nullable="false" Precision="7" />
-    <Property Name="activo" Type="Boolean" />
-    <NavigationProperty Name="tabla_usuarios" Relationship="BD_CREANDO_RECUERDOSModel.FK__tabla_hor__id_us__0D44F85C" FromRole="tabla_horarios" ToRole="tabla_usuarios" />
-  </EntityType>
-  <EntityType Name="database_firewall_rules">
-    <Key>
-      <PropertyRef Name="id" />
-      <PropertyRef Name="name" />
-      <PropertyRef Name="start_ip_address" />
-      <PropertyRef Name="end_ip_address" />
-      <PropertyRef Name="create_date" />
-      <PropertyRef Name="modify_date" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="start_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="end_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
-  </EntityType>
-  <Association Name="FK__tabla_hor__id_us__0D44F85C">
-    <End Type="BD_CREANDO_RECUERDOSModel.tabla_usuarios" Role="tabla_usuarios" Multiplicity="1" />
-    <End Type="BD_CREANDO_RECUERDOSModel.tabla_horarios" Role="tabla_horarios" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tabla_usuarios">
-        <PropertyRef Name="id_usuario" />
-      </Principal>
-      <Dependent Role="tabla_horarios">
-        <PropertyRef Name="id_usuario" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
+  <ComplexType Name="sp_obtener_roles_Result">
+    <Property Type="Int32" Name="id_rol" Nullable="false" />
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_obtener_usuarios_Result">
+    <Property Type="Int32" Name="id_usuario" Nullable="false" />
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="id_rol" Nullable="false" />
+    <Property Type="String" Name="correo" Nullable="true" MaxLength="100" />
+    <Property Type="Boolean" Name="activo" Nullable="true" />
+    <Property Type="DateTime" Name="fecha_creacion" Nullable="true" Precision="23" />
+    <Property Type="String" Name="contrasenna" Nullable="false" MaxLength="100" />
+  </ComplexType>
 </Schema>

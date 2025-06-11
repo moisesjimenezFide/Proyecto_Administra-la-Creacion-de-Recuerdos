@@ -1,0 +1,188 @@
+﻿
+/* Estilos base */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.container {
+    padding: 0 15px;
+}
+
+.btn-primary {
+    background-color: var(--rosa-principal);
+    border-color: var(--rosa-principal);
+}
+
+/* Estilos para la tabla */
+.usuarios-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.usuarios-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+    .usuarios-table thead {
+        background: linear-gradient(135deg, var(--rosa-principal), var(--rosa-oscuro));
+        color: white;
+    }
+
+    .usuarios-table th {
+        padding: 1rem;
+        font-weight: 600;
+        text-align: left;
+        position: sticky;
+        top: 0;
+    }
+
+    .usuarios-table td {
+        padding: 0.75rem 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--rosa-claro);
+        word-wrap: break-word;
+    }
+
+    .usuarios-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .usuarios-table tbody tr:hover {
+        background-color: var(--rosa-claro);
+    }
+
+/* Estilos para los badges */
+.badge {
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 600;
+    border-radius: 50rem;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.bg-admin {
+    background-color: var(--rosa-oscuro);
+    color: white;
+}
+
+.bg-trabajador {
+    background-color: var(--dorado);
+    color: var(--texto-oscuro);
+}
+
+.bg-activo {
+    background-color: #28a745;
+    color: white;
+}
+
+.bg-usuario {
+    background-color: coral;
+    color: var(--texto-oscuro);
+}
+
+
+.bg-inactivo {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Estilos para los botones de acción */
+.acciones-usuario {
+    display: flex;
+    gap: 0.5rem;
+}
+
+    .acciones-usuario .btn {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+.btn-modificar {
+    background-color: var(--dorado);
+    color: var(--texto-oscuro);
+}
+
+    .btn-modificar:hover {
+        background-color: #d4a971;
+        color: white;
+    }
+
+.btn-inactivar {
+    background-color: #dc3545;
+    color: white;
+}
+
+    .btn-inactivar:hover {
+        background-color: #bb2d3b;
+    }
+
+.btn-activar {
+    background-color: #28a745;
+    color: white;
+}
+
+    .btn-activar:hover {
+        background-color: #218838;
+    }
+
+/* Ajustes responsivos */
+@media (max-width: 992px) {
+    .usuarios-table th,
+    .usuarios-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .usuarios-container {
+        padding: 0;
+    }
+
+    .card {
+        border-radius: 0;
+    }
+
+    .usuarios-table {
+        display: table;
+        width: 100%;
+    }
+}
+
+.btn-inactivar {
+    background-color: #dc3545; /* rojo */
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+    .btn-inactivar:hover {
+        background-color: #c82333;
+    }
+
+.btn-activar {
+    background-color: #28a745; /* verde */
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+    .btn-activar:hover {
+        background-color: #218838;
+    }

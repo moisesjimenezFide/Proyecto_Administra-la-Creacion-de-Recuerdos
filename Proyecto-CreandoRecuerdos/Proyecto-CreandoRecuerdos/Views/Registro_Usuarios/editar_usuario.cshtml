@@ -1,0 +1,29 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.UsuarioModel
+@{
+    ViewBag.Title = "editar_usuario";
+}
+
+
+@using (Html.BeginForm("editar_usuario", "Registro_Usuarios", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.id)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.nombre)
+        @Html.TextBoxFor(m => m.nombre, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.nombre)
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Correo")
+        <input type="text" class="form-control" value="@Model.correo" disabled />
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.id_rol, "Rol")
+        @Html.DropDownListFor(m => m.id_rol, Model.RolesDisponibles, "--Seleccione un rol--", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.id_rol)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+}

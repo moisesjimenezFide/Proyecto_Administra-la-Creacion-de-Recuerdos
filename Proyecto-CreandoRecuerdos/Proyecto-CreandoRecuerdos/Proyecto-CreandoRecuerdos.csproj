@@ -194,9 +194,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="base_de_datos\database_firewall_rules.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="base_de_datos\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -222,6 +219,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\sp_obtener_historial_actividades_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="base_de_datos\sp_obtener_roles_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="base_de_datos\sp_obtener_usuarios_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\sysdiagrams.cs">
@@ -329,6 +332,12 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="base_de_datos\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -336,12 +345,6 @@
     <Content Include="base_de_datos\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.esm.js" />
-    <Content Include="Scripts\bootstrap.esm.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -355,6 +358,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Templates\css\a.css" />
     <Content Include="Templates\css\admin_cliente.css" />
+    <Content Include="Templates\css\gestion_usuarios.css" />
     <Content Include="Templates\css\home.css" />
     <Content Include="Templates\css\index.css" />
     <Content Include="Templates\css\menu.css" />
@@ -457,6 +461,8 @@
     <Content Include="Views\Ausencias\SolicitudAusencia.cshtml" />
     <Content Include="Views\Ausencias\AprobacionRechazoSolicitudAusencia.cshtml" />
     <Content Include="Views\Horarios\Horarios.cshtml" />
+    <Content Include="Views\Registro_Usuarios\gestion_usuarios.cshtml" />
+    <Content Include="Views\Registro_Usuarios\editar_usuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
