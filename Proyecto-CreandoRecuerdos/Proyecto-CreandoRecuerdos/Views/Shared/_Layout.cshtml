@@ -74,6 +74,11 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownAdmin">
                                 <li><a class="dropdown-item" asp-controller="gestion" href="@Url.Action("gestion_usuarios", "Registro_Usuarios")" asp-action="Gestionar">Gestion de usurios</a></li>
                                 <li><a class="dropdown-item" href="@Url.Action("Empleados", "Empleados")">Empleados</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="@Url.Action("GestionSolicitudesAusencias", "Ausencias")">
+                                        Gestión de Solicitudes de Ausencias
+                                    </a>
+                                </li>
                                 <li><a class="dropdown-item" asp-controller="Pedidos" asp-action="Gestionar">Gestionar Pedidos</a></li>
                                 <li><a class="dropdown-item" asp-controller="Ventas" asp-action="Registro">Gestión Ventas</a></li>
                                 <li><a class="dropdown-item" asp-controller="Ventas" asp-action="Historial">Historial Ventas</a></li>
@@ -84,6 +89,18 @@
                         </li>
                         <!-- Boton visible solo para admin -->
                     }
+
+                    <!-- Boton visible solo para empleados -->
+                    @if (rol == "2")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="@Url.Action("SolicitudAusencia", "Ausencias")">
+                                Solicitud de Ausencia
+                            </a>
+                        </li>
+                    }
+                    <!-- Boton visible solo para empleados -->
+
                     @if (rol == null)
                     {
                         <li class="nav-item">

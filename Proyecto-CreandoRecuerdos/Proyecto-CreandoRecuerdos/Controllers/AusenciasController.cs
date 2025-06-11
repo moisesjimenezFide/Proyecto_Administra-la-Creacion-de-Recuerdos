@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Proyecto_CreandoRecuerdos.Models;
 using Proyecto_CreandoRecuerdos.base_de_datos;
@@ -13,10 +10,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         // GET: Ausencias
         private BD_CREANDO_RECUERDOSEntities db = new BD_CREANDO_RECUERDOSEntities();
 
-        public ActionResult Index()
+        public ActionResult GestionSolicitudesAusencias()
         {
             var solicitudes = db.tabla_solicitudes_ausencias.ToList();
-            return View("AprobacionRechazoSolicitudAusencia", solicitudes);
+            return View(solicitudes);
         }
 
         [HttpPost]
@@ -30,7 +27,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 db.SaveChanges();
                 TempData["Mensaje"] = "Solicitud aprobada correctamente.";
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("GestionSolicitudesAusencias");
         }
 
         [HttpPost]
@@ -44,24 +41,23 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 db.SaveChanges();
                 TempData["Mensaje"] = "Solicitud rechazada correctamente.";
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("GestionSolicitudesAusencias");
         }
 
-        // GET: Ausencias/Solicitar
-        public ActionResult Solicitar()
+        // GET: Ausencias/SolicitudAusencia
+        public ActionResult SolicitudAusencia()
         {
             return View(new SolicitudAusenciaModel());
         }
 
-        // POST: Ausencias/Solicitar
+        // POST: Ausencias/SolicitudAusencia
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Solicitar(SolicitudAusenciaModel model)
+        public ActionResult SolicitudAusencia(SolicitudAusenciaModel model)
         {
             if (ModelState.IsValid)
             {
-                // Aquí deberías obtener el IdUsuario del usuario autenticado
-                // model.IdUsuario = ...;
+                model.IdUsuario = (int)Session["IdUsuario"];
 
                 var entidad = new tabla_solicitudes_ausencias
                 {
@@ -77,7 +73,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 db.SaveChanges();
 
                 TempData["Mensaje"] = "Solicitud enviada correctamente.";
-                return RedirectToAction("Solicitar");
+                return RedirectToAction("SolicitudAusencia");
             }
 
             return View(model);

@@ -459,7 +459,7 @@
     <Content Include="Views\Admin\_Actividades.cshtml" />
     <Content Include="Views\Empleados\Empleados.cshtml" />
     <Content Include="Views\Ausencias\SolicitudAusencia.cshtml" />
-    <Content Include="Views\Ausencias\AprobacionRechazoSolicitudAusencia.cshtml" />
+    <Content Include="Views\Ausencias\GestionSolicitudesAusencias.cshtml" />
     <Content Include="Views\Horarios\Horarios.cshtml" />
     <Content Include="Views\Registro_Usuarios\gestion_usuarios.cshtml" />
     <Content Include="Views\Registro_Usuarios\editar_usuario.cshtml" />

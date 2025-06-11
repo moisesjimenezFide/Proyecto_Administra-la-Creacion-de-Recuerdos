@@ -1,11 +1,11 @@
 ﻿@model Proyecto_CreandoRecuerdos.Models.SolicitudAusenciaModel
 
 @{
-    ViewBag.Title = "Solicitud Ausencia";
+    ViewBag.Title = "Solicitud de Ausencia";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Solicitud Ausencia</h2>
+<h2>Solicitud de Ausencia</h2>
 
 @using (Html.BeginForm())
 {
@@ -27,5 +27,6 @@
         @Html.LabelFor(model => model.Motivo)
         @Html.TextAreaFor(model => model.Motivo, new { @class = "form-control", rows = 3 })
     </div>
+    <br>
     <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
 }
