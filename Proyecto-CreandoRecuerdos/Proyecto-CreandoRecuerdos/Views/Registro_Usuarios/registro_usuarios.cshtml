@@ -4,7 +4,7 @@
     ViewBag.Title = "registro_usuarios";
     var errorMessage = TempData["ErrorMessage"] as string;
     var successMessage = TempData["SuccessMessage"] as string;
-    
+
 }
 
 <style>
@@ -211,4 +211,7 @@
     </div>
 </div>
 
-<script src="~/Templates/js/registrar_usuario.js"></script>
+@section Scripts {
+    <script src="~/Templates/js/registrar_usuario.js"></script>
+    <script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
+}

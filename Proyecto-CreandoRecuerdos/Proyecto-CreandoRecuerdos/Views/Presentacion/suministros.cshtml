@@ -114,26 +114,26 @@
             tabla.innerHTML = "";
             suministros.forEach((s, i) => {
                 tabla.innerHTML += `
-                    <tr>
-                        <td>${s.nombre}</td>
-                        <td>${s.marca}</td>
-                        <td>${s.presentacion}</td>
-                        <td>${s.proveedor}</td>
-                        <td>₡${s.costo_unidad.toFixed(2)}</td>
-                        <td>${s.cantidad}</td>
-                        <td>₡${s.costo_total.toFixed(2)}</td>
-                        <td>
-                            <div class="d-flex justify-content-start">
-                                <button class="btn btn-danger btn-sm text-white px-2 py-1 me-1" onclick="eliminarSuministro(${i})">
-                                    <i class="fas fa-trash-alt me-1"></i>Eliminar
-                                </button>
-                                <button class="btn btn-sm text-white px-2 py-1" style="background-color:#E27AB0; margin-left: auto;" onclick="editarSuministro(${i})">
-                                    <i class="fas fa-edit me-1"></i>Editar
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                                                <tr>
+                                                    <td>${s.nombre}</td>
+                                                    <td>${s.marca}</td>
+                                                    <td>${s.presentacion}</td>
+                                                    <td>${s.proveedor}</td>
+                                                    <td>₡${s.costo_unidad.toFixed(2)}</td>
+                                                    <td>${s.cantidad}</td>
+                                                    <td>₡${s.costo_total.toFixed(2)}</td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-start">
+                                                            <button class="btn btn-danger btn-sm text-white px-2 py-1 me-1" onclick="eliminarSuministro(${i})">
+                                                                <i class="fas fa-trash-alt me-1"></i>Eliminar
+                                                            </button>
+                                                            <button class="btn btn-sm text-white px-2 py-1" style="background-color:#E27AB0; margin-left: auto;" onclick="editarSuministro(${i})">
+                                                                <i class="fas fa-edit me-1"></i>Editar
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            `;
             });
         };
 
@@ -201,4 +201,6 @@
         // Mostrar datos precargados
         document.addEventListener("DOMContentLoaded", mostrar_suministros);
     </script>
+
+    <script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
 }

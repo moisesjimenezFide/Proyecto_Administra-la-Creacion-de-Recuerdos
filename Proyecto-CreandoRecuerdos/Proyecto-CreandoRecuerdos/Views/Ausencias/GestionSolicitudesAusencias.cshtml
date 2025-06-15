@@ -6,56 +6,63 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Solicitudes de Ausencias</h2>
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-user-cog me-2"></i> Gestión de Solicitudes de Ausencias
+    </h2>
 
-@if (TempData["Mensaje"] != null)
-{
-    <div class="alert alert-success">@TempData["Mensaje"]</div>
-}
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success">@TempData["Mensaje"]</div>
+    }
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Empleado (ID)</th>
-            <th>Fecha Inicio</th>
-            <th>Fecha Fin</th>
-            <th>Tipo</th>
-            <th>Motivo</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@item.id_usuario</td>
-                <td>@item.fecha_inicio.ToShortDateString()</td>
-                <td>@item.fecha_fin.ToShortDateString()</td>
-                <td>@item.tipo</td>
-                <td>@item.motivo</td>
-                <td>@item.estado</td>
-                <td>
-                    @if (item.estado == "Pendiente")
-                    {
-                        using (Html.BeginForm("Aprobar", "Ausencias", new { id = item.id_solicitud }, FormMethod.Post, new { style = "display:inline;" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
-                        }
-                        using (Html.BeginForm("Rechazar", "Ausencias", new { id = item.id_solicitud }, FormMethod.Post, new { style = "display:inline;" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
-                        }
-                    }
-                    else
-                    {
-                        <span>-</span>
-                    }
-                </td>
+                <th>Empleado (ID)</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Tipo</th>
+                <th>Motivo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.id_usuario</td>
+                    <td>@item.fecha_inicio.ToShortDateString()</td>
+                    <td>@item.fecha_fin.ToShortDateString()</td>
+                    <td>@item.tipo</td>
+                    <td>@item.motivo</td>
+                    <td>@item.estado</td>
+                    <td>
+                        @if (item.estado == "Pendiente")
+                        {
+                            using (Html.BeginForm("Aprobar", "Ausencias", new { id = item.id_solicitud }, FormMethod.Post, new { style = "display:inline;" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
+                            }
+                            using (Html.BeginForm("Rechazar", "Ausencias", new { id = item.id_solicitud }, FormMethod.Post, new { style = "display:inline;" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                            }
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
+@section Scripts {
+    <script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
+}

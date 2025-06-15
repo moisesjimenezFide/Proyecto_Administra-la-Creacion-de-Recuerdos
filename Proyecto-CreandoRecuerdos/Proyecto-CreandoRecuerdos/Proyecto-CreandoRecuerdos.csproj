@@ -418,7 +418,7 @@
     <Content Include="Templates\js\materias_primas.js" />
     <Content Include="Templates\js\menu.js" />
     <Content Include="Templates\js\menu_admin.js" />
-    <Content Include="Templates\js\navbar_visibilty_content_zoom_out.js" />
+    <Content Include="Templates\js\footer_visibility_content_zoom_out.js" />
     <Content Include="Templates\js\pedidos.js" />
     <Content Include="Templates\js\precio_final.js" />
     <Content Include="Templates\js\productos_preparados.js" />

@@ -3,13 +3,14 @@
     /* Paleta femenina refinada */
     --beige-claro: #FFFCFA; /* Fondo casi blanco con tono cálido */
     --rosa-pastel: #FFE6EE; /* Rosa muy suave para acentos */
-    --rosa-principal: #FFB3C6; /* Rosa principal */
+    --rosa-principal: #E27AB0; /* Rosa principal */
     --rosa-oscuro: #FF8FAB; /* Rosa más intenso */
     --dorado: #E8C495; /* Acentos dorados */
     --texto-oscuro: #5A3E36; /* Texto principal */
-    --sombra-suave: rgba(0, 0, 0, 0.05); /* Sombras sutiles */
+    --sombra-suave: rgba(0, 0, 0, 0.25); /* Sombras sutiles */
     --borde-claro: #F0E6E9; /* Bordes claros */
 }
+
 
 /* Estructura principal */
 .hero-section {

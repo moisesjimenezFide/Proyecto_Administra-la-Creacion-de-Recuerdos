@@ -5,28 +5,36 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Solicitud de Ausencia</h2>
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+        <i class="fas fa-user-cog me-2"></i> Solicitud de Ausencia
+    </h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.FechaInicio)
-        @Html.TextBoxFor(model => model.FechaInicio, new { @class = "form-control", type = "date" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.FechaFin)
-        @Html.TextBoxFor(model => model.FechaFin, new { @class = "form-control", type = "date" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Tipo)
-        @Html.DropDownListFor(model => model.Tipo, new SelectList(new[] { "Vacaciones", "Permiso" }), "Seleccione un tipo", new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Motivo)
-        @Html.TextAreaFor(model => model.Motivo, new { @class = "form-control", rows = 3 })
-    </div>
-    <br>
-    <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaInicio)
+            @Html.TextBoxFor(model => model.FechaInicio, new { @class = "form-control", type = "date" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaFin)
+            @Html.TextBoxFor(model => model.FechaFin, new { @class = "form-control", type = "date" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tipo)
+            @Html.DropDownListFor(model => model.Tipo, new SelectList(new[] { "Vacaciones", "Permiso" }), "Seleccione un tipo", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Motivo)
+            @Html.TextAreaFor(model => model.Motivo, new { @class = "form-control", rows = 3 })
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
 }

@@ -56,67 +56,71 @@
     </style>
 }
 
-<div class="container mt-5 text-center">
-    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
-        <i class="fas fa-file-invoice-dollar me-2"></i> Historial de Ventas
-    </h2>
+            <div class="container my-5 text-center">
+                <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+                    <i class="fas fa-file-invoice-dollar me-2"></i> Historial de Ventas
+                </h2>
 
-    <div class="mb-3 text-start">
-        <label class="form-label fw-bold">Filtrar por Fecha</label>
-        <input type="date" class="form-control">
-    </div>
+                <div class="mb-3 text-start">
+                    <label class="form-label fw-bold">Filtrar por Fecha</label>
+                    <input type="date" class="form-control">
+                </div>
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
-        <button class="btn btn-custom-pink">
-            <i class="fas fa-search me-1"></i> Filtrar
-        </button>
-    </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
+                    <button class="btn btn-custom-pink">
+                        <i class="fas fa-search me-1"></i> Filtrar
+                    </button>
+                </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm text-center">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Productos Vendidos</th>
-                    <th>Precio Unitario</th>
-                    <th>Cantidad</th>
-                    <th>Precio Total</th>
-                    <th>Total Venta</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Ejemplo de datos estáticos -->
-                <tr>
-                    <td>2023-11-15</td>
-                    <td>Panqueque especial</td>
-                    <td>₡2,500</td>
-                    <td>2</td>
-                    <td>₡5,000</td>
-                    <td>₡5,500</td>
-                    <td>
-                        <button class="btn btn-custom-pink">
-                            <i class="fas fa-eye"></i> Ver
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2023-11-14</td>
-                    <td>Café + Crepe</td>
-                    <td>₡3,800</td>
-                    <td>1</td>
-                    <td>₡3,800</td>
-                    <td>₡4,100</td>
-                    <td>
-                        <button class="btn btn-custom-pink">
-                            <i class="fas fa-eye"></i> Ver
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <p class="text-center text-muted mt-3">
-        Mostrando 2 ventas recientes
-    </p>
-</div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-sm text-center">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Productos Vendidos</th>
+                                <th>Precio Unitario</th>
+                                <th>Cantidad</th>
+                                <th>Precio Total</th>
+                                <th>Total Venta</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Ejemplo de datos estáticos -->
+                            <tr>
+                                <td>2023-11-15</td>
+                                <td>Panqueque especial</td>
+                                <td>₡2,500</td>
+                                <td>2</td>
+                                <td>₡5,000</td>
+                                <td>₡5,500</td>
+                                <td>
+                                    <button class="btn btn-custom-pink">
+                                        <i class="fas fa-eye"></i> Ver
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2023-11-14</td>
+                                <td>Café + Crepe</td>
+                                <td>₡3,800</td>
+                                <td>1</td>
+                                <td>₡3,800</td>
+                                <td>₡4,100</td>
+                                <td>
+                                    <button class="btn btn-custom-pink">
+                                        <i class="fas fa-eye"></i> Ver
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-center text-muted mt-3">
+                    Mostrando 2 ventas recientes
+                </p>
+            </div>
+
+        @section Scripts {
+            <script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
+        }
