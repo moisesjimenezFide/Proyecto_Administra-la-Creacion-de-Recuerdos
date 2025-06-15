@@ -303,12 +303,14 @@ html, body {
         margin-left: auto;
         margin-right: auto;
         width: 65%;
+        height: auto;
     }
 
     #container-wrap {
         width: auto%;
         margin-left: auto;
         margin-right: auto;
+        height: auto;
     }
 
     #footer, .footer {
