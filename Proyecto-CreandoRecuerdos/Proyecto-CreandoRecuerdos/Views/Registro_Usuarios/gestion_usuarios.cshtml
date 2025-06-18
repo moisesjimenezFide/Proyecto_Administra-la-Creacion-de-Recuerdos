@@ -5,8 +5,14 @@
 }
 
 <link rel="stylesheet" href="~/Templates/css/gestion_usuarios.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
 
 <div class="container usuarios-container py-5">
+    
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="filtroUsuarios" placeholder="Buscar usuario..." style="border: none; background-color: var(--beige); color: var(--texto-oscuro);">
+    </div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0" style="color: var(--texto-oscuro);">Gestión de Usuarios</h2>
         <a href="@Url.Action("registro_usuarios", "Registro_Usuarios")" class="btn btn-primary">
@@ -18,7 +24,7 @@
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0 usuarios-table">
-                    <thead class="table-dark">
+                    <thead class="encabezado-rosado">
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
@@ -65,31 +71,26 @@
                                     <div class="d-flex gap-2 acciones-usuario">
                                         <form action="@Url.Action("editar_usuario", "Registro_Usuarios")" style="display:inline;">
                                             <input type="hidden" name="id" value="@usuario.id" />
-                                            <button type="submit" class="btn btn-sm btn-modificar" title="Inactivar">
+                                            <button type="submit" class="btn btn-sm btn-modificar" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                         </form>
 
-
                                         @if (usuario.activo)
                                         {
-                                            <form action="@Url.Action("inactivar_usuarios", "Registro_Usuarios")" method="post" style="display:inline;">
-                                                <input type="hidden" name="id" value="@usuario.id" />
-                                                <button type="submit" class="btn btn-sm btn-inactivar" title="Inactivar">
-                                                    <i class="fas fa-user-slash"></i>
-                                                </button>
-                                            </form>
+
+                                            // este es mi codigo
+                                            <button type="button" class="btn btn-sm btn-inactivar inactivar-btn" title="Inactivar" data-id="@usuario.id">
+                                                <i class="fas fa-user-slash"></i>
+                                            </button>
+                                            // este es mi codigo
 
                                         }
                                         else
                                         {
-                                            <form action="@Url.Action("activar_usuarios", "Registro_Usuarios")" method="post" style="display:inline;">
-                                                <input type="hidden" name="id" value="@usuario.id" />
-                                                <button type="submit" class="btn btn-sm btn-activar" title="Activar">
-                                                    <i class="fas fa-user-check"></i>
-                                                </button>
-                                            </form>
-
+                                            <button type="button" class="btn btn-sm btn-activar activar-btn" title="Activar" data-id="@usuario.id">
+                                                <i class="fas fa-user-check"></i>
+                                            </button>
                                         }
                                     </div>
                                 </td>
@@ -103,6 +104,99 @@
     </div>
 </div>
 
-@section Scripts {
-    <script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
-}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        $('.inactivar-btn').click(function () {
+            var id_usuario = $(this).data('id');
+
+            $.ajax({
+                url: '@Url.Action("inactivar_usuarios", "Registro_Usuarios")',
+                type: 'POST',
+                data: { id: id_usuario },
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            iconHtml: '<i class="fas fa-lock"></i>',
+                            customClass: {
+                                icon: 'swal2-icon-custom'
+                            },
+                            title: '¡Usuario inactivado!',
+                            text: 'Se inactivó el usuario correctamente.',
+                            confirmButtonColor: '#E27AB0', // rosa principal
+                            showConfirmButton: true
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al inactivar el usuario.'
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error en la solicitud AJAX.'
+                    });
+                }
+            });
+        });
+        //Activar
+        $('.activar-btn').click(function () {
+            var id_usuario = $(this).data('id');
+
+            $.ajax({
+                url: '@Url.Action("activar_usuarios", "Registro_Usuarios")',
+                type: 'POST',
+                data: { id: id_usuario },
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            iconHtml: '<i class="fas fa-unlock"></i>',
+                            customClass: {
+                                icon: 'swal2-icon-custom'
+                            },
+                            title: '¡Usuario activado!',
+                            text: 'El usuario se activó correctamente.',
+                            confirmButtonColor: '#E27AB0',
+                            showConfirmButton: true
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al activar el usuario.'
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error en la solicitud AJAX.'
+                    });
+                }
+            });
+        });
+
+
+        document.getElementById('filtroUsuarios').addEventListener('keyup', function () {
+            var filtro = this.value.toLowerCase();
+            var filas = document.querySelectorAll('.usuarios-table tbody tr');
+
+            filas.forEach(function (fila) {
+                var textoFila = fila.innerText.toLowerCase();
+                fila.style.display = textoFila.includes(filtro) ? '' : 'none';
+            });
+        });
+    });
+</script>
+
+

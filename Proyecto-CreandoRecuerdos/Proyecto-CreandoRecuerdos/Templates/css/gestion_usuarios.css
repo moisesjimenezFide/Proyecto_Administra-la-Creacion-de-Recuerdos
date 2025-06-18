@@ -5,6 +5,17 @@ body {
     background-color: #f8f9fa;
 }
 
+/* Encabezado rosado pastel */
+.encabezado-rosado {
+    background-color: var(--rosa-principal); 
+}
+
+.swal2-icon-custom {
+    font-size: 35px;
+    color: #E27AB0; 
+}
+
+
 .container {
     padding: 0 15px;
 }
@@ -186,3 +197,4 @@ body {
     .btn-activar:hover {
         background-color: #218838;
     }
+

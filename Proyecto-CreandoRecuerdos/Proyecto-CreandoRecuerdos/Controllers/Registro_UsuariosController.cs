@@ -111,9 +111,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
-                context.sp_inactivar_usuario(id); // Ejecuta el SP con el ID
+                context.sp_inactivar_usuario(id); 
             }
-            return RedirectToAction("gestion_usuarios");
+            return Json(new { success = true });
         }
 
         [HttpPost]
@@ -123,7 +123,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             {
                 context.sp_activar_usuario(id);
             }
-            return RedirectToAction("gestion_usuarios");
+            return Json(new { success = true });
         }
 
         [HttpGet]
