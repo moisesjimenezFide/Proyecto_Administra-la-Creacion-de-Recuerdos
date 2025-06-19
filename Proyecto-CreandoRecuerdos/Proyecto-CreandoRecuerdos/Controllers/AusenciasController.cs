@@ -47,6 +47,13 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         // GET: Ausencias/SolicitudAusencia
         public ActionResult SolicitudAusencia()
         {
+            int idUsuario = (int)Session["IdUsuario"];
+            var solicitudes = db.tabla_solicitudes_ausencias
+                .Where(s => s.id_usuario == idUsuario)
+                .OrderByDescending(s => s.fecha_inicio)
+                .ToList();
+
+            ViewBag.Solicitudes = solicitudes;
             return View(new SolicitudAusenciaModel());
         }
 

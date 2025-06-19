@@ -3,10 +3,11 @@
 @{
     ViewBag.Title = "Solicitud de Ausencia";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var solicitudes = ViewBag.Solicitudes as List<Proyecto_CreandoRecuerdos.base_de_datos.tabla_solicitudes_ausencias>;
 }
 
 <div class="container my-5 text-center">
-    <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
+    <h2 class="mb-4" style="font-family: 'Sono';">
         <i class="fas fa-user-cog me-2"></i> Solicitud de Ausencia
     </h2>
 
@@ -15,26 +16,64 @@
         @Html.AntiForgeryToken()
 
         <div class="form-group">
-            @Html.LabelFor(model => model.FechaInicio)
+            @Html.LabelFor(model => model.FechaInicio, "Fecha de Inicio")
             @Html.TextBoxFor(model => model.FechaInicio, new { @class = "form-control", type = "date" })
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.FechaFin)
+            @Html.LabelFor(model => model.FechaFin, "Fecha Final")
             @Html.TextBoxFor(model => model.FechaFin, new { @class = "form-control", type = "date" })
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Tipo)
+            @Html.LabelFor(model => model.Tipo, "Tipo")
             @Html.DropDownListFor(model => model.Tipo, new SelectList(new[] { "Vacaciones", "Permiso" }), "Seleccione un tipo", new { @class = "form-control" })
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Motivo)
+            @Html.LabelFor(model => model.Motivo, "Motivo")
             @Html.TextAreaFor(model => model.Motivo, new { @class = "form-control", rows = 3 })
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
     }
-</div>
 
-@section Scripts {
-    <script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
-}
+    @if (solicitudes != null && solicitudes.Any())
+    {
+        <hr />
+        <h4 class="mt-5 mb-3" style="font-family: 'Sono';">Historial de Solicitudes</h4>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha Final</th>
+                    <th>Tipo</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in solicitudes)
+                {
+                    <tr>
+                        <td>@s.fecha_inicio.ToShortDateString()</td>
+                        <td>@s.fecha_fin.ToShortDateString()</td>
+                        <td>@s.tipo</td>
+                        <td>@s.motivo</td>
+                        <td>
+                            @if (s.estado == "Aprobado")
+                            {
+                                <span class="badge bg-success">Aprobado</span>
+                            }
+                            else if (s.estado == "Rechazado")
+                            {
+                                <span class="badge bg-danger">Rechazado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Pendiente</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

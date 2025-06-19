@@ -12,17 +12,28 @@
 /* Estructura base - Manteniendo fuente Sono */
 html, body {
     height: 100%;
+    min-height: 100%;
     padding: 0;
     margin: 0;
     overflow-x: hidden;
     display: flex;
     box-sizing: border-box;
     flex-direction: column;
-    font-family: 'Sono', sans-serif; /* Fuente original */
+    font-family: 'Sono'; /* Fuente original */
     background-color: var(--beige);
     color: var(--texto-oscuro);
 }
 
+body {
+    min-height: 100vh;
+}
+
+#scaled-wrapper {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 .container {
     flex: 1 0 auto;
 }
@@ -31,7 +42,7 @@ html, body {
     width: 100vw;
     transform: scale(1);
     transform-origin: top center;
-    flex: 1;
+    flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     margin-bottom: 0;
@@ -64,7 +75,7 @@ html, body {
 .navbar-brand {
     display: flex;
     align-items: center;
-    font-family: 'Sono', sans-serif;
+    font-family: 'Sono';
     font-weight: 800;
     color: white;
     font-size: 1.2rem;
@@ -73,7 +84,7 @@ html, body {
 }
 
 .logo-navbar {
-    height: 40px; /* Tamaño fijo mejorado */
+    height: 40px;
     width: auto;
     margin-right: 10px;
     background-color: white;
@@ -91,7 +102,7 @@ html, body {
     flex-grow: 1;
     flex-wrap: wrap;
     justify-content: flex-end;
-    font-family: 'Sono', sans-serif;
+    font-family: 'Sono';
     font-weight: 800;
     top: 10px;
     right: 10px;
@@ -282,7 +293,7 @@ html, body {
     }
 }
 
-@media (min-width: 150px) and (max-width: 809px) {
+@media (min-width: 150px) and (max-width: 5824 px) {
 
     html, body {
         transform: scale(1);
@@ -318,8 +329,6 @@ html, body {
         margin-left: auto;
         margin-right: auto;
     }
-
-    
 }
 
 

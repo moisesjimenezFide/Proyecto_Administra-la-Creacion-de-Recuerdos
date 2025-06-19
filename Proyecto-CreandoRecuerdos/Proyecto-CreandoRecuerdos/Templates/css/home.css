@@ -200,7 +200,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 768px) and (min-width: 150px) {
     .hero-section {
         padding: 3rem 0;
     }
