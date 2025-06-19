@@ -212,6 +212,9 @@
     <Compile Include="base_de_datos\sp_autenticar_usuario_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="base_de_datos\sp_consultar_productos_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="base_de_datos\sp_obtener_empleados_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -289,6 +292,7 @@
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
     <Compile Include="Controllers\PresentacionController.cs" />
     <Compile Include="Global.asax.cs">
@@ -298,6 +302,7 @@
     <Compile Include="Models\ActividadModel.cs" />
     <Compile Include="Models\HorarioModel.cs" />
     <Compile Include="Models\EmpleadoModel.cs" />
+    <Compile Include="Models\ProductoModel.cs" />
     <Compile Include="Models\SolicitudAusenciaModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -366,49 +371,49 @@
     <Content Include="Templates\css\styles.css" />
     <Content Include="Templates\img\favicon.ico" />
     <Content Include="Templates\img\logo.png" />
-    <Content Include="Templates\img\menu\agua.jpg" />
-    <Content Include="Templates\img\menu\americano.jpg" />
-    <Content Include="Templates\img\menu\arroz-arreglado.jpg" />
-    <Content Include="Templates\img\menu\arroz-carne.jpg" />
-    <Content Include="Templates\img\menu\arroz-pollo.jpg" />
-    <Content Include="Templates\img\menu\cafeleche.jpg" />
-    <Content Include="Templates\img\menu\cafenegro.jpg" />
-    <Content Include="Templates\img\menu\capuccino.jpg" />
-    <Content Include="Templates\img\menu\capuccinosabor.jpg" />
-    <Content Include="Templates\img\menu\chocolate.jpg" />
-    <Content Include="Templates\img\menu\crepe-caprese.jpg" />
-    <Content Include="Templates\img\menu\crepe-frita.jpg" />
-    <Content Include="Templates\img\menu\crepe-nutella.jpg" />
-    <Content Include="Templates\img\menu\crepe-pollo.jpg" />
-    <Content Include="Templates\img\menu\desayuno1.jpg" />
-    <Content Include="Templates\img\menu\desayuno2.jpg" />
-    <Content Include="Templates\img\menu\enyucados.jpg" />
-    <Content Include="Templates\img\menu\especiales.jpg" />
-    <Content Include="Templates\img\menu\expresso.jpg" />
-    <Content Include="Templates\img\menu\frappe.jpg" />
-    <Content Include="Templates\img\menu\gaseosa.jpg" />
-    <Content Include="Templates\img\menu\glutenfree.jpg" />
-    <Content Include="Templates\img\menu\jugo-naranja.jpg" />
-    <Content Include="Templates\img\menu\latte.jpg" />
-    <Content Include="Templates\img\menu\lattefrio.jpg" />
-    <Content Include="Templates\img\menu\milkshake.jpg" />
-    <Content Include="Templates\img\menu\moka.jpg" />
-    <Content Include="Templates\img\menu\panini-caprese.jpg" />
-    <Content Include="Templates\img\menu\panini-jq.jpg" />
-    <Content Include="Templates\img\menu\panini-pollo.jpg" />
-    <Content Include="Templates\img\menu\panini-roastbeef.jpg" />
-    <Content Include="Templates\img\menu\panino-jq.jpg" />
-    <Content Include="Templates\img\menu\papas-fritas.jpg" />
-    <Content Include="Templates\img\menu\pasta-plumas.jpg" />
-    <Content Include="Templates\img\menu\pasta-spaghetti.jpg" />
-    <Content Include="Templates\img\menu\pasta-tornillos.jpg" />
-    <Content Include="Templates\img\menu\patacones.jpg" />
-    <Content Include="Templates\img\menu\postre.jpg" />
-    <Content Include="Templates\img\menu\refresco-fruta.jpg" />
-    <Content Include="Templates\img\menu\reposteria.jpg" />
-    <Content Include="Templates\img\menu\sodaitaliana.jpg" />
-    <Content Include="Templates\img\menu\te.jpg" />
-    <Content Include="Templates\img\menu\tropical.jpg" />
+    <Content Include="Templates\img\menu\1.jpg" />
+    <Content Include="Templates\img\menu\10.jpg" />
+    <Content Include="Templates\img\menu\11.jpg" />
+    <Content Include="Templates\img\menu\12.jpg" />
+    <Content Include="Templates\img\menu\13.jpg" />
+    <Content Include="Templates\img\menu\14.jpg" />
+    <Content Include="Templates\img\menu\15.jpg" />
+    <Content Include="Templates\img\menu\16.jpg" />
+    <Content Include="Templates\img\menu\17.jpg" />
+    <Content Include="Templates\img\menu\18.jpg" />
+    <Content Include="Templates\img\menu\19.jpg" />
+    <Content Include="Templates\img\menu\2.jpg" />
+    <Content Include="Templates\img\menu\20.jpg" />
+    <Content Include="Templates\img\menu\21.jpg" />
+    <Content Include="Templates\img\menu\22.jpg" />
+    <Content Include="Templates\img\menu\23.jpg" />
+    <Content Include="Templates\img\menu\24.jpg" />
+    <Content Include="Templates\img\menu\25.jpg" />
+    <Content Include="Templates\img\menu\26.jpg" />
+    <Content Include="Templates\img\menu\27.jpg" />
+    <Content Include="Templates\img\menu\28.jpg" />
+    <Content Include="Templates\img\menu\29.jpg" />
+    <Content Include="Templates\img\menu\3.jpg" />
+    <Content Include="Templates\img\menu\30.jpg" />
+    <Content Include="Templates\img\menu\31.jpg" />
+    <Content Include="Templates\img\menu\32.jpg" />
+    <Content Include="Templates\img\menu\33.jpg" />
+    <Content Include="Templates\img\menu\34.jpg" />
+    <Content Include="Templates\img\menu\35.jpg" />
+    <Content Include="Templates\img\menu\36.jpg" />
+    <Content Include="Templates\img\menu\37.jpg" />
+    <Content Include="Templates\img\menu\38.jpg" />
+    <Content Include="Templates\img\menu\39.jpg" />
+    <Content Include="Templates\img\menu\4.jpg" />
+    <Content Include="Templates\img\menu\40.jpg" />
+    <Content Include="Templates\img\menu\41.jpg" />
+    <Content Include="Templates\img\menu\42.jpg" />
+    <Content Include="Templates\img\menu\43.jpg" />
+    <Content Include="Templates\img\menu\5.jpg" />
+    <Content Include="Templates\img\menu\6.jpg" />
+    <Content Include="Templates\img\menu\7.jpg" />
+    <Content Include="Templates\img\menu\8.jpg" />
+    <Content Include="Templates\img\menu\9.jpg" />
     <Content Include="Templates\img\Recuerdos.png" />
     <Content Include="Templates\js\costos_recetas.js" />
     <Content Include="Templates\js\empaques.js" />
@@ -463,6 +468,7 @@
     <Content Include="Views\Horarios\Horarios.cshtml" />
     <Content Include="Views\Registro_Usuarios\gestion_usuarios.cshtml" />
     <Content Include="Views\Registro_Usuarios\editar_usuario.cshtml" />
+    <Content Include="Views\Menu\menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

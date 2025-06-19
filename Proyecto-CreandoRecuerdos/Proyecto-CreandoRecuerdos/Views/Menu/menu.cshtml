@@ -1,0 +1,171 @@
+﻿@model List<Proyecto_CreandoRecuerdos.base_de_datos.sp_consultar_productos_Result>
+
+@{
+    ViewData["Title"] = "Menú";
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+    <a href="~/Templates/img/menu/agua.jpg"> </a>
+    <style>
+        .btn-outline-light-pink {
+            color: #E27AB0;
+            border-color: #E27AB0;
+        }
+
+            .btn-outline-light-pink:hover {
+                background-color: #E27AB0;
+                color: white;
+            }
+
+            .btn-outline-light-pink.active {
+                background-color: #E27AB0 !important;
+                color: white !important;
+            }
+
+        .pos-products {
+            padding: 20px;
+        }
+    </style>
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <br><br>
+        <h2 style="font-family: 'Sono', sans-serif;">
+            <i class="fas fa-utensils me-2"></i> Categorías
+        </h2>
+        <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+            <button class="btn btn-sm btn-outline-light-pink active" data-category="todos">
+                <i class="fas fa-th-list me-2"></i>Todo
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="desayunos">
+                <i class="fas fa-coffee me-2"></i>Desayunos
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="panini">
+                <i class="fas fa-bread-slice me-2"></i>Panini
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="crepes">
+                <i class="fas fa-blender me-2"></i>Crêpes
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="pasta">
+                <i class="fas fa-pizza-slice me-2"></i>Pasta
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="arroz">
+                <i class="fas fa-utensils me-2"></i>Arroz
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="tentaciones">
+                <i class="fas fa-apple-alt me-2"></i>Tentaciones
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="postres">
+                <i class="fas fa-ice-cream me-2"></i>Delicias
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="bebidas-calientes">
+                <i class="fas fa-mug-hot me-2"></i>Bebidas Calientes
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="bebidas-frias">
+                <i class="fas fa-glass-whiskey me-2"></i>Bebidas Frías
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="especiales">
+                <i class="fas fa-star me-2"></i>Especiales
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="pos-products">
+    <div class="row justify-content-center">
+        <div class="col-">
+            <div class="row" id="productGrid">
+                <!-- Se llenará -->
+
+                <div class="row" id="product-container">
+                    @foreach (var producto in Model)
+                    {
+                        <div class="col-md-4 mb-4" data-category="@producto.id_categoria">
+                            <div class="card h-100 border-0 shadow-sm product-card">
+                                <div class="card-img-container">
+                                    <img src='~/Templates/img/menu/@producto.img_url' class="card-img-top" alt="@producto.nombre">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-family: 'Sono', sans-serif;">@producto.nombre</h5>
+                                    <p class="card-text">@producto.descripcion</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold dark-violet">₡@producto.precio_por_unidad.ToString("N0")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+                <!-- Fin-->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Mapeo de nombres de categoría a IDs (ajusta según tu base de datos)
+        const categoryMap = {
+            'todos': 'todos',
+            'desayunos': 1,
+            'panini': 2,
+            'crepes': 3,
+            'pasta': 4,
+            'arroz': 5,
+            'tentaciones': 6,
+            'postres': 7,
+            'bebidas-calientes': 8,
+            'bebidas-frias': 9,
+            'especiales': 10
+        };
+
+        // Seleccionar solo los botones de filtro (no los productos)
+        const filterButtons = document.querySelectorAll('.d-flex.flex-wrap.justify-content-center.gap-3.mt-4 [data-category]');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                // Prevenir comportamiento por defecto
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Remover clase 'active' de todos los botones
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+
+                // Agregar clase 'active' al botón clickeado
+                this.classList.add('active');
+
+                // Obtener la categoría seleccionada
+                const categoryName = this.dataset.category;
+                const categoryId = categoryMap[categoryName];
+
+                // Filtrar productos
+                filterProducts(categoryId);
+            });
+        });
+
+        // Función para filtrar los productos
+        function filterProducts(categoryId) {
+            const allProducts = document.querySelectorAll('#product-container > .col-md-4');
+
+            allProducts.forEach(product => {
+                if (categoryId === 'todos' || product.dataset.category == categoryId) {
+                    product.style.display = 'block';
+                    product.classList.add('animate__animated', 'animate__fadeIn');
+                } else {
+                    product.style.display = 'none';
+                    product.classList.remove('animate__animated', 'animate__fadeIn');
+                }
+            });
+        }
+    });
+
+</script>

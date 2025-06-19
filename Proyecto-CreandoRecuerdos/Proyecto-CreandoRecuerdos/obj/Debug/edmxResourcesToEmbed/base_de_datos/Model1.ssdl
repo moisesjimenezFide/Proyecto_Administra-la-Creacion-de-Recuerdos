@@ -123,6 +123,7 @@
     <Property Name="descripcion" Type="nvarchar" MaxLength="255" />
     <Property Name="id_categoria" Type="int" Nullable="false" />
     <Property Name="precio_por_unidad" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="img_url" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="tabla_productos_preparados">
     <Key>
@@ -452,6 +453,7 @@
     <Parameter Name="correo" Type="varchar" Mode="In" />
     <Parameter Name="contrasenna" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="sp_consultar_productos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="sp_crear_cuenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="nombre" Type="varchar" Mode="In" />
     <Parameter Name="correo" Type="varchar" Mode="In" />

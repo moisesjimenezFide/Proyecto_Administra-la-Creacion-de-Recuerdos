@@ -139,6 +139,7 @@
     <Property Name="descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="id_categoria" Type="Int32" Nullable="false" />
     <Property Name="precio_por_unidad" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="img_url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="tabla_categorias" Relationship="Self.FK__tabla_pro__id_ca__656C112C" FromRole="tabla_productos" ToRole="tabla_categorias" />
     <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_pr__6E01572D" FromRole="tabla_productos" ToRole="tabla_detalle_venta" />
   </EntityType>
@@ -579,6 +580,7 @@
       <Parameter Name="correo" Mode="In" Type="String" />
       <Parameter Name="contrasenna" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="sp_consultar_productos" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_consultar_productos_Result)" />
     <FunctionImport Name="sp_crear_cuenta">
       <Parameter Name="nombre" Mode="In" Type="String" />
       <Parameter Name="correo" Mode="In" Type="String" />
@@ -632,6 +634,14 @@
     <Property Type="Int32" Name="UsuarioID" Nullable="true" />
     <Property Type="String" Name="NombreUsuario" Nullable="true" MaxLength="100" />
     <Property Type="Int32" Name="RolID" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_consultar_productos_Result">
+    <Property Type="Int32" Name="id_producto" Nullable="false" />
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="descripcion" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="id_categoria" Nullable="false" />
+    <Property Type="Decimal" Name="precio_por_unidad" Nullable="false" Precision="10" Scale="2" />
+    <Property Type="String" Name="img_url" Nullable="true" MaxLength="255" />
   </ComplexType>
   <ComplexType Name="sp_obtener_empleado_Result">
     <Property Type="Int32" Name="id_usuario" Nullable="false" />

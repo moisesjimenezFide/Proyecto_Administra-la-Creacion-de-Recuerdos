@@ -133,6 +133,7 @@
           <ScalarProperty Name="descripcion" ColumnName="descripcion" />
           <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
           <ScalarProperty Name="precio_por_unidad" ColumnName="precio_por_unidad" />
+          <ScalarProperty Name="img_url" ColumnName="img_url" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -245,6 +246,18 @@
           <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
           <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
           <ScalarProperty Name="RolID" ColumnName="RolID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_consultar_productos" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_consultar_productos">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_consultar_productos_Result">
+          <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
+          <ScalarProperty Name="precio_por_unidad" ColumnName="precio_por_unidad" />
+          <ScalarProperty Name="img_url" ColumnName="img_url" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>

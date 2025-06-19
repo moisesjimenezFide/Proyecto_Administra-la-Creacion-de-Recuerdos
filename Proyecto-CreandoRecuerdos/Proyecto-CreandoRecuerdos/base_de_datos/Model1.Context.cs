@@ -115,6 +115,11 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_autenticar_usuario_Result>("sp_autenticar_usuario", correoParameter, contrasennaParameter);
         }
     
+        public virtual ObjectResult<sp_consultar_productos_Result> sp_consultar_productos()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_consultar_productos_Result>("sp_consultar_productos");
+        }
+    
         public virtual int sp_crear_cuenta(string nombre, string correo, string contrasenna)
         {
             var nombreParameter = nombre != null ?
