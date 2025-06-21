@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "menu_admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+}
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<br />
+<br />
+<h2 style="font-family: 'Sono', sans-serif; text-align: center;">
+    <i class="fas fa-user-cog me-2"></i> Menu Admin
+</h2>
+
+
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <br><br>
+        <h2 style="font-family: 'Sono', sans-serif;">
+            <i class="fas fa-utensils me-2"></i> Categorías
+        </h2>
+        <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+            <button class="btn btn-sm btn-outline-light-pink active" data-category="todos">
+                <i class="fas fa-th-list me-2"></i>Todo
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="desayunos">
+                <i class="fas fa-coffee me-2"></i>Desayunos
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="panini">
+                <i class="fas fa-bread-slice me-2"></i>Panini
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="crepes">
+                <i class="fas fa-blender me-2"></i>Crêpes
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="pasta">
+                <i class="fas fa-pizza-slice me-2"></i>Pasta
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="arroz">
+                <i class="fas fa-utensils me-2"></i>Arroz
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="tentaciones">
+                <i class="fas fa-apple-alt me-2"></i>Tentaciones
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="postres">
+                <i class="fas fa-ice-cream me-2"></i>Delicias
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="bebidas-calientes">
+                <i class="fas fa-mug-hot me-2"></i>Bebidas Calientes
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="bebidas-frias">
+                <i class="fas fa-glass-whiskey me-2"></i>Bebidas Frías
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="especiales">
+                <i class="fas fa-star me-2"></i>Especiales
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="pos-products">
+    <div class="row justify-content-center">
+        <div class="col-">
+            <div class="row" id="productGrid">
+                <!-- Se llenará -->
+
+                <div class="row" id="product-container">
+                    @foreach (var producto in Model)
+                    {
+                        <div class="col-md-4 mb-4" data-category="@producto.id_categoria">
+                            <div class="card h-100 border-0 shadow-sm product-card">
+                                <div class="card-img-container">
+                                    <img src="~/Templates/img/menu/@producto.img_url?v=@DateTime.Now.Ticks" class="card-img-top" alt="@producto.nombre">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-family: 'Sono', sans-serif;">@producto.nombre</h5>
+                                    <p class="card-text">@producto.descripcion</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold dark-violet">₡@producto.precio_por_unidad.ToString("N0")</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="#" class="btn btn-primary btn-sm"
+                                           data-id_edit="@producto.id_producto"
+                                           data-nombre="@producto.nombre"
+                                           data-descripcion="@producto.descripcion"
+                                           data-precio="@producto.precio_por_unidad"
+                                           data-img="@producto.img_url">
+                                            <i class="fas fa-edit me-1"></i> Editar
+                                        </a>
+                                        <a href="#" class="btn btn-danger btn-sm" data-id_eliminar="@producto.id_producto">
+                                            <i class="fas fa-trash-alt me-1"></i> Eliminar
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+
+                <!-- Fin-->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
+<script src="~/Templates/js/menu.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const productContainer = document.getElementById('product-container');
+
+        productContainer.addEventListener('click', function (e) {
+            // Verificar si el click fue en un botón con clase btn-primary y data-id_edit
+            const btn = e.target.closest('a.btn.btn-primary[data-id_edit]');
+            if (!btn) return; // Si no es un botón editar, salir
+
+            e.preventDefault();
+
+            // Aquí mismo puedes usar el código para abrir el Swal.fire
+            const id = btn.getAttribute('data-id_edit');
+            const nombre = btn.getAttribute('data-nombre');
+            const descripcion = btn.getAttribute('data-descripcion');
+            const precio = btn.getAttribute('data-precio');
+            const img = btn.getAttribute('data-img');
+
+            // Código Swal.fire...
+            Swal.fire({
+                title: `Editar Producto: ${nombre}`,
+                html:
+                    `<input id="swal-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}">` +
+                    `<input id="swal-id" type="hidden" value="${id}">` +
+                    `<textarea id="swal-descripcion" class="swal2-textarea" placeholder="Descripción">${descripcion}</textarea>` +
+                    `<input id="swal-precio" class="swal2-input" placeholder="Precio" value="${precio}">` +
+                    `<p>Imagen actual:</p><img src="/Templates/img/menu/${img}?v=${new Date().getTime()}" class="swal2-image" style="max-height:100px;">` +
+                    `<p>Cargar nueva imagen:</p><input type="file" id="swal-img" class="swal2-file">`,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                preConfirm: () => {
+                    return {
+                        id: document.getElementById('swal-id').value,
+                        nombre: document.getElementById('swal-nombre').value,
+                        descripcion: document.getElementById('swal-descripcion').value,
+                        precio: document.getElementById('swal-precio').value,
+                        imagen: document.getElementById('swal-img').files[0],
+                        imagenActual: img
+                    };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const datos = result.value;
+                    const formData = new FormData();
+                    formData.append('Id', datos.id);
+                    formData.append('Nombre', datos.nombre);
+                    formData.append('Descripcion', datos.descripcion);
+                    formData.append('Precio', datos.precio);
+                    formData.append('ImagenActual', datos.imagenActual);
+                    if (datos.imagen) {
+                        formData.append('Imagen', datos.imagen);
+                    }
+
+                    $.ajax({
+                        url: '/Menu/menu_admin',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            Swal.fire('¡Guardado!', 'El producto fue actualizado.', 'success').then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function () {
+                            Swal.fire('Error', 'Ocurrió un problema al actualizar.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+
+</script>
+
+
+
+

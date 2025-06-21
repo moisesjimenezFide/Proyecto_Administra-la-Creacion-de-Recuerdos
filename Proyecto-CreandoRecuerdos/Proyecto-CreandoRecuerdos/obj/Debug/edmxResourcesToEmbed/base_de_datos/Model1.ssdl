@@ -444,6 +444,13 @@
     <Parameter Name="contrasenna" Type="varchar" Mode="In" />
     <Parameter Name="activo" Type="bit" Mode="In" />
   </Function>
+  <Function Name="sp_actualizar_producto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_producto" Type="int" Mode="In" />
+    <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+    <Parameter Name="descripcion" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="precio_por_unidad" Type="decimal" Mode="In" />
+    <Parameter Name="img_url" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="sp_actualizar_usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="id_usuario" Type="int" Mode="In" />
     <Parameter Name="nombre" Type="nvarchar" Mode="In" />

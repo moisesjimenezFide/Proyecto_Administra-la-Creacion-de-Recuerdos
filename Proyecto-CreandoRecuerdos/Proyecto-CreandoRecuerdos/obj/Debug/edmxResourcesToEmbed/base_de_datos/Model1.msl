@@ -238,6 +238,7 @@
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="sp_activar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_activar_usuario" />
     <FunctionImportMapping FunctionImportName="sp_actualizar_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_empleado" />
+    <FunctionImportMapping FunctionImportName="sp_actualizar_producto" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_producto" />
     <FunctionImportMapping FunctionImportName="sp_actualizar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_usuario" />
     <FunctionImportMapping FunctionImportName="sp_autenticar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_autenticar_usuario">
       <ResultMapping>

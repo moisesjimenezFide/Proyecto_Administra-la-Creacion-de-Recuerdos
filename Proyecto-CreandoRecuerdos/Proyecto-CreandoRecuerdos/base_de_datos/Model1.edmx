@@ -449,6 +449,13 @@
           <Parameter Name="contrasenna" Type="varchar" Mode="In" />
           <Parameter Name="activo" Type="bit" Mode="In" />
         </Function>
+        <Function Name="sp_actualizar_producto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_producto" Type="int" Mode="In" />
+          <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+          <Parameter Name="descripcion" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="precio_por_unidad" Type="decimal" Mode="In" />
+          <Parameter Name="img_url" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="sp_actualizar_usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_usuario" Type="int" Mode="In" />
           <Parameter Name="nombre" Type="nvarchar" Mode="In" />
@@ -1175,6 +1182,13 @@
             <Parameter Name="contrasenna" Mode="In" Type="String" />
             <Parameter Name="activo" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <FunctionImport Name="sp_actualizar_producto">
+            <Parameter Name="id_producto" Mode="In" Type="Int32" />
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="precio_por_unidad" Mode="In" Type="Decimal" />
+            <Parameter Name="img_url" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="sp_actualizar_usuario">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
             <Parameter Name="nombre" Mode="In" Type="String" />
@@ -1531,6 +1545,7 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_activar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_activar_usuario" />
           <FunctionImportMapping FunctionImportName="sp_actualizar_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_empleado" />
+          <FunctionImportMapping FunctionImportName="sp_actualizar_producto" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_producto" />
           <FunctionImportMapping FunctionImportName="sp_actualizar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_usuario" />
           <FunctionImportMapping FunctionImportName="sp_autenticar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_autenticar_usuario">
             <ResultMapping>

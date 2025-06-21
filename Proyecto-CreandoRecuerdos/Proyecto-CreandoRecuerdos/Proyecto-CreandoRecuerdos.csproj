@@ -469,6 +469,7 @@
     <Content Include="Views\Registro_Usuarios\gestion_usuarios.cshtml" />
     <Content Include="Views\Registro_Usuarios\editar_usuario.cshtml" />
     <Content Include="Views\Menu\menu.cshtml" />
+    <Content Include="Views\Menu\menu_admin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

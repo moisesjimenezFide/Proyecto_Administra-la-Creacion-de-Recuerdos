@@ -149,3 +149,21 @@
     margin-top: auto;
     /* Empuja hacia abajo */
 }
+.btn-outline-light-pink {
+    color: #E27AB0;
+    border-color: #E27AB0;
+}
+
+    .btn-outline-light-pink:hover {
+        background-color: #E27AB0;
+        color: white;
+    }
+
+    .btn-outline-light-pink.active {
+        background-color: #E27AB0 !important;
+        color: white !important;
+    }
+
+.pos-products {
+    padding: 20px;
+}

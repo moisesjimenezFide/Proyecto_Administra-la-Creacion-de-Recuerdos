@@ -85,6 +85,31 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_actualizar_empleado", id_usuarioParameter, nombreParameter, id_rolParameter, correoParameter, contrasennaParameter, activoParameter);
         }
     
+        public virtual int sp_actualizar_producto(Nullable<int> id_producto, string nombre, string descripcion, Nullable<decimal> precio_por_unidad, string img_url)
+        {
+            var id_productoParameter = id_producto.HasValue ?
+                new ObjectParameter("id_producto", id_producto) :
+                new ObjectParameter("id_producto", typeof(int));
+    
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("nombre", nombre) :
+                new ObjectParameter("nombre", typeof(string));
+    
+            var descripcionParameter = descripcion != null ?
+                new ObjectParameter("descripcion", descripcion) :
+                new ObjectParameter("descripcion", typeof(string));
+    
+            var precio_por_unidadParameter = precio_por_unidad.HasValue ?
+                new ObjectParameter("precio_por_unidad", precio_por_unidad) :
+                new ObjectParameter("precio_por_unidad", typeof(decimal));
+    
+            var img_urlParameter = img_url != null ?
+                new ObjectParameter("img_url", img_url) :
+                new ObjectParameter("img_url", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_actualizar_producto", id_productoParameter, nombreParameter, descripcionParameter, precio_por_unidadParameter, img_urlParameter);
+        }
+    
         public virtual int sp_actualizar_usuario(Nullable<int> id_usuario, string nombre, Nullable<int> id_rol)
         {
             var id_usuarioParameter = id_usuario.HasValue ?
