@@ -85,7 +85,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_actualizar_empleado", id_usuarioParameter, nombreParameter, id_rolParameter, correoParameter, contrasennaParameter, activoParameter);
         }
     
-        public virtual int sp_actualizar_producto(Nullable<int> id_producto, string nombre, string descripcion, Nullable<decimal> precio_por_unidad, string img_url)
+        public virtual int sp_actualizar_producto(Nullable<int> id_producto, string nombre, string descripcion, Nullable<decimal> precio_por_unidad, string img_url, Nullable<int> id_categoria)
         {
             var id_productoParameter = id_producto.HasValue ?
                 new ObjectParameter("id_producto", id_producto) :
@@ -107,7 +107,11 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
                 new ObjectParameter("img_url", img_url) :
                 new ObjectParameter("img_url", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_actualizar_producto", id_productoParameter, nombreParameter, descripcionParameter, precio_por_unidadParameter, img_urlParameter);
+            var id_categoriaParameter = id_categoria.HasValue ?
+                new ObjectParameter("id_categoria", id_categoria) :
+                new ObjectParameter("id_categoria", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_actualizar_producto", id_productoParameter, nombreParameter, descripcionParameter, precio_por_unidadParameter, img_urlParameter, id_categoriaParameter);
         }
     
         public virtual int sp_actualizar_usuario(Nullable<int> id_usuario, string nombre, Nullable<int> id_rol)
@@ -187,6 +191,31 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_crear_empleado", nombreParameter, id_rolParameter, correoParameter, contrasennaParameter, activoParameter);
         }
     
+        public virtual ObjectResult<Nullable<int>> sp_crear_producto(string nombre, string descripcion, Nullable<decimal> precio_por_unidad, Nullable<int> id_categoria, string img_url)
+        {
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("nombre", nombre) :
+                new ObjectParameter("nombre", typeof(string));
+    
+            var descripcionParameter = descripcion != null ?
+                new ObjectParameter("descripcion", descripcion) :
+                new ObjectParameter("descripcion", typeof(string));
+    
+            var precio_por_unidadParameter = precio_por_unidad.HasValue ?
+                new ObjectParameter("precio_por_unidad", precio_por_unidad) :
+                new ObjectParameter("precio_por_unidad", typeof(decimal));
+    
+            var id_categoriaParameter = id_categoria.HasValue ?
+                new ObjectParameter("id_categoria", id_categoria) :
+                new ObjectParameter("id_categoria", typeof(int));
+    
+            var img_urlParameter = img_url != null ?
+                new ObjectParameter("img_url", img_url) :
+                new ObjectParameter("img_url", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_crear_producto", nombreParameter, descripcionParameter, precio_por_unidadParameter, id_categoriaParameter, img_urlParameter);
+        }
+    
         public virtual int sp_eliminar_empleado(Nullable<int> id_usuario)
         {
             var id_usuarioParameter = id_usuario.HasValue ?
@@ -194,6 +223,15 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
                 new ObjectParameter("id_usuario", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_eliminar_empleado", id_usuarioParameter);
+        }
+    
+        public virtual int sp_eliminar_producto(Nullable<int> id_producto)
+        {
+            var id_productoParameter = id_producto.HasValue ?
+                new ObjectParameter("id_producto", id_producto) :
+                new ObjectParameter("id_producto", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_eliminar_producto", id_productoParameter);
         }
     
         public virtual int sp_inactivar_usuario(Nullable<int> id)

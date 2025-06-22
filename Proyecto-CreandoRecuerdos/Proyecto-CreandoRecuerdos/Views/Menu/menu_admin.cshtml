@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <br />
 <br />
+
 <h2 style="font-family: 'Sono', sans-serif; text-align: center;">
     <i class="fas fa-user-cog me-2"></i> Menu Admin
 </h2>
@@ -25,6 +26,9 @@
         <h2 style="font-family: 'Sono', sans-serif;">
             <i class="fas fa-utensils me-2"></i> Categorías
         </h2>
+        <button id="crear_producto" class="btn btn-sm btn-outline-light-pink active">
+            <i class="fas fa-plus me-1"></i> Crear producto
+        </button>
         <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
             <button class="btn btn-sm btn-outline-light-pink active" data-category="todos">
                 <i class="fas fa-th-list me-2"></i>Todo
@@ -89,7 +93,9 @@
                                            data-nombre="@producto.nombre"
                                            data-descripcion="@producto.descripcion"
                                            data-precio="@producto.precio_por_unidad"
-                                           data-img="@producto.img_url">
+                                           data-img="@producto.img_url"
+                                           data-category="@producto.id_categoria">
+
                                             <i class="fas fa-edit me-1"></i> Editar
                                         </a>
                                         <a href="#" class="btn btn-danger btn-sm" data-id_eliminar="@producto.id_producto">
@@ -117,78 +123,262 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const productContainer = document.getElementById('product-container');
-
-        productContainer.addEventListener('click', function (e) {
-            // Verificar si el click fue en un botón con clase btn-primary y data-id_edit
-            const btn = e.target.closest('a.btn.btn-primary[data-id_edit]');
-            if (!btn) return; // Si no es un botón editar, salir
-
-            e.preventDefault();
-
-            // Aquí mismo puedes usar el código para abrir el Swal.fire
-            const id = btn.getAttribute('data-id_edit');
-            const nombre = btn.getAttribute('data-nombre');
-            const descripcion = btn.getAttribute('data-descripcion');
-            const precio = btn.getAttribute('data-precio');
-            const img = btn.getAttribute('data-img');
-
-            // Código Swal.fire...
-            Swal.fire({
-                title: `Editar Producto: ${nombre}`,
-                html:
-                    `<input id="swal-nombre" class="swal2-input" placeholder="Nombre" value="${nombre}">` +
-                    `<input id="swal-id" type="hidden" value="${id}">` +
-                    `<textarea id="swal-descripcion" class="swal2-textarea" placeholder="Descripción">${descripcion}</textarea>` +
-                    `<input id="swal-precio" class="swal2-input" placeholder="Precio" value="${precio}">` +
-                    `<p>Imagen actual:</p><img src="/Templates/img/menu/${img}?v=${new Date().getTime()}" class="swal2-image" style="max-height:100px;">` +
-                    `<p>Cargar nueva imagen:</p><input type="file" id="swal-img" class="swal2-file">`,
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonText: 'Guardar',
-                preConfirm: () => {
-                    return {
-                        id: document.getElementById('swal-id').value,
-                        nombre: document.getElementById('swal-nombre').value,
-                        descripcion: document.getElementById('swal-descripcion').value,
-                        precio: document.getElementById('swal-precio').value,
-                        imagen: document.getElementById('swal-img').files[0],
-                        imagenActual: img
-                    };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const datos = result.value;
-                    const formData = new FormData();
-                    formData.append('Id', datos.id);
-                    formData.append('Nombre', datos.nombre);
-                    formData.append('Descripcion', datos.descripcion);
-                    formData.append('Precio', datos.precio);
-                    formData.append('ImagenActual', datos.imagenActual);
-                    if (datos.imagen) {
-                        formData.append('Imagen', datos.imagen);
-                    }
-
-                    $.ajax({
-                        url: '/Menu/menu_admin',
-                        type: 'POST',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        success: function () {
-                            Swal.fire('¡Guardado!', 'El producto fue actualizado.', 'success').then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function () {
-                            Swal.fire('Error', 'Ocurrió un problema al actualizar.', 'error');
-                        }
-                    });
-                }
+        const crearBtn = document.getElementById('crear_producto');
+        if (crearBtn) {
+            crearBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                crear_funcion();
             });
+        }
+        productContainer.addEventListener('click', function (e) {
+            // se genera un triger para saber cuando se pulsa un boton 
+            const target = e.target;
+            const editar_btn = target.closest('a.btn.btn-primary[data-id_edit]');
+            const eliminar_btn = target.closest('a.btn.btn-danger[data-id_eliminar]');
+
+            if (editar_btn) {
+                //Validar boton editar
+                e.preventDefault();
+                editar_funcion(editar_btn);
+            } else if (eliminar_btn) {
+                //Validar boton eliminar
+                e.preventDefault();
+                eliminar_funcion(eliminar_btn)
+            }
         });
     });
 
+    //Mis funciones 
+    const categoryMap = {
+        'desayunos': 1,
+        'panini': 2,
+        'crepes': 3,
+        'pasta': 4,
+        'arroz': 5,
+        'tentaciones': 6,
+        'postres': 7,
+        'bebidas-calientes': 8,
+        'bebidas-frias': 9,
+        'especiales': 10
+    };
 
+    function editar_funcion(btn) {
+
+        // Tomar datos 
+        const id = btn.getAttribute('data-id_edit');
+        const nombre = btn.getAttribute('data-nombre');
+        const descripcion = btn.getAttribute('data-descripcion');
+        const precio = btn.getAttribute('data-precio');
+        const img = btn.getAttribute('data-img');
+        const idCategoriaActual = btn.getAttribute('data-category') || '';
+
+        // Dropdown
+        let optionsHtml = '<select id="swal-categoria" class="swal2-select"><option value="">Seleccione una categoría</option>';
+        for (const [nombreCat, catId] of Object.entries(categoryMap)) {
+            const selected = catId.toString() === idCategoriaActual.toString() ? 'selected' : '';
+            optionsHtml += `<option value="${catId}" ${selected}>${nombreCat.charAt(0).toUpperCase() + nombreCat.slice(1).replace('-', ' ')}</option>`;
+        }
+
+        optionsHtml += '</select>';
+        // Código Swal.fire...
+        Swal.fire({
+            title: `Editar Producto: ${nombre}`,
+            html:
+                `<label for="swal-nombre">Nombre:</label>` +
+                `<input id="swal-nombre" class="swal2-input" value="${nombre}">` +
+
+                `<input id="swal-id" type="hidden" value="${id}">` +
+
+                `<label for="swal-descripcion">Descripción:</label>` +
+                `<textarea id="swal-descripcion" class="swal2-textarea">${descripcion}</textarea>` +
+
+                `<label for="swal-precio">Precio:</label>` +
+                `<input id="swal-precio" class="swal2-input" value="${precio}" inputmode="decimal" pattern="^\\d*\\.?\\d*$" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">` +
+
+                `<label for="swal-categoria" class="mt-2">Categoría:</label>` +
+                optionsHtml +
+
+                `<p class="mt-2">Imagen actual:</p>` +
+                `<img src="/Templates/img/menu/${img}?v=${new Date().getTime()}" class="swal2-image" style="max-height:100px;">` +
+
+                `<p class="mt-2">Cargar nueva imagen:</p>` +
+                `<input type="file" id="swal-img" class="swal2-file">`,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Guardar',
+            preConfirm: () => {
+                const nombreVal = document.getElementById('swal-nombre').value.trim();
+                const descripcionVal = document.getElementById('swal-descripcion').value.trim();
+                const precioStr = document.getElementById('swal-precio').value.trim();
+                const categoriaVal = document.getElementById('swal-categoria').value;
+
+                if (!nombreVal || !descripcionVal || !precioStr || !categoriaVal) {
+                    Swal.showValidationMessage('Todos los campos son obligatorios.');
+                    return false;
+                }
+
+                // Validar que precio sea float válido
+                const precioVal = parseFloat(precioStr);
+                if (isNaN(precioVal) || precioVal <= 0) {
+                    Swal.showValidationMessage('El precio debe ser un número válido mayor que cero.');
+                    return false;
+                }
+
+                return {
+                    id: document.getElementById('swal-id').value,
+                    nombre: nombreVal,
+                    descripcion: descripcionVal,
+                    precio: precioVal,
+                    categoria: categoriaVal,
+                    imagen: document.getElementById('swal-img').files[0],
+                    imagenActual: img
+                };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const datos = result.value;
+                const formData = new FormData();
+                formData.append('Id', datos.id);
+                formData.append('Nombre', datos.nombre);
+                formData.append('Descripcion', datos.descripcion);
+                formData.append('Precio', datos.precio);
+                formData.append('IdCategoria', datos.categoria);
+                formData.append('ImagenActual', datos.imagenActual);
+                if (datos.imagen) {
+                    formData.append('Imagen', datos.imagen);
+                }
+
+                $.ajax({
+                    url: '/Menu/menu_admin',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        Swal.fire('¡Guardado!', 'El producto fue actualizado.', 'success').then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'Ocurrió un problema al actualizar.', 'error');
+                    }
+                });
+            }
+        });
+    }
+
+    function eliminar_funcion(btn) {
+        const id = btn.getAttribute('data-id_eliminar');
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            html: 'Esta acción eliminará el producto.<br>Escribe <strong>CONFIRMAR</strong> para continuar.',
+            input: 'text',
+            inputPlaceholder: 'Escribe CONFIRMAR',
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+            preConfirm: (valor) => {
+                if (valor !== 'CONFIRMAR') {
+                    Swal.showValidationMessage('Debes escribir CONFIRMAR exactamente.');
+                    return false;
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar AJAX para eliminar
+                $.ajax({
+                    url: '/Menu/eliminar_producto', // Ajusta la URL según tu controlador
+                    type: 'POST',
+                    data: { id: id },
+                    success: function () {
+                        Swal.fire('Eliminado', 'El producto fue eliminado exitosamente.', 'success')
+                            .then(() => location.reload());
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'Ocurrió un problema al eliminar el producto.', 'error');
+                    }
+                });
+            }
+        });
+    }
+
+    function crear_funcion() {
+        // Generar opciones del dropdown
+        let optionsHtml = '<select id="swal-categoria" class="swal2-select"><option value="">Seleccione una categoría</option>';
+        for (const [nombre, id] of Object.entries(categoryMap)) {
+            optionsHtml += `<option value="${id}">${nombre.charAt(0).toUpperCase() + nombre.slice(1).replace('-', ' ')}</option>`;
+        }
+        optionsHtml += '</select>';
+
+        Swal.fire({
+            title: 'Crear nuevo producto',
+            html:
+                `<label for="swal-nombre">Nombre:</label>` +
+                `<input id="swal-nombre" class="swal2-input">` +
+
+                `<label for="swal-descripcion">Descripción:</label>` +
+                `<textarea id="swal-descripcion" class="swal2-textarea"></textarea>` +
+
+                `<label for="swal-precio">Precio:</label>` +
+                `<input id="swal-precio" class="swal2-input" inputmode="decimal" pattern="^\\d*\\.?\\d*$" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">` +
+
+                `<label for="swal-categoria">Categoría:</label>` +
+                optionsHtml +
+
+                `<p class="mt-2">Cargar imagen:</p>` +
+                `<input type="file" id="swal-img" class="swal2-file">`,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Crear',
+            preConfirm: () => {
+                const nombre = document.getElementById('swal-nombre').value.trim();
+                const descripcion = document.getElementById('swal-descripcion').value.trim();
+                const precioStr = document.getElementById('swal-precio').value.trim();
+                const categoria = document.getElementById('swal-categoria').value;
+                const imagen = document.getElementById('swal-img').files[0];
+
+                if (!nombre || !descripcion || !precioStr || !imagen || !categoria) {
+                    Swal.showValidationMessage('Todos los campos son obligatorios.');
+                    return false;
+                }
+
+                // Validar que precio sea un float positivo válido
+                const precio = parseFloat(precioStr);
+                if (isNaN(precio) || precio <= 0) {
+                    Swal.showValidationMessage('El precio debe ser un número válido mayor que cero.');
+                    return false;
+                }
+
+                return { nombre, descripcion, precio, categoria, imagen };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const datos = result.value;
+                const formData = new FormData();
+                formData.append('Nombre', datos.nombre);
+                formData.append('Descripcion', datos.descripcion);
+                formData.append('Precio', datos.precio);
+                formData.append('IdCategoria', datos.categoria);
+                formData.append('Imagen', datos.imagen);
+
+                $.ajax({
+                    url: '/Menu/crear_producto', // Ajustá esta URL según tu ruta
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        Swal.fire('¡Creado!', 'El producto fue registrado exitosamente.', 'success')
+                            .then(() => location.reload());
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'No se pudo crear el producto.', 'error');
+                    }
+                });
+            }
+        });
+    }
 </script>
 
 

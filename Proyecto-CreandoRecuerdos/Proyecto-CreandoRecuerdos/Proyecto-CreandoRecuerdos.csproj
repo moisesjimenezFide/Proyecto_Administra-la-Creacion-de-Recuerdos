@@ -414,6 +414,7 @@
     <Content Include="Templates\img\menu\7.jpg" />
     <Content Include="Templates\img\menu\8.jpg" />
     <Content Include="Templates\img\menu\9.jpg" />
+    <Content Include="Templates\img\menu\Recuerdos.png" />
     <Content Include="Templates\img\Recuerdos.png" />
     <Content Include="Templates\js\costos_recetas.js" />
     <Content Include="Templates\js\empaques.js" />

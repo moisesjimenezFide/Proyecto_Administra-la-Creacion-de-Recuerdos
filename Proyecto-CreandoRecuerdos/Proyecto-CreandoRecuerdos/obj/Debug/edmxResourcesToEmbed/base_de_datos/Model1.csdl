@@ -577,6 +577,7 @@
       <Parameter Name="descripcion" Mode="In" Type="String" />
       <Parameter Name="precio_por_unidad" Mode="In" Type="Decimal" />
       <Parameter Name="img_url" Mode="In" Type="String" />
+      <Parameter Name="id_categoria" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="sp_actualizar_usuario">
       <Parameter Name="id_usuario" Mode="In" Type="Int32" />
@@ -600,8 +601,18 @@
       <Parameter Name="contrasenna" Mode="In" Type="String" />
       <Parameter Name="activo" Mode="In" Type="Boolean" />
     </FunctionImport>
+    <FunctionImport Name="sp_crear_producto" ReturnType="Collection(Int32)">
+      <Parameter Name="nombre" Mode="In" Type="String" />
+      <Parameter Name="descripcion" Mode="In" Type="String" />
+      <Parameter Name="precio_por_unidad" Mode="In" Type="Decimal" />
+      <Parameter Name="id_categoria" Mode="In" Type="Int32" />
+      <Parameter Name="img_url" Mode="In" Type="String" />
+    </FunctionImport>
     <FunctionImport Name="sp_eliminar_empleado">
       <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_eliminar_producto">
+      <Parameter Name="id_producto" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="sp_inactivar_usuario">
       <Parameter Name="Id" Mode="In" Type="Int32" />

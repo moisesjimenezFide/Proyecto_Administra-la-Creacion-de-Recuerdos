@@ -264,7 +264,9 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_crear_cuenta" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_crear_cuenta" />
     <FunctionImportMapping FunctionImportName="sp_crear_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_crear_empleado" />
+    <FunctionImportMapping FunctionImportName="sp_crear_producto" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_crear_producto" />
     <FunctionImportMapping FunctionImportName="sp_eliminar_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_eliminar_empleado" />
+    <FunctionImportMapping FunctionImportName="sp_eliminar_producto" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_eliminar_producto" />
     <FunctionImportMapping FunctionImportName="sp_inactivar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_inactivar_usuario" />
     <FunctionImportMapping FunctionImportName="sp_obtener_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_empleado">
       <ResultMapping>
