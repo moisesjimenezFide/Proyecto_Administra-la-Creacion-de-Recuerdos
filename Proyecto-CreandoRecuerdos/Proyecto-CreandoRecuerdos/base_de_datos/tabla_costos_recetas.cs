@@ -12,19 +12,23 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     using System;
     using System.Collections.Generic;
     
-    public partial class tabla_clientes
+    public partial class tabla_costos_recetas
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tabla_clientes()
+        public tabla_costos_recetas()
         {
-            this.tabla_ventas = new HashSet<tabla_ventas>();
+            this.costos_receta_materias_primas = new HashSet<costos_receta_materias_primas>();
+            this.costos_receta_productos_preparados = new HashSet<costos_receta_productos_preparados>();
         }
     
-        public int id_cliente { get; set; }
+        public int id { get; set; }
         public string nombre { get; set; }
-        public string apellido { get; set; }
+        public decimal costo_total_receta { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tabla_ventas> tabla_ventas { get; set; }
+        public virtual ICollection<costos_receta_materias_primas> costos_receta_materias_primas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<costos_receta_productos_preparados> costos_receta_productos_preparados { get; set; }
+        public virtual tabla_precios_finales_sugeridos tabla_precios_finales_sugeridos { get; set; }
     }
 }

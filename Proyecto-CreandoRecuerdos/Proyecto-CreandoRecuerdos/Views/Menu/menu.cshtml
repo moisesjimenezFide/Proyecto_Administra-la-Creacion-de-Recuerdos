@@ -21,6 +21,9 @@
             <button class="btn btn-sm btn-outline-light-pink active" data-category="todos">
                 <i class="fas fa-th-list me-2"></i>Todo
             </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="recomendaciones">
+                <i class="fas fa-check me-1"></i> Recomendaciones
+            </button>
             <button class="btn btn-sm btn-outline-light-pink" data-category="desayunos">
                 <i class="fas fa-coffee me-2"></i>Desayunos
             </button>
@@ -64,7 +67,17 @@
                 <div class="row" id="product-container">
                     @foreach (var producto in Model)
                     {
-                        <div class="col-md-4 mb-4" data-category="@producto.id_categoria">
+                        // Convertimos la categoría a string como antes
+                        var categorias = producto.id_categoria.ToString();
+
+                        // Evaluamos si este producto está en la lista de recomendaciones
+                        bool esRecomendado = ViewBag.ProductosRecomendados != null &&
+                                             ((List<int>)ViewBag.ProductosRecomendados).Contains(producto.id_producto);
+
+                        // Creamos el contenedor del producto con los atributos necesarios
+                        <div class="col-md-4 mb-4"
+                             data-category="@categorias"
+                             data-recomendado="@(esRecomendado.ToString().ToLower())">
                             <div class="card h-100 border-0 shadow-sm product-card">
                                 <div class="card-img-container">
                                     <img src='~/Templates/img/menu/@producto.img_url' class="card-img-top" alt="@producto.nombre">
@@ -79,14 +92,15 @@
                             </div>
                         </div>
                     }
-                </div>
 
+                </div>
 
                 <!-- Fin-->
             </div>
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>

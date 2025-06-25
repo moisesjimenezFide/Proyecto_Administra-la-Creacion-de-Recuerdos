@@ -29,9 +29,21 @@
         <button id="crear_producto" class="btn btn-sm btn-outline-light-pink active">
             <i class="fas fa-plus me-1"></i> Crear producto
         </button>
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-outline-light-pink dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-plus me-1"></i> Recomendación
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" id="crearRecomendacionOpcion">Crear recomendación</a></li>
+                <li><a class="dropdown-item" href="#" id="quitarRecomendacionOpcion">Quitar recomendación</a></li>
+            </ul>
+        </div>
         <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
             <button class="btn btn-sm btn-outline-light-pink active" data-category="todos">
                 <i class="fas fa-th-list me-2"></i>Todo
+            </button>
+            <button class="btn btn-sm btn-outline-light-pink" data-category="recomendaciones">
+                <i class="fas fa-check me-1"></i> Recomendaciones
             </button>
             <button class="btn btn-sm btn-outline-light-pink" data-category="desayunos">
                 <i class="fas fa-coffee me-2"></i>Desayunos
@@ -72,11 +84,15 @@
         <div class="col-">
             <div class="row" id="productGrid">
                 <!-- Se llenará -->
+                @{
+                    var recomendados = ViewBag.ProductosRecomendados as List<int> ?? new List<int>();
+                }
 
                 <div class="row" id="product-container">
                     @foreach (var producto in Model)
                     {
-                        <div class="col-md-4 mb-4" data-category="@producto.id_categoria">
+                        var esRecomendado = recomendados.Contains(producto.id_producto);
+                        <div class="col-md-4 mb-4" data-category="@producto.id_categoria" data-recomendado="@(esRecomendado.ToString().ToLower())">
                             <div class="card h-100 border-0 shadow-sm product-card">
                                 <div class="card-img-container">
                                     <img src="~/Templates/img/menu/@producto.img_url?v=@DateTime.Now.Ticks" class="card-img-top" alt="@producto.nombre">
@@ -108,14 +124,14 @@
                         </div>
                     }
                 </div>
+                <!-- Fin -->
 
-
-
-                <!-- Fin-->
             </div>
         </div>
     </div>
 </div>
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
@@ -131,7 +147,7 @@
             });
         }
         productContainer.addEventListener('click', function (e) {
-            // se genera un triger para saber cuando se pulsa un boton 
+            // se genera un triger para saber cuando se pulsa un boton
             const target = e.target;
             const editar_btn = target.closest('a.btn.btn-primary[data-id_edit]');
             const eliminar_btn = target.closest('a.btn.btn-danger[data-id_eliminar]');
@@ -148,7 +164,7 @@
         });
     });
 
-    //Mis funciones 
+    //Mis funciones
     const categoryMap = {
         'desayunos': 1,
         'panini': 2,
@@ -164,7 +180,7 @@
 
     function editar_funcion(btn) {
 
-        // Tomar datos 
+        // Tomar datos
         const id = btn.getAttribute('data-id_edit');
         const nombre = btn.getAttribute('data-nombre');
         const descripcion = btn.getAttribute('data-descripcion');
@@ -363,7 +379,7 @@
                 formData.append('Imagen', datos.imagen);
 
                 $.ajax({
-                    url: '/Menu/crear_producto', // Ajustá esta URL según tu ruta
+                    url: '/Menu/crear_producto',
                     type: 'POST',
                     data: formData,
                     contentType: false,
@@ -381,6 +397,92 @@
     }
 </script>
 
+<script>
+    $(document).ready(function () {
+        // Opción 1: Crear recomendación (abre SweetAlert con formulario)
+        $('#crearRecomendacionOpcion').click(function (e) {
+            e.preventDefault();
+            abrirFormularioRecomendacion();
+        });
 
+        // Opción 2: Quitar recomendación (abre SweetAlert con select)
+        $('#quitarRecomendacionOpcion').click(function (e) {
+            e.preventDefault();
+            $.get('/Menu/RecomendacionesAjax', function (productos) {
+                let selectHtml = `<label for="eliminarRecomendacion">Quitar recomendación existente:</label>
+                    <select id="eliminarRecomendacion" class="swal2-select">
+                        <option value="">Seleccione una recomendación</option>`;
+                productos.forEach(prod => {
+                    selectHtml += `<option value="${prod.id_producto}">${prod.nombre}</option>`;
+                });
+                selectHtml += `</select>`;
 
+                Swal.fire({
+                    title: 'Quitar recomendación',
+                    html: selectHtml,
+                    showCancelButton: true,
+                    confirmButtonText: 'Eliminar',
+                    preConfirm: () => {
+                        const id = document.getElementById('eliminarRecomendacion').value;
+                        if (!id) {
+                            Swal.showValidationMessage('Debes seleccionar una recomendación.');
+                            return false;
+                        }
+                        return id;
+                    }
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        $.post('/Menu/EliminarRecomendacion', { id: result.value }, function () {
+                            Swal.fire('Eliminado', 'La recomendación fue quitada.', 'success')
+                                .then(() => location.reload());
+                        }).fail(() => {
+                            Swal.fire('Error', 'No se pudo quitar la recomendación.', 'error');
+                        });
+                    }
+                });
+            });
+        });
+    });
 
+    function abrirFormularioRecomendacion() {
+        $.get('/Menu/ObtenerProductosDisponibles', function (productos) {
+            let selectHtml = '<label for="productoRecomendado">Seleccionar producto:</label>' +
+                '<select id="productoRecomendado" class="swal2-select">' +
+                '<option value="">Seleccione un producto</option>';
+            productos.forEach(p => {
+                selectHtml += `<option value="${p.id_producto}">${p.nombre}</option>`;
+            });
+            selectHtml += '</select>';
+
+            Swal.fire({
+                title: 'Crear recomendación',
+                html: selectHtml +
+                    '<label for="motivo">Motivo:</label>' +
+                    '<textarea id="motivo" class="swal2-textarea" placeholder="Ej: Producto más vendido, alta demanda, etc."></textarea>',
+                showCancelButton: true,
+                confirmButtonText: 'Crear',
+                preConfirm: () => {
+                    const idProducto = document.getElementById('productoRecomendado').value;
+                    const motivo = document.getElementById('motivo').value.trim();
+
+                    if (!idProducto || !motivo) {
+                        Swal.showValidationMessage('Debés seleccionar un producto y escribir un motivo.');
+                        return false;
+                    }
+
+                    return { productoId: idProducto, motivo: motivo };
+
+                }
+            }).then(result => {
+                if (result.isConfirmed) {
+                    $.post('/Menu/GuardarRecomendacion', result.value, function () {
+                        Swal.fire('¡Listo!', 'Recomendación creada con éxito.', 'success')
+                            .then(() => location.reload());
+                    }).fail(() => {
+                        Swal.fire('Error', 'No se pudo crear la recomendación.', 'error');
+                    });
+                }
+            });
+        });
+    }
+</script>

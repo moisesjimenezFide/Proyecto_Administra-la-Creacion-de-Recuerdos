@@ -11,12 +11,11 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
 {
     using System;
     
-    public partial class sp_obtener_empleado_Result
+    public partial class sp_obtener_recomendaciones_Result
     {
-        public int id_usuario { get; set; }
-        public string nombre { get; set; }
-        public int id_rol { get; set; }
-        public string correo { get; set; }
-        public Nullable<bool> activo { get; set; }
+        public int id_recomendacion { get; set; }
+        public int id_producto { get; set; }
+        public string nombre_producto { get; set; }
+        public string motivo { get; set; }
     }
 }

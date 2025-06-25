@@ -12,19 +12,21 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     using System;
     using System.Collections.Generic;
     
-    public partial class tabla_clientes
+    public partial class Vendedore
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tabla_clientes()
+        public Vendedore()
         {
-            this.tabla_ventas = new HashSet<tabla_ventas>();
+            this.Vehiculos = new HashSet<Vehiculo>();
         }
     
-        public int id_cliente { get; set; }
-        public string nombre { get; set; }
-        public string apellido { get; set; }
+        public long IdVendedor { get; set; }
+        public string Cedula { get; set; }
+        public string Nombre { get; set; }
+        public string Correo { get; set; }
+        public bool Estado { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tabla_ventas> tabla_ventas { get; set; }
+        public virtual ICollection<Vehiculo> Vehiculos { get; set; }
     }
 }

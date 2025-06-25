@@ -10,13 +10,14 @@
 namespace Proyecto_CreandoRecuerdos.base_de_datos
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_obtener_empleado_Result
+    public partial class tabla_recomendaciones
     {
-        public int id_usuario { get; set; }
-        public string nombre { get; set; }
-        public int id_rol { get; set; }
-        public string correo { get; set; }
-        public Nullable<bool> activo { get; set; }
+        public int id_recomendacion { get; set; }
+        public int id_producto { get; set; }
+        public string motivo { get; set; }
+    
+        public virtual tabla_productos tabla_productos { get; set; }
     }
 }

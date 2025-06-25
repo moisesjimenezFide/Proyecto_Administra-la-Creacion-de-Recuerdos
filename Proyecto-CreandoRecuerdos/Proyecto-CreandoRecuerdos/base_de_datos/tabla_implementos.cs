@@ -12,19 +12,25 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     using System;
     using System.Collections.Generic;
     
-    public partial class tabla_clientes
+    public partial class tabla_implementos
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tabla_clientes()
+        public tabla_implementos()
         {
-            this.tabla_ventas = new HashSet<tabla_ventas>();
+            this.precios_implementos_utilizados = new HashSet<precios_implementos_utilizados>();
         }
     
-        public int id_cliente { get; set; }
+        public int id { get; set; }
         public string nombre { get; set; }
-        public string apellido { get; set; }
+        public string marca { get; set; }
+        public string presentacion { get; set; }
+        public string proveedor { get; set; }
+        public decimal costo { get; set; }
+        public int cantidad { get; set; }
+        public string unidad_de_medida { get; set; }
+        public Nullable<decimal> costo_por_cantidad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tabla_ventas> tabla_ventas { get; set; }
+        public virtual ICollection<precios_implementos_utilizados> precios_implementos_utilizados { get; set; }
     }
 }

@@ -18,10 +18,14 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             {
                 var resultados = db.sp_consultar_productos().ToList();
 
+                ViewBag.ProductosRecomendados = db.tabla_recomendaciones
+                                                  .Select(r => r.id_producto)
+                                                  .ToList();
 
                 return View(resultados);
             }
         }
+
 
         [HttpGet]
         public ActionResult menu_admin()
@@ -30,11 +34,31 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             {
                 var resultados = db.sp_consultar_productos().ToList();
 
+                // Agregá esta línea para enviar los productos recomendados a la vista
+                ViewBag.ProductosRecomendados = db.tabla_recomendaciones
+                                                  .Select(r => r.id_producto)
+                                                  .ToList();
 
                 return View(resultados);
             }
         }
 
+        [HttpGet]
+        public JsonResult ObtenerProductosDisponibles()
+        {
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
+            {
+                // Obtener TODOS los productos del menú, sin filtrar por recomendaciones
+                var productosDisponibles = db.tabla_productos
+                    .Select(p => new {
+                        p.id_producto,
+                        p.nombre
+                    })
+                    .ToList();
+
+                return Json(productosDisponibles, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [HttpPost]
         public ActionResult menu_admin(long Id,string Nombre,string Descripcion,string Precio,string ImagenActual,int IdCategoria, HttpPostedFileBase Imagen)
@@ -168,9 +192,75 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult GuardarRecomendacion(int productoId, string motivo)
+        {
+            try
+            {
+                using (var db = new BD_CREANDO_RECUERDOSEntities())
+                {
+                    db.sp_insertar_recomendacion(productoId, motivo);
+                    return Json(new { success = true });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
+        public ActionResult Recomendaciones()
+        {
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
+            {
+                // 1. Obtener los IDs recomendados
+                var idsRecomendados = db.tabla_recomendaciones.Select(r => r.id_producto).ToList();
 
+                // 2. Obtener los productos desde la tabla de menú
+                var productos = db.tabla_productos.Where(p => idsRecomendados.Contains(p.id_producto)).ToList();
 
+                return View("menu_admin", productos); // reutilizamos la misma vista
+            }
+        }
+
+        [HttpGet]
+        public JsonResult RecomendacionesAjax()
+        {
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
+            {
+                var ids = db.tabla_recomendaciones.Select(r => r.id_producto).ToList();
+                var productos = db.tabla_productos
+                                  .Where(p => ids.Contains(p.id_producto))
+                                  .Select(p => new {
+                                      id_producto = p.id_producto,
+                                      nombre = p.nombre
+                                  }).ToList();
+                return Json(productos, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EliminarRecomendacion(int id)
+        {
+            try
+            {
+                using (var db = new BD_CREANDO_RECUERDOSEntities())
+                {
+                    var recomendacion = db.tabla_recomendaciones.FirstOrDefault(r => r.id_producto == id);
+                    if (recomendacion != null)
+                    {
+                        db.tabla_recomendaciones.Remove(recomendacion);
+                        db.SaveChanges();
+                        return Json(new { success = true });
+                    }
+                    return Json(new { success = false, message = "No se encontró la recomendación." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error: " + ex.Message });
+            }
+        }
 
     }
 }

@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Proyecto_CreandoRecuerdos.Models;
 using Proyecto_CreandoRecuerdos.base_de_datos;
 
+
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
     public class AusenciasController : Controller

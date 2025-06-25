@@ -12,16 +12,17 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     using System;
     using System.Collections.Generic;
     
-    public partial class tabla_solicitudes_ausencias
+    public partial class costos_receta_materias_primas
     {
-        public int id_solicitud { get; set; }
-        public int id_usuario { get; set; }
-        public System.DateTime fecha_inicio { get; set; }
-        public System.DateTime fecha_fin { get; set; }
-        public string motivo { get; set; }
-        public string estado { get; set; }
-        public string tipo { get; set; }
+        public int id { get; set; }
+        public int id_receta { get; set; }
+        public int id_materia_prima { get; set; }
+        public int cantidad { get; set; }
+        public string unidad_de_medida { get; set; }
+        public decimal costo_por_cantidad { get; set; }
+        public Nullable<decimal> total_costo { get; set; }
     
-        public virtual tabla_usuarios tabla_usuarios { get; set; }
+        public virtual tabla_materias_primas tabla_materias_primas { get; set; }
+        public virtual tabla_costos_recetas tabla_costos_recetas { get; set; }
     }
 }

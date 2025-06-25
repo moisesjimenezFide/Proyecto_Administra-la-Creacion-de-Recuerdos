@@ -194,6 +194,15 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="base_de_datos\costos_receta_materias_primas.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="base_de_datos\costos_receta_productos_preparados.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="base_de_datos\database_firewall_rules.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="base_de_datos\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -208,6 +217,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="base_de_datos\precios_empaques_decorativos.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="base_de_datos\precios_implementos_utilizados.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="base_de_datos\precios_suministro_utilizados.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\sp_autenticar_usuario_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -224,13 +242,16 @@
     <Compile Include="base_de_datos\sp_obtener_historial_actividades_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="base_de_datos\sp_obtener_recomendaciones_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="base_de_datos\sp_obtener_roles_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\sp_obtener_usuarios_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\sysdiagrams.cs">
+    <Compile Include="base_de_datos\sysdiagram.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_actividades.cs">
@@ -242,22 +263,25 @@
     <Compile Include="base_de_datos\tabla_clientes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="base_de_datos\tabla_costos_recetas.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="base_de_datos\tabla_detalle_venta.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\tabla_empaque_decoracion.cs">
+    <Compile Include="base_de_datos\tabla_empaques_decoraciones.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_horarios.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\tabla_ingredientes_recetas.cs">
+    <Compile Include="base_de_datos\tabla_implementos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_materias_primas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\tabla_procedimientos_recetas.cs">
+    <Compile Include="base_de_datos\tabla_precios_finales_sugeridos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_productos.cs">
@@ -266,10 +290,7 @@
     <Compile Include="base_de_datos\tabla_productos_preparados.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\tabla_proveedores.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\tabla_recetas.cs">
+    <Compile Include="base_de_datos\tabla_recomendaciones.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_roles.cs">
@@ -285,6 +306,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_ventas.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="base_de_datos\Vehiculo.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="base_de_datos\Vendedore.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AdminController.cs" />

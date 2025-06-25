@@ -12,16 +12,17 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     using System;
     using System.Collections.Generic;
     
-    public partial class tabla_detalle_venta
+    public partial class precios_implementos_utilizados
     {
-        public int id_detalle_venta { get; set; }
-        public int id_venta { get; set; }
-        public int id_producto { get; set; }
+        public int id { get; set; }
+        public int id_precio_final { get; set; }
+        public int id_implemento { get; set; }
         public int cantidad { get; set; }
-        public decimal precio_unitario { get; set; }
-        public Nullable<decimal> subtotal { get; set; }
+        public string unidad_de_medida { get; set; }
+        public decimal costo_por_cantidad { get; set; }
+        public Nullable<decimal> total_costo { get; set; }
     
-        public virtual tabla_productos tabla_productos { get; set; }
-        public virtual tabla_ventas tabla_ventas { get; set; }
+        public virtual tabla_implementos tabla_implementos { get; set; }
+        public virtual tabla_precios_finales_sugeridos tabla_precios_finales_sugeridos { get; set; }
     }
 }

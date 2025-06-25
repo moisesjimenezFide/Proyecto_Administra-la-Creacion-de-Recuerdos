@@ -10,13 +10,17 @@
 namespace Proyecto_CreandoRecuerdos.base_de_datos
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_obtener_empleado_Result
+    public partial class Vehiculo
     {
-        public int id_usuario { get; set; }
-        public string nombre { get; set; }
-        public int id_rol { get; set; }
-        public string correo { get; set; }
-        public Nullable<bool> activo { get; set; }
+        public long IdVehiculo { get; set; }
+        public string Marca { get; set; }
+        public string Modelo { get; set; }
+        public string Color { get; set; }
+        public decimal Precio { get; set; }
+        public long IdVendedor { get; set; }
+    
+        public virtual Vendedore Vendedore { get; set; }
     }
 }
