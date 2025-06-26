@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Gestión de Materias Primas";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    bool editando = Model != null && Model.id > 0;
+    bool editando = false;
     string titulo = editando ? "Edición de Materias Primas" : "Registro de Materias Primas";
     string textoBoton = editando ? "Actualizar" : "Agregar";
     string accion = editando ? "EditarMateriaPrima" : "CrearMateriaPrima";
@@ -21,10 +21,18 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        .table th {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
         .table th, .table td {
-            word-wrap: break-word;
-            max-width: 200px;
-            text-overflow: ellipsis;
+            min-width: 120px;
+            white-space: nowrap;
+            word-break: break-word;
+            padding: 0.5rem;
+            vertical-align: middle;
+            font-size: 0.95rem;
         }
 
         .btn-sm {
@@ -61,7 +69,7 @@
 <form method="get" action="@Url.Action("materias_primas", "Insumos")" class="mt-4">
     <div class="input-group mb-4">
         <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
-        <button type="submit" class=" fas fa-search ms-1 btn btn-custom-pink"> Buscar </button>
+        <button type="submit" class=" fas fa-search ms-1 btn btn-custom-pink"></button>
     </div>
 </form>
 
@@ -70,47 +78,45 @@
     <h4 class="mb-3"><strong>@titulo</strong></h4>
     @using (Html.BeginForm(accion, "Insumos", FormMethod.Post))
     {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(materia_prima => materia_prima.id)
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(materia_prima => materia_prima.nombre, "Nombre", new { @class = "form-label" })
-            @Html.TextBoxFor(materia_prima => materia_prima.nombre, new { @class = "form-control", required = "required" })
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(materia_prima => materia_prima.marca, "Marca", new { @class = "form-label" })
-            @Html.TextBoxFor(materia_prima => materia_prima.marca, new { @class = "form-control", required = "required" })
+            <label for="marca" class="form-label">Marca</label>
+            <input type="text" name="marca" id="marca" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(materia_prima => materia_prima.presentacion, "Presentación", new { @class = "form-label" })
-            @Html.TextBoxFor(materia_prima => materia_prima.presentacion, new { @class = "form-control", required = "required" })
+            <label for="presentacion" class="form-label">Presentación</label>
+            <input type="text" name="presentacion" id="presentacion" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(materia_prima => materia_prima.proveedor, "Proveedor", new { @class = "form-label" })
-            @Html.TextBoxFor(materia_prima => materia_prima.proveedor, new { @class = "form-control", required = "required" })
+            <label for="proveedor" class="form-label">Proveedor</label>
+            <input type="text" name="proveedor" id="proveedor" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(materia_prima => materia_prima.costo, "Costo", new { @class = "form-label" })
-            @Html.TextBoxFor(materia_prima => materia_prima.costo, new { @class = "form-control", required = "required", type = "number" })
+            <label for="costo" class="form-label">Costo</label>
+            <input type="number" name="costo" id="costo" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(materia_prima => materia_prima.peso, "Peso", new { @class = "form-label" })
-            @Html.TextBoxFor(materia_prima => materia_prima.peso, new { @class = "form-control", required = "required", type = "number" })
+            <label for="peso" class="form-label">Peso</label>
+            <input type="number" name="peso" id="peso" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(materia_prima => materia_prima.unidad_de_medida, "Unidad de Medida", new { @class = "form-label" })
-            @Html.TextBoxFor(materia_prima => materia_prima.unidad_de_medida, new { @class = "form-control", required = "required", type = "number" })
+            <label for="unidad_de_medida" class="form-label">Unidad de Medida</label>
+            <input type="text" name="unidad_de_medida" id="unidad_de_medida" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(materia_prima => materia_prima.merma_total_en_gramos, "Merma Total en gramos", new { @class = "form-label" })
-            @Html.TextBoxFor(materia_prima => materia_prima.merma_total_en_gramos, new { @class = "form-control", required = "required", type = "number" })
+            <label for="merma_total_en_gramos" class="form-label">Merma Total en gramos</label>
+            <input type="number" name="merma_total_en_gramos" id="merma_total_en_gramos" class="form-control" required="required" />
         </div>
 
         <div class="d-flex justify-content-end gap-2">
@@ -124,30 +130,43 @@
 <!-- Listado -->
 <div class="container">
     <h4><strong>Listado de Materias Primas</strong></h4>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm text-center">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Marca</th>
-                    <th>Presentación</th>
-                    <th>Proveedor</th>
-                    <th>Costo</th>
-                    <th>Peso</th>
-                    <th>Unidad</th>
-                    <th>Merma Total (g)</th>
-                    <th>Costo por gramo (₡/g)</th>
-                    <th>Porcentaje de Merma (%)</th>
-                    <th>Costo de Merma Total(₡)</th>
-                    <th>Costo Total + Merma (₡)</th>
-                    <th>Costo por gramo con merma (₡)</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.MateriasPrimas != null && Model.MateriasPrimas.Count > 0)
-                {
-                    foreach (var materia_prima in Model.MateriasPrimas)
+    @if (Model.MateriasPrimas == null || Model.MateriasPrimas.Count == 0)
+    {
+        <div class="alert alert-info text-center" style="margin: 1rem 0;">
+            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+            {
+                <span>No se encontraron coincidencias.</span>
+            }
+            else
+            {
+                <span>No hay materias primas registradas.</span>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm text-center">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Marca</th>
+                        <th>Presentación</th>
+                        <th>Proveedor</th>
+                        <th>Costo</th>
+                        <th>Peso</th>
+                        <th>Unidad</th>
+                        <th>Merma Total (g)</th>
+                        <th>Costo por gramo (₡/g)</th>
+                        <th>Porcentaje de Merma (%)</th>
+                        <th>Costo de Merma Total(₡)</th>
+                        <th>Costo Total + Merma (₡)</th>
+                        <th>Costo por gramo con merma (₡)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var materia_prima in Model.MateriasPrimas)
                     {
                         <tr>
                             <td>@materia_prima.nombre</td>
@@ -169,23 +188,8 @@
                             </td>
                         </tr>
                     }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(ViewBag.Search as string))
-                    {
-                        <tr>
-                            <td class="text-center mt-3 text-muted" style="display: none;">No se encontraron coincidencias.</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <td class="text-center mt-3 text-muted" style="display: none;">No hay materias primas registradas.</td>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
+    }
 </div>

@@ -23,7 +23,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public ActionResult crear_cuenta(UsuarioModel model)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 var result = context.sp_crear_cuenta(model.nombre, model.correo, model.contrasenna);
 
@@ -41,7 +41,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public ActionResult iniciar_sesion(UsuarioModel model)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 var info = context.sp_autenticar_usuario(model.correo, model.contrasenna).FirstOrDefault();
 
@@ -85,7 +85,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult gestion_usuarios()
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 var usuarios = context.sp_obtener_usuarios().ToList();
 
@@ -109,7 +109,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public ActionResult inactivar_usuarios(int id)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 context.sp_inactivar_usuario(id); 
             }
@@ -119,7 +119,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public ActionResult activar_usuarios(int id)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 context.sp_activar_usuario(id);
             }
@@ -129,7 +129,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult editar_usuario(int id)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 var usuario = context.sp_obtener_usuarios().FirstOrDefault(u => u.id_usuario == id);
                 if (usuario == null)
@@ -158,7 +158,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public ActionResult editar_usuario(UsuarioModel model)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 int idUsuario = (int)model.id; // convertir long a int
 

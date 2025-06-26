@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Creando Recuerdos - Gestión de Precios Finales Sugeridos de Productos Finales";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    bool editando = Model != null && Model.id > 0;
+    bool editando = false;
 }
 
 @section Styles {
@@ -18,10 +18,18 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        .table th {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
         .table th, .table td {
-            word-wrap: break-word;
-            max-width: 200px;
-            text-overflow: ellipsis;
+            min-width: 120px;
+            white-space: nowrap;
+            word-break: break-word;
+            padding: 0.5rem;
+            vertical-align: middle;
+            font-size: 0.95rem;
         }
 
         .btn-sm {
@@ -57,7 +65,7 @@
 <form method="get" action="@Url.Action("precio_final", "Insumos")" class="container mt-4">
     <div class="input-group mb-4">
         <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
-        <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink"> Buscar </button>
+        <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink"></button>
     </div>
 </form>
 
@@ -66,91 +74,83 @@
     <h4 class="mb-3"><strong>Registro de Productos Finales</strong></h4>
     @using (Html.BeginForm("precio_final", "Insumos", FormMethod.Post))
     {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(p => p.id)
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(p => p.utilidad, "Margen de Utilidad (%)", new { @class = "form-label" })
-            @Html.TextBoxFor(p => p.utilidad, new { @class = "form-control", required = "required" })
+            <label for="utilidad" class="form-label">Margen de Utilidad (%)</label>
+            <input type="number" name="utilidad" id="utilidad" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.Label("Plataforma de Envio")
-            @Html.DropDownListFor(p => p.plataforma_envio, new SelectList(new[]
-                                                                    {
-                new SelectListItem { Text = "Propio", Value = "Propio" },
-                new SelectListItem { Text = "PedidosYa", Value = "PedidosYa" },
-                new SelectListItem { Text = "Rappi", Value = "Rappi" },
-                new SelectListItem { Text = "DidiFood", Value = "DidiFood" },
-                new SelectListItem { Text = "UberEats", Value = "UberEats" }
-             }, "Value", "Text"), "Seleccione una  plataforma de envío", new { @class = "form-control", required = "required" })
+            <label for="plataforma_envio" class="form-label">Plataforma de Envío</label>
+            <select name="plataforma_envio" id="plataforma_envio" class="form-control" required="required">
+                <option value="">Seleccione una plataforma de envío</option>
+                <option value="Propio">Propio</option>
+                <option value="PedidosYa">PedidosYa</option>
+                <option value="Rappi">Rappi</option>
+                <option value="DidiFood">DidiFood</option>
+                <option value="UberEats">UberEats</option>
+            </select>
         </div>
 
         <h4>Empaques y/o Decoraciones Utilizados(as)</h4>
         <div id="empaques_decoraciones-container">
             <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
                 <div class="col-md-4">
-                    @Html.Label("EmpaqueDecoracionSeleccionado", "Empaque o Decoración")
+                    <label for="EmpaqueDecoracionSeleccionado">Nombre</label>
                     @Html.DropDownList("EmpaqueDecoracionSeleccionado", ViewBag.EmpaquesDecoraciones as SelectList, "Seleccione un empaque o decoración", new { @class = "form-control" })
                 </div>
-
                 <div class="col-md-3">
-                    @Html.Label("CantidadEmpaqueDecoracion", "Cantidad")
+                    <label for="CantidadEmpaqueDecoracion">Cantidad</label>
                     <input type="number" name="CantidadEmpaqueDecoracion" placeholder="Cantidad" class="form-control" />
                 </div>
-
                 <div class="col-md-3">
-                    @Html.Label("UnidadEmpaqueDecoracion", "Unidad de medida")
+                    <label for="UnidadEmpaqueDecoracion">Unidad de medida</label>
                     <input type="text" name="UnidadEmpaqueDecoracion" placeholder="Unidad de medida" class="form-control" />
                 </div>
-
                 <div class="col-md-2">
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
             </div>
+            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('empaques_decoraciones-container', 'template-empaque_decoracion')">+ Agregar Empaque</button>
         </div>
-        <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('empaques_decoraciones-container', 'template-empaque_decoracion')">+ Agregar Empaque</button>
+        <br/>
 
         <h4>Implementos Utilizados</h4>
         <div id="implementos-container">
             <div class="row fila-insumo template-implemento" style="display: none;">
                 <div class="col-md-4">
-                    @Html.Label("ImplementoSeleccionado", "Implemento")
+                    <label for="ImplementoSeleccionado">Nombre</label>
                     @Html.DropDownList("ImplementoSeleccionado", ViewBag.Implementos as SelectList, "Seleccione un implemento", new { @class = "form-control" })
                 </div>
-
                 <div class="col-md-3">
-                    @Html.Label("CantidadImplemento", "Cantidad")
+                    <label for="CantidadImplemento">Cantidad</label>
                     <input type="number" name="CantidadImplemento" placeholder="Cantidad" class="form-control" />
                 </div>
-
                 <div class="col-md-3">
-                    @Html.Label("UnidadImplemento", "Unidad de medida")
+                    <label for="UnidadImplemento">Unidad de medida</label>
                     <input type="text" name="UnidadImplemento" placeholder="Unidad de medida" class="form-control" />
                 </div>
-
                 <div class="col-md-2">
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
             </div>
+            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('implementos-container', 'template-implemento')">+ Agregar Implemento</button>
         </div>
-        <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('implementos-container', 'template-implemento')">+ Agregar Implemento</button>
+        <br />
 
-        <h4>suministros de Limpieza e Higiene Utilizados</h4>
+        <h4>Suministros de Limpieza e Higiene Utilizados</h4>
         <div id="suministros-container">
             <div class="row fila-insumo template-suministro" style="display: none;">
                 <div class="col-md-4">
-                    @Html.Label("suministroSeleccionado", "suministro")
-                    @Html.DropDownList("suministroSeleccionado", ViewBag.suministros as SelectList, "Seleccione un suministro", new { @class = "form-control" })
+                    <label for="SuministroSeleccionado">Nombre</label>
+                    @Html.DropDownList("SuministroSeleccionado", ViewBag.Suministros as SelectList, "Seleccione un suministro", new { @class = "form-control" })
                 </div>
-
                 <div class="col-md-3">
-                    @Html.Label("Cantidadsuministro", "Cantidad")
+                    <label for="Cantidadsuministro">Cantidad</label>
                     <input type="number" name="Cantidadsuministro" placeholder="Cantidad" class="form-control" />
                 </div>
-
                 <div class="col-md-3">
-                    @Html.Label("Unidadsuministro", "Unidad de medida")
+                    <label for="Unidadsuministro">Unidad de medida</label>
                     <input type="text" name="Unidadsuministro" placeholder="Unidad de medida" class="form-control" />
                 </div>
 
@@ -158,44 +158,62 @@
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
             </div>
+            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('suministros-container', 'template-suministro')">+ Agregar Suministro</button>
         </div>
-        <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('suministros-container', 'template-suministro')">+ Agregar suministro</button>
-
-        <button type="submit" class="btn btn-custom-pink">
-            @(editando ? "Actualizar" : "Agregar")
-        </button>
+        <br />
     }
+</div>
+
+<div class="d-flex justify-content-end gap-2">
+    <button type="reset" class="btn btn-danger">Cancelar</button>
+    <button type="submit" class="btn btn-custom-pink">
+        @(editando ? "Actualizar" : "Agregar")
+    </button>
 </div>
 
 <!-- Listado -->
 <div class="container">
     <h4><strong>Listado de Productos Finales</strong></h4>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm text-start">
-            <thead>
-                <tr>
-                    <th>Nombre de Receta</th>
-                    <th>Costo Total de Receta (₡)</th>
-                    <th>Margen de Utilidad (%)</th>
-                    <th>Costo sin Margen de Utilidad (₡)</th>
-                    <th>Costo con Margen de Utilidad (₡)</th>
-                    <th>Empaques y/o Decoraciones utilizados(as)</th>
-                    <th>Costo Empaques y/o Decoraciones (₡)</th>
-                    <th>Implementos utilizados</th>
-                    <th>Costo Implementos (₡)</th>
-                    <th>suministros de Liempieza e Higiene utilizados</th>
-                    <th>Costo suministros (₡)</th>
-                    <th>IVA (%)</th>
-                    <th>Servicio (%)</th>
-                    <th>Envío (₡)</th>
-                    <th>Precio Final (₡)</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.ProductosFinales != null && Model.ProductosFinales.Count > 0)
-                {
-                    foreach (var p in Model.ProductosFinales)
+
+    @if (Model.ProductosFinales == null || Model.ProductosFinales.Count == 0)
+    {
+        <div class="alert alert-info text-center" style="margin: 1rem 0;">
+            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+            {
+                <span>No se encontraron coincidencias.</span>
+            }
+            else
+            {
+                <span>No hay productos finales registrados.</span>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm text-start">
+                <thead>
+                    <tr>
+                        <th>Nombre de Receta</th>
+                        <th>Costo Total de Receta (₡)</th>
+                        <th>Margen de Utilidad (%)</th>
+                        <th>Costo sin Margen de Utilidad (₡)</th>
+                        <th>Costo con Margen de Utilidad (₡)</th>
+                        <th>Empaques y/o Decoraciones Utilizados(as)</th>
+                        <th>Costo Empaques y/o Decoraciones (₡)</th>
+                        <th>Implementos utilizados</th>
+                        <th>Costo Implementos (₡)</th>
+                        <th>Suministros de Liempieza e Higiene Utilizados</th>
+                        <th>Costo suministros (₡)</th>
+                        <th>IVA (%)</th>
+                        <th>Servicio (%)</th>
+                        <th>Envío (₡)</th>
+                        <th>Precio Final (₡)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.ProductosFinales)
                     {
                         <tr>
                             <td>@p.nombre_receta</td>
@@ -210,7 +228,6 @@
                                 }
                             </td>
                             <td>@p.costo_empaque_decoracion_utilizado.ToString("₡")</td>
-
                             <td>
                                 @foreach (var implemento in p.ImplementosUtilizados)
                                 {
@@ -218,7 +235,6 @@
                                 }
                             </td>
                             <td>@p.costo_implemento_utilizado.ToString("₡")</td>
-
                             <td>
                                 @foreach (var suministro in p.SuministrosUtilizados)
                                 {
@@ -226,7 +242,6 @@
                                 }
                             </td>
                             <td>@p.costo_suministro_utilizado.ToString("₡")</td>
-
                             <td>@p.iva.ToString("₡")</td>
                             <td>@p.impuesto_de_servicio.ToString("₡")</td>
                             <td>@p.envio.ToString("₡")</td>
@@ -237,25 +252,10 @@
                             </td>
                         </tr>
                     }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(ViewBag.Search as string))
-                    {
-                        <tr>
-                            <td class="text-center mt-3 text-muted" style="display: none;">No se encontraron coincidencias.</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <td class="text-center mt-3 text-muted" style="display: none;">No hay materias primas registradas.</td>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
 
 @section Scripts {

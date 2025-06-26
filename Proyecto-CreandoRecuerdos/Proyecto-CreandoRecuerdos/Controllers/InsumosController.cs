@@ -29,7 +29,7 @@ public class InsumosController : Controller
                 m.costo_por_gramo_con_merma.ToString().Contains(search)
             );
         }
-        var productofinal = new InsumosModel
+        var materia = new InsumosModel
         {
             MateriasPrimas = query.Select(m => new MateriaPrima
             {
@@ -50,7 +50,7 @@ public class InsumosController : Controller
             }).ToList()
         };
         ViewBag.Search = search;
-        return View(productofinal);
+        return View(materia);
     }
 
     [HttpPost]
@@ -156,7 +156,7 @@ public class InsumosController : Controller
 
             );
         }
-        var productofinal = new InsumosModel
+        var productopreparado = new InsumosModel
         {
             ProductosPreparados = query.Select(p => new ProductoPreparado
             {
@@ -175,7 +175,7 @@ public class InsumosController : Controller
             }).ToList()
         };
         ViewBag.Search = search;
-        return View(productofinal);
+        return View(productopreparado);
     }
 
     [HttpPost]
@@ -271,7 +271,7 @@ public class InsumosController : Controller
                 e.costo_por_cantidad.ToString().Contains(search)
             );
         }
-        var productofinal = new InsumosModel
+        var empaquedecoracion = new InsumosModel
         {
             EmpaquesDecoraciones = query.Select(e => new EmpaqueDecoracion
             {
@@ -287,7 +287,7 @@ public class InsumosController : Controller
             }).ToList()
         };
         ViewBag.Search = search;
-        return View(productofinal);
+        return View(empaquedecoracion);
     }
 
     [HttpPost]
@@ -374,7 +374,7 @@ public class InsumosController : Controller
                 i.costo_por_cantidad.ToString().Contains(search)
             );
         }
-        var productofinal = new InsumosModel
+        var implemento = new InsumosModel
         {
             Implementos = query.Select(i => new Implemento
             {
@@ -390,7 +390,7 @@ public class InsumosController : Controller
             }).ToList()
         };
         ViewBag.Search = search;
-        return View(productofinal);
+        return View(implemento);
     }
 
     [HttpPost]
@@ -477,7 +477,7 @@ public class InsumosController : Controller
                 s.costo_por_cantidad.ToString().Contains(search)
             );
         }
-        var productofinal = new InsumosModel
+        var suministro = new InsumosModel
         {
             Suministros = query.Select(s => new Suministro
             {
@@ -493,7 +493,7 @@ public class InsumosController : Controller
             }).ToList()
         };
         ViewBag.Search = search;
-        return View(productofinal);
+        return View(suministro);
     }
 
     [HttpPost]
@@ -630,6 +630,9 @@ public class InsumosController : Controller
             }).ToList()
         };
         ViewBag.Search = search;
+        ViewBag.MateriasPrimas = new SelectList(db.tabla_materias_primas.ToList(), "nombre");
+        ViewBag.ProductosPreparados = new SelectList(db.tabla_productos_preparados.ToList(), "nombre");
+
         return View(productofinal);
     }
 
@@ -905,6 +908,10 @@ public class InsumosController : Controller
             }).ToList()
         };
         ViewBag.Search = search;
+        ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre");
+        ViewBag.EmpaquesDecoraciones = new SelectList(db.tabla_empaques_decoraciones.ToList(),"nombre");
+        ViewBag.Implementos = new SelectList(db.tabla_implementos.ToList(), "nombre");
+        ViewBag.Suministros = new SelectList(db.tabla_suministros.ToList(), "nombre");
         return View(productofinal);
     }
 

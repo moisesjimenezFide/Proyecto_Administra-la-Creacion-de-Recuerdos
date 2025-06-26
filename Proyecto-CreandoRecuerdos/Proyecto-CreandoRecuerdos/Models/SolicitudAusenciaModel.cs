@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace Proyecto_CreandoRecuerdos.Models
 {
     public class SolicitudAusenciaModel

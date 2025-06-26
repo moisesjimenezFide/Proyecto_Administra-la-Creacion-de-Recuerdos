@@ -18,7 +18,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
 
             List<EmpleadoModel> empleados = new List<EmpleadoModel>();
-            using (var context = new BD_CREANDO_RECUERDOSEntities44())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 empleados = context.tabla_usuarios
                     .Where(u => u.id_rol != 3)

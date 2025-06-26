@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Creando Recuerdos - Gestión de Costos de Recetas";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    bool editando = Model != null && Model.id > 0;
+    bool editando = false;
 }
 
 @section Styles {
@@ -19,10 +19,18 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        .table th {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
         .table th, .table td {
-            word-wrap: break-word;
-            max-width: 200px;
-            text-overflow: ellipsis;
+            min-width: 120px;
+            white-space: nowrap;
+            word-break: break-word;
+            padding: 0.5rem;
+            vertical-align: middle;
+            font-size: 0.95rem;
         }
 
         .btn-sm {
@@ -59,7 +67,7 @@
     <h4><strong>Búsqueda de Recetas</strong></h4>
     <div class="input-group mb-4">
         <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
-        <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink"> Buscar </button>
+        <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink"></button>
     </div>
 </form>
 
@@ -68,24 +76,17 @@
     <h4 class="mb-3"><strong>Registro de Recetas</strong></h4>
     @using (Html.BeginForm("costos_recetas", "Insumos", FormMethod.Post))
     {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(receta => receta.id)
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(receta => receta.nombre, "Nombre", new { @class = "form-label" })
-            @Html.TextBoxFor(receta => receta.nombre, new { @class = "form-control", required = "required" })
-        </div>
-
-        <div class="mb-3 text-start">
-            @Html.LabelFor(receta => receta.porcion, "Porción", new { @class = "form-label" })
-            @Html.TextBoxFor(receta => receta.porcion, new { @class = "form-control", type = "number", required = "required" })
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="form-control" required="required" />
         </div>
 
         <h4>Materias Primas Utilizadas</h4>
         <div id="materias_primas-container">
             <div class="row fila-insumo template-materia_prima" style="display: none;">
                 <div class="col-md-4">
-                    @Html.Label("MateriaPrimaSeleccionado", "Materia Prima")
+                    <label for="MateriaPrimaSeleccionada">Nombre</label>
                     @Html.DropDownList("MateriaPrimaSeleccionada", ViewBag.MateriasPrimas as SelectList, "Seleccione una materia prima", new { @class = "form-control" })
                 </div>
 
@@ -103,14 +104,15 @@
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
             </div>
+            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('materias_primas-container', 'template-materia_prima')">+ Agregar Materia Prima</button>
         </div>
-        <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('materias_primas-container', 'template-materia_prima')">+ Agregar Materia Prima</button>
+        <br />
 
         <h4>Productos Preparados Utilizados</h4>
         <div id="productos_preparados-container">
             <div class="row fila-insumo template-producto_preparado" style="display: none;">
                 <div class="col-md-4">
-                    @Html.Label("ProductoPreparadoSeleccionado", "Producto Preparado")
+                    <label for="ProductoPreparadoSeleccionado">Nombre</label>
                     @Html.DropDownList("ProductoPreparadoSeleccionado", ViewBag.ProductosPreparados as SelectList, "Seleccione un producto preparado", new { @class = "form-control" })
                 </div>
 
@@ -128,8 +130,9 @@
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
             </div>
+            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('productos_preparados-container', 'template-producto_preparado')">+ Agregar Producto Preparado</button>
         </div>
-        <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('productos_preparados-container', 'template-producto_preparado')">+ Agregar Producto Preparado</button>
+        <br />
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
             <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
@@ -140,81 +143,89 @@
     }
 </div>
 
-<!-- Listado de Recetas Existentes -->
+<!-- Listado -->
 <div class="container">
     <h4><strong>Listado de Recetas</strong></h4>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm text-center">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Materias Primas Utilizadas</th>
-                    <th>Productos Preparados Utilizados</th>
-                    <th>Costo por unidad de medida (₡)</th>
-                    <th>Total Costo (₡)</th>
-                    <th>Costo Total de Receta (₡)</th>
-                    <th>Porción</th>
-                    <th>Costo por porción (₡)</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var receta in ViewBag.Lista as List<Proyecto_CreandoRecuerdos.Models.RecetaCosto>)
-                {
+    @if (ViewBag.Lista == null || (ViewBag.Lista as List<Proyecto_CreandoRecuerdos.Models.RecetaCosto>)?.Count == 0)
+    {
+        <div class="alert alert-info text-center" style="margin: 1rem 0;">
+            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+            {
+                <span>No se encontraron coincidencias.</span>
+            }
+            else
+            {
+                <span>No hay recetas registradas.</span>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm text-center">
+                <thead>
                     <tr>
-                        <td>@receta.nombre</td>
-                        <
-                        <td>
-                            @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
-                            {
-                                <div>@materia_prima.nombre (@materia_prima.cantidad @materia_prima.unidad_de_medida)</div>
-                            }
-                        </td>
-
-                        <td>
-                            @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
-                            {
-                                <div>@producto_preparado.nombre (@producto_preparado.cantidad @producto_preparado.unidad_de_medida)</div>
-                            }
-                        </td>
-
-                        <td>
-                            @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
-                            {
-                                <div>@materia_prima.costo_por_gramo_con_merma.ToString("₡")</div>
-                            }
-                            @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
-                            {
-                                <div>@producto_preparado.costo_por_unidad.ToString("₡")</div>
-                            }
-                        </td>
-
-                        <td>
-                            @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
-                            {
-                                var totalcostoMateriaprima = materia_prima.cantidad * materia_prima.costo_por_gramo_con_merma;
-                                <div>Total Costo Materia Prima: @totalcostoMateriaprima.ToString("₡")</div>
-                            }
-                            @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
-                            {
-                                var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_unidad;
-                                <div>Total Costo Producto Preparado: @totalcostoProductopreparado.ToString("₡")</div>
-                            }
-                        </td>
-
-                        <td>@receta.total_costo.ToString("₡")</td>
-                        <td>@receta.costo_total_receta.ToString("₡")</td>
-                        <td>@receta.porcion</td>
-                        <td>@receta.costo_por_porcion.ToString("₡")</td>
-                        <td>
-                            <a href="@Url.Action("EditarReceta", "Insumos", new { id = receta.id })" class="btn btn-custom-pink btn-sm">Editar</a>
-                            <a href="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })" class="btn btn-danger btn-sm">Eliminar</a>
-                        </td>
+                        <th>Nombre</th>
+                        <th>Materias Primas Utilizadas</th>
+                        <th>Productos Preparados Utilizados</th>
+                        <th>Costo por unidad de medida (₡)</th>
+                        <th>Total Costo (₡)</th>
+                        <th>Costo Total de Receta (₡)</th>
+                        <th>Porción</th>
+                        <th>Costo por porción (₡)</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var receta in ViewBag.Lista as List<Proyecto_CreandoRecuerdos.Models.RecetaCosto>)
+                    {
+                        <tr>
+                            <td>@receta.nombre</td>
+                            <td>
+                                @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                {
+                                    <div>@materia_prima.nombre (@materia_prima.cantidad @materia_prima.unidad_de_medida)</div>
+                                }
+                            </td>
+                            <td>
+                                @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                {
+                                    <div>@producto_preparado.nombre (@producto_preparado.cantidad @producto_preparado.unidad_de_medida)</div>
+                                }
+                            </td>
+                            <td>
+                                @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                {
+                                    <div>@materia_prima.costo_por_cantidad.ToString("₡")</div>
+                                }
+                                @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                {
+                                    <div>@producto_preparado.costo_por_cantidad.ToString("₡")</div>
+                                }
+                            </td>
+                            <td>
+                                @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                {
+                                    var totalcostoMateriaprima = materia_prima.cantidad * materia_prima.costo_por_cantidad;
+                                    <div>Total Costo Materia Prima: @totalcostoMateriaprima.ToString("₡")</div>
+                                }
+                                @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                {
+                                    var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_cantidad;
+                                    <div>Total Costo Producto Preparado: @totalcostoProductopreparado.ToString("₡")</div>
+                                }
+                            </td>
+                            <td>@receta.costo_total_receta.ToString("₡")</td>
+                            <td>
+                                <a href="@Url.Action("EditarReceta", "Insumos", new { id = receta.id })" class="btn btn-custom-pink btn-sm">Editar</a>
+                                <a href="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar esta receta?');">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
 
 @section Scripts {

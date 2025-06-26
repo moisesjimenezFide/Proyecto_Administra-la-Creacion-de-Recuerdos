@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Creando Recuerdos - Gestión de suministros de Limpieza e Higiene";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    bool editando = Model != null && Model.id > 0;
+    bool editando = false;
     string titulo = editando ? "Edición de suministros de Limpieza e Higiene" : "Registro de suministros de Limpieza e Higiene";
     string textoBoton = editando ? "Actualizar" : "Agregar";
     string accion = editando ? "Editarsuministro" : "Crearsuministro";
@@ -21,10 +21,18 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        .table th {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
         .table th, .table td {
-            word-wrap: break-word;
-            max-width: 200px;
-            text-overflow: ellipsis;
+            min-width: 120px;
+            white-space: nowrap;
+            word-break: break-word;
+            padding: 0.5rem;
+            vertical-align: middle;
+            font-size: 0.95rem;
         }
 
         .btn-sm {
@@ -52,7 +60,7 @@
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
-        <i class="fas fa-calculator me-2"></i> Gestión de Costos de suministros de Limpieza e Higiene
+        <i class="fas fa-calculator me-2"></i> Gestión de Costos de Suministros de Limpieza e Higiene
     </h2>
 </div>
 
@@ -61,7 +69,7 @@
     <h4><strong>Búsqueda de suministros de Limpieza e Higiene</strong></h4>
     <div class="input-group mb-4">
         <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
-        <button type="submit" class=" fas fa-search ms-1 btn btn-custom-pink"> Buscar </button>
+        <button type="submit" class=" fas fa-search ms-1 btn btn-custom-pink"></button>
     </div>
 </form>
 
@@ -71,42 +79,40 @@
 
     @using (Html.BeginForm(accion, "Insumos", FormMethod.Post))
     {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(suministro => suministro.id)
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(suministro => suministro.nombre, "Nombre", new { @class = "form-label" })
-            @Html.TextBoxFor(suministro => suministro.nombre, new { @class = "form-control", required = "required" })
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(suministro => suministro.marca, "Marca", new { @class = "form-label" })
-            @Html.TextBoxFor(suministro => suministro.marca, new { @class = "form-control", required = "required" })
+            <label for="marca" class="form-label">Marca</label>
+            <input type="text" name="marca" id="marca" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(suministro => suministro.presentacion, "Presentación", new { @class = "form-label" })
-            @Html.TextBoxFor(suministro => suministro.presentacion, new { @class = "form-control", required = "required" })
+            <label for="presentacion" class="form-label">Presentación</label>
+            <input type="text" name="presentacion" id="presentacion" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(suministro => suministro.proveedor, "Proveedor", new { @class = "form-label" })
-            @Html.TextBoxFor(suministro => suministro.proveedor, new { @class = "form-control", required = "required" })
+            <label for="proveedor" class="form-label">Proveedor</label>
+            <input type="text" name="proveedor" id="proveedor" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(suministro => suministro.costo, "Costo", new { @class = "form-label" })
-            @Html.TextBoxFor(suministro => suministro.costo, new { @class = "form-control", required = "required", type = "number" })
+            <label for="costo" class="form-label">Costo</label>
+            <input type="number" name="costo" id="costo" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(suministro => suministro.cantidad, "Cantidad", new { @class = "form-label" })
-            @Html.TextBoxFor(suministro => suministro.cantidad, new { @class = "form-control", required = "required", type = "number" })
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" name="cantidad" id="cantidad" class="form-control" required="required" />
         </div>
 
         <div class="mb-3 text-start">
-            @Html.LabelFor(suministro => suministro.unidad_de_medida, "Unidad de Medida", new { @class = "form-label" })
-            @Html.TextBoxFor(suministro => suministro.unidad_de_medida, new { @class = "form-control", required = "required", type = "number" })
+            <label for="unidad_de_medida" class="form-label">Unidad de Medida</label>
+            <input type="text" name="unidad_de_medida" id="unidad_de_medida" class="form-control" required="required" />
         </div>
 
         <div class="d-flex justify-content-end gap-2">
@@ -116,9 +122,24 @@
     }
 </div>
 
-    <!-- Listado -->
-    <div class="container">
-        <h4><strong>Listado de suministros de Limpieza e Higiene</strong></h4>
+<!-- Listado -->
+<div class="container">
+    <h4><strong>Listado de Suministros de Limpieza e Higiene</strong></h4>
+    @if (Model.Suministros == null || Model.Suministros.Count == 0)
+    {
+        <div class="alert alert-info text-center" style="margin: 1rem 0;">
+            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+            {
+                <span>No se encontraron coincidencias.</span>
+            }
+            else
+            {
+                <span>No hay suministros registrados.</span>
+            }
+        </div>
+    }
+    else
+    {
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-sm text-center">
                 <thead>
@@ -135,43 +156,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.suministros != null && Model.suministros.Count > 0)
+                    @foreach (var suministro in Model.Suministros)
                     {
-                        foreach (var suministro in Model.suministros)
-                        {
-                            <tr>
-                                <td>@suministro.nombre</td>
-                                <td>@suministro.marca</td>
-                                <td>@suministro.presentacion</td>
-                                <td>@suministro.proveedor</td>
-                                <td>@suministro.costo</td>
-                                <td>@suministro.cantidad</td>
-                                <td>@suministro.unidad_de_medida</td>
-                                <td>@suministro.costo_por_cantidad</td>
-                                <td>
-                                    <a href="@Url.Action("Editarsuministro", "Insumos", new { id = suministro.id })" class="btn btn-custom-pink btn-sm">Editar</a>
-                                    <a href="@Url.Action("Eliminarsuministro", "Insumos", new { id = suministro.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este suministro?');">Eliminar</a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(ViewBag.Search as string))
-                        {
-                            <tr>
-                                <td class="text-center mt-3 text-muted" style="display: none;">No se encontraron coincidencias.</td>
-                            </tr>
-                        }
-                        else
-                        {
-                            <tr>
-                                <td class="text-center mt-3 text-muted" style="display: none;">No hay materias primas registradas.</td>
-                            </tr>
-                        }
+                        <tr>
+                            <td>@suministro.nombre</td>
+                            <td>@suministro.marca</td>
+                            <td>@suministro.presentacion</td>
+                            <td>@suministro.proveedor</td>
+                            <td>@suministro.costo</td>
+                            <td>@suministro.cantidad</td>
+                            <td>@suministro.unidad_de_medida</td>
+                            <td>@suministro.costo_por_cantidad</td>
+                            <td>
+                                <a href="@Url.Action("Editarsuministro", "Insumos", new { id = suministro.id })" class="btn btn-custom-pink btn-sm">Editar</a>
+                                <a href="@Url.Action("Eliminarsuministro", "Insumos", new { id = suministro.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este suministro?');">Eliminar</a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
         </div>
-    </div>
-
+    }
+</div>
