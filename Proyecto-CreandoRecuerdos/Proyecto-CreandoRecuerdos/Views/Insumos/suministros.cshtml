@@ -1,0 +1,177 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.InsumosModel
+
+@{
+    ViewData["Title"] = "Creando Recuerdos - Gestión de suministros de Limpieza e Higiene";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool editando = Model != null && Model.id > 0;
+    string titulo = editando ? "Edición de suministros de Limpieza e Higiene" : "Registro de suministros de Limpieza e Higiene";
+    string textoBoton = editando ? "Actualizar" : "Agregar";
+    string accion = editando ? "Editarsuministro" : "Crearsuministro";
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+    <style>
+        label.form-label {
+            font-weight: bold;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table th, .table td {
+            word-wrap: break-word;
+            max-width: 200px;
+            text-overflow: ellipsis;
+        }
+
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        .btn {
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-custom-pink {
+            background-color: #E27AB0;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-pink:hover {
+                background-color: #d66da3;
+                color: white;
+            }
+    </style>
+}
+
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono';">
+        <i class="fas fa-calculator me-2"></i> Gestión de Costos de suministros de Limpieza e Higiene
+    </h2>
+</div>
+
+<!-- Formulario de búsqueda -->
+<form method="get" action="@Url.Action("suministros", "Insumos")" class="mt-4">
+    <h4><strong>Búsqueda de suministros de Limpieza e Higiene</strong></h4>
+    <div class="input-group mb-4">
+        <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
+        <button type="submit" class=" fas fa-search ms-1 btn btn-custom-pink"> Buscar </button>
+    </div>
+</form>
+
+<!-- Formulario de registro/edición -->
+<div class="container">
+    <h4 class="mb-3"><strong>@titulo</strong></h4>
+
+    @using (Html.BeginForm(accion, "Insumos", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(suministro => suministro.id)
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(suministro => suministro.nombre, "Nombre", new { @class = "form-label" })
+            @Html.TextBoxFor(suministro => suministro.nombre, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(suministro => suministro.marca, "Marca", new { @class = "form-label" })
+            @Html.TextBoxFor(suministro => suministro.marca, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(suministro => suministro.presentacion, "Presentación", new { @class = "form-label" })
+            @Html.TextBoxFor(suministro => suministro.presentacion, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(suministro => suministro.proveedor, "Proveedor", new { @class = "form-label" })
+            @Html.TextBoxFor(suministro => suministro.proveedor, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(suministro => suministro.costo, "Costo", new { @class = "form-label" })
+            @Html.TextBoxFor(suministro => suministro.costo, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(suministro => suministro.cantidad, "Cantidad", new { @class = "form-label" })
+            @Html.TextBoxFor(suministro => suministro.cantidad, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(suministro => suministro.unidad_de_medida, "Unidad de Medida", new { @class = "form-label" })
+            @Html.TextBoxFor(suministro => suministro.unidad_de_medida, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+            <button type="reset" class="btn btn-danger">Cancelar</button>
+            <button type="submit" class="btn btn-custom-pink">@textoBoton</button>
+        </div>
+    }
+</div>
+
+    <!-- Listado -->
+    <div class="container">
+        <h4><strong>Listado de suministros de Limpieza e Higiene</strong></h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm text-center">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Marca</th>
+                        <th>Presentación</th>
+                        <th>Proveedor</th>
+                        <th>Costo (₡)</th>
+                        <th>Cantidad</th>
+                        <th>Unidad de Medida</th>
+                        <th>Costo por Cantidad (₡)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.suministros != null && Model.suministros.Count > 0)
+                    {
+                        foreach (var suministro in Model.suministros)
+                        {
+                            <tr>
+                                <td>@suministro.nombre</td>
+                                <td>@suministro.marca</td>
+                                <td>@suministro.presentacion</td>
+                                <td>@suministro.proveedor</td>
+                                <td>@suministro.costo</td>
+                                <td>@suministro.cantidad</td>
+                                <td>@suministro.unidad_de_medida</td>
+                                <td>@suministro.costo_por_cantidad</td>
+                                <td>
+                                    <a href="@Url.Action("Editarsuministro", "Insumos", new { id = suministro.id })" class="btn btn-custom-pink btn-sm">Editar</a>
+                                    <a href="@Url.Action("Eliminarsuministro", "Insumos", new { id = suministro.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este suministro?');">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                        {
+                            <tr>
+                                <td class="text-center mt-3 text-muted" style="display: none;">No se encontraron coincidencias.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="text-center mt-3 text-muted" style="display: none;">No hay materias primas registradas.</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+

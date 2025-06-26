@@ -1,0 +1,277 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.InsumosModel
+
+@{
+    ViewData["Title"] = "Creando Recuerdos - Gestión de Precios Finales Sugeridos de Productos Finales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool editando = Model != null && Model.id > 0;
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+    <style>
+        label.form-label {
+            font-weight: bold;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table th, .table td {
+            word-wrap: break-word;
+            max-width: 200px;
+            text-overflow: ellipsis;
+        }
+
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        .btn {
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-custom-pink {
+            background-color: #E27AB0;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-pink:hover {
+                background-color: #d66da3;
+                color: white;
+            }
+    </style>
+}
+
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono';">
+        <i class="fas fa-calculator me-2"></i>Gestión de Precios Finales Sugeridos de Productos Finales
+    </h2>
+</div>
+
+<!-- Formulario de búsqueda -->
+<form method="get" action="@Url.Action("precio_final", "Insumos")" class="container mt-4">
+    <div class="input-group mb-4">
+        <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
+        <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink"> Buscar </button>
+    </div>
+</form>
+
+<!-- Formulario de registro/edición -->
+<div class="container">
+    <h4 class="mb-3"><strong>Registro de Productos Finales</strong></h4>
+    @using (Html.BeginForm("precio_final", "Insumos", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(p => p.id)
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(p => p.utilidad, "Margen de Utilidad (%)", new { @class = "form-label" })
+            @Html.TextBoxFor(p => p.utilidad, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.Label("Plataforma de Envio")
+            @Html.DropDownListFor(p => p.plataforma_envio, new SelectList(new[]
+                                                                    {
+                new SelectListItem { Text = "Propio", Value = "Propio" },
+                new SelectListItem { Text = "PedidosYa", Value = "PedidosYa" },
+                new SelectListItem { Text = "Rappi", Value = "Rappi" },
+                new SelectListItem { Text = "DidiFood", Value = "DidiFood" },
+                new SelectListItem { Text = "UberEats", Value = "UberEats" }
+             }, "Value", "Text"), "Seleccione una  plataforma de envío", new { @class = "form-control", required = "required" })
+        </div>
+
+        <h4>Empaques y/o Decoraciones Utilizados(as)</h4>
+        <div id="empaques_decoraciones-container">
+            <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
+                <div class="col-md-4">
+                    @Html.Label("EmpaqueDecoracionSeleccionado", "Empaque o Decoración")
+                    @Html.DropDownList("EmpaqueDecoracionSeleccionado", ViewBag.EmpaquesDecoraciones as SelectList, "Seleccione un empaque o decoración", new { @class = "form-control" })
+                </div>
+
+                <div class="col-md-3">
+                    @Html.Label("CantidadEmpaqueDecoracion", "Cantidad")
+                    <input type="number" name="CantidadEmpaqueDecoracion" placeholder="Cantidad" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    @Html.Label("UnidadEmpaqueDecoracion", "Unidad de medida")
+                    <input type="text" name="UnidadEmpaqueDecoracion" placeholder="Unidad de medida" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('empaques_decoraciones-container', 'template-empaque_decoracion')">+ Agregar Empaque</button>
+
+        <h4>Implementos Utilizados</h4>
+        <div id="implementos-container">
+            <div class="row fila-insumo template-implemento" style="display: none;">
+                <div class="col-md-4">
+                    @Html.Label("ImplementoSeleccionado", "Implemento")
+                    @Html.DropDownList("ImplementoSeleccionado", ViewBag.Implementos as SelectList, "Seleccione un implemento", new { @class = "form-control" })
+                </div>
+
+                <div class="col-md-3">
+                    @Html.Label("CantidadImplemento", "Cantidad")
+                    <input type="number" name="CantidadImplemento" placeholder="Cantidad" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    @Html.Label("UnidadImplemento", "Unidad de medida")
+                    <input type="text" name="UnidadImplemento" placeholder="Unidad de medida" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('implementos-container', 'template-implemento')">+ Agregar Implemento</button>
+
+        <h4>suministros de Limpieza e Higiene Utilizados</h4>
+        <div id="suministros-container">
+            <div class="row fila-insumo template-suministro" style="display: none;">
+                <div class="col-md-4">
+                    @Html.Label("suministroSeleccionado", "suministro")
+                    @Html.DropDownList("suministroSeleccionado", ViewBag.suministros as SelectList, "Seleccione un suministro", new { @class = "form-control" })
+                </div>
+
+                <div class="col-md-3">
+                    @Html.Label("Cantidadsuministro", "Cantidad")
+                    <input type="number" name="Cantidadsuministro" placeholder="Cantidad" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                    @Html.Label("Unidadsuministro", "Unidad de medida")
+                    <input type="text" name="Unidadsuministro" placeholder="Unidad de medida" class="form-control" />
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('suministros-container', 'template-suministro')">+ Agregar suministro</button>
+
+        <button type="submit" class="btn btn-custom-pink">
+            @(editando ? "Actualizar" : "Agregar")
+        </button>
+    }
+</div>
+
+<!-- Listado -->
+<div class="container">
+    <h4><strong>Listado de Productos Finales</strong></h4>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm text-start">
+            <thead>
+                <tr>
+                    <th>Nombre de Receta</th>
+                    <th>Costo Total de Receta (₡)</th>
+                    <th>Margen de Utilidad (%)</th>
+                    <th>Costo sin Margen de Utilidad (₡)</th>
+                    <th>Costo con Margen de Utilidad (₡)</th>
+                    <th>Empaques y/o Decoraciones utilizados(as)</th>
+                    <th>Costo Empaques y/o Decoraciones (₡)</th>
+                    <th>Implementos utilizados</th>
+                    <th>Costo Implementos (₡)</th>
+                    <th>suministros de Liempieza e Higiene utilizados</th>
+                    <th>Costo suministros (₡)</th>
+                    <th>IVA (%)</th>
+                    <th>Servicio (%)</th>
+                    <th>Envío (₡)</th>
+                    <th>Precio Final (₡)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ProductosFinales != null && Model.ProductosFinales.Count > 0)
+                {
+                    foreach (var p in Model.ProductosFinales)
+                    {
+                        <tr>
+                            <td>@p.nombre_receta</td>
+                            <td>@p.costo_total_receta.ToString("₡")</td>
+                            <td>@p.utilidad</td>
+                            <td>@p.costo_sin_utilidad.ToString("₡")</td>
+                            <td>@p.costo_con_margen_de_utilidad.ToString("₡")</td>
+                            <td>
+                                @foreach (var empaque_decoracion in p.EmpaquesUtilizados)
+                                {
+                                    <div>@empaque_decoracion.nombre (@empaque_decoracion.cantidad @empaque_decoracion.unidad_de_medida)</div>
+                                }
+                            </td>
+                            <td>@p.costo_empaque_decoracion_utilizado.ToString("₡")</td>
+
+                            <td>
+                                @foreach (var implemento in p.ImplementosUtilizados)
+                                {
+                                    <div>@implemento.nombre (@implemento.cantidad @implemento.unidad_de_medida)</div>
+                                }
+                            </td>
+                            <td>@p.costo_implemento_utilizado.ToString("₡")</td>
+
+                            <td>
+                                @foreach (var suministro in p.SuministrosUtilizados)
+                                {
+                                    <div>@suministro.nombre (@suministro.cantidad @suministro.unidad_de_medida)</div>
+                                }
+                            </td>
+                            <td>@p.costo_suministro_utilizado.ToString("₡")</td>
+
+                            <td>@p.iva.ToString("₡")</td>
+                            <td>@p.impuesto_de_servicio.ToString("₡")</td>
+                            <td>@p.envio.ToString("₡")</td>
+                            <td><strong>@p.precio_final_sugerido.ToString("₡")</strong></td>
+                            <td>
+                                <a href="@Url.Action("EditarProductoFinal", "Insumos", new { id = p.id })" class="btn btn-custom-pink btn-sm">Editar</a>
+                                <a href="@Url.Action("EliminarProductoFinal", "Insumos", new { id = p.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este producto final?');">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                    {
+                        <tr>
+                            <td class="text-center mt-3 text-muted" style="display: none;">No se encontraron coincidencias.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="text-center mt-3 text-muted" style="display: none;">No hay materias primas registradas.</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function agregarFila(containerId, templateClass) {
+            const container = document.getElementById(containerId);
+            const nuevaFila = document.querySelector(`.${templateClass}`).cloneNode(true);
+            nuevaFila.style.display = '';
+            container.appendChild(nuevaFila);
+        }
+
+        function eliminarFila(boton) {
+            const fila = boton.closest(".fila-insumo");
+            if (fila && fila.parentElement.children.length > 1) {
+                fila.remove();
+            }
+        }
+    </script>
+}

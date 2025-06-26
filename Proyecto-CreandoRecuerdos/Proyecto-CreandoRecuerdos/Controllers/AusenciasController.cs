@@ -9,7 +9,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
     public class AusenciasController : Controller
     {
         // GET: Ausencias
-        private BD_CREANDO_RECUERDOSEntities db = new BD_CREANDO_RECUERDOSEntities();
+        private BD_CREANDO_RECUERDOSEntities4 db = new BD_CREANDO_RECUERDOSEntities4();
 
         public ActionResult GestionSolicitudesAusencias()
         {

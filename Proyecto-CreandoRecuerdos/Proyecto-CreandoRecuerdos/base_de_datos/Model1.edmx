@@ -4,76 +4,66 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="costos_receta_materias_primas">
+      <Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="costos_receta_materias_primas_utilizadas">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id_receta" Type="int" Nullable="false" />
-          <Property Name="id_materia_prima" Type="int" Nullable="false" />
-          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="id_receta" Type="int" />
+          <Property Name="id_materia_prima_utilizada" Type="int" />
+          <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
-        <EntityType Name="costos_receta_productos_preparados">
+        <EntityType Name="costos_receta_productos_preparados_utilizados">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id_receta" Type="int" Nullable="false" />
-          <Property Name="id_producto_preparado" Type="int" Nullable="false" />
-          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="id_receta" Type="int" />
+          <Property Name="id_producto_preparado_utilizado" Type="int" />
+          <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
-        <EntityType Name="precios_empaques_decorativos">
+        <EntityType Name="precios_empaques_decoraciones_utilizados">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id_precio_final" Type="int" Nullable="false" />
-          <Property Name="id_empaque" Type="int" Nullable="false" />
-          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="id_precio_final_sugerido" Type="int" />
+          <Property Name="id_empaque_decoracion_utilizado" Type="int" />
+          <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="precios_implementos_utilizados">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id_precio_final" Type="int" Nullable="false" />
-          <Property Name="id_implemento" Type="int" Nullable="false" />
-          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="id_precio_final_sugerido" Type="int" />
+          <Property Name="id_implemento_utilizado" Type="int" />
+          <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
-        <EntityType Name="precios_suministro_utilizados">
+        <EntityType Name="precios_suministros_utilizados">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id_precio_final" Type="int" Nullable="false" />
-          <Property Name="id_suministro" Type="int" Nullable="false" />
-          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="id_precio_final_sugerido" Type="int" />
+          <Property Name="id_suministro_utilizado" Type="int" />
+          <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="decimal" Precision="29" Scale="2" StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_actividades">
           <Key>
@@ -111,7 +101,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_detalle_venta">
           <Key>
@@ -133,10 +123,10 @@
           <Property Name="marca" Type="nvarchar" MaxLength="100" />
           <Property Name="presentacion" Type="nvarchar" MaxLength="100" />
           <Property Name="proveedor" Type="nvarchar" MaxLength="100" />
-          <Property Name="costo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="38" Scale="20" StoreGeneratedPattern="Computed" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="tabla_horarios">
           <Key>
@@ -158,10 +148,10 @@
           <Property Name="marca" Type="nvarchar" MaxLength="100" />
           <Property Name="presentacion" Type="nvarchar" MaxLength="100" />
           <Property Name="proveedor" Type="nvarchar" MaxLength="100" />
-          <Property Name="costo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="38" Scale="20" StoreGeneratedPattern="Computed" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="tabla_materias_primas">
           <Key>
@@ -172,33 +162,35 @@
           <Property Name="marca" Type="nvarchar" MaxLength="100" />
           <Property Name="presentacion" Type="nvarchar" MaxLength="100" />
           <Property Name="proveedor" Type="nvarchar" MaxLength="100" />
-          <Property Name="costo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="peso" Type="int" Nullable="false" />
+          <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="peso" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_gramo" Type="decimal" Precision="38" Scale="20" StoreGeneratedPattern="Computed" />
-          <Property Name="merma_total_en_gramos" Type="int" Nullable="false" />
-          <Property Name="porcentaje_de_merma" Type="decimal" Precision="29" Scale="15" StoreGeneratedPattern="Computed" />
-          <Property Name="costo_de_merma_total" Type="decimal" Precision="38" Scale="7" StoreGeneratedPattern="Computed" />
-          <Property Name="costo_total_mas_merma_total" Type="decimal" Precision="38" Scale="7" StoreGeneratedPattern="Computed" />
-          <Property Name="costo_por_gramo_con_merma" Type="decimal" Precision="38" Scale="6" StoreGeneratedPattern="Computed" />
+          <Property Name="costo_por_gramo" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="merma_total_en_gramos" Type="int" />
+          <Property Name="porcentaje_de_merma" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="costo_de_merma_total" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="costo_total_mas_merma_total" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="costo_por_gramo_con_merma" Type="decimal" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="tabla_precios_finales_sugeridos">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="nombre_receta" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="utilidad" Type="decimal" Precision="5" Scale="2" Nullable="false" />
-          <Property Name="costo_sin_utilidad" Type="decimal" Precision="6" Scale="2" StoreGeneratedPattern="Computed" />
-          <Property Name="costo_con_margen_de_utilidad" Type="decimal" Precision="35" Scale="13" StoreGeneratedPattern="Computed" />
-          <Property Name="costo_empaque_decoracion" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="costo_implemento" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="iva" Type="numeric" Precision="38" Scale="13" StoreGeneratedPattern="Computed" />
-          <Property Name="impuesto_de_servicio" Type="numeric" Precision="38" Scale="13" StoreGeneratedPattern="Computed" />
-          <Property Name="plataforma_envio" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="envio" Type="numeric" Precision="38" Scale="15" StoreGeneratedPattern="Computed" />
-          <Property Name="precio_final_sugerido" Type="numeric" Precision="38" Scale="13" StoreGeneratedPattern="Computed" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_receta" Type="int" />
+          <Property Name="nombre_receta" Type="nvarchar" MaxLength="100" />
+          <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="utilidad" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="costo_sin_utilidad" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="costo_con_margen_de_utilidad" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="costo_empaque_decoracion_utilizado" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="costo_implemento_utilizado" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="costo_suministro_utilizado" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="iva" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="impuesto_de_servicio" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="envio" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="plataforma_envio" Type="nvarchar" MaxLength="50" />
+          <Property Name="precio_final_sugerido" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_productos">
           <Key>
@@ -219,14 +211,14 @@
           <Property Name="tipo" Type="nvarchar" MaxLength="100" />
           <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="marca" Type="nvarchar" MaxLength="100" />
-          <Property Name="presentacion" Type="nvarchar" MaxLength="200" />
+          <Property Name="presentacion" Type="nvarchar" MaxLength="100" />
           <Property Name="proveedor" Type="nvarchar" MaxLength="100" />
-          <Property Name="porcion" Type="int" Nullable="false" />
-          <Property Name="costo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="peso" Type="int" Nullable="false" />
+          <Property Name="volumen_de_porcion" Type="int" />
+          <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="peso" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_peso" Type="decimal" Precision="38" Scale="20" StoreGeneratedPattern="Computed" />
-          <Property Name="costo_por_porcion_con_merma" Type="decimal" Precision="38" Scale="9" StoreGeneratedPattern="Computed" />
+          <Property Name="costo_por_peso" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_porcion_con_merma" Type="decimal" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="tabla_recomendaciones">
           <Key>
@@ -264,10 +256,10 @@
           <Property Name="marca" Type="nvarchar" MaxLength="100" />
           <Property Name="presentacion" Type="nvarchar" MaxLength="100" />
           <Property Name="proveedor" Type="nvarchar" MaxLength="100" />
-          <Property Name="costo" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="38" Scale="20" StoreGeneratedPattern="Computed" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="tabla_usuarios">
           <Key>
@@ -312,145 +304,127 @@
           <Property Name="Correo" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="database_firewall_rules">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="start_ip_address" />
-            <PropertyRef Name="end_ip_address" />
-            <PropertyRef Name="create_date" />
-            <PropertyRef Name="modify_date" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="start_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="end_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="create_date" Type="datetime" Nullable="false" />
-          <Property Name="modify_date" Type="datetime" Nullable="false" />
-        </EntityType>
-        <Association Name="FK__costos_re__id_ma__24E777C3">
-          <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="1" />
-          <End Role="costos_receta_materias_primas" Type="Self.costos_receta_materias_primas" Multiplicity="*" />
+        <Association Name="FK__costos_re__id_ma__02084FDA">
+          <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="0..1" />
+          <End Role="costos_receta_materias_primas_utilizadas" Type="Self.costos_receta_materias_primas_utilizadas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_materias_primas">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="costos_receta_materias_primas">
-              <PropertyRef Name="id_materia_prima" />
+            <Dependent Role="costos_receta_materias_primas_utilizadas">
+              <PropertyRef Name="id_materia_prima_utilizada" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__costos_re__id_pr__28B808A7">
-          <End Role="tabla_productos_preparados" Type="Self.tabla_productos_preparados" Multiplicity="1" />
-          <End Role="costos_receta_productos_preparados" Type="Self.costos_receta_productos_preparados" Multiplicity="*" />
+        <Association Name="FK__costos_re__id_pr__03F0984C">
+          <End Role="tabla_productos_preparados" Type="Self.tabla_productos_preparados" Multiplicity="0..1" />
+          <End Role="costos_receta_productos_preparados_utilizados" Type="Self.costos_receta_productos_preparados_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_productos_preparados">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="costos_receta_productos_preparados">
-              <PropertyRef Name="id_producto_preparado" />
+            <Dependent Role="costos_receta_productos_preparados_utilizados">
+              <PropertyRef Name="id_producto_preparado_utilizado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__costos_re__id_re__23F3538A">
-          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="1" />
-          <End Role="costos_receta_materias_primas" Type="Self.costos_receta_materias_primas" Multiplicity="*" />
+        <Association Name="FK__costos_re__id_re__02FC7413">
+          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="0..1" />
+          <End Role="costos_receta_materias_primas_utilizadas" Type="Self.costos_receta_materias_primas_utilizadas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_costos_recetas">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="costos_receta_materias_primas">
+            <Dependent Role="costos_receta_materias_primas_utilizadas">
               <PropertyRef Name="id_receta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__costos_re__id_re__27C3E46E">
-          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="1" />
-          <End Role="costos_receta_productos_preparados" Type="Self.costos_receta_productos_preparados" Multiplicity="*" />
+        <Association Name="FK__costos_re__id_re__04E4BC85">
+          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="0..1" />
+          <End Role="costos_receta_productos_preparados_utilizados" Type="Self.costos_receta_productos_preparados_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_costos_recetas">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="costos_receta_productos_preparados">
+            <Dependent Role="costos_receta_productos_preparados_utilizados">
               <PropertyRef Name="id_receta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_e__id_em__1975C517">
-          <End Role="tabla_empaques_decoraciones" Type="Self.tabla_empaques_decoraciones" Multiplicity="1" />
-          <End Role="precios_empaques_decorativos" Type="Self.precios_empaques_decorativos" Multiplicity="*" />
+        <Association Name="FK__precios_e__id_em__05D8E0BE">
+          <End Role="tabla_empaques_decoraciones" Type="Self.tabla_empaques_decoraciones" Multiplicity="0..1" />
+          <End Role="precios_empaques_decoraciones_utilizados" Type="Self.precios_empaques_decoraciones_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_empaques_decoraciones">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="precios_empaques_decorativos">
-              <PropertyRef Name="id_empaque" />
+            <Dependent Role="precios_empaques_decoraciones_utilizados">
+              <PropertyRef Name="id_empaque_decoracion_utilizado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_e__id_pr__1881A0DE">
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="1" />
-          <End Role="precios_empaques_decorativos" Type="Self.precios_empaques_decorativos" Multiplicity="*" />
+        <Association Name="FK__precios_e__id_pr__06CD04F7">
+          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
+          <End Role="precios_empaques_decoraciones_utilizados" Type="Self.precios_empaques_decoraciones_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_precios_finales_sugeridos">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="precios_empaques_decorativos">
-              <PropertyRef Name="id_precio_final" />
+            <Dependent Role="precios_empaques_decoraciones_utilizados">
+              <PropertyRef Name="id_precio_final_sugerido" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_i__id_im__1D4655FB">
-          <End Role="tabla_implementos" Type="Self.tabla_implementos" Multiplicity="1" />
+        <Association Name="FK__precios_i__id_im__07C12930">
+          <End Role="tabla_implementos" Type="Self.tabla_implementos" Multiplicity="0..1" />
           <End Role="precios_implementos_utilizados" Type="Self.precios_implementos_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_implementos">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="precios_implementos_utilizados">
-              <PropertyRef Name="id_implemento" />
+              <PropertyRef Name="id_implemento_utilizado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_i__id_pr__1C5231C2">
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="1" />
+        <Association Name="FK__precios_i__id_pr__08B54D69">
+          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
           <End Role="precios_implementos_utilizados" Type="Self.precios_implementos_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_precios_finales_sugeridos">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="precios_implementos_utilizados">
-              <PropertyRef Name="id_precio_final" />
+              <PropertyRef Name="id_precio_final_sugerido" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_s__id_pr__2022C2A6">
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="1" />
-          <End Role="precios_suministro_utilizados" Type="Self.precios_suministro_utilizados" Multiplicity="*" />
+        <Association Name="FK__precios_s__id_pr__09A971A2">
+          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
+          <End Role="precios_suministros_utilizados" Type="Self.precios_suministros_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_precios_finales_sugeridos">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="precios_suministro_utilizados">
-              <PropertyRef Name="id_precio_final" />
+            <Dependent Role="precios_suministros_utilizados">
+              <PropertyRef Name="id_precio_final_sugerido" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_s__id_su__2116E6DF">
-          <End Role="tabla_suministros" Type="Self.tabla_suministros" Multiplicity="1" />
-          <End Role="precios_suministro_utilizados" Type="Self.precios_suministro_utilizados" Multiplicity="*" />
+        <Association Name="FK__precios_s__id_su__0A9D95DB">
+          <End Role="tabla_suministros" Type="Self.tabla_suministros" Multiplicity="0..1" />
+          <End Role="precios_suministros_utilizados" Type="Self.precios_suministros_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_suministros">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="precios_suministro_utilizados">
-              <PropertyRef Name="id_suministro" />
+            <Dependent Role="precios_suministros_utilizados">
+              <PropertyRef Name="id_suministro_utilizado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_act__id_us__4F47C5E3">
+        <Association Name="FK__tabla_act__id_us__0B91BA14">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_actividades" Type="Self.tabla_actividades" Multiplicity="*" />
           <ReferentialConstraint>
@@ -462,7 +436,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_det__id_pr__6E01572D">
+        <Association Name="FK__tabla_det__id_pr__0C85DE4D">
           <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="1" />
           <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -474,7 +448,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_det__id_ve__6D0D32F4">
+        <Association Name="FK__tabla_det__id_ve__0D7A0286">
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="1" />
           <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -486,7 +460,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_hor__id_us__0D44F85C">
+        <Association Name="FK__tabla_hor__id_us__0E6E26BF">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_horarios" Type="Self.tabla_horarios" Multiplicity="*" />
           <ReferentialConstraint>
@@ -498,19 +472,19 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_precio__id__15A53433">
-          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="1" />
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
+        <Association Name="FK__tabla_pre__id_re__0F624AF8">
+          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="0..1" />
+          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_costos_recetas">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="tabla_precios_finales_sugeridos">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="id_receta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_pro__id_ca__656C112C">
+        <Association Name="FK__tabla_pro__id_ca__10566F31">
           <End Role="tabla_categorias" Type="Self.tabla_categorias" Multiplicity="1" />
           <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="*" />
           <ReferentialConstraint>
@@ -522,7 +496,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_usu__id_ro__5EBF139D">
+        <Association Name="FK__tabla_usu__id_ro__1332DBDC">
           <End Role="tabla_roles" Type="Self.tabla_roles" Multiplicity="1" />
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="*" />
           <ReferentialConstraint>
@@ -534,7 +508,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_ven__id_cl__6A30C649">
+        <Association Name="FK__tabla_ven__id_cl__14270015">
           <End Role="tabla_clientes" Type="Self.tabla_clientes" Multiplicity="1" />
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -546,7 +520,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_ven__id_us__693CA210">
+        <Association Name="FK__tabla_ven__id_us__151B244E">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -594,7 +568,6 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_activar_usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
         </Function>
@@ -695,12 +668,11 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Parameter Name="descripcion" Type="nvarchar(max)" Mode="In" />
         </Function>
         <EntityContainer Name="BD_CREANDO_RECUERDOSModelStoreContainer">
-          <EntitySet Name="costos_receta_materias_primas" EntityType="Self.costos_receta_materias_primas" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="costos_receta_productos_preparados" EntityType="Self.costos_receta_productos_preparados" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="precios_empaques_decorativos" EntityType="Self.precios_empaques_decorativos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="costos_receta_materias_primas_utilizadas" EntityType="Self.costos_receta_materias_primas_utilizadas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="costos_receta_productos_preparados_utilizados" EntityType="Self.costos_receta_productos_preparados_utilizados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="precios_empaques_decoraciones_utilizados" EntityType="Self.precios_empaques_decoraciones_utilizados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="precios_implementos_utilizados" EntityType="Self.precios_implementos_utilizados" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="precios_suministro_utilizados" EntityType="Self.precios_suministro_utilizados" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="precios_suministros_utilizados" EntityType="Self.precios_suministros_utilizados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tabla_actividades" EntityType="Self.tabla_actividades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tabla_categorias" EntityType="Self.tabla_categorias" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tabla_clientes" EntityType="Self.tabla_clientes" Schema="dbo" store:Type="Tables" />
@@ -721,89 +693,79 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <EntitySet Name="tabla_ventas" EntityType="Self.tabla_ventas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vehiculos" EntityType="Self.Vehiculos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vendedores" EntityType="Self.Vendedores" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" store:Type="Views" store:Schema="sys">
-            <DefiningQuery>SELECT 
-    [database_firewall_rules].[id] AS [id], 
-    [database_firewall_rules].[name] AS [name], 
-    [database_firewall_rules].[start_ip_address] AS [start_ip_address], 
-    [database_firewall_rules].[end_ip_address] AS [end_ip_address], 
-    [database_firewall_rules].[create_date] AS [create_date], 
-    [database_firewall_rules].[modify_date] AS [modify_date]
-    FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__costos_re__id_ma__24E777C3" Association="Self.FK__costos_re__id_ma__24E777C3">
+          <AssociationSet Name="FK__costos_re__id_ma__02084FDA" Association="Self.FK__costos_re__id_ma__02084FDA">
             <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
-            <End Role="costos_receta_materias_primas" EntitySet="costos_receta_materias_primas" />
+            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
           </AssociationSet>
-          <AssociationSet Name="FK__costos_re__id_pr__28B808A7" Association="Self.FK__costos_re__id_pr__28B808A7">
+          <AssociationSet Name="FK__costos_re__id_pr__03F0984C" Association="Self.FK__costos_re__id_pr__03F0984C">
             <End Role="tabla_productos_preparados" EntitySet="tabla_productos_preparados" />
-            <End Role="costos_receta_productos_preparados" EntitySet="costos_receta_productos_preparados" />
+            <End Role="costos_receta_productos_preparados_utilizados" EntitySet="costos_receta_productos_preparados_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__costos_re__id_re__23F3538A" Association="Self.FK__costos_re__id_re__23F3538A">
+          <AssociationSet Name="FK__costos_re__id_re__02FC7413" Association="Self.FK__costos_re__id_re__02FC7413">
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
-            <End Role="costos_receta_materias_primas" EntitySet="costos_receta_materias_primas" />
+            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
           </AssociationSet>
-          <AssociationSet Name="FK__costos_re__id_re__27C3E46E" Association="Self.FK__costos_re__id_re__27C3E46E">
+          <AssociationSet Name="FK__costos_re__id_re__04E4BC85" Association="Self.FK__costos_re__id_re__04E4BC85">
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
-            <End Role="costos_receta_productos_preparados" EntitySet="costos_receta_productos_preparados" />
+            <End Role="costos_receta_productos_preparados_utilizados" EntitySet="costos_receta_productos_preparados_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_e__id_em__1975C517" Association="Self.FK__precios_e__id_em__1975C517">
+          <AssociationSet Name="FK__precios_e__id_em__05D8E0BE" Association="Self.FK__precios_e__id_em__05D8E0BE">
             <End Role="tabla_empaques_decoraciones" EntitySet="tabla_empaques_decoraciones" />
-            <End Role="precios_empaques_decorativos" EntitySet="precios_empaques_decorativos" />
+            <End Role="precios_empaques_decoraciones_utilizados" EntitySet="precios_empaques_decoraciones_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_e__id_pr__1881A0DE" Association="Self.FK__precios_e__id_pr__1881A0DE">
+          <AssociationSet Name="FK__precios_e__id_pr__06CD04F7" Association="Self.FK__precios_e__id_pr__06CD04F7">
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
-            <End Role="precios_empaques_decorativos" EntitySet="precios_empaques_decorativos" />
+            <End Role="precios_empaques_decoraciones_utilizados" EntitySet="precios_empaques_decoraciones_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_i__id_im__1D4655FB" Association="Self.FK__precios_i__id_im__1D4655FB">
+          <AssociationSet Name="FK__precios_i__id_im__07C12930" Association="Self.FK__precios_i__id_im__07C12930">
             <End Role="tabla_implementos" EntitySet="tabla_implementos" />
             <End Role="precios_implementos_utilizados" EntitySet="precios_implementos_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_i__id_pr__1C5231C2" Association="Self.FK__precios_i__id_pr__1C5231C2">
+          <AssociationSet Name="FK__precios_i__id_pr__08B54D69" Association="Self.FK__precios_i__id_pr__08B54D69">
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
             <End Role="precios_implementos_utilizados" EntitySet="precios_implementos_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_s__id_pr__2022C2A6" Association="Self.FK__precios_s__id_pr__2022C2A6">
+          <AssociationSet Name="FK__precios_s__id_pr__09A971A2" Association="Self.FK__precios_s__id_pr__09A971A2">
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
-            <End Role="precios_suministro_utilizados" EntitySet="precios_suministro_utilizados" />
+            <End Role="precios_suministros_utilizados" EntitySet="precios_suministros_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_s__id_su__2116E6DF" Association="Self.FK__precios_s__id_su__2116E6DF">
+          <AssociationSet Name="FK__precios_s__id_su__0A9D95DB" Association="Self.FK__precios_s__id_su__0A9D95DB">
             <End Role="tabla_suministros" EntitySet="tabla_suministros" />
-            <End Role="precios_suministro_utilizados" EntitySet="precios_suministro_utilizados" />
+            <End Role="precios_suministros_utilizados" EntitySet="precios_suministros_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_act__id_us__4F47C5E3" Association="Self.FK__tabla_act__id_us__4F47C5E3">
+          <AssociationSet Name="FK__tabla_act__id_us__0B91BA14" Association="Self.FK__tabla_act__id_us__0B91BA14">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_actividades" EntitySet="tabla_actividades" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_det__id_pr__6E01572D" Association="Self.FK__tabla_det__id_pr__6E01572D">
+          <AssociationSet Name="FK__tabla_det__id_pr__0C85DE4D" Association="Self.FK__tabla_det__id_pr__0C85DE4D">
             <End Role="tabla_productos" EntitySet="tabla_productos" />
             <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_det__id_ve__6D0D32F4" Association="Self.FK__tabla_det__id_ve__6D0D32F4">
+          <AssociationSet Name="FK__tabla_det__id_ve__0D7A0286" Association="Self.FK__tabla_det__id_ve__0D7A0286">
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
             <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_hor__id_us__0D44F85C" Association="Self.FK__tabla_hor__id_us__0D44F85C">
+          <AssociationSet Name="FK__tabla_hor__id_us__0E6E26BF" Association="Self.FK__tabla_hor__id_us__0E6E26BF">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_horarios" EntitySet="tabla_horarios" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_precio__id__15A53433" Association="Self.FK__tabla_precio__id__15A53433">
+          <AssociationSet Name="FK__tabla_pre__id_re__0F624AF8" Association="Self.FK__tabla_pre__id_re__0F624AF8">
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_pro__id_ca__656C112C" Association="Self.FK__tabla_pro__id_ca__656C112C">
+          <AssociationSet Name="FK__tabla_pro__id_ca__10566F31" Association="Self.FK__tabla_pro__id_ca__10566F31">
             <End Role="tabla_categorias" EntitySet="tabla_categorias" />
             <End Role="tabla_productos" EntitySet="tabla_productos" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_usu__id_ro__5EBF139D" Association="Self.FK__tabla_usu__id_ro__5EBF139D">
+          <AssociationSet Name="FK__tabla_usu__id_ro__1332DBDC" Association="Self.FK__tabla_usu__id_ro__1332DBDC">
             <End Role="tabla_roles" EntitySet="tabla_roles" />
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_ven__id_cl__6A30C649" Association="Self.FK__tabla_ven__id_cl__6A30C649">
+          <AssociationSet Name="FK__tabla_ven__id_cl__14270015" Association="Self.FK__tabla_ven__id_cl__14270015">
             <End Role="tabla_clientes" EntitySet="tabla_clientes" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_ven__id_us__693CA210" Association="Self.FK__tabla_ven__id_us__693CA210">
+          <AssociationSet Name="FK__tabla_ven__id_us__151B244E" Association="Self.FK__tabla_ven__id_us__151B244E">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
@@ -820,89 +782,80 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             <End Role="Vehiculos" EntitySet="Vehiculos" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BD_CREANDO_RECUERDOSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="costos_receta_materias_primas">
+        <EntityType Name="costos_receta_materias_primas_utilizadas">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_receta" Type="Int32" Nullable="false" />
-          <Property Name="id_materia_prima" Type="Int32" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="id_receta" Type="Int32" />
+          <Property Name="id_materia_prima_utilizada" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="tabla_materias_primas" Relationship="Self.FK__costos_re__id_ma__24E777C3" FromRole="costos_receta_materias_primas" ToRole="tabla_materias_primas" />
-          <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__costos_re__id_re__23F3538A" FromRole="costos_receta_materias_primas" ToRole="tabla_costos_recetas" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="tabla_materias_primas" Relationship="Self.FK__costos_re__id_ma__02084FDA" FromRole="costos_receta_materias_primas_utilizadas" ToRole="tabla_materias_primas" />
+          <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__costos_re__id_re__02FC7413" FromRole="costos_receta_materias_primas_utilizadas" ToRole="tabla_costos_recetas" />
         </EntityType>
-        <EntityType Name="costos_receta_productos_preparados">
+        <EntityType Name="costos_receta_productos_preparados_utilizados">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_receta" Type="Int32" Nullable="false" />
-          <Property Name="id_producto_preparado" Type="Int32" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="id_receta" Type="Int32" />
+          <Property Name="id_producto_preparado_utilizado" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="tabla_productos_preparados" Relationship="Self.FK__costos_re__id_pr__28B808A7" FromRole="costos_receta_productos_preparados" ToRole="tabla_productos_preparados" />
-          <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__costos_re__id_re__27C3E46E" FromRole="costos_receta_productos_preparados" ToRole="tabla_costos_recetas" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="tabla_productos_preparados" Relationship="Self.FK__costos_re__id_pr__03F0984C" FromRole="costos_receta_productos_preparados_utilizados" ToRole="tabla_productos_preparados" />
+          <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__costos_re__id_re__04E4BC85" FromRole="costos_receta_productos_preparados_utilizados" ToRole="tabla_costos_recetas" />
         </EntityType>
-        <EntityType Name="precios_empaques_decorativos">
+        <EntityType Name="precios_empaques_decoraciones_utilizados">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_precio_final" Type="Int32" Nullable="false" />
-          <Property Name="id_empaque" Type="Int32" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="id_precio_final_sugerido" Type="Int32" />
+          <Property Name="id_empaque_decoracion_utilizado" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="tabla_empaques_decoraciones" Relationship="Self.FK__precios_e__id_em__1975C517" FromRole="precios_empaques_decorativos" ToRole="tabla_empaques_decoraciones" />
-          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__precios_e__id_pr__1881A0DE" FromRole="precios_empaques_decorativos" ToRole="tabla_precios_finales_sugeridos" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="tabla_empaques_decoraciones" Relationship="Self.FK__precios_e__id_em__05D8E0BE" FromRole="precios_empaques_decoraciones_utilizados" ToRole="tabla_empaques_decoraciones" />
+          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__precios_e__id_pr__06CD04F7" FromRole="precios_empaques_decoraciones_utilizados" ToRole="tabla_precios_finales_sugeridos" />
         </EntityType>
         <EntityType Name="precios_implementos_utilizados">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_precio_final" Type="Int32" Nullable="false" />
-          <Property Name="id_implemento" Type="Int32" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="id_precio_final_sugerido" Type="Int32" />
+          <Property Name="id_implemento_utilizado" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="tabla_implementos" Relationship="Self.FK__precios_i__id_im__1D4655FB" FromRole="precios_implementos_utilizados" ToRole="tabla_implementos" />
-          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__precios_i__id_pr__1C5231C2" FromRole="precios_implementos_utilizados" ToRole="tabla_precios_finales_sugeridos" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="tabla_implementos" Relationship="Self.FK__precios_i__id_im__07C12930" FromRole="precios_implementos_utilizados" ToRole="tabla_implementos" />
+          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__precios_i__id_pr__08B54D69" FromRole="precios_implementos_utilizados" ToRole="tabla_precios_finales_sugeridos" />
         </EntityType>
-        <EntityType Name="precios_suministro_utilizados">
+        <EntityType Name="precios_suministros_utilizados">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_precio_final" Type="Int32" Nullable="false" />
-          <Property Name="id_suministro" Type="Int32" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="id_precio_final_sugerido" Type="Int32" />
+          <Property Name="id_suministro_utilizado" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="total_costo" Type="Decimal" Precision="29" Scale="2" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__precios_s__id_pr__2022C2A6" FromRole="precios_suministro_utilizados" ToRole="tabla_precios_finales_sugeridos" />
-          <NavigationProperty Name="tabla_suministros" Relationship="Self.FK__precios_s__id_su__2116E6DF" FromRole="precios_suministro_utilizados" ToRole="tabla_suministros" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__precios_s__id_pr__09A971A2" FromRole="precios_suministros_utilizados" ToRole="tabla_precios_finales_sugeridos" />
+          <NavigationProperty Name="tabla_suministros" Relationship="Self.FK__precios_s__id_su__0A9D95DB" FromRole="precios_suministros_utilizados" ToRole="tabla_suministros" />
         </EntityType>
         <EntityType Name="tabla_actividades">
           <Key>
@@ -918,7 +871,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="valores_anteriores" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="valores_nuevos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ip_solicitud" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_act__id_us__4F47C5E3" FromRole="tabla_actividades" ToRole="tabla_usuarios" />
+          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_act__id_us__0B91BA14" FromRole="tabla_actividades" ToRole="tabla_usuarios" />
         </EntityType>
         <EntityType Name="tabla_categorias">
           <Key>
@@ -926,7 +879,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           </Key>
           <Property Name="id_categoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="tabla_productos" Relationship="Self.FK__tabla_pro__id_ca__656C112C" FromRole="tabla_categorias" ToRole="tabla_productos" />
+          <NavigationProperty Name="tabla_productos" Relationship="Self.FK__tabla_pro__id_ca__10566F31" FromRole="tabla_categorias" ToRole="tabla_productos" />
         </EntityType>
         <EntityType Name="tabla_clientes">
           <Key>
@@ -935,7 +888,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="id_cliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="apellido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_cl__6A30C649" FromRole="tabla_clientes" ToRole="tabla_ventas" />
+          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_cl__14270015" FromRole="tabla_clientes" ToRole="tabla_ventas" />
         </EntityType>
         <EntityType Name="tabla_costos_recetas">
           <Key>
@@ -943,10 +896,10 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="costo_total_receta" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <NavigationProperty Name="costos_receta_materias_primas" Relationship="Self.FK__costos_re__id_re__23F3538A" FromRole="tabla_costos_recetas" ToRole="costos_receta_materias_primas" />
-          <NavigationProperty Name="costos_receta_productos_preparados" Relationship="Self.FK__costos_re__id_re__27C3E46E" FromRole="tabla_costos_recetas" ToRole="costos_receta_productos_preparados" />
-          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__tabla_precio__id__15A53433" FromRole="tabla_costos_recetas" ToRole="tabla_precios_finales_sugeridos" />
+          <Property Name="costo_total_receta" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Self.FK__costos_re__id_re__02FC7413" FromRole="tabla_costos_recetas" ToRole="costos_receta_materias_primas_utilizadas" />
+          <NavigationProperty Name="costos_receta_productos_preparados_utilizados" Relationship="Self.FK__costos_re__id_re__04E4BC85" FromRole="tabla_costos_recetas" ToRole="costos_receta_productos_preparados_utilizados" />
+          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__tabla_pre__id_re__0F624AF8" FromRole="tabla_costos_recetas" ToRole="tabla_precios_finales_sugeridos" />
         </EntityType>
         <EntityType Name="tabla_detalle_venta">
           <Key>
@@ -958,8 +911,8 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="cantidad" Type="Int32" Nullable="false" />
           <Property Name="precio_unitario" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="subtotal" Type="Decimal" Precision="21" Scale="2" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="tabla_productos" Relationship="Self.FK__tabla_det__id_pr__6E01572D" FromRole="tabla_detalle_venta" ToRole="tabla_productos" />
-          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_det__id_ve__6D0D32F4" FromRole="tabla_detalle_venta" ToRole="tabla_ventas" />
+          <NavigationProperty Name="tabla_productos" Relationship="Self.FK__tabla_det__id_pr__0C85DE4D" FromRole="tabla_detalle_venta" ToRole="tabla_productos" />
+          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_det__id_ve__0D7A0286" FromRole="tabla_detalle_venta" ToRole="tabla_ventas" />
         </EntityType>
         <EntityType Name="tabla_empaques_decoraciones">
           <Key>
@@ -970,11 +923,11 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="marca" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="38" Scale="20" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="precios_empaques_decorativos" Relationship="Self.FK__precios_e__id_em__1975C517" FromRole="tabla_empaques_decoraciones" ToRole="precios_empaques_decorativos" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <NavigationProperty Name="precios_empaques_decoraciones_utilizados" Relationship="Self.FK__precios_e__id_em__05D8E0BE" FromRole="tabla_empaques_decoraciones" ToRole="precios_empaques_decoraciones_utilizados" />
         </EntityType>
         <EntityType Name="tabla_horarios">
           <Key>
@@ -986,7 +939,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="hora_entrada" Type="Time" Nullable="false" Precision="7" />
           <Property Name="hora_salida" Type="Time" Nullable="false" Precision="7" />
           <Property Name="activo" Type="Boolean" />
-          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_hor__id_us__0D44F85C" FromRole="tabla_horarios" ToRole="tabla_usuarios" />
+          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_hor__id_us__0E6E26BF" FromRole="tabla_horarios" ToRole="tabla_usuarios" />
         </EntityType>
         <EntityType Name="tabla_implementos">
           <Key>
@@ -997,11 +950,11 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="marca" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="38" Scale="20" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_im__1D4655FB" FromRole="tabla_implementos" ToRole="precios_implementos_utilizados" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_im__07C12930" FromRole="tabla_implementos" ToRole="precios_implementos_utilizados" />
         </EntityType>
         <EntityType Name="tabla_materias_primas">
           <Key>
@@ -1012,38 +965,40 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="marca" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="peso" Type="Int32" Nullable="false" />
+          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="peso" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_gramo" Type="Decimal" Precision="38" Scale="20" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="merma_total_en_gramos" Type="Int32" Nullable="false" />
-          <Property Name="porcentaje_de_merma" Type="Decimal" Precision="29" Scale="15" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="costo_de_merma_total" Type="Decimal" Precision="38" Scale="7" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="costo_total_mas_merma_total" Type="Decimal" Precision="38" Scale="7" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="costo_por_gramo_con_merma" Type="Decimal" Precision="38" Scale="6" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="costos_receta_materias_primas" Relationship="Self.FK__costos_re__id_ma__24E777C3" FromRole="tabla_materias_primas" ToRole="costos_receta_materias_primas" />
+          <Property Name="costo_por_gramo" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="merma_total_en_gramos" Type="Int32" />
+          <Property Name="porcentaje_de_merma" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="costo_de_merma_total" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_total_mas_merma_total" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_por_gramo_con_merma" Type="Decimal" Precision="18" Scale="4" />
+          <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Self.FK__costos_re__id_ma__02084FDA" FromRole="tabla_materias_primas" ToRole="costos_receta_materias_primas_utilizadas" />
         </EntityType>
         <EntityType Name="tabla_precios_finales_sugeridos">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="nombre_receta" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="costo_total_receta" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="utilidad" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
-          <Property Name="costo_sin_utilidad" Type="Decimal" Precision="6" Scale="2" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="costo_con_margen_de_utilidad" Type="Decimal" Precision="35" Scale="13" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="costo_empaque_decoracion" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_implemento" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="iva" Type="Decimal" Precision="38" Scale="13" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="impuesto_de_servicio" Type="Decimal" Precision="38" Scale="13" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="plataforma_envio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="envio" Type="Decimal" Precision="38" Scale="15" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="precio_final_sugerido" Type="Decimal" Precision="38" Scale="13" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="precios_empaques_decorativos" Relationship="Self.FK__precios_e__id_pr__1881A0DE" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_empaques_decorativos" />
-          <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_pr__1C5231C2" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_implementos_utilizados" />
-          <NavigationProperty Name="precios_suministro_utilizados" Relationship="Self.FK__precios_s__id_pr__2022C2A6" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_suministro_utilizados" />
-          <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__tabla_precio__id__15A53433" FromRole="tabla_precios_finales_sugeridos" ToRole="tabla_costos_recetas" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_receta" Type="Int32" />
+          <Property Name="nombre_receta" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="costo_total_receta" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="utilidad" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="costo_sin_utilidad" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="costo_con_margen_de_utilidad" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_empaque_decoracion_utilizado" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_implemento_utilizado" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_suministro_utilizado" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="iva" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="impuesto_de_servicio" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="envio" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="plataforma_envio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="precio_final_sugerido" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="precios_empaques_decoraciones_utilizados" Relationship="Self.FK__precios_e__id_pr__06CD04F7" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_empaques_decoraciones_utilizados" />
+          <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_pr__08B54D69" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_implementos_utilizados" />
+          <NavigationProperty Name="precios_suministros_utilizados" Relationship="Self.FK__precios_s__id_pr__09A971A2" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_suministros_utilizados" />
+          <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__tabla_pre__id_re__0F624AF8" FromRole="tabla_precios_finales_sugeridos" ToRole="tabla_costos_recetas" />
         </EntityType>
         <EntityType Name="tabla_productos">
           <Key>
@@ -1055,9 +1010,9 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="id_categoria" Type="Int32" Nullable="false" />
           <Property Name="precio_por_unidad" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="img_url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tabla_categorias" Relationship="Self.FK__tabla_pro__id_ca__656C112C" FromRole="tabla_productos" ToRole="tabla_categorias" />
-          <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_pr__6E01572D" FromRole="tabla_productos" ToRole="tabla_detalle_venta" />
-          <NavigationProperty Name="tabla_recomendaciones" Relationship="Self.FK__tabla_rec__id_pr__7DCDAAA2" FromRole="tabla_productos" ToRole="tabla_recomendaciones" />
+          <NavigationProperty Name="tabla_categorias" Relationship="Self.FK__tabla_pro__id_ca__10566F31" FromRole="tabla_productos" ToRole="tabla_categorias" />
+          <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_pr__0C85DE4D" FromRole="tabla_productos" ToRole="tabla_detalle_venta" />
+          <NavigationProperty Name="tabla_recomendaciones" Relationship="Self.FK_tabla_recomendaciones_productos" FromRole="tabla_productos" ToRole="tabla_recomendaciones" />
         </EntityType>
         <EntityType Name="tabla_productos_preparados">
           <Key>
@@ -1067,15 +1022,15 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="tipo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="marca" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="presentacion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="porcion" Type="Int32" Nullable="false" />
-          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="peso" Type="Int32" Nullable="false" />
+          <Property Name="volumen_de_porcion" Type="Int32" />
+          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="peso" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_peso" Type="Decimal" Precision="38" Scale="20" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="costo_por_porcion_con_merma" Type="Decimal" Precision="38" Scale="9" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="costos_receta_productos_preparados" Relationship="Self.FK__costos_re__id_pr__28B808A7" FromRole="tabla_productos_preparados" ToRole="costos_receta_productos_preparados" />
+          <Property Name="costo_por_peso" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_porcion_con_merma" Type="Decimal" Precision="18" Scale="4" />
+          <NavigationProperty Name="costos_receta_productos_preparados_utilizados" Relationship="Self.FK__costos_re__id_pr__03F0984C" FromRole="tabla_productos_preparados" ToRole="costos_receta_productos_preparados_utilizados" />
         </EntityType>
         <EntityType Name="tabla_recomendaciones">
           <Key>
@@ -1084,7 +1039,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="id_recomendacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_producto" Type="Int32" Nullable="false" />
           <Property Name="motivo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tabla_productos" Relationship="Self.FK__tabla_rec__id_pr__7DCDAAA2" FromRole="tabla_recomendaciones" ToRole="tabla_productos" />
+          <NavigationProperty Name="tabla_productos" Relationship="Self.FK_tabla_recomendaciones_productos" FromRole="tabla_recomendaciones" ToRole="tabla_productos" />
         </EntityType>
         <EntityType Name="tabla_roles">
           <Key>
@@ -1092,7 +1047,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           </Key>
           <Property Name="id_rol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_usu__id_ro__5EBF139D" FromRole="tabla_roles" ToRole="tabla_usuarios" />
+          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_usu__id_ro__1332DBDC" FromRole="tabla_roles" ToRole="tabla_usuarios" />
         </EntityType>
         <EntityType Name="tabla_solicitudes_ausencias">
           <Key>
@@ -1116,11 +1071,11 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="marca" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="38" Scale="20" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="precios_suministro_utilizados" Relationship="Self.FK__precios_s__id_su__2116E6DF" FromRole="tabla_suministros" ToRole="precios_suministro_utilizados" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <NavigationProperty Name="precios_suministros_utilizados" Relationship="Self.FK__precios_s__id_su__0A9D95DB" FromRole="tabla_suministros" ToRole="precios_suministros_utilizados" />
         </EntityType>
         <EntityType Name="tabla_usuarios">
           <Key>
@@ -1133,11 +1088,11 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="activo" Type="Boolean" />
           <Property Name="fecha_creacion" Type="DateTime" Precision="3" />
           <Property Name="contrasenna" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="tabla_actividades" Relationship="Self.FK__tabla_act__id_us__4F47C5E3" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
-          <NavigationProperty Name="tabla_horarios" Relationship="Self.FK__tabla_hor__id_us__0D44F85C" FromRole="tabla_usuarios" ToRole="tabla_horarios" />
-          <NavigationProperty Name="tabla_roles" Relationship="Self.FK__tabla_usu__id_ro__5EBF139D" FromRole="tabla_usuarios" ToRole="tabla_roles" />
+          <NavigationProperty Name="tabla_actividades" Relationship="Self.FK__tabla_act__id_us__0B91BA14" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
+          <NavigationProperty Name="tabla_horarios" Relationship="Self.FK__tabla_hor__id_us__0E6E26BF" FromRole="tabla_usuarios" ToRole="tabla_horarios" />
+          <NavigationProperty Name="tabla_roles" Relationship="Self.FK__tabla_usu__id_ro__1332DBDC" FromRole="tabla_usuarios" ToRole="tabla_roles" />
           <NavigationProperty Name="tabla_solicitudes_ausencias" Relationship="Self.FK_usuario" FromRole="tabla_usuarios" ToRole="tabla_solicitudes_ausencias" />
-          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_us__693CA210" FromRole="tabla_usuarios" ToRole="tabla_ventas" />
+          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_us__151B244E" FromRole="tabla_usuarios" ToRole="tabla_ventas" />
         </EntityType>
         <EntityType Name="tabla_ventas">
           <Key>
@@ -1148,11 +1103,11 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="id_cliente" Type="Int32" Nullable="false" />
           <Property Name="fecha" Type="DateTime" Precision="3" />
           <Property Name="total" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <NavigationProperty Name="tabla_clientes" Relationship="Self.FK__tabla_ven__id_cl__6A30C649" FromRole="tabla_ventas" ToRole="tabla_clientes" />
-          <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_ve__6D0D32F4" FromRole="tabla_ventas" ToRole="tabla_detalle_venta" />
-          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_ven__id_us__693CA210" FromRole="tabla_ventas" ToRole="tabla_usuarios" />
+          <NavigationProperty Name="tabla_clientes" Relationship="Self.FK__tabla_ven__id_cl__14270015" FromRole="tabla_ventas" ToRole="tabla_clientes" />
+          <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_ve__0D7A0286" FromRole="tabla_ventas" ToRole="tabla_detalle_venta" />
+          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_ven__id_us__151B244E" FromRole="tabla_ventas" ToRole="tabla_usuarios" />
         </EntityType>
-        <EntityType Name="Vehiculo">
+        <EntityType Name="Vehiculos">
           <Key>
             <PropertyRef Name="IdVehiculo" />
           </Key>
@@ -1162,9 +1117,9 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="Color" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="IdVendedor" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Vendedore" Relationship="Self.FK_Vehiculos_Vendedores" FromRole="Vehiculos" ToRole="Vendedores" />
+          <NavigationProperty Name="Vendedores" Relationship="Self.FK_Vehiculos_Vendedores" FromRole="Vehiculos" ToRole="Vendedores" />
         </EntityType>
-        <EntityType Name="Vendedore">
+        <EntityType Name="Vendedores">
           <Key>
             <PropertyRef Name="IdVendedor" />
           </Key>
@@ -1175,143 +1130,127 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Vehiculos" Relationship="Self.FK_Vehiculos_Vendedores" FromRole="Vendedores" ToRole="Vehiculos" />
         </EntityType>
-        <EntityType Name="database_firewall_rules">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="start_ip_address" />
-            <PropertyRef Name="end_ip_address" />
-            <PropertyRef Name="create_date" />
-            <PropertyRef Name="modify_date" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="start_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="end_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <Association Name="FK__costos_re__id_ma__24E777C3">
-          <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="1" />
-          <End Role="costos_receta_materias_primas" Type="Self.costos_receta_materias_primas" Multiplicity="*" />
+        <Association Name="FK__costos_re__id_ma__02084FDA">
+          <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="0..1" />
+          <End Role="costos_receta_materias_primas_utilizadas" Type="Self.costos_receta_materias_primas_utilizadas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_materias_primas">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="costos_receta_materias_primas">
-              <PropertyRef Name="id_materia_prima" />
+            <Dependent Role="costos_receta_materias_primas_utilizadas">
+              <PropertyRef Name="id_materia_prima_utilizada" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__costos_re__id_re__23F3538A">
-          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="1" />
-          <End Role="costos_receta_materias_primas" Type="Self.costos_receta_materias_primas" Multiplicity="*" />
+        <Association Name="FK__costos_re__id_re__02FC7413">
+          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="0..1" />
+          <End Role="costos_receta_materias_primas_utilizadas" Type="Self.costos_receta_materias_primas_utilizadas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_costos_recetas">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="costos_receta_materias_primas">
+            <Dependent Role="costos_receta_materias_primas_utilizadas">
               <PropertyRef Name="id_receta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__costos_re__id_pr__28B808A7">
-          <End Role="tabla_productos_preparados" Type="Self.tabla_productos_preparados" Multiplicity="1" />
-          <End Role="costos_receta_productos_preparados" Type="Self.costos_receta_productos_preparados" Multiplicity="*" />
+        <Association Name="FK__costos_re__id_pr__03F0984C">
+          <End Role="tabla_productos_preparados" Type="Self.tabla_productos_preparados" Multiplicity="0..1" />
+          <End Role="costos_receta_productos_preparados_utilizados" Type="Self.costos_receta_productos_preparados_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_productos_preparados">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="costos_receta_productos_preparados">
-              <PropertyRef Name="id_producto_preparado" />
+            <Dependent Role="costos_receta_productos_preparados_utilizados">
+              <PropertyRef Name="id_producto_preparado_utilizado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__costos_re__id_re__27C3E46E">
-          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="1" />
-          <End Role="costos_receta_productos_preparados" Type="Self.costos_receta_productos_preparados" Multiplicity="*" />
+        <Association Name="FK__costos_re__id_re__04E4BC85">
+          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="0..1" />
+          <End Role="costos_receta_productos_preparados_utilizados" Type="Self.costos_receta_productos_preparados_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_costos_recetas">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="costos_receta_productos_preparados">
+            <Dependent Role="costos_receta_productos_preparados_utilizados">
               <PropertyRef Name="id_receta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_e__id_em__1975C517">
-          <End Role="tabla_empaques_decoraciones" Type="Self.tabla_empaques_decoraciones" Multiplicity="1" />
-          <End Role="precios_empaques_decorativos" Type="Self.precios_empaques_decorativos" Multiplicity="*" />
+        <Association Name="FK__precios_e__id_em__05D8E0BE">
+          <End Role="tabla_empaques_decoraciones" Type="Self.tabla_empaques_decoraciones" Multiplicity="0..1" />
+          <End Role="precios_empaques_decoraciones_utilizados" Type="Self.precios_empaques_decoraciones_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_empaques_decoraciones">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="precios_empaques_decorativos">
-              <PropertyRef Name="id_empaque" />
+            <Dependent Role="precios_empaques_decoraciones_utilizados">
+              <PropertyRef Name="id_empaque_decoracion_utilizado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_e__id_pr__1881A0DE">
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="1" />
-          <End Role="precios_empaques_decorativos" Type="Self.precios_empaques_decorativos" Multiplicity="*" />
+        <Association Name="FK__precios_e__id_pr__06CD04F7">
+          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
+          <End Role="precios_empaques_decoraciones_utilizados" Type="Self.precios_empaques_decoraciones_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_precios_finales_sugeridos">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="precios_empaques_decorativos">
-              <PropertyRef Name="id_precio_final" />
+            <Dependent Role="precios_empaques_decoraciones_utilizados">
+              <PropertyRef Name="id_precio_final_sugerido" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_i__id_im__1D4655FB">
-          <End Role="tabla_implementos" Type="Self.tabla_implementos" Multiplicity="1" />
+        <Association Name="FK__precios_i__id_im__07C12930">
+          <End Role="tabla_implementos" Type="Self.tabla_implementos" Multiplicity="0..1" />
           <End Role="precios_implementos_utilizados" Type="Self.precios_implementos_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_implementos">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="precios_implementos_utilizados">
-              <PropertyRef Name="id_implemento" />
+              <PropertyRef Name="id_implemento_utilizado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_i__id_pr__1C5231C2">
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="1" />
+        <Association Name="FK__precios_i__id_pr__08B54D69">
+          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
           <End Role="precios_implementos_utilizados" Type="Self.precios_implementos_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_precios_finales_sugeridos">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="precios_implementos_utilizados">
-              <PropertyRef Name="id_precio_final" />
+              <PropertyRef Name="id_precio_final_sugerido" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_s__id_pr__2022C2A6">
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="1" />
-          <End Role="precios_suministro_utilizados" Type="Self.precios_suministro_utilizados" Multiplicity="*" />
+        <Association Name="FK__precios_s__id_pr__09A971A2">
+          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
+          <End Role="precios_suministros_utilizados" Type="Self.precios_suministros_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_precios_finales_sugeridos">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="precios_suministro_utilizados">
-              <PropertyRef Name="id_precio_final" />
+            <Dependent Role="precios_suministros_utilizados">
+              <PropertyRef Name="id_precio_final_sugerido" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_s__id_su__2116E6DF">
-          <End Role="tabla_suministros" Type="Self.tabla_suministros" Multiplicity="1" />
-          <End Role="precios_suministro_utilizados" Type="Self.precios_suministro_utilizados" Multiplicity="*" />
+        <Association Name="FK__precios_s__id_su__0A9D95DB">
+          <End Role="tabla_suministros" Type="Self.tabla_suministros" Multiplicity="0..1" />
+          <End Role="precios_suministros_utilizados" Type="Self.precios_suministros_utilizados" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_suministros">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="precios_suministro_utilizados">
-              <PropertyRef Name="id_suministro" />
+            <Dependent Role="precios_suministros_utilizados">
+              <PropertyRef Name="id_suministro_utilizado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_act__id_us__4F47C5E3">
+        <Association Name="FK__tabla_act__id_us__0B91BA14">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_actividades" Type="Self.tabla_actividades" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1323,7 +1262,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_pro__id_ca__656C112C">
+        <Association Name="FK__tabla_pro__id_ca__10566F31">
           <End Role="tabla_categorias" Type="Self.tabla_categorias" Multiplicity="1" />
           <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1335,7 +1274,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_ven__id_cl__6A30C649">
+        <Association Name="FK__tabla_ven__id_cl__14270015">
           <End Role="tabla_clientes" Type="Self.tabla_clientes" Multiplicity="1" />
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1347,19 +1286,19 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_precio__id__15A53433">
-          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="1" />
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
+        <Association Name="FK__tabla_pre__id_re__0F624AF8">
+          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="0..1" />
+          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tabla_costos_recetas">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="tabla_precios_finales_sugeridos">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="id_receta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_det__id_pr__6E01572D">
+        <Association Name="FK__tabla_det__id_pr__0C85DE4D">
           <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="1" />
           <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1371,7 +1310,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_det__id_ve__6D0D32F4">
+        <Association Name="FK__tabla_det__id_ve__0D7A0286">
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="1" />
           <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1383,7 +1322,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_hor__id_us__0D44F85C">
+        <Association Name="FK__tabla_hor__id_us__0E6E26BF">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_horarios" Type="Self.tabla_horarios" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1395,7 +1334,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_rec__id_pr__7DCDAAA2">
+        <Association Name="FK_tabla_recomendaciones_productos">
           <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="1" />
           <End Role="tabla_recomendaciones" Type="Self.tabla_recomendaciones" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1407,7 +1346,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_usu__id_ro__5EBF139D">
+        <Association Name="FK__tabla_usu__id_ro__1332DBDC">
           <End Role="tabla_roles" Type="Self.tabla_roles" Multiplicity="1" />
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1431,7 +1370,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_ven__id_us__693CA210">
+        <Association Name="FK__tabla_ven__id_us__151B244E">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1444,8 +1383,8 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Vehiculos_Vendedores">
-          <End Role="Vendedores" Type="Self.Vendedore" Multiplicity="1" />
-          <End Role="Vehiculos" Type="Self.Vehiculo" Multiplicity="*" />
+          <End Role="Vendedores" Type="Self.Vendedores" Multiplicity="1" />
+          <End Role="Vehiculos" Type="Self.Vehiculos" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vendedores">
               <PropertyRef Name="IdVendedor" />
@@ -1455,13 +1394,12 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BD_CREANDO_RECUERDOSEntities2" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="costos_receta_materias_primas" EntityType="Self.costos_receta_materias_primas" />
-          <EntitySet Name="costos_receta_productos_preparados" EntityType="Self.costos_receta_productos_preparados" />
-          <EntitySet Name="precios_empaques_decorativos" EntityType="Self.precios_empaques_decorativos" />
+        <EntityContainer Name="BD_CREANDO_RECUERDOSEntities4" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="costos_receta_materias_primas_utilizadas" EntityType="Self.costos_receta_materias_primas_utilizadas" />
+          <EntitySet Name="costos_receta_productos_preparados_utilizados" EntityType="Self.costos_receta_productos_preparados_utilizados" />
+          <EntitySet Name="precios_empaques_decoraciones_utilizados" EntityType="Self.precios_empaques_decoraciones_utilizados" />
           <EntitySet Name="precios_implementos_utilizados" EntityType="Self.precios_implementos_utilizados" />
-          <EntitySet Name="precios_suministro_utilizados" EntityType="Self.precios_suministro_utilizados" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="precios_suministros_utilizados" EntityType="Self.precios_suministros_utilizados" />
           <EntitySet Name="tabla_actividades" EntityType="Self.tabla_actividades" />
           <EntitySet Name="tabla_categorias" EntityType="Self.tabla_categorias" />
           <EntitySet Name="tabla_clientes" EntityType="Self.tabla_clientes" />
@@ -1480,82 +1418,81 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <EntitySet Name="tabla_suministros" EntityType="Self.tabla_suministros" />
           <EntitySet Name="tabla_usuarios" EntityType="Self.tabla_usuarios" />
           <EntitySet Name="tabla_ventas" EntityType="Self.tabla_ventas" />
-          <EntitySet Name="Vehiculos" EntityType="Self.Vehiculo" />
-          <EntitySet Name="Vendedores" EntityType="Self.Vendedore" />
-          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" />
-          <AssociationSet Name="FK__costos_re__id_ma__24E777C3" Association="Self.FK__costos_re__id_ma__24E777C3">
+          <EntitySet Name="Vehiculos" EntityType="Self.Vehiculos" />
+          <EntitySet Name="Vendedores" EntityType="Self.Vendedores" />
+          <AssociationSet Name="FK__costos_re__id_ma__02084FDA" Association="Self.FK__costos_re__id_ma__02084FDA">
             <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
-            <End Role="costos_receta_materias_primas" EntitySet="costos_receta_materias_primas" />
+            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
           </AssociationSet>
-          <AssociationSet Name="FK__costos_re__id_re__23F3538A" Association="Self.FK__costos_re__id_re__23F3538A">
+          <AssociationSet Name="FK__costos_re__id_re__02FC7413" Association="Self.FK__costos_re__id_re__02FC7413">
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
-            <End Role="costos_receta_materias_primas" EntitySet="costos_receta_materias_primas" />
+            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
           </AssociationSet>
-          <AssociationSet Name="FK__costos_re__id_pr__28B808A7" Association="Self.FK__costos_re__id_pr__28B808A7">
+          <AssociationSet Name="FK__costos_re__id_pr__03F0984C" Association="Self.FK__costos_re__id_pr__03F0984C">
             <End Role="tabla_productos_preparados" EntitySet="tabla_productos_preparados" />
-            <End Role="costos_receta_productos_preparados" EntitySet="costos_receta_productos_preparados" />
+            <End Role="costos_receta_productos_preparados_utilizados" EntitySet="costos_receta_productos_preparados_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__costos_re__id_re__27C3E46E" Association="Self.FK__costos_re__id_re__27C3E46E">
+          <AssociationSet Name="FK__costos_re__id_re__04E4BC85" Association="Self.FK__costos_re__id_re__04E4BC85">
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
-            <End Role="costos_receta_productos_preparados" EntitySet="costos_receta_productos_preparados" />
+            <End Role="costos_receta_productos_preparados_utilizados" EntitySet="costos_receta_productos_preparados_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_e__id_em__1975C517" Association="Self.FK__precios_e__id_em__1975C517">
+          <AssociationSet Name="FK__precios_e__id_em__05D8E0BE" Association="Self.FK__precios_e__id_em__05D8E0BE">
             <End Role="tabla_empaques_decoraciones" EntitySet="tabla_empaques_decoraciones" />
-            <End Role="precios_empaques_decorativos" EntitySet="precios_empaques_decorativos" />
+            <End Role="precios_empaques_decoraciones_utilizados" EntitySet="precios_empaques_decoraciones_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_e__id_pr__1881A0DE" Association="Self.FK__precios_e__id_pr__1881A0DE">
+          <AssociationSet Name="FK__precios_e__id_pr__06CD04F7" Association="Self.FK__precios_e__id_pr__06CD04F7">
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
-            <End Role="precios_empaques_decorativos" EntitySet="precios_empaques_decorativos" />
+            <End Role="precios_empaques_decoraciones_utilizados" EntitySet="precios_empaques_decoraciones_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_i__id_im__1D4655FB" Association="Self.FK__precios_i__id_im__1D4655FB">
+          <AssociationSet Name="FK__precios_i__id_im__07C12930" Association="Self.FK__precios_i__id_im__07C12930">
             <End Role="tabla_implementos" EntitySet="tabla_implementos" />
             <End Role="precios_implementos_utilizados" EntitySet="precios_implementos_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_i__id_pr__1C5231C2" Association="Self.FK__precios_i__id_pr__1C5231C2">
+          <AssociationSet Name="FK__precios_i__id_pr__08B54D69" Association="Self.FK__precios_i__id_pr__08B54D69">
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
             <End Role="precios_implementos_utilizados" EntitySet="precios_implementos_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_s__id_pr__2022C2A6" Association="Self.FK__precios_s__id_pr__2022C2A6">
+          <AssociationSet Name="FK__precios_s__id_pr__09A971A2" Association="Self.FK__precios_s__id_pr__09A971A2">
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
-            <End Role="precios_suministro_utilizados" EntitySet="precios_suministro_utilizados" />
+            <End Role="precios_suministros_utilizados" EntitySet="precios_suministros_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_s__id_su__2116E6DF" Association="Self.FK__precios_s__id_su__2116E6DF">
+          <AssociationSet Name="FK__precios_s__id_su__0A9D95DB" Association="Self.FK__precios_s__id_su__0A9D95DB">
             <End Role="tabla_suministros" EntitySet="tabla_suministros" />
-            <End Role="precios_suministro_utilizados" EntitySet="precios_suministro_utilizados" />
+            <End Role="precios_suministros_utilizados" EntitySet="precios_suministros_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_act__id_us__4F47C5E3" Association="Self.FK__tabla_act__id_us__4F47C5E3">
+          <AssociationSet Name="FK__tabla_act__id_us__0B91BA14" Association="Self.FK__tabla_act__id_us__0B91BA14">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_actividades" EntitySet="tabla_actividades" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_pro__id_ca__656C112C" Association="Self.FK__tabla_pro__id_ca__656C112C">
+          <AssociationSet Name="FK__tabla_pro__id_ca__10566F31" Association="Self.FK__tabla_pro__id_ca__10566F31">
             <End Role="tabla_categorias" EntitySet="tabla_categorias" />
             <End Role="tabla_productos" EntitySet="tabla_productos" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_ven__id_cl__6A30C649" Association="Self.FK__tabla_ven__id_cl__6A30C649">
+          <AssociationSet Name="FK__tabla_ven__id_cl__14270015" Association="Self.FK__tabla_ven__id_cl__14270015">
             <End Role="tabla_clientes" EntitySet="tabla_clientes" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_precio__id__15A53433" Association="Self.FK__tabla_precio__id__15A53433">
+          <AssociationSet Name="FK__tabla_pre__id_re__0F624AF8" Association="Self.FK__tabla_pre__id_re__0F624AF8">
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_det__id_pr__6E01572D" Association="Self.FK__tabla_det__id_pr__6E01572D">
+          <AssociationSet Name="FK__tabla_det__id_pr__0C85DE4D" Association="Self.FK__tabla_det__id_pr__0C85DE4D">
             <End Role="tabla_productos" EntitySet="tabla_productos" />
             <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_det__id_ve__6D0D32F4" Association="Self.FK__tabla_det__id_ve__6D0D32F4">
+          <AssociationSet Name="FK__tabla_det__id_ve__0D7A0286" Association="Self.FK__tabla_det__id_ve__0D7A0286">
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
             <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_hor__id_us__0D44F85C" Association="Self.FK__tabla_hor__id_us__0D44F85C">
+          <AssociationSet Name="FK__tabla_hor__id_us__0E6E26BF" Association="Self.FK__tabla_hor__id_us__0E6E26BF">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_horarios" EntitySet="tabla_horarios" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_rec__id_pr__7DCDAAA2" Association="Self.FK__tabla_rec__id_pr__7DCDAAA2">
+          <AssociationSet Name="FK_tabla_recomendaciones_productos" Association="Self.FK_tabla_recomendaciones_productos">
             <End Role="tabla_productos" EntitySet="tabla_productos" />
             <End Role="tabla_recomendaciones" EntitySet="tabla_recomendaciones" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_usu__id_ro__5EBF139D" Association="Self.FK__tabla_usu__id_ro__5EBF139D">
+          <AssociationSet Name="FK__tabla_usu__id_ro__1332DBDC" Association="Self.FK__tabla_usu__id_ro__1332DBDC">
             <End Role="tabla_roles" EntitySet="tabla_roles" />
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
           </AssociationSet>
@@ -1563,7 +1500,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_solicitudes_ausencias" EntitySet="tabla_solicitudes_ausencias" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_ven__id_us__693CA210" Association="Self.FK__tabla_ven__id_us__693CA210">
+          <AssociationSet Name="FK__tabla_ven__id_us__151B244E" Association="Self.FK__tabla_ven__id_us__151B244E">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
@@ -1572,7 +1509,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             <End Role="Vehiculos" EntitySet="Vehiculos" />
           </AssociationSet>
           <FunctionImport Name="sp_activar_usuario">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_actualizar_empleado">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
@@ -1589,6 +1526,11 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             <Parameter Name="precio_por_unidad" Mode="In" Type="Decimal" />
             <Parameter Name="img_url" Mode="In" Type="String" />
             <Parameter Name="id_categoria" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_actualizar_recomendacion">
+            <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
+            <Parameter Name="id_producto" Mode="In" Type="Int32" />
+            <Parameter Name="motivo" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_actualizar_usuario">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
@@ -1620,16 +1562,23 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             <Parameter Name="img_url" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_empleado">
-          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_producto">
-          <Parameter Name="id_producto" Mode="In" Type="Int32" />
+            <Parameter Name="id_producto" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_eliminar_recomendacion">
+            <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_inactivar_usuario">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_insertar_recomendacion" ReturnType="Collection(Decimal)">
+            <Parameter Name="id_producto" Mode="In" Type="Int32" />
+            <Parameter Name="motivo" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleado" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleado_Result)">
-          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleados" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleados_Result)" />
           <FunctionImport Name="sp_obtener_historial_actividades" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_historial_actividades_Result)">
@@ -1640,6 +1589,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             <Parameter Name="tabla_afectada" Mode="In" Type="String" />
             <Parameter Name="id_registro_afectado" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_obtener_recomendaciones" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_recomendaciones_Result)" />
           <FunctionImport Name="sp_obtener_roles" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_roles_Result)" />
           <FunctionImport Name="sp_obtener_usuarios" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_usuarios_Result)" />
           <FunctionImport Name="sp_registrar_actividad">
@@ -1657,19 +1607,6 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             <Parameter Name="ip_solicitud" Mode="In" Type="String" />
             <Parameter Name="descripcion" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_actualizar_recomendacion">
-            <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
-            <Parameter Name="id_producto" Mode="In" Type="Int32" />
-            <Parameter Name="motivo" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_eliminar_recomendacion">
-            <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_insertar_recomendacion" ReturnType="Collection(Decimal)">
-            <Parameter Name="id_producto" Mode="In" Type="Int32" />
-            <Parameter Name="motivo" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_obtener_recomendaciones" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_recomendaciones_Result)" />
         </EntityContainer>
         <ComplexType Name="sp_autenticar_usuario_Result">
           <Property Type="Int32" Name="Resultado" Nullable="true" />
@@ -1713,6 +1650,12 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Type="String" Name="descripcion" Nullable="false" />
           <Property Type="DateTime" Name="fecha_hora" Nullable="false" Precision="23" />
         </ComplexType>
+        <ComplexType Name="sp_obtener_recomendaciones_Result">
+          <Property Type="Int32" Name="id_recomendacion" Nullable="false" />
+          <Property Type="Int32" Name="id_producto" Nullable="false" />
+          <Property Type="String" Name="nombre_producto" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="motivo" Nullable="true" MaxLength="255" />
+        </ComplexType>
         <ComplexType Name="sp_obtener_roles_Result">
           <Property Type="Int32" Name="id_rol" Nullable="false" />
           <Property Type="String" Name="nombre" Nullable="false" MaxLength="50" />
@@ -1726,24 +1669,18 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <Property Type="DateTime" Name="fecha_creacion" Nullable="true" Precision="23" />
           <Property Type="String" Name="contrasenna" Nullable="false" MaxLength="100" />
         </ComplexType>
-        <ComplexType Name="sp_obtener_recomendaciones_Result">
-          <Property Type="Int32" Name="id_recomendacion" Nullable="false" />
-          <Property Type="Int32" Name="id_producto" Nullable="false" />
-          <Property Type="String" Name="nombre_producto" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="motivo" Nullable="true" MaxLength="255" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BD_CREANDO_RECUERDOSModelStoreContainer" CdmEntityContainer="BD_CREANDO_RECUERDOSEntities2">
-          <EntitySetMapping Name="costos_receta_materias_primas">
-            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_materias_primas">
-              <MappingFragment StoreEntitySet="costos_receta_materias_primas">
+        <EntityContainerMapping StorageEntityContainer="BD_CREANDO_RECUERDOSModelStoreContainer" CdmEntityContainer="BD_CREANDO_RECUERDOSEntities4">
+          <EntitySetMapping Name="costos_receta_materias_primas_utilizadas">
+            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_materias_primas_utilizadas">
+              <MappingFragment StoreEntitySet="costos_receta_materias_primas_utilizadas">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="id_receta" ColumnName="id_receta" />
-                <ScalarProperty Name="id_materia_prima" ColumnName="id_materia_prima" />
+                <ScalarProperty Name="id_materia_prima_utilizada" ColumnName="id_materia_prima_utilizada" />
                 <ScalarProperty Name="cantidad" ColumnName="cantidad" />
                 <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
                 <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
@@ -1751,12 +1688,12 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="costos_receta_productos_preparados">
-            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_productos_preparados">
-              <MappingFragment StoreEntitySet="costos_receta_productos_preparados">
+          <EntitySetMapping Name="costos_receta_productos_preparados_utilizados">
+            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_productos_preparados_utilizados">
+              <MappingFragment StoreEntitySet="costos_receta_productos_preparados_utilizados">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="id_receta" ColumnName="id_receta" />
-                <ScalarProperty Name="id_producto_preparado" ColumnName="id_producto_preparado" />
+                <ScalarProperty Name="id_producto_preparado_utilizado" ColumnName="id_producto_preparado_utilizado" />
                 <ScalarProperty Name="cantidad" ColumnName="cantidad" />
                 <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
                 <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
@@ -1764,12 +1701,12 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="precios_empaques_decorativos">
-            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_empaques_decorativos">
-              <MappingFragment StoreEntitySet="precios_empaques_decorativos">
+          <EntitySetMapping Name="precios_empaques_decoraciones_utilizados">
+            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_empaques_decoraciones_utilizados">
+              <MappingFragment StoreEntitySet="precios_empaques_decoraciones_utilizados">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="id_precio_final" ColumnName="id_precio_final" />
-                <ScalarProperty Name="id_empaque" ColumnName="id_empaque" />
+                <ScalarProperty Name="id_precio_final_sugerido" ColumnName="id_precio_final_sugerido" />
+                <ScalarProperty Name="id_empaque_decoracion_utilizado" ColumnName="id_empaque_decoracion_utilizado" />
                 <ScalarProperty Name="cantidad" ColumnName="cantidad" />
                 <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
                 <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
@@ -1781,8 +1718,8 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_implementos_utilizados">
               <MappingFragment StoreEntitySet="precios_implementos_utilizados">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="id_precio_final" ColumnName="id_precio_final" />
-                <ScalarProperty Name="id_implemento" ColumnName="id_implemento" />
+                <ScalarProperty Name="id_precio_final_sugerido" ColumnName="id_precio_final_sugerido" />
+                <ScalarProperty Name="id_implemento_utilizado" ColumnName="id_implemento_utilizado" />
                 <ScalarProperty Name="cantidad" ColumnName="cantidad" />
                 <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
                 <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
@@ -1790,27 +1727,16 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="precios_suministro_utilizados">
-            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_suministro_utilizados">
-              <MappingFragment StoreEntitySet="precios_suministro_utilizados">
+          <EntitySetMapping Name="precios_suministros_utilizados">
+            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_suministros_utilizados">
+              <MappingFragment StoreEntitySet="precios_suministros_utilizados">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="id_precio_final" ColumnName="id_precio_final" />
-                <ScalarProperty Name="id_suministro" ColumnName="id_suministro" />
+                <ScalarProperty Name="id_precio_final_sugerido" ColumnName="id_precio_final_sugerido" />
+                <ScalarProperty Name="id_suministro_utilizado" ColumnName="id_suministro_utilizado" />
                 <ScalarProperty Name="cantidad" ColumnName="cantidad" />
                 <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
                 <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
                 <ScalarProperty Name="total_costo" ColumnName="total_costo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1934,17 +1860,19 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_precios_finales_sugeridos">
               <MappingFragment StoreEntitySet="tabla_precios_finales_sugeridos">
                 <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_receta" ColumnName="id_receta" />
                 <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
                 <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
                 <ScalarProperty Name="utilidad" ColumnName="utilidad" />
                 <ScalarProperty Name="costo_sin_utilidad" ColumnName="costo_sin_utilidad" />
                 <ScalarProperty Name="costo_con_margen_de_utilidad" ColumnName="costo_con_margen_de_utilidad" />
-                <ScalarProperty Name="costo_empaque_decoracion" ColumnName="costo_empaque_decoracion" />
-                <ScalarProperty Name="costo_implemento" ColumnName="costo_implemento" />
+                <ScalarProperty Name="costo_empaque_decoracion_utilizado" ColumnName="costo_empaque_decoracion_utilizado" />
+                <ScalarProperty Name="costo_implemento_utilizado" ColumnName="costo_implemento_utilizado" />
+                <ScalarProperty Name="costo_suministro_utilizado" ColumnName="costo_suministro_utilizado" />
                 <ScalarProperty Name="iva" ColumnName="iva" />
                 <ScalarProperty Name="impuesto_de_servicio" ColumnName="impuesto_de_servicio" />
-                <ScalarProperty Name="plataforma_envio" ColumnName="plataforma_envio" />
                 <ScalarProperty Name="envio" ColumnName="envio" />
+                <ScalarProperty Name="plataforma_envio" ColumnName="plataforma_envio" />
                 <ScalarProperty Name="precio_final_sugerido" ColumnName="precio_final_sugerido" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1970,7 +1898,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
                 <ScalarProperty Name="marca" ColumnName="marca" />
                 <ScalarProperty Name="presentacion" ColumnName="presentacion" />
                 <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-                <ScalarProperty Name="porcion" ColumnName="porcion" />
+                <ScalarProperty Name="volumen_de_porcion" ColumnName="volumen_de_porcion" />
                 <ScalarProperty Name="costo" ColumnName="costo" />
                 <ScalarProperty Name="peso" ColumnName="peso" />
                 <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
@@ -2049,7 +1977,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Vehiculos">
-            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.Vehiculo">
+            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.Vehiculos">
               <MappingFragment StoreEntitySet="Vehiculos">
                 <ScalarProperty Name="IdVehiculo" ColumnName="IdVehiculo" />
                 <ScalarProperty Name="Marca" ColumnName="Marca" />
@@ -2061,7 +1989,7 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Vendedores">
-            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.Vendedore">
+            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.Vendedores">
               <MappingFragment StoreEntitySet="Vendedores">
                 <ScalarProperty Name="IdVendedor" ColumnName="IdVendedor" />
                 <ScalarProperty Name="Cedula" ColumnName="Cedula" />
@@ -2071,21 +1999,10 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="database_firewall_rules">
-            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.database_firewall_rules">
-              <MappingFragment StoreEntitySet="database_firewall_rules">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
-                <ScalarProperty Name="end_ip_address" ColumnName="end_ip_address" />
-                <ScalarProperty Name="create_date" ColumnName="create_date" />
-                <ScalarProperty Name="modify_date" ColumnName="modify_date" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_activar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_activar_usuario" />
           <FunctionImportMapping FunctionImportName="sp_actualizar_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_empleado" />
           <FunctionImportMapping FunctionImportName="sp_actualizar_producto" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_producto" />
+          <FunctionImportMapping FunctionImportName="sp_actualizar_recomendacion" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_recomendacion" />
           <FunctionImportMapping FunctionImportName="sp_actualizar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_usuario" />
           <FunctionImportMapping FunctionImportName="sp_autenticar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_autenticar_usuario">
             <ResultMapping>
@@ -2114,7 +2031,9 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           <FunctionImportMapping FunctionImportName="sp_crear_producto" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_crear_producto" />
           <FunctionImportMapping FunctionImportName="sp_eliminar_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_eliminar_empleado" />
           <FunctionImportMapping FunctionImportName="sp_eliminar_producto" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_eliminar_producto" />
+          <FunctionImportMapping FunctionImportName="sp_eliminar_recomendacion" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_eliminar_recomendacion" />
           <FunctionImportMapping FunctionImportName="sp_inactivar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_inactivar_usuario" />
+          <FunctionImportMapping FunctionImportName="sp_insertar_recomendacion" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_insertar_recomendacion" />
           <FunctionImportMapping FunctionImportName="sp_obtener_empleado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_empleado">
             <ResultMapping>
               <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_obtener_empleado_Result">
@@ -2155,6 +2074,16 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_obtener_recomendaciones" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_recomendaciones">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_obtener_recomendaciones_Result">
+                <ScalarProperty Name="id_recomendacion" ColumnName="id_recomendacion" />
+                <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+                <ScalarProperty Name="nombre_producto" ColumnName="nombre_producto" />
+                <ScalarProperty Name="motivo" ColumnName="motivo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_obtener_roles" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_roles">
             <ResultMapping>
               <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_obtener_roles_Result">
@@ -2178,19 +2107,6 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_registrar_actividad" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_registrar_actividad" />
           <FunctionImportMapping FunctionImportName="sp_registrar_auditoria" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_registrar_auditoria" />
-          <FunctionImportMapping FunctionImportName="sp_actualizar_recomendacion" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_recomendacion" />
-          <FunctionImportMapping FunctionImportName="sp_eliminar_recomendacion" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_eliminar_recomendacion" />
-          <FunctionImportMapping FunctionImportName="sp_insertar_recomendacion" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_insertar_recomendacion" />
-          <FunctionImportMapping FunctionImportName="sp_obtener_recomendaciones" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_recomendaciones">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_obtener_recomendaciones_Result">
-                <ScalarProperty Name="id_recomendacion" ColumnName="id_recomendacion" />
-                <ScalarProperty Name="id_producto" ColumnName="id_producto" />
-                <ScalarProperty Name="nombre_producto" ColumnName="nombre_producto" />
-                <ScalarProperty Name="motivo" ColumnName="motivo" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -2205,10 +2121,10 @@ warning 6002: The table/view 'BD_CREANDO_RECUERDOS.sys.database_firewall_rules' 
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

@@ -59,12 +59,13 @@
                                     Insumos
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownInsumos">
-                                    <li><a class="dropdown-item" asp-controller="Recetas" asp-action="Costos">Costos de Recetas</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Empaques" asp-action="Index">Empaques y Decoraciones</a></li>
-                                    <li><a class="dropdown-item" asp-controller="MateriasPrimas" asp-action="Index">Materias Primas</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Productos" asp-action="Preparados">Productos Preparados</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Productos" asp-action="Precios">Precios Finales</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Suministros" asp-action="Index">Suministros de Limpieza</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("materias_primas", "Insumos")">Materias Primas</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("productos_preparados", "Insumos")">Productos Preparados</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("empaques_decoraciones", "Insumos")">Empaques y Decoraciones</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("implementos", "Insumos")">Implementos</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("suministros", "Insumos")">Suministros de Limpieza</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("costos_recetas", "Insumos")">Costos de Recetas</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("precio_final", "Insumos")">Precios Finales</a></li>
                                 </ul>
                             </li>
 

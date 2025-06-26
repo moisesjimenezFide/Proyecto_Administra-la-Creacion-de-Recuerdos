@@ -14,7 +14,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult menu()
         {
-            using (var db = new BD_CREANDO_RECUERDOSEntities())
+            using (var db = new BD_CREANDO_RECUERDOSEntities4())
             {
                 var resultados = db.sp_consultar_productos().ToList();
 

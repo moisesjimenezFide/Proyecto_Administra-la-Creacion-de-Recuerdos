@@ -1,0 +1,189 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.InsumosModel
+
+@{
+    ViewData["Title"] = "Creando Recuerdos - Gestión de Productos Preparados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool editando = Model != null && Model.id > 0;
+    string titulo = editando ? "Edición de Productos Preparados" : "Registro de Productos Preparados";
+    string textoBoton = editando ? "Actualizar" : "Agregar";
+    string accion = editando ? "EditarProductoPreparado" : "CrearProductoPreparado";
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+    <style>
+        label.form-label {
+            font-weight: bold;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table th, .table td {
+            word-wrap: break-word;
+            max-width: 200px;
+            text-overflow: ellipsis;
+        }
+
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        .btn {
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-custom-pink {
+            background-color: #E27AB0;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-pink:hover {
+                background-color: #d66da3;
+                color: white;
+            }
+    </style>
+}
+
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono';">
+        <i class="fas fa-calculator me-2"></i>Gestión de Productos Preparados
+    </h2>
+</div>
+
+<!-- Formulario de búsqueda -->
+<form method="get" action="@Url.Action("productos_preparados", "Insumos")" class="mt-4">
+    <div class="input-group mb-4">
+        <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
+        <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink"> Buscar </button>
+    </div>
+</form>
+
+<!-- Formulario de registro/edición -->
+<div class="container">
+    <h4 class="mb-3"><strong>@titulo</strong></h4>
+    @using (Html.BeginForm(accion, "Insumos", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(producto_preparado => producto_preparado.id)
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(producto_preparado => producto_preparado.tipo, "Tipo", new { @class = "form-label" })
+            @Html.TextBoxFor(producto_preparado => producto_preparado.tipo, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(producto_preparado => producto_preparado.nombre, "Nombre", new { @class = "form-label" })
+            @Html.TextBoxFor(producto_preparado => producto_preparado.nombre, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(producto_preparado => producto_preparado.marca, "Marca", new { @class = "form-label" })
+            @Html.TextBoxFor(producto_preparado => producto_preparado.marca, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(producto_preparado => producto_preparado.presentacion, "Presentación", new { @class = "form-label" })
+            @Html.TextBoxFor(producto_preparado => producto_preparado.presentacion, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(producto_preparado => producto_preparado.proveedor, "Proveedor", new { @class = "form-label" })
+            @Html.TextBoxFor(producto_preparado => producto_preparado.proveedor, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(producto_preparado => producto_preparado.volumen_de_porcion, "Volumen de Porción", new { @class = "form-label" })
+            @Html.TextBoxFor(producto_preparado => producto_preparado.volumen_de_porcion, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(producto_preparado => producto_preparado.costo, "Costo", new { @class = "form-label" })
+            @Html.TextBoxFor(producto_preparado => producto_preparado.costo, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(producto_preparado => producto_preparado.peso, "Peso", new { @class = "form-label" })
+            @Html.TextBoxFor(producto_preparado => producto_preparado.peso, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(producto_preparado => producto_preparado.unidad_de_medida, "Unidad de Medida", new { @class = "form-label" })
+            @Html.TextBoxFor(producto_preparado => producto_preparado.unidad_de_medida, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+            <button type="reset" class="btn btn-danger">Cancelar</button>
+            <button type="submit" class="btn btn-custom-pink">@textoBoton</button>
+        </div>
+    }
+</div>
+
+<!-- Listado -->
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm text-center">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Presentación</th>
+                    <th>Proveedor</th>
+                    <th>Porción</th>
+                    <th>Costo (₡)</th>
+                    <th>Peso</th>
+                    <th>Unidad</th>
+                    <th>Costo por Peso (₡)</th>
+                    <th>Costo por Porción con Merma (₡)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ProductosPreparados != null && Model.ProductosPreparados.Count > 0)
+                {
+                    foreach (var producto_preparado in Model.ProductosPreparados)
+                    {
+                        <tr>
+                            <td>@producto_preparado.tipo</td>
+                            <td>@producto_preparado.nombre</td>
+                            <td>@producto_preparado.marca</td>
+                            <td>@producto_preparado.presentacion</td>
+                            <td>@producto_preparado.proveedor</td>
+                            <td>@producto_preparado.volumen_de_porcion</td>
+                            <td>@producto_preparado.costo</td>
+                            <td>@producto_preparado.peso</td>
+                            <td>@producto_preparado.unidad_de_medida</td>
+                            <td>@producto_preparado.costo_por_peso</td>
+                            <td>@producto_preparado.costo_por_porcion_con_merma</td>
+                            <td>
+                                <a href="@Url.Action("EditarProductoPreparado", "Insumos", new { id = producto_preparado.id})" class="btn btn-custom-pink btn-sm">Editar</a>
+                                <a href="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este producto?');">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                    {
+                        <tr>
+                            <td class="text-center mt-3 text-muted" style="display: none;">No se encontraron coincidencias.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="text-center mt-3 text-muted" style="display: none;">No hay materias primas registradas.</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

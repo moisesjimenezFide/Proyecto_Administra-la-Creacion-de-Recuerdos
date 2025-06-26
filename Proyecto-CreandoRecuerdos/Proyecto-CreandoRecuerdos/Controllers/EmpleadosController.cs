@@ -18,7 +18,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
 
             List<EmpleadoModel> empleados = new List<EmpleadoModel>();
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities44())
             {
                 empleados = context.tabla_usuarios
                     .Where(u => u.id_rol != 3)
@@ -39,7 +39,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult ObtenerEmpleado(int id)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 var empleado = context.tabla_usuarios
                     .Where(u => u.id_usuario == id && u.id_rol != 3)
@@ -76,7 +76,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     return RedirectToAction("Empleados");
                 }
 
-                using (var context = new BD_CREANDO_RECUERDOSEntities())
+                using (var context = new BD_CREANDO_RECUERDOSEntities4())
                 {
                     // Verificar si el rol existe
                     if (!context.tabla_roles.Any(r => r.id_rol == model.idRol))
@@ -127,7 +127,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     return RedirectToAction("Empleados");
                 }
 
-                using (var context = new BD_CREANDO_RECUERDOSEntities())
+                using (var context = new BD_CREANDO_RECUERDOSEntities4())
                 {
                     var empleado = context.tabla_usuarios.Find(model.id_usuario);
 
@@ -179,7 +179,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
-                using (var context = new BD_CREANDO_RECUERDOSEntities())
+                using (var context = new BD_CREANDO_RECUERDOSEntities4())
                 {
                     var empleado = context.tabla_usuarios.Find(id);
 
@@ -215,7 +215,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult VerificarCorreo(string correo, int idUsuario = 0)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 bool existeCorreo = context.tabla_usuarios
                     .Any(u => u.correo == correo && u.id_usuario != idUsuario);

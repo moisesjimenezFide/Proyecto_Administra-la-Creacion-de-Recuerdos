@@ -1,0 +1,176 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.InsumosModel
+
+@{
+    ViewData["Title"] = "Creando Recuerdos - Gestión de Empaques y Decoraciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool editando = Model != null && Model.id > 0;
+    string titulo = editando ? "Edición de Empaques y/o Decoraciones" : "Registro de Empaques y/o Decoraciones";
+    string textoBoton = editando ? "Actualizar" : "Agregar";
+    string accion = editando ? "EditarEmpaqueDecoracion" : "CrearEmpaqueDecoracion";
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+    <style>
+        label.form-label {
+            font-weight: bold;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table th, .table td {
+            word-wrap: break-word;
+            max-width: 200px;
+            text-overflow: ellipsis;
+        }
+
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        .btn {
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-custom-pink {
+            background-color: #E27AB0;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-pink:hover {
+                background-color: #d66da3;
+                color: white;
+            }
+    </style>
+}
+
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono';">
+        <i class="fas fa-calculator me-2"></i> Gestión de Costos de Empaques y/o Decoraciones
+    </h2>
+</div>
+
+<!-- Formulario de búsqueda -->
+<form method="get" action="@Url.Action("empaques_decoraciones", "Insumos")" class="container mt-4">
+    <h4><strong>Búsqueda de Empaques y/o Decoraciones</strong></h4>
+    <div class="input-group mb-4">
+        <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
+        <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink"> Buscar </button>
+    </div>
+</form>
+
+<!-- Formulario de registro/edición -->
+<div class="container">
+    <h4 class="mb-3"><strong>@titulo</strong></h4>
+    @using (Html.BeginForm(accion, "Insumos", FormMethod.Post))
+    {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(empaque_decoracion => empaque_decoracion.id)
+
+    <div class="mb-3 text-start">
+        @Html.LabelFor(empaque_decoracion => empaque_decoracion.nombre, "Nombre", new { @class = "form-label" })
+        @Html.TextBoxFor(empaque_decoracion => empaque_decoracion.nombre, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="mb-3 text-start">
+        @Html.LabelFor(empaque_decoracion => empaque_decoracion.marca, "Marca", new { @class = "form-label" })
+        @Html.TextBoxFor(empaque_decoracion => empaque_decoracion.marca, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="mb-3 text-start">
+        @Html.LabelFor(empaque_decoracion => empaque_decoracion.presentacion, "Presentación", new { @class = "form-label" })
+        @Html.TextBoxFor(empaque_decoracion => empaque_decoracion.presentacion, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="mb-3 text-start">
+        @Html.LabelFor(empaque_decoracion => empaque_decoracion.proveedor, "Proveedor", new { @class = "form-label" })
+        @Html.TextBoxFor(empaque_decoracion => empaque_decoracion.proveedor, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="mb-3 text-start">
+        @Html.LabelFor(empaque_decoracion => empaque_decoracion.costo, "Costo", new { @class = "form-label" })
+        @Html.TextBoxFor(empaque_decoracion => empaque_decoracion.costo, new { @class = "form-control", required = "required", type = "number" })
+    </div>
+
+    <div class="mb-3 text-start">
+        @Html.LabelFor(empaque_decoracion => empaque_decoracion.cantidad, "Cantidad", new { @class = "form-label" })
+        @Html.TextBoxFor(empaque_decoracion => empaque_decoracion.cantidad, new { @class = "form-control", required = "required", type = "number" })
+    </div>
+
+    <div class="mb-3 text-start">
+        @Html.LabelFor(empaque_decoracion => empaque_decoracion.unidad_de_medida, "Unidad de Medida", new { @class = "form-label" })
+        @Html.TextBoxFor(empaque_decoracion => empaque_decoracion.unidad_de_medida, new { @class = "form-control", required = "required", type = "number" })
+    </div>
+
+    <div class="d-flex justify-content-end gap-2">
+        <button type="reset" class="btn btn-danger">Cancelar</button>
+        <button type="submit" class="btn btn-custom-pink">@textoBoton</button>
+    </div>
+    }
+</div>
+
+<!-- Listado -->
+<div class="container">
+    <h4><strong>Listado de Empaques y/o Decoraciones</strong></h4>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm text-center">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Presentación</th>
+                    <th>Proveedor</th>
+                    <th>Costo (₡)</th>
+                    <th>Cantidad</th>
+                    <th>Unidad de Medida</th>
+                    <th>Costo por Cantidad (₡)</th> <!-- Calculado -->
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.EmpaquesDecoraciones != null && Model.EmpaquesDecoraciones.Count > 0)
+                    {
+                        foreach (var empaque_decoracion in Model.EmpaquesDecoraciones)
+                        {
+                <tr>
+                    <td>@empaque_decoracion.nombre</td>
+                    <td>@empaque_decoracion.marca</td>
+                    <td>@empaque_decoracion.presentacion</td>
+                    <td>@empaque_decoracion.proveedor</td>
+                    <td>@empaque_decoracion.costo</td>
+                    <td>@empaque_decoracion.cantidad</td>
+                    <td>@empaque_decoracion.unidad_de_medida</td>
+                    <td>@empaque_decoracion.costo_por_cantidad</td>
+                    <td>
+                        <a href="@Url.Action("EditarEmpaque", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-custom-pink btn-sm">Editar</a>
+                        <a href="@Url.Action("EliminarEmpaque", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este empaque?');">Eliminar</a>
+                    </td>
+                </tr>
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                        {
+                <tr>
+                    <td class="text-center mt-3 text-muted" style="display: none;">No se encontraron coincidencias.</td>
+                </tr>
+                        }
+                        else
+                        {
+                <tr>
+                    <td class="text-center mt-3 text-muted" style="display: none;">No hay materias primas registradas.</td>
+                </tr>
+                        }
+                    }
+            </tbody>
+        </table>
+    </div>
+</div>
+

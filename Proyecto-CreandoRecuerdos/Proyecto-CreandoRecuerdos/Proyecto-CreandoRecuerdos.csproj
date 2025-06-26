@@ -194,13 +194,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="base_de_datos\costos_receta_materias_primas.cs">
+    <Compile Include="base_de_datos\costos_receta_materias_primas_utilizadas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\costos_receta_productos_preparados.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\database_firewall_rules.cs">
+    <Compile Include="base_de_datos\costos_receta_productos_preparados_utilizados.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\Model1.Context.cs">
@@ -218,13 +215,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\precios_empaques_decorativos.cs">
+    <Compile Include="base_de_datos\precios_empaques_decoraciones_utilizados.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\precios_implementos_utilizados.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\precios_suministro_utilizados.cs">
+    <Compile Include="base_de_datos\precios_suministros_utilizados.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\sp_autenticar_usuario_Result.cs">
@@ -249,9 +246,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\sp_obtener_usuarios_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\sysdiagram.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_actividades.cs">
@@ -308,10 +302,10 @@
     <Compile Include="base_de_datos\tabla_ventas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\Vehiculo.cs">
+    <Compile Include="base_de_datos\Vehiculos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\Vendedore.cs">
+    <Compile Include="base_de_datos\Vendedores.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AdminController.cs" />
@@ -319,6 +313,7 @@
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
+    <Compile Include="Controllers\InsumosController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
     <Compile Include="Controllers\PresentacionController.cs" />
@@ -329,6 +324,7 @@
     <Compile Include="Models\ActividadModel.cs" />
     <Compile Include="Models\HorarioModel.cs" />
     <Compile Include="Models\EmpleadoModel.cs" />
+    <Compile Include="Models\InsumosModel.cs" />
     <Compile Include="Models\ProductoModel.cs" />
     <Compile Include="Models\SolicitudAusenciaModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
@@ -498,6 +494,13 @@
     <Content Include="Views\Registro_Usuarios\editar_usuario.cshtml" />
     <Content Include="Views\Menu\menu.cshtml" />
     <Content Include="Views\Menu\menu_admin.cshtml" />
+    <Content Include="Views\Insumos\costos_recetas.cshtml" />
+    <Content Include="Views\Insumos\empaques_decoraciones.cshtml" />
+    <Content Include="Views\Insumos\implementos.cshtml" />
+    <Content Include="Views\Insumos\materias_primas.cshtml" />
+    <Content Include="Views\Insumos\precio_final.cshtml" />
+    <Content Include="Views\Insumos\productos_preparados.cshtml" />
+    <Content Include="Views\Insumos\suministros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

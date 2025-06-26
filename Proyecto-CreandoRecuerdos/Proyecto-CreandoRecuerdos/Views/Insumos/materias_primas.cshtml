@@ -1,0 +1,191 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.InsumosModel
+
+@{
+    ViewData["Title"] = "Gestión de Materias Primas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool editando = Model != null && Model.id > 0;
+    string titulo = editando ? "Edición de Materias Primas" : "Registro de Materias Primas";
+    string textoBoton = editando ? "Actualizar" : "Agregar";
+    string accion = editando ? "EditarMateriaPrima" : "CrearMateriaPrima";
+}
+
+@section Styles {
+    <link href="~/Templates/css/menu.css" rel="stylesheet" />
+    <style>
+        label.form-label {
+            font-weight: bold;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table th, .table td {
+            word-wrap: break-word;
+            max-width: 200px;
+            text-overflow: ellipsis;
+        }
+
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        .btn {
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .btn-custom-pink {
+            background-color: #E27AB0;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-pink:hover {
+                background-color: #d66da3;
+                color: white;
+            }
+    </style>
+}
+
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono';">
+        <i class="fas fa-calculator me-2"></i>Gestión de Costos de Materias Primas
+    </h2>
+</div>
+
+<!-- Formulario de búsqueda-->
+<h4><strong>Búsqueda de Materias Primas</strong></h4>
+<form method="get" action="@Url.Action("materias_primas", "Insumos")" class="mt-4">
+    <div class="input-group mb-4">
+        <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
+        <button type="submit" class=" fas fa-search ms-1 btn btn-custom-pink"> Buscar </button>
+    </div>
+</form>
+
+<!-- Formulario de registro/edición -->
+<div class="container">
+    <h4 class="mb-3"><strong>@titulo</strong></h4>
+    @using (Html.BeginForm(accion, "Insumos", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(materia_prima => materia_prima.id)
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(materia_prima => materia_prima.nombre, "Nombre", new { @class = "form-label" })
+            @Html.TextBoxFor(materia_prima => materia_prima.nombre, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(materia_prima => materia_prima.marca, "Marca", new { @class = "form-label" })
+            @Html.TextBoxFor(materia_prima => materia_prima.marca, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(materia_prima => materia_prima.presentacion, "Presentación", new { @class = "form-label" })
+            @Html.TextBoxFor(materia_prima => materia_prima.presentacion, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(materia_prima => materia_prima.proveedor, "Proveedor", new { @class = "form-label" })
+            @Html.TextBoxFor(materia_prima => materia_prima.proveedor, new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(materia_prima => materia_prima.costo, "Costo", new { @class = "form-label" })
+            @Html.TextBoxFor(materia_prima => materia_prima.costo, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(materia_prima => materia_prima.peso, "Peso", new { @class = "form-label" })
+            @Html.TextBoxFor(materia_prima => materia_prima.peso, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(materia_prima => materia_prima.unidad_de_medida, "Unidad de Medida", new { @class = "form-label" })
+            @Html.TextBoxFor(materia_prima => materia_prima.unidad_de_medida, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="mb-3 text-start">
+            @Html.LabelFor(materia_prima => materia_prima.merma_total_en_gramos, "Merma Total en gramos", new { @class = "form-label" })
+            @Html.TextBoxFor(materia_prima => materia_prima.merma_total_en_gramos, new { @class = "form-control", required = "required", type = "number" })
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+            <button type="reset" class="btn btn-danger">Cancelar</button>
+            <button type="submit" class="btn btn-custom-pink">@textoBoton</button>
+        </div>
+    }
+</div>
+
+
+<!-- Listado -->
+<div class="container">
+    <h4><strong>Listado de Materias Primas</strong></h4>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm text-center">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Presentación</th>
+                    <th>Proveedor</th>
+                    <th>Costo</th>
+                    <th>Peso</th>
+                    <th>Unidad</th>
+                    <th>Merma Total (g)</th>
+                    <th>Costo por gramo (₡/g)</th>
+                    <th>Porcentaje de Merma (%)</th>
+                    <th>Costo de Merma Total(₡)</th>
+                    <th>Costo Total + Merma (₡)</th>
+                    <th>Costo por gramo con merma (₡)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.MateriasPrimas != null && Model.MateriasPrimas.Count > 0)
+                {
+                    foreach (var materia_prima in Model.MateriasPrimas)
+                    {
+                        <tr>
+                            <td>@materia_prima.nombre</td>
+                            <td>@materia_prima.marca</td>
+                            <td>@materia_prima.presentacion</td>
+                            <td>@materia_prima.proveedor</td>
+                            <td>@materia_prima.costo</td>
+                            <td>@materia_prima.peso</td>
+                            <td>@materia_prima.unidad_de_medida</td>
+                            <td>@materia_prima.merma_total_en_gramos</td>
+                            <td>@materia_prima.costo_por_gramo</td>
+                            <td>@materia_prima.porcentaje_de_merma</td>
+                            <td>@materia_prima.costo_de_merma_total</td>
+                            <td>@materia_prima.costo_total_mas_merma_total</td>
+                            <td>@materia_prima.costo_por_gramo_con_merma</td>
+                            <td>
+                                <a href="@Url.Action("EditarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-custom-pink btn-sm">Editar</a>
+                                <a href="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar esta materia prima?');">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                    {
+                        <tr>
+                            <td class="text-center mt-3 text-muted" style="display: none;">No se encontraron coincidencias.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="text-center mt-3 text-muted" style="display: none;">No hay materias primas registradas.</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

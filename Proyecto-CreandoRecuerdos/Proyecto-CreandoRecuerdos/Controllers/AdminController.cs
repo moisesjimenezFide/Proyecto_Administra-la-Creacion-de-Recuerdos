@@ -22,7 +22,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return RedirectToAction("Inicio", "Inicio");
             }
 
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 // Usuarios
                 ViewBag.Usuarios = new SelectList(
@@ -56,7 +56,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return Json(new { success = false, message = "No autorizado" });
             }
 
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 var actividades = context.sp_obtener_historial_actividades(
                     id_usuario: filtros.IdUsuario,
@@ -98,7 +98,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     throw new UnauthorizedAccessException("No autorizado");
                 }
 
-                using (var context = new BD_CREANDO_RECUERDOSEntities())
+                using (var context = new BD_CREANDO_RECUERDOSEntities4())
                 {
                     var actividades = context.sp_obtener_historial_actividades(
                         id_usuario: filtros.IdUsuario,
