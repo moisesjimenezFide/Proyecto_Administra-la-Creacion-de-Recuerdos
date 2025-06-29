@@ -11,6 +11,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public List<Suministro> Suministros { get; set; }
         public List<RecetaCosto> CostosRecetas { get; set; }
         public List<ProductoFinal> ProductosFinales { get; set; }
+        public ProductoFinal ProductoFinalEditado { get; set; }
     }
 
     public class MateriaPrima
@@ -90,9 +91,12 @@ namespace Proyecto_CreandoRecuerdos.Models
     {
         public int id { get; set; }
         public string nombre { get; set; }
+        public int porcion { get; set; }
         public decimal costo_total_receta { get; set; }
+        public decimal costo_por_porcion { get; set; }
         public List<MateriaPrimaUtilizada> MateriasPrimasUtilizadas { get; set; }
         public List<ProductoPreparadoUtilizado> ProductosPreparadosUtilizados { get; set; }
+        public string plataforma_de_envio { get; set; }
     }
 
     public class MateriaPrimaUtilizada
@@ -125,8 +129,8 @@ namespace Proyecto_CreandoRecuerdos.Models
         public int id_receta { get; set; }
         public string nombre_receta { get; set; }
         public decimal costo_total_receta { get; set; }
-        public decimal utilidad { get; set; }
-        public decimal costo_sin_utilidad { get; set; }
+        public decimal margen_de_utilidad { get; set; }
+        public decimal costo_sin_margen_de_utilidad { get; set; }
         public decimal costo_con_margen_de_utilidad { get; set; }
         public decimal costo_empaque_decoracion_utilizado { get; set; }
         public decimal costo_implemento_utilizado { get; set; }
@@ -134,7 +138,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public decimal iva { get; set; }
         public decimal impuesto_de_servicio { get; set; }
         public decimal envio { get; set; }
-        public string plataforma_envio { get; set; }
+        public string plataforma_de_envio { get; set; }
         public decimal precio_final_sugerido { get; set; }
         public List<EmpaqueDecoracionUtilizado> EmpaquesUtilizados { get; set; }
         public List<ImplementoUtilizado> ImplementosUtilizados { get; set; }

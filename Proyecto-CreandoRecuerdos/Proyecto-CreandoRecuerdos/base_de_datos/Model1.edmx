@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="costos_receta_materias_primas_utilizadas">
           <Key>
             <PropertyRef Name="id" />
@@ -102,6 +102,8 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="porcion" Type="int" />
+          <Property Name="costo_por_porcion" Type="decimal" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="tabla_detalle_venta">
           <Key>
@@ -180,8 +182,8 @@
           <Property Name="id_receta" Type="int" />
           <Property Name="nombre_receta" Type="nvarchar" MaxLength="100" />
           <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="utilidad" Type="decimal" Precision="5" Scale="2" />
-          <Property Name="costo_sin_utilidad" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="margen_de_utilidad" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="costo_sin_margen_de_utilidad" Type="decimal" Precision="5" Scale="2" />
           <Property Name="costo_con_margen_de_utilidad" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo_empaque_decoracion_utilizado" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo_implemento_utilizado" Type="decimal" Precision="18" Scale="2" />
@@ -189,7 +191,7 @@
           <Property Name="iva" Type="decimal" Precision="18" Scale="2" />
           <Property Name="impuesto_de_servicio" Type="decimal" Precision="18" Scale="2" />
           <Property Name="envio" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="plataforma_envio" Type="nvarchar" MaxLength="50" />
+          <Property Name="plataforma_de_envio" Type="nvarchar" MaxLength="50" />
           <Property Name="precio_final_sugerido" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_productos">
@@ -782,8 +784,7 @@
             <End Role="Vehiculos" EntitySet="Vehiculos" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BD_CREANDO_RECUERDOSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -900,6 +901,8 @@
           <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Self.FK__costos_re__id_re__02FC7413" FromRole="tabla_costos_recetas" ToRole="costos_receta_materias_primas_utilizadas" />
           <NavigationProperty Name="costos_receta_productos_preparados_utilizados" Relationship="Self.FK__costos_re__id_re__04E4BC85" FromRole="tabla_costos_recetas" ToRole="costos_receta_productos_preparados_utilizados" />
           <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__tabla_pre__id_re__0F624AF8" FromRole="tabla_costos_recetas" ToRole="tabla_precios_finales_sugeridos" />
+          <Property Name="porcion" Type="Int32" />
+          <Property Name="costo_por_porcion" Type="Decimal" Precision="18" Scale="4" />
         </EntityType>
         <EntityType Name="tabla_detalle_venta">
           <Key>
@@ -984,8 +987,8 @@
           <Property Name="id_receta" Type="Int32" />
           <Property Name="nombre_receta" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="costo_total_receta" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="utilidad" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="costo_sin_utilidad" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="margen_de_utilidad" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="costo_sin_margen_de_utilidad" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="costo_con_margen_de_utilidad" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="costo_empaque_decoracion_utilizado" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="costo_implemento_utilizado" Type="Decimal" Precision="18" Scale="2" />
@@ -993,7 +996,7 @@
           <Property Name="iva" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="impuesto_de_servicio" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="envio" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="plataforma_envio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="plataforma_de_envio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="precio_final_sugerido" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="precios_empaques_decoraciones_utilizados" Relationship="Self.FK__precios_e__id_pr__06CD04F7" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_empaques_decoraciones_utilizados" />
           <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_pr__08B54D69" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_implementos_utilizados" />
@@ -1509,7 +1512,7 @@
             <End Role="Vehiculos" EntitySet="Vehiculos" />
           </AssociationSet>
           <FunctionImport Name="sp_activar_usuario">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_actualizar_empleado">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
@@ -1562,23 +1565,23 @@
             <Parameter Name="img_url" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_empleado">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_producto">
-            <Parameter Name="id_producto" Mode="In" Type="Int32" />
+          <Parameter Name="id_producto" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_recomendacion">
-            <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
+          <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_inactivar_usuario">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_insertar_recomendacion" ReturnType="Collection(Decimal)">
             <Parameter Name="id_producto" Mode="In" Type="Int32" />
             <Parameter Name="motivo" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleado" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleado_Result)">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleados" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleados_Result)" />
           <FunctionImport Name="sp_obtener_historial_actividades" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_historial_actividades_Result)">
@@ -1776,6 +1779,8 @@
           <EntitySetMapping Name="tabla_costos_recetas">
             <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_costos_recetas">
               <MappingFragment StoreEntitySet="tabla_costos_recetas">
+                <ScalarProperty Name="costo_por_porcion" ColumnName="costo_por_porcion" />
+                <ScalarProperty Name="porcion" ColumnName="porcion" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
@@ -1863,8 +1868,8 @@
                 <ScalarProperty Name="id_receta" ColumnName="id_receta" />
                 <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
                 <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
-                <ScalarProperty Name="utilidad" ColumnName="utilidad" />
-                <ScalarProperty Name="costo_sin_utilidad" ColumnName="costo_sin_utilidad" />
+                <ScalarProperty Name="margen_de_utilidad" ColumnName="margen_de_utilidad" />
+                <ScalarProperty Name="costo_sin_margen_de_utilidad" ColumnName="costo_sin_margen_de_utilidad" />
                 <ScalarProperty Name="costo_con_margen_de_utilidad" ColumnName="costo_con_margen_de_utilidad" />
                 <ScalarProperty Name="costo_empaque_decoracion_utilizado" ColumnName="costo_empaque_decoracion_utilizado" />
                 <ScalarProperty Name="costo_implemento_utilizado" ColumnName="costo_implemento_utilizado" />
@@ -1872,7 +1877,7 @@
                 <ScalarProperty Name="iva" ColumnName="iva" />
                 <ScalarProperty Name="impuesto_de_servicio" ColumnName="impuesto_de_servicio" />
                 <ScalarProperty Name="envio" ColumnName="envio" />
-                <ScalarProperty Name="plataforma_envio" ColumnName="plataforma_envio" />
+                <ScalarProperty Name="plataforma_de_envio" ColumnName="plataforma_de_envio" />
                 <ScalarProperty Name="precio_final_sugerido" ColumnName="precio_final_sugerido" />
               </MappingFragment>
             </EntityTypeMapping>

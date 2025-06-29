@@ -97,6 +97,8 @@
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="porcion" Type="int" />
+    <Property Name="costo_por_porcion" Type="decimal" Precision="18" Scale="4" />
   </EntityType>
   <EntityType Name="tabla_detalle_venta">
     <Key>
@@ -175,8 +177,8 @@
     <Property Name="id_receta" Type="int" />
     <Property Name="nombre_receta" Type="nvarchar" MaxLength="100" />
     <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="utilidad" Type="decimal" Precision="5" Scale="2" />
-    <Property Name="costo_sin_utilidad" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="margen_de_utilidad" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="costo_sin_margen_de_utilidad" Type="decimal" Precision="5" Scale="2" />
     <Property Name="costo_con_margen_de_utilidad" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_empaque_decoracion_utilizado" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_implemento_utilizado" Type="decimal" Precision="18" Scale="2" />
@@ -184,7 +186,7 @@
     <Property Name="iva" Type="decimal" Precision="18" Scale="2" />
     <Property Name="impuesto_de_servicio" Type="decimal" Precision="18" Scale="2" />
     <Property Name="envio" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="plataforma_envio" Type="nvarchar" MaxLength="50" />
+    <Property Name="plataforma_de_envio" Type="nvarchar" MaxLength="50" />
     <Property Name="precio_final_sugerido" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="tabla_productos">

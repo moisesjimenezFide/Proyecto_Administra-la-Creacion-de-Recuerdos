@@ -78,6 +78,7 @@
     <h4 class="mb-3"><strong>@titulo</strong></h4>
     @using (Html.BeginForm(accion, "Insumos", FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
 
         <div class="mb-3 text-start">
             <label for="nombre" class="form-label">Nombre</label>
@@ -184,7 +185,7 @@
                             <td>@materia_prima.costo_por_gramo_con_merma</td>
                             <td>
                                 <a href="@Url.Action("EditarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-custom-pink btn-sm">Editar</a>
-                                <a href="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar esta materia prima?');">Eliminar</a>
+                                <a href="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-danger btn-sm btn-eliminar" data-url="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })">Eliminar</a>
                             </td>
                         </tr>
                     }
@@ -193,3 +194,124 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        $('form').on('submit', function (e) {
+            var valido = true;
+            var mensaje = "";
+
+            // Validar campos de texto
+            $(this).find('input[type="text"]').each(function () {
+                var valor = $(this).val();
+                if (!valor || valor.trim().length === 0) {
+                    valido = false;
+                    mensaje = "No se permiten campos de texto vacíos o solo espacios en blanco.";
+                    $(this).focus();
+                    return false;
+                }
+            });
+
+            // Validar campos numéricos
+            if (valido) {
+                $(this).find('input[type="number"]').each(function () {
+                    var valor = $(this).val();
+                    if (!/^\d+(\.\d+)?$/.test(valor) || parseFloat(valor) <= 0) {
+                        valido = false;
+                        mensaje = "Los campos numéricos deben ser mayores a cero y solo aceptar números positivos.";
+                        $(this).focus();
+                        return false;
+                    }
+                });
+            }
+
+            // Validar nombre duplicado
+            var nombre = $('#nombre').val().toLowerCase();
+            var id = $('#id').val();
+            if (nombresExistentes.includes(nombre)) {
+                valido = false;
+                mensaje = "Ya existe una materia prima con ese nombre.";
+                $('#nombre').focus();
+            }
+
+            if (!valido) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validación',
+                    text: mensaje,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#E27AB0'
+                });
+                return false;
+            }
+
+            e.preventDefault();
+            var data = $(this).serialize();
+            $.post($(this).attr('action'), data)
+                .done(function () { location.reload(); })
+                .fail(function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error al guardar en la base de datos',
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#E27AB0'
+                    });
+                });
+        });
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+           <text>
+           Swal.fire({
+              icon: 'success',
+              text: '@TempData["SuccessMessage"]',
+              confirmButtonColor: '#E27AB0'
+            });
+           </text>
+        }
+
+        $(document).on('click', '.btn-eliminar', function (e) {
+            e.preventDefault();
+            var url = $(this).data('url');
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Esta acción no se puede deshacer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#E27AB0',
+                cancelButtonColor: '#e74c3c',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+
+    <script>
+
+        function calcularCampos() {
+            var costo = parseFloat($('#costo').val()) || 0;
+            var peso = parseFloat($('#peso').val()) || 1;
+            var merma = parseFloat($('#merma_total_en_gramos').val()) || 0;
+            var costoPorGramo = (peso > 0) ? (costo / peso) : 0;
+            var porcentajeMerma = (peso > 0) ? (merma / peso) * 100 : 0;
+            var costoMermaTotal = costoPorGramo * merma;
+            var costoTotalMasMerma = costo + costoMermaTotal;
+            var costoPorGramoConMerma = (peso > 0) ? (costoTotalMasMerma / peso) : 0;
+
+            $('#costo_por_gramo').val(costoPorGramo.toFixed(4));
+            $('#porcentaje_de_merma').val(porcentajeMerma.toFixed(2));
+            $('#costo_de_merma_total').val(costoMermaTotal.toFixed(2));
+            $('#costo_total_mas_merma_total').val(costoTotalMasMerma.toFixed(2));
+            $('#costo_por_gramo_con_merma').val(costoPorGramoConMerma.toFixed(4));
+        }
+
+        $('#costo, #peso, #merma_total_en_gramos').on('input', calcularCampos);
+        $(document).ready(calcularCampos);
+    </script>
+}

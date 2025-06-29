@@ -102,6 +102,8 @@
     <EntitySetMapping Name="tabla_costos_recetas">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_costos_recetas">
         <MappingFragment StoreEntitySet="tabla_costos_recetas">
+          <ScalarProperty Name="costo_por_porcion" ColumnName="costo_por_porcion" />
+          <ScalarProperty Name="porcion" ColumnName="porcion" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
@@ -189,8 +191,8 @@
           <ScalarProperty Name="id_receta" ColumnName="id_receta" />
           <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
           <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
-          <ScalarProperty Name="utilidad" ColumnName="utilidad" />
-          <ScalarProperty Name="costo_sin_utilidad" ColumnName="costo_sin_utilidad" />
+          <ScalarProperty Name="margen_de_utilidad" ColumnName="margen_de_utilidad" />
+          <ScalarProperty Name="costo_sin_margen_de_utilidad" ColumnName="costo_sin_margen_de_utilidad" />
           <ScalarProperty Name="costo_con_margen_de_utilidad" ColumnName="costo_con_margen_de_utilidad" />
           <ScalarProperty Name="costo_empaque_decoracion_utilizado" ColumnName="costo_empaque_decoracion_utilizado" />
           <ScalarProperty Name="costo_implemento_utilizado" ColumnName="costo_implemento_utilizado" />
@@ -198,7 +200,7 @@
           <ScalarProperty Name="iva" ColumnName="iva" />
           <ScalarProperty Name="impuesto_de_servicio" ColumnName="impuesto_de_servicio" />
           <ScalarProperty Name="envio" ColumnName="envio" />
-          <ScalarProperty Name="plataforma_envio" ColumnName="plataforma_envio" />
+          <ScalarProperty Name="plataforma_de_envio" ColumnName="plataforma_de_envio" />
           <ScalarProperty Name="precio_final_sugerido" ColumnName="precio_final_sugerido" />
         </MappingFragment>
       </EntityTypeMapping>

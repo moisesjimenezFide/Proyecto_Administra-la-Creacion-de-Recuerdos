@@ -113,6 +113,8 @@
     <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Self.FK__costos_re__id_re__02FC7413" FromRole="tabla_costos_recetas" ToRole="costos_receta_materias_primas_utilizadas" />
     <NavigationProperty Name="costos_receta_productos_preparados_utilizados" Relationship="Self.FK__costos_re__id_re__04E4BC85" FromRole="tabla_costos_recetas" ToRole="costos_receta_productos_preparados_utilizados" />
     <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__tabla_pre__id_re__0F624AF8" FromRole="tabla_costos_recetas" ToRole="tabla_precios_finales_sugeridos" />
+    <Property Name="porcion" Type="Int32" />
+    <Property Name="costo_por_porcion" Type="Decimal" Precision="18" Scale="4" />
   </EntityType>
   <EntityType Name="tabla_detalle_venta">
     <Key>
@@ -197,8 +199,8 @@
     <Property Name="id_receta" Type="Int32" />
     <Property Name="nombre_receta" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="costo_total_receta" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="utilidad" Type="Decimal" Precision="5" Scale="2" />
-    <Property Name="costo_sin_utilidad" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="margen_de_utilidad" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="costo_sin_margen_de_utilidad" Type="Decimal" Precision="5" Scale="2" />
     <Property Name="costo_con_margen_de_utilidad" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="costo_empaque_decoracion_utilizado" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="costo_implemento_utilizado" Type="Decimal" Precision="18" Scale="2" />
@@ -206,7 +208,7 @@
     <Property Name="iva" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="impuesto_de_servicio" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="envio" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="plataforma_envio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="plataforma_de_envio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="precio_final_sugerido" Type="Decimal" Precision="18" Scale="2" />
     <NavigationProperty Name="precios_empaques_decoraciones_utilizados" Relationship="Self.FK__precios_e__id_pr__06CD04F7" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_empaques_decoraciones_utilizados" />
     <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_pr__08B54D69" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_implementos_utilizados" />

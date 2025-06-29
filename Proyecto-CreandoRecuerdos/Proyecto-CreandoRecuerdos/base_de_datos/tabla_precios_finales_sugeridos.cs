@@ -26,8 +26,8 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<int> id_receta { get; set; }
         public string nombre_receta { get; set; }
         public Nullable<decimal> costo_total_receta { get; set; }
-        public Nullable<decimal> utilidad { get; set; }
-        public Nullable<decimal> costo_sin_utilidad { get; set; }
+        public Nullable<decimal> margen_de_utilidad { get; set; }
+        public Nullable<decimal> costo_sin_margen_de_utilidad { get; set; }
         public Nullable<decimal> costo_con_margen_de_utilidad { get; set; }
         public Nullable<decimal> costo_empaque_decoracion_utilizado { get; set; }
         public Nullable<decimal> costo_implemento_utilizado { get; set; }
@@ -35,7 +35,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<decimal> iva { get; set; }
         public Nullable<decimal> impuesto_de_servicio { get; set; }
         public Nullable<decimal> envio { get; set; }
-        public string plataforma_envio { get; set; }
+        public string plataforma_de_envio { get; set; }
         public Nullable<decimal> precio_final_sugerido { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

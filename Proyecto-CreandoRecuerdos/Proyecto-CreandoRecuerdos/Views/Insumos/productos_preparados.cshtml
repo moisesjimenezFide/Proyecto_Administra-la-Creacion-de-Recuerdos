@@ -77,6 +77,7 @@
     <h4 class="mb-3"><strong>@titulo</strong></h4>
     @using (Html.BeginForm(accion, "Insumos", FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
 
         <div class="mb-3 text-start">
             <label for="tipo" class="form-label">Tipo</label>
@@ -182,8 +183,8 @@
                             <td>@producto_preparado.costo_por_peso</td>
                             <td>@producto_preparado.costo_por_porcion_con_merma</td>
                             <td>
-                                <a href="@Url.Action("EditarProductoPreparado", "Insumos", new { id = producto_preparado.id})" class="btn btn-custom-pink btn-sm">Editar</a>
-                                <a href="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este producto?');">Eliminar</a>
+                                <a href="@Url.Action("EditarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-custom-pink btn-sm">Editar</a>
+                                <a href="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-danger btn-sm btn-eliminar" data-url="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })">Eliminar</a>
                             </td>
                         </tr>
                     }
@@ -192,3 +193,116 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        $('form').on('submit', function (e) {
+            var valido = true;
+            var mensaje = "";
+
+            // Validar campos de texto
+            $(this).find('input[type="text"]').each(function () {
+                var valor = $(this).val();
+                if (!valor || valor.trim().length === 0) {
+                    valido = false;
+                    mensaje = "No se permiten campos de texto vacíos o solo espacios en blanco.";
+                    $(this).focus();
+                    return false;
+                }
+            });
+        });
+
+            // Validar campos numéricos
+            if (valido) {
+                $(this).find('input[type="number"]').each(function () {
+                    var valor = $(this).val();
+                    if (!/^\d+(\.\d+)?$/.test(valor) || parseFloat(valor) <= 0) {
+                        valido = false;
+                        mensaje = "Los campos numéricos deben ser mayores a cero y solo aceptar números positivos.";
+                        $(this).focus();
+                        return false;
+                    }
+                });
+        }
+
+        // Validar nombre duplicado
+        var nombre = $('#nombre').val().toLowerCase();
+        var id = $('#id').val();
+        if (nombresExistentes.includes(nombre)) {
+            valido = false;
+            mensaje = "Ya existe un producto preparado con ese nombre.";
+            $('#nombre').focus();
+        }
+
+        if (!valido) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Validación',
+                text: mensaje,
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#E27AB0'
+            });
+            return false;
+        }
+
+        e.preventDefault();
+        var data = $(this).serialize();
+        $.post($(this).attr('action'), data)
+            .done(function () { location.reload(); })
+            .fail(function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al guardar en la base de datos',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#E27AB0'
+                });
+            });
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+             Swal.fire({
+                 icon: 'success',
+                 text: '@TempData["SuccessMessage"]',
+                 confirmButtonColor: '#E27AB0'
+             });
+            </text>
+        }
+
+        $(document).on('click', '.btn-eliminar', function (e) {
+            e.preventDefault();
+            var url = $(this).data('url');
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Esta acción no se puede deshacer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#E27AB0',
+                cancelButtonColor: '#e74c3c',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function calcularCamposProductoPreparado() {
+            var costo = parseFloat($('#costo').val()) || 0;
+            var peso = parseFloat($('#peso').val()) || 1;
+            var porcion = parseFloat($('#volumen_de_porcion').val()) || 1;
+            var costoPorPeso = (peso > 0) ? (costo / peso) : 0;
+            var costoPorPorcion = (porcion > 0) ? (costo / porcion) : 0;
+            $('#costo_por_peso').text(costoPorPeso.toFixed(4));
+            $('#costo_por_porcion_con_merma').text(costoPorPorcion.toFixed(4));
+        }
+
+        $('#costo, #peso, #volumen_de_porcion').on('input', calcularCamposProductoPreparado);
+        $(document).ready(calcularCamposProductoPreparado);
+    </script>
+}

@@ -4,7 +4,10 @@
 @{
     ViewData["Title"] = "Creando Recuerdos - Gestión de Costos de Recetas";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    bool editando = false;
+    bool editando = ViewBag.Editando ?? false;
+    string titulo = editando ? "Edición de Receta" : "Registro de Receta";
+    string textoBoton = editando ? "Actualizar" : "Agregar";
+    string accion = editando ? "EditarReceta" : "CrearReceta";
 }
 
 @section Styles {
@@ -73,13 +76,19 @@
 
 <!-- Formulario de registro/edición -->
 <div class="container">
-    <h4 class="mb-3"><strong>Registro de Recetas</strong></h4>
-    @using (Html.BeginForm("costos_recetas", "Insumos", FormMethod.Post))
+    <h4 class="mb-3"><strong>@titulo</strong></h4>
+    @using (Html.BeginForm(accion, "Insumos", FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
 
         <div class="mb-3 text-start">
             <label for="nombre" class="form-label">Nombre</label>
             <input type="text" name="nombre" id="nombre" class="form-control" required="required" />
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="porcion" class="form-label">Porción</label>
+            <input type="number" name="porcion" id="porcion" class="form-control" required="required" />
         </div>
 
         <h4>Materias Primas Utilizadas</h4>
@@ -91,12 +100,12 @@
                 </div>
 
                 <div class="col-md-3">
-                    @Html.Label("CantidadMateriaPrima", "Cantidad")
+                    <label for="MateriaPrimaSeleccionada">Cantidad</label>
                     <input type="number" name="CantidadMateriaPrima" placeholder="Cantidad" class="form-control" />
                 </div>
 
                 <div class="col-md-3">
-                    @Html.Label("UnidadMateriaPrima", "Unidad de medida")
+                    <label for="MateriaPrimaSeleccionada">Unidad de Medida</label>
                     <input type="text" name="UnidadMateriaPrima" placeholder="Unidad de medida" class="form-control" />
                 </div>
 
@@ -117,12 +126,12 @@
                 </div>
 
                 <div class="col-md-3">
-                    @Html.Label("CantidadProductoPreparado", "Cantidad")
+                    <label for="MateriaPrimaSeleccionada">Cantidad</label>
                     <input type="number" name="CantidadProductoPreparado" placeholder="Cantidad" class="form-control" />
                 </div>
 
                 <div class="col-md-3">
-                    @Html.Label("UnidadProductoPreparado", "Unidad de medida")
+                    <label for="MateriaPrimaSeleccionada">Unidad de Medida</label>
                     <input type="text" name="UnidadProductoPreparado" placeholder="Unidad de medida" class="form-control" />
                 </div>
 
@@ -136,9 +145,7 @@
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
             <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
-            <button type="submit" class="btn btn-custom-pink">
-                @(editando ? "Actualizar" : "Agregar")
-            </button>
+            <button type="submit" class="btn btn-custom-pink">@textoBoton</button>
         </div>
     }
 </div>
@@ -166,12 +173,12 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Porción</th>
                         <th>Materias Primas Utilizadas</th>
                         <th>Productos Preparados Utilizados</th>
                         <th>Costo por unidad de medida (₡)</th>
                         <th>Total Costo (₡)</th>
                         <th>Costo Total de Receta (₡)</th>
-                        <th>Porción</th>
                         <th>Costo por porción (₡)</th>
                         <th>Acciones</th>
                     </tr>
@@ -181,45 +188,57 @@
                     {
                         <tr>
                             <td>@receta.nombre</td>
+
+                            <td>@receta.porcion</td>
+
                             <td>
                                 @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
                                 {
                                     <div>@materia_prima.nombre (@materia_prima.cantidad @materia_prima.unidad_de_medida)</div>
                                 }
                             </td>
+
                             <td>
                                 @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
                                 {
                                     <div>@producto_preparado.nombre (@producto_preparado.cantidad @producto_preparado.unidad_de_medida)</div>
                                 }
                             </td>
+
                             <td>
                                 @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
                                 {
                                     <div>@materia_prima.costo_por_cantidad.ToString("₡")</div>
                                 }
+
                                 @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
                                 {
                                     <div>@producto_preparado.costo_por_cantidad.ToString("₡")</div>
                                 }
                             </td>
+
                             <td>
                                 @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
                                 {
                                     var totalcostoMateriaprima = materia_prima.cantidad * materia_prima.costo_por_cantidad;
                                     <div>Total Costo Materia Prima: @totalcostoMateriaprima.ToString("₡")</div>
                                 }
+
                                 @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
                                 {
                                     var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_cantidad;
                                     <div>Total Costo Producto Preparado: @totalcostoProductopreparado.ToString("₡")</div>
                                 }
                             </td>
+
                             <td>@receta.costo_total_receta.ToString("₡")</td>
+                            <td>@receta.costo_por_porcion.ToString("₡")</td>
+
                             <td>
                                 <a href="@Url.Action("EditarReceta", "Insumos", new { id = receta.id })" class="btn btn-custom-pink btn-sm">Editar</a>
-                                <a href="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar esta receta?');">Eliminar</a>
+                                <a href="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })" class="btn btn-danger btn-sm btn-eliminar" data-url="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })">Eliminar</a>
                             </td>
+
                         </tr>
                     }
                 </tbody>
@@ -230,18 +249,150 @@
 
 @section Scripts {
     <script>
+        $('form').on('submit', function (e) {
+            var valido = true;
+            var mensaje = "";
+
+            // Validar campos de texto
+            $(this).find('input[type="text"]').each(function () {
+                var valor = $(this).val();
+                if (!valor || valor.trim().length === 0) {
+                    valido = false;
+                    mensaje = "No se permiten campos de texto vacíos o solo espacios en blanco.";
+                    $(this).focus();
+                    return false;
+                }
+            });
+
+            // Validar campos numéricos
+            if (valido) {
+                $(this).find('input[type="number"]').each(function () {
+                    var valor = $(this).val();
+                    if (!/^\d+(\.\d+)?$/.test(valor) || parseFloat(valor) <= 0) {
+                        valido = false;
+                        mensaje = "Los campos numéricos deben ser mayores a cero y solo aceptar números positivos.";
+                        $(this).focus();
+                        return false;
+                    }
+                });
+            }
+
+            // Validar nombre duplicado
+            var nombre = $('#nombre').val().toLowerCase();
+            var id = $('#id').val();
+            if (nombresExistentes.includes(nombre)) {
+                valido = false;
+                mensaje = "Ya existe una receta con ese nombre.";
+                $('#nombre').focus();
+            }
+
+            if (!valido) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validación',
+                    text: mensaje,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#E27AB0'
+                });
+                return false;
+            }
+
+            e.preventDefault();
+            var data = $(this).serialize();
+            $.post($(this).attr('action'), data)
+                .done(function () { location.reload(); })
+                .fail(function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error al guardar en la base de datos',
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#E27AB0'
+                    });
+                });
+        });
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+             Swal.fire({
+                 icon: 'success',
+                 text: '@TempData["SuccessMessage"]',
+                 confirmButtonColor: '#E27AB0'
+             });
+            </text>
+        }
+
+        $(document).on('click', '.btn-eliminar', function (e) {
+            e.preventDefault();
+            var url = $(this).data('url');
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Esta acción no se puede deshacer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#E27AB0',
+                cancelButtonColor: '#e74c3c',
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Datos de catálogo para cálculos en JS
+        var materiasPrimas = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.MateriasPrimas?.Select(mp => new { mp.nombre, mp.costo_por_gramo })));
+        var productosPreparados = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ProductosPreparados?.Select(pp => new { pp.nombre, pp.costo_por_peso })));
+
+        function obtenerCostoPorGramo(nombre) {
+            var found = materiasPrimas.find(x => x.nombre === nombre);
+            return found ? parseFloat(found.costo_por_gramo) : 0;
+        }
+        function obtenerCostoPorPeso(nombre) {
+            var found = productosPreparados.find(x => x.nombre === nombre);
+            return found ? parseFloat(found.costo_por_peso) : 0;
+        }
+
+        function calcularCostos() {
+            var total = 0;
+            $('#materias_primas-container .fila-insumo:not(.template-materia_prima)').each(function () {
+                var nombre = $(this).find('select[name="MateriaPrimaSeleccionada"]').val();
+                var cantidad = parseFloat($(this).find('input[name="CantidadMateriaPrima"]').val()) || 0;
+                var costo = obtenerCostoPorGramo(nombre);
+                total += cantidad * costo;
+            });
+            $('#productos_preparados-container .fila-insumo:not(.template-producto_preparado)').each(function () {
+                var nombre = $(this).find('select[name="ProductoPreparadoSeleccionado"]').val();
+                var cantidad = parseFloat($(this).find('input[name="CantidadProductoPreparado"]').val()) || 0;
+                var costo = obtenerCostoPorPeso(nombre);
+                total += cantidad * costo;
+            });
+            $('#costoTotalReceta').text(total.toFixed(2));
+            var porcion = parseFloat($('#porcion').val()) || 0;
+            var costoPorPorcion = porcion > 0 ? total / porcion : 0;
+            $('#costoPorPorcion').text(costoPorPorcion.toFixed(4));
+        }
+
         function agregarFila(containerId, templateClass) {
-            const container = document.getElementById(containerId);
-            const nuevaFila = document.querySelector(`.${templateClass}`).cloneNode(true);
+            var container = document.getElementById(containerId);
+            var nuevaFila = document.querySelector('.' + templateClass).cloneNode(true);
             nuevaFila.style.display = '';
             container.appendChild(nuevaFila);
         }
-
         function eliminarFila(boton) {
-            const fila = boton.closest(".fila-insumo");
+            var fila = boton.closest(".fila-insumo");
             if (fila && fila.parentElement.children.length > 1) {
                 fila.remove();
             }
         }
+
+        $(document).on('input change', '#materias_primas-container input, #materias_primas-container select, #productos_preparados-container input, #productos_preparados-container select, #porcion', calcularCostos);
+        $(document).ready(calcularCostos);
     </script>
 }

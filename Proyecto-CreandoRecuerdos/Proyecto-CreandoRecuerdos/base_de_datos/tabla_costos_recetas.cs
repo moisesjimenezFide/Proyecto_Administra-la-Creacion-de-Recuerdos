@@ -25,6 +25,8 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public int id { get; set; }
         public string nombre { get; set; }
         public Nullable<decimal> costo_total_receta { get; set; }
+        public Nullable<int> porcion { get; set; }
+        public Nullable<decimal> costo_por_porcion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<costos_receta_materias_primas_utilizadas> costos_receta_materias_primas_utilizadas { get; set; }
