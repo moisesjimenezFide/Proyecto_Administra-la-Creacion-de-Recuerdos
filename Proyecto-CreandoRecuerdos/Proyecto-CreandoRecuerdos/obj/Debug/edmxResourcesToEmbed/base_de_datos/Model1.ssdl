@@ -175,7 +175,7 @@
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="id_receta" Type="int" />
-    <Property Name="nombre_receta" Type="nvarchar" MaxLength="100" />
+    <Property Name="nombre_receta" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" />
     <Property Name="margen_de_utilidad" Type="decimal" Precision="5" Scale="2" />
     <Property Name="costo_sin_margen_de_utilidad" Type="decimal" Precision="5" Scale="2" />
