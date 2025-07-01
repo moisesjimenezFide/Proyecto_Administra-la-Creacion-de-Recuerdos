@@ -313,6 +313,7 @@
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
+    <Compile Include="Controllers\InsumosController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
     <Compile Include="Controllers\PresentacionController.cs" />
@@ -323,6 +324,7 @@
     <Compile Include="Models\ActividadModel.cs" />
     <Compile Include="Models\HorarioModel.cs" />
     <Compile Include="Models\EmpleadoModel.cs" />
+    <Compile Include="Models\InsumosModel.cs" />
     <Compile Include="Models\ProductoModel.cs" />
     <Compile Include="Models\SolicitudAusenciaModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
@@ -492,6 +494,13 @@
     <Content Include="Views\Registro_Usuarios\editar_usuario.cshtml" />
     <Content Include="Views\Menu\menu.cshtml" />
     <Content Include="Views\Menu\menu_admin.cshtml" />
+    <Content Include="Views\Insumos\costos_recetas.cshtml" />
+    <Content Include="Views\Insumos\empaques_decoraciones.cshtml" />
+    <Content Include="Views\Insumos\implementos.cshtml" />
+    <Content Include="Views\Insumos\materias_primas.cshtml" />
+    <Content Include="Views\Insumos\precio_final.cshtml" />
+    <Content Include="Views\Insumos\productos_preparados.cshtml" />
+    <Content Include="Views\Insumos\suministros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
