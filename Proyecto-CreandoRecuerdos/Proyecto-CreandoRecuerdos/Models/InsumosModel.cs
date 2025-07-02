@@ -9,9 +9,16 @@ namespace Proyecto_CreandoRecuerdos.Models
         public List<EmpaqueDecoracion> EmpaquesDecoraciones { get; set; }
         public List<Implemento> Implementos { get; set; }
         public List<Suministro> Suministros { get; set; }
-        public List<RecetaCosto> CostosRecetas { get; set; }
+        public List<Receta> CostosRecetas { get; set; }
         public List<ProductoFinal> ProductosFinales { get; set; }
+        public MateriaPrima MateriaPrimaEditado { get; set; }
+        public ProductoPreparado ProductoPreparadoEditado { get; set; }
+        public EmpaqueDecoracion EmpaqueDecoracionEditado { get; set; }
+        public Implemento ImplementoEditado { get; set; }
+        public Suministro SuministroEditado { get; set; }
+        public Receta RecetaEditada { get; set; }
         public ProductoFinal ProductoFinalEditado { get; set; }
+
     }
 
     public class MateriaPrima
@@ -87,7 +94,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public decimal costo_por_cantidad { get; set; }
     }
 
-    public class RecetaCosto
+    public class Receta
     {
         public int id { get; set; }
         public string nombre { get; set; }

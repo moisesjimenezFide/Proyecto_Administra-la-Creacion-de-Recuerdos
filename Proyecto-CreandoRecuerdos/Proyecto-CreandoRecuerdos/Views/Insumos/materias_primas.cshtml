@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Gestión de Costos de Materias Primas";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    bool editando = false;
+    bool editando = ViewBag.Editando ?? false;
+    var materiaPrimaEditado = Model.MateriaPrimaEditado;
     string titulo = editando ? "Edición de Materias Primas" : "Registro de Materias Primas";
     string textoBoton = editando ? "Actualizar" : "Agregar";
     string accion = editando ? "EditarMateriaPrima" : "CrearMateriaPrima";
@@ -80,44 +81,49 @@
     {
         @Html.AntiForgeryToken()
 
+        if (editando)
+        {
+            @:<input type="hidden" name="id" value="@materiaPrimaEditado.id" />
+        }
+
         <div class="mb-3 text-start">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" name="nombre" id="nombre" class="form-control" required="required" />
+            <input type="text" name="nombre" id="nombre" class="form-control" required="required" value="@(editando ? materiaPrimaEditado.nombre : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="marca" class="form-label">Marca</label>
-            <input type="text" name="marca" id="marca" class="form-control" required="required" />
+            <input type="text" name="marca" id="marca" class="form-control" required="required" value="@(editando ? materiaPrimaEditado.marca : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="presentacion" class="form-label">Presentación</label>
-            <input type="text" name="presentacion" id="presentacion" class="form-control" required="required" />
+            <input type="text" name="presentacion" id="presentacion" class="form-control" required="required" value="@(editando ? materiaPrimaEditado.presentacion : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="proveedor" class="form-label">Proveedor</label>
-            <input type="text" name="proveedor" id="proveedor" class="form-control" required="required" />
+            <input type="text" name="proveedor" id="proveedor" class="form-control" required="required" value="@(editando ? materiaPrimaEditado.proveedor : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control" required="required" />
+            <input type="number" name="costo" id="costo" class="form-control" required="required" value="@(editando ? materiaPrimaEditado.costo.ToString() : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="peso" class="form-label">Peso</label>
-            <input type="number" name="peso" id="peso" class="form-control" required="required" />
+            <input type="number" name="peso" id="peso" class="form-control" required="required" value="@(editando ? materiaPrimaEditado.peso.ToString() : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="unidad_de_medida" class="form-label">Unidad de Medida</label>
-            <input type="text" name="unidad_de_medida" id="unidad_de_medida" class="form-control" required="required" />
+            <input type="text" name="unidad_de_medida" id="unidad_de_medida" class="form-control" required="required" value="@(editando ? materiaPrimaEditado.unidad_de_medida : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="merma_total_en_gramos" class="form-label">Merma Total en gramos</label>
-            <input type="number" name="merma_total_en_gramos" id="merma_total_en_gramos" class="form-control" required="required" />
+            <input type="number" name="merma_total_en_gramos" id="merma_total_en_gramos" class="form-control" required="required" value="@(editando ? materiaPrimaEditado.merma_total_en_gramos.ToString() : "")" />
         </div>
 
         <div class="d-flex justify-content-end gap-2">
@@ -260,14 +266,18 @@
                     });
                 });
         });
+    </script>
 
+    <script>
         @if (TempData["SuccessMessage"] != null)
         {
            <text>
-           Swal.fire({
-              icon: 'success',
-              text: '@TempData["SuccessMessage"]',
-              confirmButtonColor: '#E27AB0'
+            Swal.fire({
+                icon: 'success',
+                iconColor: '#82E0AA',
+                text: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(TempData["SuccessMessage"])),
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#E27AB0'
             });
            </text>
         }
@@ -275,6 +285,7 @@
         $(document).on('click', '.btn-eliminar', function (e) {
             e.preventDefault();
             var url = $(this).data('url');
+
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "¡Esta acción no se puede deshacer!",
@@ -293,7 +304,6 @@
     </script>
 
     <script>
-
         function calcularCampos() {
             var costo = parseFloat($('#costo').val()) || 0;
             var peso = parseFloat($('#peso').val()) || 1;

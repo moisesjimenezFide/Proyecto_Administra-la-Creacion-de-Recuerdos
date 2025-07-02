@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Creando Recuerdos - Gestión de Costos de Empaques y Decoraciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    bool editando = false;
+    bool editando = ViewBag.Editando ?? false;
+    var empaqueDecoracionEditado = Model.EmpaqueDecoracionEditado;
     string titulo = editando ? "Edición de Empaques y/o Decoraciones" : "Registro de Empaques y/o Decoraciones";
     string textoBoton = editando ? "Actualizar" : "Agregar";
     string accion = editando ? "EditarEmpaqueDecoracion" : "CrearEmpaqueDecoracion";
@@ -80,39 +81,44 @@
     {
         @Html.AntiForgeryToken()
 
+        if (editando)
+        {
+            @:<input type="hidden" name="id" value="@empaqueDecoracionEditado.id" />
+        }
+
         <div class="mb-3 text-start">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" name="nombre" id="nombre" class="form-control" required="required" />
+            <input type="text" name="nombre" id="nombre" class="form-control" required="required" value="@(editando ? empaqueDecoracionEditado.nombre : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="marca" class="form-label">Marca</label>
-            <input type="text" name="marca" id="marca" class="form-control" required="required" />
+            <input type="text" name="marca" id="marca" class="form-control" required="required" value="@(editando ? empaqueDecoracionEditado.marca : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="presentacion" class="form-label">Presentación</label>
-            <input type="text" name="presentacion" id="presentacion" class="form-control" required="required" />
+            <input type="text" name="presentacion" id="presentacion" class="form-control" required="required" value="@(editando ? empaqueDecoracionEditado.presentacion : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="proveedor" class="form-label">Proveedor</label>
-            <input type="text" name="proveedor" id="proveedor" class="form-control" required="required" />
+            <input type="text" name="proveedor" id="proveedor" class="form-control" required="required" value="@(editando ? empaqueDecoracionEditado.proveedor : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control" required="required" />
+            <input type="number" name="costo" id="costo" class="form-control" required="required" value="@(editando ? empaqueDecoracionEditado.costo.ToString() : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="cantidad" class="form-label">Cantidad</label>
-            <input type="number" name="cantidad" id="cantidad" class="form-control" required="required" />
+            <input type="number" name="cantidad" id="cantidad" class="form-control" required="required" value="@(editando ? empaqueDecoracionEditado.cantidad.ToString() : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="unidad_de_medida" class="form-label">Unidad de Medida</label>
-            <input type="text" name="unidad_de_medida" id="unidad_de_medida" class="form-control" required="required" />
+            <input type="text" name="unidad_de_medida" id="unidad_de_medida" class="form-control" required="required" value="@(editando ? empaqueDecoracionEditado.unidad_de_medida : "")" />
         </div>
 
         <div class="d-flex justify-content-end gap-2">
@@ -245,16 +251,20 @@
                     });
                 });
         });
+    </script>
 
+    <script>
         @if (TempData["SuccessMessage"] != null)
         {
-            <text>
-             Swal.fire({
-                 icon: 'success',
-                 text: '@TempData["SuccessMessage"]',
-                 confirmButtonColor: '#E27AB0'
-             });
-            </text>
+           <text>
+            Swal.fire({
+                icon: 'success',
+                iconColor: '#82E0AA',
+                text: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(TempData["SuccessMessage"])),
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#E27AB0'
+            });
+           </text>
         }
 
         $(document).on('click', '.btn-eliminar', function (e) {

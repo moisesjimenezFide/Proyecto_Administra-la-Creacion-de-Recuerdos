@@ -4,6 +4,7 @@
     ViewData["Title"] = "Creando Recuerdos - Gestión de Precios Finales Sugeridos de Productos Finales";
     Layout = "~/Views/Shared/_Layout.cshtml";
     bool editando = ViewBag.Editando ?? false;
+    var productoFinalEditado = Model.ProductoFinalEditado;
     string titulo = editando ? "Edición de Productos Finales" : "Registro de Productos Finales";
     string textoBoton = editando ? "Actualizar" : "Agregar";
     string accion = editando ? "EditarProductoFinal" : "CrearProductoFinal";
@@ -80,67 +81,161 @@
     {
         @Html.AntiForgeryToken()
 
+        if (editando)
+        {
+            @:<input type="hidden" name="id" value="@productoFinalEditado.id" />
+        }
+
         <div class="mb-3 text-start">
             <label for="titulo_receta_seleccionada" class="form-label">Receta Seleccionada</label>
             <div class="col-md-4">
-                @Html.DropDownList("nombre_receta", ViewBag.Recetas as SelectList, "Seleccione una receta", new { @class = "form-control"})
+                @Html.DropDownList(
+                    "nombre_receta",
+                    ViewBag.Recetas as SelectList,
+                    "Seleccione una receta",
+                    new
+                         {
+                        @class = "form-control",
+                        @Value = editando ? productoFinalEditado.nombre_receta : null
+                    }
+                )
             </div>
-            <input type="hidden" id="costo_total_receta" name="costo_total_receta" value="0" />
+            <input type="hidden" id="costo_total_receta" name="costo_total_receta" value="@(editando ? productoFinalEditado.costo_total_receta.ToString() : "0")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="margen_de_utilidad" class="form-label">Margen de Utilidad (%)</label>
-            <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" required="required" />
+            <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" required="required" value="@(editando ? productoFinalEditado.margen_de_utilidad.ToString() : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="plataforma_de_envio" class="form-label">Plataforma de Envío</label>
             <select name="plataforma_de_envio" id="plataforma_de_envio" class="form-control" required="required">
                 <option value="">Seleccione una plataforma de envío</option>
-                <option value="Propio" @(editando && Model.ProductoFinalEditado?.plataforma_de_envio == "Propio" ? "selected" : "")>Propio</option>
-                <option value="PedidosYa" @(editando && Model.ProductoFinalEditado?.plataforma_de_envio == "PedidosYa" ? "selected" : "")>PedidosYa</option>
-                <option value="Rappi" @(editando && Model.ProductoFinalEditado?.plataforma_de_envio == "Rappi" ? "selected" : "")>Rappi</option>
-                <option value="DidiFood" @(editando && Model.ProductoFinalEditado?.plataforma_de_envio == "DidiFood" ? "selected" : "")>DidiFood</option>
-                <option value="UberEats" @(editando && Model.ProductoFinalEditado?.plataforma_de_envio == "UberEats" ? "selected" : "")>UberEats</option>
+                <option value="Propio" @(editando && productoFinalEditado?.plataforma_de_envio == "Propio" ? "selected" : "")>Propio</option>
+                <option value="PedidosYa" @(editando && productoFinalEditado?.plataforma_de_envio == "PedidosYa" ? "selected" : "")>PedidosYa</option>
+                <option value="Rappi" @(editando && productoFinalEditado?.plataforma_de_envio == "Rappi" ? "selected" : "")>Rappi</option>
+                <option value="DidiFood" @(editando && productoFinalEditado?.plataforma_de_envio == "DidiFood" ? "selected" : "")>DidiFood</option>
+                <option value="UberEats" @(editando && productoFinalEditado?.plataforma_de_envio == "UberEats" ? "selected" : "")>UberEats</option>
             </select>
         </div>
 
         <h4>Empaques y/o Decoraciones Utilizados(as)</h4>
         <div id="empaques_decoraciones-container">
+            @if (editando && productoFinalEditado?.EmpaquesDecoracionesUtilizados != null)
+            {
+                for (int i = 0; i < productoFinalEditado.EmpaquesDecoracionesUtilizados.Count; i++)
+                {
+                    var empaque_decoracion = productoFinalEditado.EmpaquesDecoracionesUtilizados[i];
+
+                    <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
+                        <div class="col-md-4">
+                            <label>Nombre</label>
+                            @Html.DropDownList(
+                                $"EmpaquesDecoracionesUtilizados[{i}].nombre",
+                                ViewBag.EmpaquesDecoraciones as SelectList,
+                                empaque_decoracion.nombre,
+                                new { @class = "form-control" }
+                            )
+                        </div>
+                        <div class="col-md-3">
+                            <label>Cantidad</label>
+                            <input type="number" name="EmpaquesDecoracionesUtilizados[@i].cantidad" class="form-control" value="@empaque_decoracion.cantidad" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Unidad de medida</label>
+                            <input type="text" name="EmpaquesDecoracionesUtilizados[@i].unidad_de_medida" class="form-control" value="@empaque_decoracion.unidad_de_medida" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                        </div>
+                    </div>
+                }
+            }
+
             <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
                 <div class="col-md-4">
-                    <label for="NombreEmpaqueDecoracionSeleccionado">Nombre</label>
-                    @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].nombre", ViewBag.EmpaquesDecoraciones as SelectList, "Seleccione un empaque o decoración", new { @class = "form-control"})
+                    <label>Nombre</label>
+                    @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].nombre", ViewBag.EmpaquesDecoraciones as SelectList, "Seleccione un empaque o decoración", new { @class = "form-control" })
                 </div>
                 <div class="col-md-3">
-                    <label for="CantidadEmpaqueDecoracionSeleccionado">Cantidad</label>
+                    <label>Cantidad</label>
                     <input type="number" name="EmpaquesDecoracionesUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
                 <div class="col-md-3">
-                    <label for="Unidad_de_medidaEmpaqueDecoracionSeleccionado">Unidad de medida</label>
+                    <label>Unidad de medida</label>
                     <input type="text" name="EmpaquesDecoracionesUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
                 <div class="col-md-2">
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
             </div>
-            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('empaques_decoraciones-container', 'template-empaque_decoracion')">+ Agregar Empaque</button>
+                <div class="row fila-insumo template-suministro" style="display: none;">
+        <div class="col-md-4">
+            <label>Nombre</label>
+            @Html.DropDownList("SuministrosUtilizados[__index__].nombre", ViewBag.Suministros as SelectList, "Seleccione un suministro", new { @class = "form-control" })
         </div>
-        <br />
+        <div class="col-md-3">
+            <label>Cantidad</label>
+            <input type="number" name="SuministrosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label>Unidad de medida</label>
+            <input type="text" name="SuministrosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+        </div>
+    </div>
+    <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('suministros-container', 'template-suministro')">+ Agregar Suministro</button>
+
+</div>
+<br />
 
         <h4>Implementos Utilizados</h4>
         <div id="implementos-container">
+            @if (editando && productoFinalEditado?.ImplementosUtilizados != null)
+            {
+                for (int i = 0; i < productoFinalEditado.ImplementosUtilizados.Count; i++)
+                {
+                    var implemento = productoFinalEditado.ImplementosUtilizados[i];
+
+                    <div class="row fila-insumo template-implemento" style="display: none;">
+                        <div class="col-md-4">
+                            <label>Nombre</label>
+                            @Html.DropDownList(
+                                $"ImplementosUtilizados[{i}].nombre",
+                                ViewBag.Implementos as SelectList,
+                                implemento.nombre,
+                                new { @class = "form-control" }
+                            )
+                        </div>
+                        <div class="col-md-3">
+                            <label>Cantidad</label>
+                            <input type="number" name="ImplementosUtilizados[@i].cantidad" class="form-control" value="@implemento.cantidad" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Unidad de medida</label>
+                            <input type="text" name="ImplementosUtilizados[@i].unidad_de_medida" class="form-control" value="@implemento.unidad_de_medida" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                        </div>
+                    </div>
+                }
+            }
+
             <div class="row fila-insumo template-implemento" style="display: none;">
                 <div class="col-md-4">
-                    <label for="NombreImplementoSeleccionado">Nombre</label>
-                    @Html.DropDownList("ImplementosUtilizados[__index__].nombre", ViewBag.Implementos as SelectList, "Seleccione un implemento", new { @class = "form-control"})
+                    <label>Nombre</label>
+                    @Html.DropDownList("ImplementosUtilizados[__index__].nombre", ViewBag.Implementos as SelectList, "Seleccione un implemento", new { @class = "form-control" })
                 </div>
                 <div class="col-md-3">
-                    <label for="CantidadImplementoSeleccionado">Cantidad</label>
+                    <label>Cantidad</label>
                     <input type="number" name="ImplementosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
                 <div class="col-md-3">
-                    <label for="Unidad_de_medidaImplementoSeleccionado">Unidad de medida</label>
+                    <label>Unidad de medida</label>
                     <input type="text" name="ImplementosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
                 <div class="col-md-2">
@@ -153,20 +248,50 @@
 
         <h4>Suministros de Limpieza e Higiene Utilizados</h4>
         <div id="suministros-container">
+            @if (editando && productoFinalEditado?.SuministrosUtilizados != null)
+            {
+                for (int i = 0; i < productoFinalEditado.SuministrosUtilizados.Count; i++)
+                {
+                    var suministro = productoFinalEditado.SuministrosUtilizados[i];
+
+                    <div class="row fila-insumo template-suministro" style="display: none;">
+                        <div class="col-md-4">
+                            <label>Nombre</label>
+                            @Html.DropDownList(
+                                $"SuministrosUtilizados[{i}].nombre",
+                                ViewBag.Suministros as SelectList,
+                                suministro.nombre,
+                                new { @class = "form-control" }
+                            )
+                        </div>
+                        <div class="col-md-3">
+                            <label>Cantidad</label>
+                            <input type="number" name="SuministrosUtilizados[@i].cantidad" class="form-control" value="@suministro.cantidad" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Unidad de medida</label>
+                            <input type="text" name="SuministrosUtilizados[@i].unidad_de_medida" class="form-control" value="@suministro.unidad_de_medida" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                        </div>
+                    </div>
+                }
+            }
+
             <div class="row fila-insumo template-suministro" style="display: none;">
                 <div class="col-md-4">
-                    <label for="NombreSuministroSeleccionado">Nombre</label>
+                    <label>Nombre</label>
                     @Html.DropDownList("SuministrosUtilizados[__index__].nombre", ViewBag.Suministros as SelectList, "Seleccione un suministro", new { @class = "form-control" })
                 </div>
                 <div class="col-md-3">
-                    <label for="CantidadSuministroSeleccionado">Cantidad</label>
+                    <label>Cantidad</label>
                     <input type="number" name="SuministrosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
                 <div class="col-md-3">
-                    <label for="Unidad_de_medidaSuministroSeleccionado">Unidad de medida</label>
+                    <label>Unidad de medida</label>
                     <input type="text" name="SuministrosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
-
                 <div class="col-md-2">
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
@@ -276,7 +401,9 @@
            <text>
             Swal.fire({
                 icon: 'success',
-                text: '@TempData["SuccessMessage"]',
+                iconColor: '#82E0AA',
+                text: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(TempData["SuccessMessage"])),
+                confirmButtonText: 'Aceptar',
                 confirmButtonColor: '#E27AB0'
             });
            </text>

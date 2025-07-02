@@ -4,6 +4,7 @@
     ViewData["Title"] = "Creando Recuerdos - Gestión de Costos de Recetas";
     Layout = "~/Views/Shared/_Layout.cshtml";
     bool editando = ViewBag.Editando ?? false;
+    var recetaEditada = Model.RecetaEditada;
     string titulo = editando ? "Edición de Receta" : "Registro de Receta";
     string textoBoton = editando ? "Actualizar" : "Agregar";
     string accion = editando ? "EditarReceta" : "CrearReceta";
@@ -80,34 +81,67 @@
     {
         @Html.AntiForgeryToken()
 
+        if (editando)
+        {
+            @:<input type="hidden" name="id" value="@recetaEditada.id" />
+        }
+
         <div class="mb-3 text-start">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" name="nombre" id="nombre" class="form-control" required="required" />
+            <input type="text" name="nombre" id="nombre" class="form-control" required="required" value="@(editando ? recetaEditada.nombre : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="porcion" class="form-label">Porción</label>
-            <input type="number" name="porcion" id="porcion" class="form-control" required="required" />
+            <input type="number" name="porcion" id="porcion" class="form-control" required="required" value="@(editando ? recetaEditada.porcion.ToString() : "")" />
         </div>
 
         <h4>Materias Primas Utilizadas</h4>
         <div id="materias_primas-container">
+            @if (editando && recetaEditada?.MateriasPrimasUtilizadas != null)
+            {
+                for (int i = 0; i < recetaEditada.MateriasPrimasUtilizadas.Count; i++)
+                {
+                    var materia_prima = recetaEditada.MateriasPrimasUtilizadas[i];
+
+                    <div class="row fila-insumo template-materia_prima" style="display: none;">
+                        <div class="col-md-4">
+                            <label>Nombre</label>
+                            @Html.DropDownList(
+                                $"MateriasPrimasUtilizadas[{i}].nombre",
+                                ViewBag.MateriasPrimas as SelectList,
+                                materia_prima.nombre,
+                                new { @class = "form-control" }
+                            )
+                        </div>
+                        <div class="col-md-3">
+                            <label>Cantidad</label>
+                            <input type="number" name="MateriasPrimasUtilizadas[@i].cantidad" class="form-control" value="@materia_prima.cantidad" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Unidad de medida</label>
+                            <input type="text" name="MateriasPrimasUtilizadas[@i].unidad_de_medida" class="form-control" value="@materia_prima.unidad_de_medida" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                        </div>
+                    </div>
+                }
+            }
+
             <div class="row fila-insumo template-materia_prima" style="display: none;">
                 <div class="col-md-4">
-                    <label for="MateriaPrimaSeleccionada">Nombre</label>
-                    @Html.DropDownList("MateriaPrimaSeleccionada", ViewBag.MateriasPrimas as SelectList, "Seleccione una materia prima", new { @class = "form-control" })
+                    <label>Nombre</label>
+                    @Html.DropDownList("MateriasPrimasUtilizadas[__index__].nombre", ViewBag.MateriasPrimas as SelectList, "Seleccione una materia prima", new { @class = "form-control" })
                 </div>
-
                 <div class="col-md-3">
-                    <label for="MateriaPrimaSeleccionada">Cantidad</label>
-                    <input type="number" name="CantidadMateriaPrima" placeholder="Cantidad" class="form-control" />
+                    <label>Cantidad</label>
+                    <input type="number" name="MateriasPrimasUtilizadas[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
-
                 <div class="col-md-3">
-                    <label for="MateriaPrimaSeleccionada">Unidad de Medida</label>
-                    <input type="text" name="UnidadMateriaPrima" placeholder="Unidad de medida" class="form-control" />
+                    <label>Unidad de medida</label>
+                    <input type="text" name="MateriasPrimasUtilizadas[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
-
                 <div class="col-md-2">
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
@@ -118,22 +152,50 @@
 
         <h4>Productos Preparados Utilizados</h4>
         <div id="productos_preparados-container">
+            @if (editando && recetaEditada?.ProductosPreparadosUtilizados != null)
+            {
+                for (int i = 0; i < recetaEditada.ProductosPreparadosUtilizados.Count; i++)
+                {
+                    var producto_preparado = recetaEditada.ProductosPreparadosUtilizados[i];
+
+                    <div class="row fila-insumo template-producto_preparado" style="display: none;">
+                        <div class="col-md-4">
+                            <label>Nombre</label>
+                            @Html.DropDownList(
+                                $"ProductosPreparadosUtilizados[{i}].nombre",
+                                ViewBag.ProductosPreparados as SelectList,
+                                producto_preparado.nombre,
+                                new { @class = "form-control" }
+                            )
+                        </div>
+                        <div class="col-md-3">
+                            <label>Cantidad</label>
+                            <input type="number" name="ProductosPreparadosUtilizados[@i].cantidad" class="form-control" value="@producto_preparado.cantidad" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Unidad de medida</label>
+                            <input type="text" name="ProductosPreparadosUtilizados[@i].unidad_de_medida" class="form-control" value="@producto_preparado.unidad_de_medida" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                        </div>
+                    </div>
+                }
+            }    
+            
             <div class="row fila-insumo template-producto_preparado" style="display: none;">
                 <div class="col-md-4">
-                    <label for="ProductoPreparadoSeleccionado">Nombre</label>
-                    @Html.DropDownList("ProductoPreparadoSeleccionado", ViewBag.ProductosPreparados as SelectList, "Seleccione un producto preparado", new { @class = "form-control" })
+                    <label>Nombre</label>
+                    @Html.DropDownList("ProductosPreparadosUtilizados[__index__].nombre", ViewBag.ProductosPreparados as SelectList, "Seleccione un producto preparado", new { @class = "form-control" })
                 </div>
-
                 <div class="col-md-3">
-                    <label for="MateriaPrimaSeleccionada">Cantidad</label>
-                    <input type="number" name="CantidadProductoPreparado" placeholder="Cantidad" class="form-control" />
+                    <label>Cantidad</label>
+                    <input type="number" name="ProductosPreparadosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
-
                 <div class="col-md-3">
-                    <label for="MateriaPrimaSeleccionada">Unidad de Medida</label>
-                    <input type="text" name="UnidadProductoPreparado" placeholder="Unidad de medida" class="form-control" />
+                    <label>Unidad de medida</label>
+                    <input type="text" name="ProductosPreparadosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
-
                 <div class="col-md-2">
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
@@ -311,16 +373,20 @@
                     });
                 });
         });
+    </script>
 
+    <script>
         @if (TempData["SuccessMessage"] != null)
         {
-            <text>
-             Swal.fire({
-                 icon: 'success',
-                 text: '@TempData["SuccessMessage"]',
-                 confirmButtonColor: '#E27AB0'
-             });
-            </text>
+           <text>
+            Swal.fire({
+                icon: 'success',
+                iconColor: '#82E0AA',
+                text: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(TempData["SuccessMessage"])),
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#E27AB0'
+            });
+           </text>
         }
 
         $(document).on('click', '.btn-eliminar', function (e) {
