@@ -253,7 +253,7 @@
                         <th>Porción</th>
                         <th>Materias Primas Utilizadas</th>
                         <th>Productos Preparados Utilizados</th>
-                        <th>Costo por unidad de medida (₡)</th>
+                        <th>Costo por cantidad(₡)</th>
                         <th>Total Costo (₡)</th>
                         <th>Costo Total de Receta (₡)</th>
                         <th>Costo por porción (₡)</th>
@@ -302,7 +302,7 @@
                                 {
                                     foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
                                     {
-                                        <div>@materia_prima.costo_por_cantidad.ToString("₡")</div>
+                                        <div>₡@materia_prima.costo_por_cantidad.ToString("N2")</div>
                                     }
                                 }
 
@@ -310,7 +310,7 @@
                                 {
                                     foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
                                     {
-                                        <div>@producto_preparado.costo_por_cantidad.ToString("₡")</div>
+                                        <div>₡@producto_preparado.costo_por_cantidad.ToString("N2")</div>
                                     }
                                 }
                                 </td>
@@ -321,7 +321,7 @@
                                     foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
                                     {
                                         var totalcostoMateriaprima = materia_prima.cantidad * materia_prima.costo_por_cantidad;
-                                        <div>Total Costo Materia Prima: @totalcostoMateriaprima.ToString("₡")</div>
+                                        <div>Total Costo Materia Prima: ₡@totalcostoMateriaprima.ToString("N2")</div>
                                     }
                                 }
 
@@ -330,13 +330,13 @@
                                     foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
                                     {
                                         var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_cantidad;
-                                        <div>Total Costo Producto Preparado: @totalcostoProductopreparado.ToString("₡")</div>
+                                        <div>Total Costo Producto Preparado: ₡@totalcostoProductopreparado.ToString("₡")</div>
                                     }
                                 }
                                 </td>
 
-                            <td>@receta.costo_total_receta.ToString("₡")</td>
-                            <td>@receta.costo_por_porcion.ToString("₡")</td>
+                            <td>₡@receta.costo_total_receta.ToString("N2")</td>
+                            <td>₡@receta.costo_por_porcion.ToString("N2")</td>
 
                             <td>
                                 <a href="@Url.Action("EditarReceta", "Insumos", new { id = receta.id })" class="btn btn-custom-pink btn-sm">Editar</a>
