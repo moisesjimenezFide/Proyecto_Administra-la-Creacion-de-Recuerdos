@@ -1,7 +1,7 @@
 ﻿
 /* Estilos base */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Sono',;
     background-color: #f8f9fa;
 }
 
@@ -40,7 +40,7 @@ body {
 }
 
     .usuarios-table thead {
-        background: linear-gradient(135deg, var(--rosa-principal), var(--rosa-oscuro));
+        background: var(--rosa-principal);
         color: white;
     }
 
@@ -78,7 +78,7 @@ body {
 }
 
 .bg-admin {
-    background-color: var(--rosa-oscuro);
+    background-color: var(--rosa-principal);
     color: white;
 }
 

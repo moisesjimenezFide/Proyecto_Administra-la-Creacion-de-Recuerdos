@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     bool editando = ViewBag.Editando ?? false;
     var recetaEditada = Model.RecetaEditada;
-    string titulo = editando ? "Edición de Receta" : "Registro de Receta";
+    string titulo = editando ? "Edición de Recetas" : "Registro de Recetas";
     string textoBoton = editando ? "Actualizar" : "Agregar";
     string accion = editando ? "EditarReceta" : "CrearReceta";
 }
@@ -217,7 +217,11 @@
         <br />
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-            <button type="reset" class="btn btn-danger me-md-2">Cancelar</button>
+            @if (editando)
+            {
+                <a href="@Url.Action("costos_recetas", "Insumos")" class="btn btn-secondary">Salir</a>
+            }
+            <button type="reset" class="btn btn-danger">Cancelar</button>
             <button type="submit" class="btn btn-custom-pink">@textoBoton</button>
         </div>
     }
@@ -265,43 +269,70 @@
                             <td>@receta.porcion</td>
 
                             <td>
-                                    @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                @if (receta.MateriasPrimasUtilizadas != null && receta.MateriasPrimasUtilizadas.Any())
+                                {
+                                    foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
                                     {
                                         <div>@materia_prima.nombre (@materia_prima.cantidad @materia_prima.unidad_de_medida)</div>
                                     }
-                                </td>
+                                }
+
+                                else
+                                {
+                                    <div><em>Ninguna</em></div>
+                                }
+                            </td>
 
                             <td>
-                                    @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                @if (receta.ProductosPreparadosUtilizados != null && receta.ProductosPreparadosUtilizados.Any())
+                                {
+                                    foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
                                     {
                                         <div>@producto_preparado.nombre (@producto_preparado.cantidad @producto_preparado.unidad_de_medida)</div>
                                     }
-                                </td>
+                                }
+                                else
+                                {
+                                    <div><em>Ninguno</em></div>
+                                }
+                            </td>
 
                             <td>
-                                    @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                @if (receta.MateriasPrimasUtilizadas != null && receta.MateriasPrimasUtilizadas.Any())
+                                {
+                                    foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
                                     {
                                         <div>@materia_prima.costo_por_cantidad.ToString("₡")</div>
                                     }
+                                }
 
-                                    @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                @if (receta.ProductosPreparadosUtilizados != null && receta.ProductosPreparadosUtilizados.Any())
+                                {
+                                    foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
                                     {
                                         <div>@producto_preparado.costo_por_cantidad.ToString("₡")</div>
                                     }
+                                }
                                 </td>
 
                             <td>
-                                    @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                @if (receta.MateriasPrimasUtilizadas != null && receta.MateriasPrimasUtilizadas.Any())
+                                {
+                                    foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
                                     {
                                         var totalcostoMateriaprima = materia_prima.cantidad * materia_prima.costo_por_cantidad;
                                         <div>Total Costo Materia Prima: @totalcostoMateriaprima.ToString("₡")</div>
                                     }
-                                
-                                    @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                }
+
+                                @if (receta.ProductosPreparadosUtilizados != null && receta.ProductosPreparadosUtilizados.Any())
+                                {
+                                    foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
                                     {
                                         var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_cantidad;
                                         <div>Total Costo Producto Preparado: @totalcostoProductopreparado.ToString("₡")</div>
                                     }
+                                }
                                 </td>
 
                             <td>@receta.costo_total_receta.ToString("₡")</td>

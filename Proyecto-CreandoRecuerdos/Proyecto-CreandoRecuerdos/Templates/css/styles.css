@@ -24,7 +24,7 @@ html, body {
      display: flex; 
      box-sizing: border-box; 
      flex-direction: column; 
-     font-family: 'Sono', sans-serif; /* Fuente original */ 
+     font-family: 'Sono'; /* Fuente original */ 
      background-color: var(--beige); 
      color: var(--texto-oscuro); 
  }

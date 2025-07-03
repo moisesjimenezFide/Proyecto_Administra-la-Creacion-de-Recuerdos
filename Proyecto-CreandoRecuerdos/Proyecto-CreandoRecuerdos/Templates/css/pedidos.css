@@ -17,13 +17,11 @@
 }
 
 /* Fuentes */
-@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Arial&display=swap');
 
 body {
-  font-family: 'Black Ops One', cursive;
+  font-family: 'Sono';
   background-color: #f5f5f5;
   color: #333;
   overflow-x: hidden;

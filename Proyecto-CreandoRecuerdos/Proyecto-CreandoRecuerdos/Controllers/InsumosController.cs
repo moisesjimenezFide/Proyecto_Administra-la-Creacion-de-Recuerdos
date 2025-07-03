@@ -892,7 +892,7 @@ public class InsumosController : Controller
         }).ToList();
 
         ViewBag.Editando = true;
-        return View("empaque_decoracion", new InsumosModel
+        return View("empaques_decoraciones", new InsumosModel
         {
             EmpaqueDecoracionEditado = empaque_decoracion,
             EmpaquesDecoraciones = lista
@@ -1895,6 +1895,7 @@ public class InsumosController : Controller
         var r = db.tabla_costos_recetas.Find(id);
         if (r == null) return HttpNotFound();
 
+        // Receta a editar
         var receta = new Receta
         {
             id = r.id,
@@ -1902,6 +1903,7 @@ public class InsumosController : Controller
             porcion = r.porcion ?? 0,
             costo_total_receta = r.costo_total_receta ?? 0,
             costo_por_porcion = r.costo_por_porcion ?? 0,
+
             MateriasPrimasUtilizadas = db.costos_receta_materias_primas_utilizadas
                 .Where(mp => mp.id_receta == r.id)
                 .Select(mp => new MateriaPrimaUtilizada
@@ -1929,16 +1931,17 @@ public class InsumosController : Controller
                 }).ToList()
         };
 
-        // Obtén el listado de recetas
-        var lista = db.tabla_costos_recetas.Select(matprim => new Receta
+        // Listado completo de recetas para mostrar en la tabla
+        var lista = db.tabla_costos_recetas.Select(rec => new Receta
         {
-            id = matprim.id,
-            nombre = matprim.nombre,
-            porcion = matprim.porcion ?? 0,
-            costo_total_receta = matprim.costo_total_receta ?? 0,
-            costo_por_porcion = matprim.costo_por_porcion ?? 0,
+            id = rec.id,
+            nombre = rec.nombre,
+            porcion = rec.porcion ?? 0,
+            costo_total_receta = rec.costo_total_receta ?? 0,
+            costo_por_porcion = rec.costo_por_porcion ?? 0,
+
             MateriasPrimasUtilizadas = db.costos_receta_materias_primas_utilizadas
-                .Where(mp => mp.id_receta == receta.id)
+                .Where(mp => mp.id_receta == rec.id)
                 .Select(mp => new MateriaPrimaUtilizada
                 {
                     id = mp.id,
@@ -1951,7 +1954,7 @@ public class InsumosController : Controller
                 }).ToList(),
 
             ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
-                .Where(pp => pp.id_receta == receta.id)
+                .Where(pp => pp.id_receta == rec.id)
                 .Select(pp => new ProductoPreparadoUtilizado
                 {
                     id = pp.id,
@@ -1966,7 +1969,7 @@ public class InsumosController : Controller
 
         ViewBag.Editando = true;
         ViewBag.MateriasPrimas = new SelectList(db.tabla_materias_primas.ToList(), "nombre", "nombre");
-        ViewBag.ProductosPreparados = new SelectList(db.tabla_productos_preparados.ToList(), "nombre", "nombre"); 
+        ViewBag.ProductosPreparados = new SelectList(db.tabla_productos_preparados.ToList(), "nombre", "nombre");
         return View("costos_recetas", new InsumosModel
         {
             RecetaEditada = receta,
@@ -2056,6 +2059,7 @@ public class InsumosController : Controller
                 porcion = rec.porcion ?? 0,
                 costo_total_receta = rec.costo_total_receta ?? 0,
                 costo_por_porcion = rec.costo_por_porcion ?? 0,
+
                 MateriasPrimasUtilizadas = db.costos_receta_materias_primas_utilizadas
                     .Where(mp => mp.id_receta == rec.id)
                     .Select(mp => new MateriaPrimaUtilizada
