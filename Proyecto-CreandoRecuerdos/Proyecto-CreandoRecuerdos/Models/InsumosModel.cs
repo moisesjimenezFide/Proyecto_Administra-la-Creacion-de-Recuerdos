@@ -101,8 +101,8 @@ namespace Proyecto_CreandoRecuerdos.Models
         public int porcion { get; set; }
         public decimal costo_total_receta { get; set; }
         public decimal costo_por_porcion { get; set; }
-        public List<MateriaPrimaUtilizada> MateriasPrimasUtilizadas { get; set; }
-        public List<ProductoPreparadoUtilizado> ProductosPreparadosUtilizados { get; set; }
+        public List<MateriaPrimaUtilizada> MateriasPrimasUtilizadas { get; set; } = new List<MateriaPrimaUtilizada>();
+        public List<ProductoPreparadoUtilizado> ProductosPreparadosUtilizados { get; set; } = new List<ProductoPreparadoUtilizado>();
         public string plataforma_de_envio { get; set; }
     }
 
@@ -147,9 +147,9 @@ namespace Proyecto_CreandoRecuerdos.Models
         public decimal envio { get; set; }
         public string plataforma_de_envio { get; set; }
         public decimal precio_final_sugerido { get; set; }
-        public List<EmpaqueDecoracionUtilizado> EmpaquesDecoracionesUtilizados { get; set; }
-        public List<ImplementoUtilizado> ImplementosUtilizados { get; set; }
-        public List<SuministroUtilizado> SuministrosUtilizados { get; set; }
+        public List<EmpaqueDecoracionUtilizado> EmpaquesDecoracionesUtilizados { get; set; } = new List<EmpaqueDecoracionUtilizado>();
+        public List<ImplementoUtilizado> ImplementosUtilizados { get; set; } = new List<ImplementoUtilizado>();
+        public List<SuministroUtilizado> SuministrosUtilizados { get; set; } = new List<SuministroUtilizado>();
     }
 
     public class EmpaqueDecoracionUtilizado

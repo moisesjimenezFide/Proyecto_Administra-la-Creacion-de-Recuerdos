@@ -156,7 +156,7 @@
             <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
                 <div class="col-md-4">
                     <label>Nombre</label>
-                    @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].nombre", ViewBag.EmpaquesDecoraciones as SelectList, "Seleccione un empaque o decoración", new { @class = "form-control" })
+                    @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].nombre", ViewBag.Suministros as SelectList, "Seleccione un suministro", new { @class = "form-control" })
                 </div>
                 <div class="col-md-3">
                     <label>Cantidad</label>
@@ -170,27 +170,9 @@
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                 </div>
             </div>
-                <div class="row fila-insumo template-suministro" style="display: none;">
-        <div class="col-md-4">
-            <label>Nombre</label>
-            @Html.DropDownList("SuministrosUtilizados[__index__].nombre", ViewBag.Suministros as SelectList, "Seleccione un suministro", new { @class = "form-control" })
+            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('empaques_decoraciones-container', 'template-empaque_decoracion')">+ Agregar Empaque o Decoración</button>
         </div>
-        <div class="col-md-3">
-            <label>Cantidad</label>
-            <input type="number" name="SuministrosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
-        </div>
-        <div class="col-md-3">
-            <label>Unidad de medida</label>
-            <input type="text" name="SuministrosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
-        </div>
-        <div class="col-md-2">
-            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
-        </div>
-    </div>
-    <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('suministros-container', 'template-suministro')">+ Agregar Suministro</button>
-
-</div>
-<br />
+    <br />
 
         <h4>Implementos Utilizados</h4>
         <div id="implementos-container">

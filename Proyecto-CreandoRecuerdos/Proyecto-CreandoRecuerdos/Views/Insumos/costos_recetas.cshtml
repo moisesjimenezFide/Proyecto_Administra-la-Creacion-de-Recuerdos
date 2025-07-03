@@ -96,6 +96,7 @@
             <input type="number" name="porcion" id="porcion" class="form-control" required="required" value="@(editando ? recetaEditada.porcion.ToString() : "")" />
         </div>
 
+        <!-- Materias Primas Utilizadas -->
         <h4>Materias Primas Utilizadas</h4>
         <div id="materias_primas-container">
             @if (editando && recetaEditada?.MateriasPrimasUtilizadas != null)
@@ -110,8 +111,8 @@
                             @Html.DropDownList(
                                 $"MateriasPrimasUtilizadas[{i}].nombre",
                                 ViewBag.MateriasPrimas as SelectList,
-                                materia_prima.nombre,
-                                new { @class = "form-control" }
+                                "Seleccione una materia prima",
+                                new { @class = "form-control", @value = materia_prima.nombre }
                             )
                         </div>
                         <div class="col-md-3">
@@ -132,7 +133,12 @@
             <div class="row fila-insumo template-materia_prima" style="display: none;">
                 <div class="col-md-4">
                     <label>Nombre</label>
-                    @Html.DropDownList("MateriasPrimasUtilizadas[__index__].nombre", ViewBag.MateriasPrimas as SelectList, "Seleccione una materia prima", new { @class = "form-control" })
+                    @Html.DropDownList(
+                        "MateriasPrimasUtilizadas[__index__].nombre",
+                        ViewBag.MateriasPrimas as SelectList,
+                        "Seleccione una materia prima",
+                        new { @class = "form-control" }
+                    )
                 </div>
                 <div class="col-md-3">
                     <label>Cantidad</label>
@@ -150,6 +156,7 @@
         </div>
         <br />
 
+        <!-- Productos Preparados Utilizados -->
         <h4>Productos Preparados Utilizados</h4>
         <div id="productos_preparados-container">
             @if (editando && recetaEditada?.ProductosPreparadosUtilizados != null)
@@ -164,8 +171,8 @@
                             @Html.DropDownList(
                                 $"ProductosPreparadosUtilizados[{i}].nombre",
                                 ViewBag.ProductosPreparados as SelectList,
-                                producto_preparado.nombre,
-                                new { @class = "form-control" }
+                                "Seleccione un producto preparado",
+                                new { @class = "form-control", @value = producto_preparado.nombre }
                             )
                         </div>
                         <div class="col-md-3">
@@ -181,12 +188,17 @@
                         </div>
                     </div>
                 }
-            }    
-            
+            }
+
             <div class="row fila-insumo template-producto_preparado" style="display: none;">
                 <div class="col-md-4">
                     <label>Nombre</label>
-                    @Html.DropDownList("ProductosPreparadosUtilizados[__index__].nombre", ViewBag.ProductosPreparados as SelectList, "Seleccione un producto preparado", new { @class = "form-control" })
+                    @Html.DropDownList(
+                        "ProductosPreparadosUtilizados[__index__].nombre",
+                        ViewBag.ProductosPreparados as SelectList,
+                        "Seleccione un producto preparado",
+                        new { @class = "form-control" }
+                    )
                 </div>
                 <div class="col-md-3">
                     <label>Cantidad</label>
@@ -253,44 +265,44 @@
                             <td>@receta.porcion</td>
 
                             <td>
-                                @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
-                                {
-                                    <div>@materia_prima.nombre (@materia_prima.cantidad @materia_prima.unidad_de_medida)</div>
-                                }
-                            </td>
+                                    @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                    {
+                                        <div>@materia_prima.nombre (@materia_prima.cantidad @materia_prima.unidad_de_medida)</div>
+                                    }
+                                </td>
 
                             <td>
-                                @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
-                                {
-                                    <div>@producto_preparado.nombre (@producto_preparado.cantidad @producto_preparado.unidad_de_medida)</div>
-                                }
-                            </td>
+                                    @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                    {
+                                        <div>@producto_preparado.nombre (@producto_preparado.cantidad @producto_preparado.unidad_de_medida)</div>
+                                    }
+                                </td>
 
                             <td>
-                                @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
-                                {
-                                    <div>@materia_prima.costo_por_cantidad.ToString("₡")</div>
-                                }
+                                    @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                    {
+                                        <div>@materia_prima.costo_por_cantidad.ToString("₡")</div>
+                                    }
 
-                                @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
-                                {
-                                    <div>@producto_preparado.costo_por_cantidad.ToString("₡")</div>
-                                }
-                            </td>
+                                    @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                    {
+                                        <div>@producto_preparado.costo_por_cantidad.ToString("₡")</div>
+                                    }
+                                </td>
 
                             <td>
-                                @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
-                                {
-                                    var totalcostoMateriaprima = materia_prima.cantidad * materia_prima.costo_por_cantidad;
-                                    <div>Total Costo Materia Prima: @totalcostoMateriaprima.ToString("₡")</div>
-                                }
-
-                                @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
-                                {
-                                    var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_cantidad;
-                                    <div>Total Costo Producto Preparado: @totalcostoProductopreparado.ToString("₡")</div>
-                                }
-                            </td>
+                                    @foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                    {
+                                        var totalcostoMateriaprima = materia_prima.cantidad * materia_prima.costo_por_cantidad;
+                                        <div>Total Costo Materia Prima: @totalcostoMateriaprima.ToString("₡")</div>
+                                    }
+                                
+                                    @foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                    {
+                                        var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_cantidad;
+                                        <div>Total Costo Producto Preparado: @totalcostoProductopreparado.ToString("₡")</div>
+                                    }
+                                </td>
 
                             <td>@receta.costo_total_receta.ToString("₡")</td>
                             <td>@receta.costo_por_porcion.ToString("₡")</td>
@@ -446,9 +458,18 @@
 
         function agregarFila(containerId, templateClass) {
             var container = document.getElementById(containerId);
-            var nuevaFila = document.querySelector('.' + templateClass).cloneNode(true);
-            nuevaFila.style.display = '';
-            container.appendChild(nuevaFila);
+            var index = container.querySelectorAll('.fila-insumo:not([style*="display: none"])').length;
+            var template = document.querySelector('.' + templateClass).cloneNode(true);
+            template.style.display = '';
+
+            // Reemplaza todos los [__index__] en los names de los inputs/selects
+            template.querySelectorAll('input, select').forEach(function (input) {
+                if (input.name) {
+                    input.name = input.name.replace(/\[__index__\]/g, '[' + index + ']');
+                }
+            });
+
+            container.appendChild(template);
         }
 
         function eliminarFila(boton) {
