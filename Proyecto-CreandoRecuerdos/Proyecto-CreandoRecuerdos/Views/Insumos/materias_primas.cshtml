@@ -194,8 +194,8 @@
                             <td>@materia_prima.costo_total_mas_merma_total</td>
                             <td>@materia_prima.costo_por_gramo_con_merma</td>
                             <td>
-                                <a href="@Url.Action("EditarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-custom-pink btn-sm">Editar</a>
-                                <a href="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-danger btn-sm btn-eliminar" data-url="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })">Eliminar</a>
+                                <a href="@Url.Action("EditarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                <a href="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar"  data-url="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })"></a>
                             </td>
                         </tr>
                     }

@@ -339,8 +339,8 @@
                             <td>₡@receta.costo_por_porcion.ToString("N2")</td>
 
                             <td>
-                                <a href="@Url.Action("EditarReceta", "Insumos", new { id = receta.id })" class="btn btn-custom-pink btn-sm">Editar</a>
-                                <a href="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })" class="btn btn-danger btn-sm btn-eliminar" data-url="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })">Eliminar</a>
+                                <a href="@Url.Action("EditarReceta", "Insumos", new { id = receta.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                <a href="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })"></a>
                             </td>
 
                         </tr>

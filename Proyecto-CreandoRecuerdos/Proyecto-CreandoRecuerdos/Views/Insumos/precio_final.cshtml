@@ -369,8 +369,8 @@
                             <td>@productofinal.envio.ToString("₡")</td>
                             <td><strong>@productofinal.precio_final_sugerido.ToString("₡")</strong></td>
                             <td>
-                                <a href="@Url.Action("EditarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-custom-pink btn-sm">Editar</a>
-                                <a href="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-danger btn-sm btn-eliminar" data-url="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })">Eliminar</a>
+                                <a href="@Url.Action("EditarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                <a href="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })"></a>
                             </td>
                         </tr>
                     }

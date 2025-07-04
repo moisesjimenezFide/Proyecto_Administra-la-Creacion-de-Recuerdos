@@ -38,7 +38,7 @@ body {
 .navbar-brand {
   display: flex;
   align-items: center;
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-weight: 800;
   color: white !important;
   font-size: 1.2rem;
@@ -56,7 +56,7 @@ body {
 }
 
 .navbar-nav {
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-weight: 800;
   display: flex;
   align-items: center;
@@ -64,7 +64,7 @@ body {
 
 .nav-link {
   color: white !important;
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-weight: 800;
   font-size: 0.9rem;
   padding: 0.5rem 1rem !important;
@@ -117,7 +117,7 @@ body {
   border: none;
   border-radius: 0;
   padding: 12px 15px;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
   color: var(--pos-dark);
   border-left: 3px solid transparent;
 }
@@ -221,7 +221,7 @@ body {
 
 .item-name {
   flex-grow: 1;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
 }
 
 .item-quantity {
@@ -248,13 +248,13 @@ body {
   margin: 0 5px;
   border: 1px solid #ddd;
   border-radius: 3px;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
 }
 
 .item-price {
   min-width: 70px;
   text-align: right;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
   font-weight: bold;
 }
 
@@ -274,7 +274,7 @@ body {
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
 }
 
 .summary-row.total {
@@ -286,7 +286,7 @@ body {
 }
 
 .summary-row.total span {
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-weight: 800;
 }
 
@@ -298,14 +298,14 @@ body {
 
 .order-actions .btn {
   flex: 1;
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-weight: 800;
 }
 
 .form-label,
 .form-control,
 .form-check-label {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
 }
 
 .payment-methods {
@@ -322,7 +322,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
 }
 
 .payment-method.active {
@@ -337,7 +337,7 @@ body {
 }
 
 .payment-method span {
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-weight: 800;
 }
 
@@ -355,7 +355,7 @@ body {
 }
 
 .order-number {
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-weight: 800;
   font-size: 1.2rem;
   margin: 15px 0;
@@ -427,7 +427,7 @@ body {
 }
 
 .product-title {
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-weight: 800;
   font-size: 0.9rem;
   margin-bottom: 5px;
@@ -436,14 +436,14 @@ body {
 }
 
 .product-description {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
   font-size: 0.8rem;
   color: #6c757d;
   margin-bottom: 5px;
 }
 
 .product-price {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
   color: var(--light-pink);
   font-weight: bold;
   font-size: 1rem;
@@ -648,7 +648,7 @@ body {
 }
 
 #orderStatusModal .modal-title {
-  font-family: 'Sono', sans-serif;
+  font-family: 'Sono';
   font-weight: 800;
   color: white;
 }
@@ -658,7 +658,7 @@ body {
 }
 
 #orderStatusModal .table {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Arial';
 }
 
 #orderStatusModal .table thead th {

@@ -1,7 +1,7 @@
 ﻿
 /* Estilos base */
 body {
-    font-family: 'Sono',;
+    font-family: 'Sono';
     background-color: #f8f9fa;
 }
 
@@ -121,12 +121,12 @@ body {
     }
 
 .btn-modificar {
-    background-color: var(--dorado);
-    color: var(--texto-oscuro);
+    background-color: var(--rosa-principal);
+    color: white;
 }
 
     .btn-modificar:hover {
-        background-color: #d4a971;
+        background-color: var(--rosa-principal);
         color: white;
     }
 

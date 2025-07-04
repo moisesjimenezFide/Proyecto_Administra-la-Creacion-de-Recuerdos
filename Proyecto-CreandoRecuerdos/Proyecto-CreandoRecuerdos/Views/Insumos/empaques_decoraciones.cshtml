@@ -178,8 +178,8 @@
                             <td>@empaque_decoracion.unidad_de_medida</td>
                             <td>@empaque_decoracion.costo_por_cantidad</td>
                             <td>
-                                <a href="@Url.Action("EditarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-custom-pink btn-sm">Editar</a>
-                                <a href="@Url.Action("EliminarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-danger btn-sm btn-eliminar" data-url="@Url.Action("EliminarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })">Eliminar</a>
+                                <a href="@Url.Action("EditarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                <a href="@Url.Action("EliminarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })"></a>
                             </td>
                         </tr>
                     }
