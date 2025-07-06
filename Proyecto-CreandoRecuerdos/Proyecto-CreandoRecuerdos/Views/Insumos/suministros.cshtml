@@ -70,7 +70,7 @@
     <h4><strong>Búsqueda de suministros de Limpieza e Higiene</strong></h4>
     <div class="input-group mb-4">
         <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
-        <button type="submit" class=" fas fa-search ms-1 btn btn-custom-pink"></button>
+        <button type="submit" class=" fas fa-search ms-1 btn btn-custom-pink" title="Buscar"></button>
     </div>
 </form>
 
@@ -85,6 +85,21 @@
         if (editando)
         {
             @:<input type="hidden" name="id" value="@suministroEditado.id" />
+        }
+
+        if (ViewBag.Errores != null)
+        {
+           @:<script>
+           @:     $(function () {
+           @:         Swal.fire({
+           @:             icon: 'error',
+           @:             title: 'Validación',
+           @:             html: '@Html.Raw(string.Join("<br/>", (IEnumerable<string>)ViewBag.Errores))',
+           @:             confirmButtonText: 'Aceptar',
+           @:             confirmButtonColor: '#E27AB0'
+           @:         });
+           @:     });
+           @: </script>
         }
 
         <div class="mb-3 text-start">
