@@ -1656,7 +1656,6 @@ public class InsumosController : Controller
             for (int i = 0; i < receta.MateriasPrimasUtilizadas.Count; i++)
             {
                 var mp = receta.MateriasPrimasUtilizadas[i];
-                // Si todos los campos están vacíos, es una fila vacía agregada por el usuario
                 if (string.IsNullOrWhiteSpace(mp.nombre) && mp.cantidad == 0 && string.IsNullOrWhiteSpace(mp.unidad_de_medida))
                 {
                     errores.Add($"Fila {i + 1} de Materias Primas: No puede dejar filas vacías. Elimínelas o complételas.");
@@ -1690,53 +1689,26 @@ public class InsumosController : Controller
             for (int i = 0; i < receta.ProductosPreparadosUtilizados.Count; i++)
             {
                 var pp = receta.ProductosPreparadosUtilizados[i];
-                // Si todos los campos están vacíos, es una fila vacía agregada por el usuario
                 if (string.IsNullOrWhiteSpace(pp.nombre) && pp.cantidad == 0 && string.IsNullOrWhiteSpace(pp.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Materias Primas: No puede dejar filas vacías. Elimínelas o complételas.");
+                    errores.Add($"Fila {i + 1} de Productos Preparados: No puede dejar filas vacías. Elimínelas o complételas.");
                 }
             }
         }
 
+        // Si hay errores, retornar la vista con los errores y detener el flujo
         if (errores.Any())
         {
             ViewBag.Errores = errores;
             ViewBag.MateriasPrimas = new SelectList(db.tabla_materias_primas.ToList(), "nombre", "nombre");
-            ViewBag.ProductosPreparados = new SelectList(db.tabla_productos_preparados.ToList(), "nombre", "nombre"); 
+            ViewBag.ProductosPreparados = new SelectList(db.tabla_productos_preparados.ToList(), "nombre", "nombre");
             var lista = db.tabla_costos_recetas.Select(rec => new Receta
             {
                 id = rec.id,
                 nombre = rec.nombre,
                 porcion = rec.porcion ?? 0,
                 costo_total_receta = rec.costo_total_receta ?? 0,
-                costo_por_porcion = rec.costo_por_porcion ?? 0,
-
-                /*MateriasPrimasUtilizadas = db.costos_receta_materias_primas_utilizadas
-                    .Where(mp => mp.id_receta == rec.id)
-                    .Select(mp => new MateriaPrimaUtilizada
-                    {
-                        id = mp.id,
-                        id_materia_prima_utilizada = mp.id_materia_prima_utilizada ?? 0,
-                        nombre = mp.tabla_materias_primas.nombre,
-                        cantidad = mp.cantidad ?? 0,
-                        unidad_de_medida = mp.unidad_de_medida,
-                        costo_por_cantidad = mp.costo_por_cantidad ?? 0,
-                        total_costo = mp.total_costo ?? 0
-                    }).ToList(),
-
-                ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
-                   .Where(pp => pp.id_receta == rec.id)
-                   .Select(pp => new ProductoPreparadoUtilizado
-                   {
-                       id = pp.id,
-                       id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0,
-                       nombre = pp.tabla_productos_preparados.nombre,
-                       cantidad = pp.cantidad ?? 0,
-                       unidad_de_medida = pp.unidad_de_medida,
-                       costo_por_cantidad = pp.costo_por_cantidad ?? 0,
-                       total_costo = pp.total_costo ?? 0
-                   }).ToList()*/
-
+                costo_por_porcion = rec.costo_por_porcion ?? 0
             }).ToList();
 
             return View("costos_recetas", new InsumosModel
@@ -1757,7 +1729,7 @@ public class InsumosController : Controller
         r.costo_total_receta = costoTotalReceta;
         r.costo_por_porcion = costoPorPorcion;
 
-        // Actualizar detalles: eliminar y volver a agregar (más simple para arrays)
+        // Actualizar detalles: eliminar y volver a agregar
         var existentesMP = db.costos_receta_materias_primas_utilizadas.Where(x => x.id_receta == r.id).ToList();
         foreach (var item in existentesMP) db.costos_receta_materias_primas_utilizadas.Remove(item);
 
