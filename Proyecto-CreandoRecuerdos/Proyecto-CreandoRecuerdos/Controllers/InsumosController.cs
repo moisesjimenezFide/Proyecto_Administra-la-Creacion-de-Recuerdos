@@ -1171,11 +1171,11 @@ public class InsumosController : Controller
         return RedirectToAction("suministros");
     }
 
-    // ----------- Costos de Recetas -----------
+   // ----------- Costos de Recetas -----------
 
     // Listar y buscar recetas
     public ActionResult costos_recetas(string search)
-    {
+    { 
         var query = db.tabla_costos_recetas.AsQueryable();
 
         if (!string.IsNullOrEmpty(search))
@@ -1259,111 +1259,124 @@ public class InsumosController : Controller
     {
         var errores = new List<string>();
 
-        // Validar que no exista una receta con el mismo nombre
-        if (db.tabla_costos_recetas.Any(rec => rec.nombre.ToLower() == receta.nombre.ToLower() && rec.id != receta.id))
+        // Validar nombre único
+        if (db.tabla_costos_recetas.Any(rec => rec.nombre.ToLower() == receta.nombre.ToLower()))
             errores.Add("Ya existe una receta con ese nombre.");
 
-        // Validar campos obligatorios
+        // Validar campos principales
         if (string.IsNullOrWhiteSpace(receta.nombre))
             errores.Add("El nombre de la receta es obligatorio.");
 
         if (receta.porcion <= 0)
             errores.Add("La porción debe ser mayor a cero.");
 
-        // Validar que no haya materias primas o productos preparados repetidos
-        if (receta.MateriasPrimasUtilizadas != null)
-        {
-            var nombres = receta.MateriasPrimasUtilizadas
-                .Where(mp => mp != null && !string.IsNullOrWhiteSpace(mp.nombre))
-                .Select(mp => mp.nombre.ToLower())
-                .ToList(); 
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten materias primas repetidas en la receta.");
-        }
-
-        if (receta.ProductosPreparadosUtilizados != null)
-        {
-            var nombres = receta.ProductosPreparadosUtilizados
-                .Where(pp => pp != null && !string.IsNullOrWhiteSpace(pp.nombre))
-                .Select(pp => pp.nombre.ToLower())
-                .ToList(); 
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten productos preparados repetidos en la receta.");
-        }
-
-        // Calcular el costo total de la receta
         decimal costoTotalReceta = 0;
 
-        // Calcular costos de materias primas
+        // Validar filas de Materias Primas
         if (receta.MateriasPrimasUtilizadas != null)
         {
-            foreach (var mp in receta.MateriasPrimasUtilizadas)
+            var nombresMP = new HashSet<string>();
+            for (int i = 0; i < receta.MateriasPrimasUtilizadas.Count; i++)
             {
-                var materia_prima = db.tabla_materias_primas.FirstOrDefault(m => m.nombre == mp.nombre);
-                if (materia_prima == null)
+                var mp = receta.MateriasPrimasUtilizadas[i];
+                string nombre = mp?.nombre?.Trim().ToLower();
+
+                if (string.IsNullOrWhiteSpace(mp.nombre) && mp.cantidad == 0 && string.IsNullOrWhiteSpace(mp.unidad_de_medida))
                 {
-                    errores.Add($"La materia prima '{mp.nombre}' no existe.");
+                    errores.Add($"Fila {i + 1} de Materias Primas: No puede dejar filas vacías.");
                     continue;
                 }
-                mp.id_materia_prima_utilizada = materia_prima.id;
-                mp.costo_por_cantidad = (decimal)(materia_prima.costo_por_gramo_con_merma ?? 0);
-                mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
-                costoTotalReceta += mp.total_costo;
-            }
-        }
 
-        if (receta.ProductosPreparadosUtilizados != null)
-        {
-            foreach (var pp in receta.ProductosPreparadosUtilizados)
-            {
-                var producto_preparado = db.tabla_productos_preparados.FirstOrDefault(p => p.nombre == pp.nombre);
-                if (producto_preparado == null)
-                {
-                    errores.Add($"El producto preparado '{pp.nombre}' no existe.");
-                    continue;
-                }
-                pp.id_producto_preparado_utilizado = producto_preparado.id;
-                pp.costo_por_cantidad = (decimal)(producto_preparado.costo_por_peso ?? 0);
-                pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
-                costoTotalReceta += pp.total_costo;
-            }
-        }
-
-        // Validar selección, cantidad y unidad de medida en MateriasPrimasUtilizadas
-        if (receta.MateriasPrimasUtilizadas != null)
-        {
-            foreach (var mp in receta.MateriasPrimasUtilizadas)
-            {
                 if (string.IsNullOrWhiteSpace(mp.nombre))
-                    errores.Add("Debe seleccionar una materia prima en cada fila.");
+                    errores.Add($"Fila {i + 1} de Materias Primas: Debe seleccionar una materia prima.");
 
                 if (mp.cantidad <= 0)
-                    errores.Add("La cantidad de materia prima debe ser mayor a 0.");
+                    errores.Add($"Fila {i + 1} de Materias Primas: La cantidad debe ser mayor a cero.");
 
-                if (mp.cantidad == 1 && (string.IsNullOrWhiteSpace(mp.unidad_de_medida) || mp.unidad_de_medida.ToLower() != "unidad"))
-                    errores.Add("Si la cantidad de materia prima es 1, la unidad de medida debe ser unidad.");
+                if (string.IsNullOrWhiteSpace(mp.unidad_de_medida) ||
+                    (mp.unidad_de_medida.ToLower() != "unidad" && mp.unidad_de_medida.ToLower() != "unidades"))
+                    errores.Add($"Fila {i + 1} de Materias Primas: La unidad de medida debe ser 'unidad' o 'unidades'.");
 
-                if (mp.cantidad > 1 && (string.IsNullOrWhiteSpace(mp.unidad_de_medida) || mp.unidad_de_medida.ToLower() != "unidades"))
-                    errores.Add("Si las cantidades de materias primas son mayores a 1, la unidad de medida debe ser unidades.");
+                if (mp.cantidad == 1 && mp.unidad_de_medida.ToLower() != "unidad")
+                    errores.Add($"Fila {i + 1} de Materias Primas: Si la cantidad es 1, debe ser 'unidad'.");
+
+                if (mp.cantidad > 1 && mp.unidad_de_medida.ToLower() != "unidades")
+                    errores.Add($"Fila {i + 1} de Materias Primas: Si la cantidad es mayor a 1, debe ser 'unidades'.");
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombresMP.Add(nombre))
+                        errores.Add($"Fila {i + 1} de Materias Primas: Materia prima repetida: {mp.nombre}");
+
+                    // Validar existencia en BD
+                    var materia_prima = db.tabla_materias_primas.FirstOrDefault(m => m.nombre.ToLower() == nombre);
+                    if (materia_prima == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Materias Primas: La materia prima '{mp.nombre}' no existe en el sistema.");
+                        continue;
+                    }
+
+                    // Si existe, asignar valores para cálculos
+                    mp.id_materia_prima_utilizada = materia_prima.id;
+                    mp.costo_por_cantidad = (decimal)(materia_prima.costo_por_gramo_con_merma ?? 0);
+                    mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
+                    costoTotalReceta += mp.total_costo;
+                }
+                
             }
         }
 
-        // Validar selección, cantidad y unidad de medida en ProductosPreparadosUtilizados
+        // Validar filas de Productos Preparados
         if (receta.ProductosPreparadosUtilizados != null)
         {
-            foreach (var pp in receta.ProductosPreparadosUtilizados)
+            var nombresPP = new HashSet<string>();
+            for (int i = 0; i < receta.ProductosPreparadosUtilizados.Count; i++)
             {
+                var pp = receta.ProductosPreparadosUtilizados[i];
+                string nombre = pp?.nombre?.Trim().ToLower();
+
+                if (string.IsNullOrWhiteSpace(pp.nombre) && pp.cantidad == 0 && string.IsNullOrWhiteSpace(pp.unidad_de_medida))
+                {
+                    errores.Add($"Fila {i + 1} de Productos Preparados: No puede dejar filas vacías.");
+                    continue;
+                }
+
                 if (string.IsNullOrWhiteSpace(pp.nombre))
-                    errores.Add("Debe seleccionar un producto preparado en cada fila.");
+                    errores.Add($"Fila {i + 1} de Productos Preparados: Debe seleccionar un producto preparado.");
 
                 if (pp.cantidad <= 0)
-                    errores.Add("La cantidad de producto preparado debe ser mayor a 0.");
+                    errores.Add($"Fila {i + 1} de Productos Preparados: La cantidad debe ser mayor a cero.");
 
-                if (pp.cantidad == 1 && (string.IsNullOrWhiteSpace(pp.unidad_de_medida) || pp.unidad_de_medida.ToLower() != "unidad"))
-                    errores.Add("Si la cantidad de producto preparado es 1, la unidad de medida debe ser unidad.");
+                if (string.IsNullOrWhiteSpace(pp.unidad_de_medida) ||
+                    (pp.unidad_de_medida.ToLower() != "unidad" && pp.unidad_de_medida.ToLower() != "unidades"))
+                    errores.Add($"Fila {i + 1} de Productos Preparados: La unidad debe ser 'unidad' o 'unidades'.");
 
-                if (pp.cantidad > 1 && (string.IsNullOrWhiteSpace(pp.unidad_de_medida) || pp.unidad_de_medida.ToLower() != "unidades"))
-                    errores.Add("Si las cantidades de productos preparados son mayores a 1, la unidad de medida debe ser unidades.");
+                if (pp.cantidad == 1 && pp.unidad_de_medida.ToLower() != "unidad")
+                    errores.Add($"Fila {i + 1} de Productos Preparados: Si la cantidad es 1, debe ser 'unidad'.");
+
+                if (pp.cantidad > 1 && pp.unidad_de_medida.ToLower() != "unidades")
+                    errores.Add($"Fila {i + 1} de Productos Preparados: Si la cantidad es mayor a 1, debe ser 'unidades'.");
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombresPP.Add(nombre))
+                        errores.Add($"Fila {i + 1} de Productos Preparados: Producto preparado repetido: {pp.nombre}");
+
+                    // Validar existencia en BD
+                    var producto_preparado = db.tabla_productos_preparados.FirstOrDefault(p => p.nombre.ToLower() == nombre);
+                    if (producto_preparado == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Productos Preparados: El producto preparado '{pp.nombre}' no existe en el sistema.");
+                        continue;
+                    }
+
+                    // Si existe, asignar valores para cálculos
+                    pp.id_producto_preparado_utilizado = producto_preparado.id;
+                    pp.costo_por_cantidad = (decimal)(producto_preparado.costo_por_peso ?? 0);
+                    pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
+                    costoTotalReceta += pp.total_costo;
+
+                }
             }
         }
 
@@ -1372,6 +1385,7 @@ public class InsumosController : Controller
             ViewBag.Errores = errores;
             ViewBag.MateriasPrimas = new SelectList(db.tabla_materias_primas.ToList(), "nombre", "nombre");
             ViewBag.ProductosPreparados = new SelectList(db.tabla_productos_preparados.ToList(), "nombre", "nombre");
+
             var lista = db.tabla_costos_recetas.Select(rec => new Receta
             {
                 id = rec.id,
@@ -1381,32 +1395,33 @@ public class InsumosController : Controller
                 costo_por_porcion = rec.costo_por_porcion ?? 0,
 
                 MateriasPrimasUtilizadas = db.costos_receta_materias_primas_utilizadas
-                    .Where(mp => mp.id_receta == rec.id)
-                    .Select(mp => new MateriaPrimaUtilizada
-                    {
-                        id = mp.id,
-                        id_materia_prima_utilizada = mp.id_materia_prima_utilizada ?? 0,
-                        nombre = mp.tabla_materias_primas.nombre,
-                        cantidad = mp.cantidad ?? 0,
-                        unidad_de_medida = mp.unidad_de_medida,
-                        costo_por_cantidad = mp.costo_por_cantidad ?? 0,
-                        total_costo = mp.total_costo ?? 0
-                    }).ToList(),
+                .Where(mp => mp.id_receta == rec.id)
+                .Select(mp => new MateriaPrimaUtilizada
+                {
+                    id = mp.id,
+                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada ?? 0,
+                    nombre = mp.tabla_materias_primas.nombre,
+                    cantidad = mp.cantidad ?? 0,
+                    unidad_de_medida = mp.unidad_de_medida,
+                    costo_por_cantidad = mp.costo_por_cantidad ?? 0,
+                    total_costo = mp.total_costo ?? 0
+                }).ToList(),
 
-               ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
-                   .Where(pp => pp.id_receta == rec.id)
-                   .Select(pp => new ProductoPreparadoUtilizado
-                   {
-                       id = pp.id,
-                       id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0,
-                       nombre = pp.tabla_productos_preparados.nombre,
-                       cantidad = pp.cantidad ?? 0,
-                       unidad_de_medida = pp.unidad_de_medida,
-                       costo_por_cantidad = pp.costo_por_cantidad ?? 0,
-                       total_costo = pp.total_costo ?? 0
-                   }).ToList()
+                ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
+                .Where(pp => pp.id_receta == rec.id)
+                .Select(pp => new ProductoPreparadoUtilizado
+                {
+                    id = pp.id,
+                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0,
+                    nombre = pp.tabla_productos_preparados.nombre,
+                    cantidad = pp.cantidad ?? 0,
+                    unidad_de_medida = pp.unidad_de_medida,
+                    costo_por_cantidad = pp.costo_por_cantidad ?? 0,
+                    total_costo = pp.total_costo ?? 0
+                }).ToList()
 
             }).ToList();
+
             return View("costos_recetas", new InsumosModel
             {
                 RecetaEditada = receta,
@@ -1414,7 +1429,37 @@ public class InsumosController : Controller
             });
         }
 
-        // Calcular costo por porción
+        // Calcular costos y guardar
+        if (receta.MateriasPrimasUtilizadas != null)
+        {
+            foreach (var mp in receta.MateriasPrimasUtilizadas)
+            {
+                var materiaPrima = db.tabla_materias_primas.FirstOrDefault(m => m.nombre == mp.nombre);
+                if (materiaPrima != null)
+                {
+                    mp.id_materia_prima_utilizada = materiaPrima.id;
+                    mp.costo_por_cantidad = (decimal)(materiaPrima.costo_por_gramo_con_merma ?? 0);
+                    mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
+                    costoTotalReceta += mp.total_costo;
+                }
+            }
+        }
+
+        if (receta.ProductosPreparadosUtilizados != null)
+        {
+            foreach (var pp in receta.ProductosPreparadosUtilizados)
+            {
+                var productoPreparado = db.tabla_productos_preparados.FirstOrDefault(p => p.nombre == pp.nombre);
+                if (productoPreparado != null)
+                {
+                    pp.id_producto_preparado_utilizado = productoPreparado.id;
+                    pp.costo_por_cantidad = (decimal)(productoPreparado.costo_por_peso ?? 0);
+                    pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
+                    costoTotalReceta += pp.total_costo;
+                }
+            }
+        }
+
         decimal costoPorPorcion = (receta.porcion > 0) ? (costoTotalReceta / receta.porcion) : 0;
 
         var r = new tabla_costos_recetas
@@ -1559,156 +1604,165 @@ public class InsumosController : Controller
     {
         var errores = new List<string>();
 
-        // Validar que no exista otra receta con el mismo nombre
         if (db.tabla_costos_recetas.Any(rec => rec.nombre.ToLower() == receta.nombre.ToLower() && rec.id != receta.id))
             errores.Add("Ya existe una receta con ese nombre.");
 
-        // Validar campos obligatorios
         if (string.IsNullOrWhiteSpace(receta.nombre))
             errores.Add("El nombre de la receta es obligatorio.");
 
         if (receta.porcion <= 0)
             errores.Add("La porción debe ser mayor a cero.");
 
-        // Validar materias primas y productos preparados utilizados
-        if (receta.MateriasPrimasUtilizadas != null)
-        {
-            var nombres = receta.MateriasPrimasUtilizadas
-                .Where(mp => mp != null && !string.IsNullOrWhiteSpace(mp.nombre))
-                .Select(mp => mp.nombre.ToLower())
-                .ToList();
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten materias primas repetidas en la receta.");
-        }
-
-        if (receta.ProductosPreparadosUtilizados != null)
-        {
-            var nombres = receta.ProductosPreparadosUtilizados
-                .Where(pp => pp != null && !string.IsNullOrWhiteSpace(pp.nombre))
-                .Select(pp => pp.nombre.ToLower())
-                .ToList();
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten productos preparados repetidos en la receta.");
-        }
-
-        // Calcular el costo total de la receta
         decimal costoTotalReceta = 0;
 
-        // Calcular costos de materias primas
+        // Validar filas de Materias Primas
         if (receta.MateriasPrimasUtilizadas != null)
         {
-            foreach (var mp in receta.MateriasPrimasUtilizadas.Where(mp => mp != null && !string.IsNullOrWhiteSpace(mp.nombre)))
-            {
-                var materia_prima = db.tabla_materias_primas.FirstOrDefault(m => m.nombre == mp.nombre);
-                if (materia_prima == null)
-                {
-                    errores.Add($"La materia prima '{mp.nombre}' no existe.");
-                    continue;
-                }
-                mp.id_materia_prima_utilizada = materia_prima.id;
-                mp.costo_por_cantidad = (decimal)(materia_prima.costo_por_gramo_con_merma ?? 0);
-                mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
-                costoTotalReceta += mp.total_costo;
-            }
-        }
-
-        // Calcular costos de productos preparados
-        if (receta.ProductosPreparadosUtilizados != null)
-        {
-            foreach (var pp in receta.ProductosPreparadosUtilizados.Where(pp => pp != null && !string.IsNullOrWhiteSpace(pp.nombre)))
-            {
-                var producto_preparado = db.tabla_productos_preparados.FirstOrDefault(p => p.nombre == pp.nombre);
-                if (producto_preparado == null)
-                {
-                    errores.Add($"El producto preparado '{pp.nombre}' no existe.");
-                    continue;
-                }
-                pp.id_producto_preparado_utilizado = producto_preparado.id;
-                pp.costo_por_cantidad = (decimal)(producto_preparado.costo_por_peso ?? 0);
-                pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
-                costoTotalReceta += pp.total_costo;
-            }
-        }
-
-        // Validar selección, cantidad y unidad de medida en MateriasPrimasUtilizadas
-        if (receta.MateriasPrimasUtilizadas != null)
-        {
+            var nombresMP = new HashSet<string>();
             for (int i = 0; i < receta.MateriasPrimasUtilizadas.Count; i++)
             {
                 var mp = receta.MateriasPrimasUtilizadas[i];
-                if (string.IsNullOrWhiteSpace(mp.nombre))
-                    errores.Add($"Fila {i + 1} de Materias Primas: Debe seleccionar una materia prima en cada fila.");
+                string nombre = mp?.nombre?.Trim().ToLower();
 
-                if (mp.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Materias Primas: La cantidad de materia prima debe ser mayor a 0.");
-
-                if (mp.cantidad == 1 && (string.IsNullOrWhiteSpace(mp.unidad_de_medida) || mp.unidad_de_medida.ToLower() != "unidad"))
-                    errores.Add($"Fila {i + 1} de Materias Primas: Si la cantidad de materia prima es 1, la unidad de medida debe ser unidad.");
-
-                if (mp.cantidad > 1 && (string.IsNullOrWhiteSpace(mp.unidad_de_medida) || mp.unidad_de_medida.ToLower() != "unidades"))
-                    errores.Add($"Fila {i + 1} de Materias Primas: Si las cantidades de materias primas son mayores a 1, la unidad de medida debe ser unidades.");
-            }
-        }
-
-        // Validar que no existan filas completamente vacías en MateriasPrimasUtilizadas
-        if (receta.MateriasPrimasUtilizadas != null)
-        {
-            for (int i = 0; i < receta.MateriasPrimasUtilizadas.Count; i++)
-            {
-                var mp = receta.MateriasPrimasUtilizadas[i];
                 if (string.IsNullOrWhiteSpace(mp.nombre) && mp.cantidad == 0 && string.IsNullOrWhiteSpace(mp.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Materias Primas: No puede dejar filas vacías. Elimínelas o complételas.");
+                    errores.Add($"Fila {i + 1} de Materias Primas: No puede dejar filas vacías.");
+                    continue;
                 }
+
+                if (string.IsNullOrWhiteSpace(mp.nombre))
+                    errores.Add($"Fila {i + 1} de Materias Primas: Debe seleccionar una materia prima.");
+
+                if (mp.cantidad <= 0)
+                    errores.Add($"Fila {i + 1} de Materias Primas: La cantidad debe ser mayor a cero.");
+
+                if (string.IsNullOrWhiteSpace(mp.unidad_de_medida) ||
+                    (mp.unidad_de_medida.ToLower() != "unidad" && mp.unidad_de_medida.ToLower() != "unidades"))
+                    errores.Add($"Fila {i + 1} de Materias Primas: La unidad de medida debe ser 'unidad' o 'unidades'.");
+
+                if (mp.cantidad == 1 && mp.unidad_de_medida.ToLower() != "unidad")
+                    errores.Add($"Fila {i + 1} de Materias Primas: Si la cantidad es 1, debe ser 'unidad'.");
+
+                if (mp.cantidad > 1 && mp.unidad_de_medida.ToLower() != "unidades")
+                    errores.Add($"Fila {i + 1} de Materias Primas: Si la cantidad es mayor a 1, debe ser 'unidades'.");
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombresMP.Add(nombre))
+                        errores.Add($"Fila {i + 1} de Materias Primas: Materia prima repetida: {mp.nombre}");
+                    
+                    // Validar existencia en BD
+                    var materia_prima = db.tabla_materias_primas.FirstOrDefault(m => m.nombre.ToLower() == nombre);
+                    if (materia_prima == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Materias Primas: La materia prima '{mp.nombre}' no existe en el sistema.");
+                        continue;
+                    }
+
+                    // Si existe, asignar valores para cálculos
+                    mp.id_materia_prima_utilizada = materia_prima.id;
+                    mp.costo_por_cantidad = (decimal)(materia_prima.costo_por_gramo_con_merma ?? 0);
+                    mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
+                    costoTotalReceta += mp.total_costo;
+                }
+
             }
         }
 
-        // Validar selección, cantidad y unidad de medida en ProductosPreparadosUtilizados
+        // Validar filas de Productos Preparados
         if (receta.ProductosPreparadosUtilizados != null)
         {
+            var nombresPP = new HashSet<string>();
             for (int i = 0; i < receta.ProductosPreparadosUtilizados.Count; i++)
             {
                 var pp = receta.ProductosPreparadosUtilizados[i];
-                if (string.IsNullOrWhiteSpace(pp.nombre))
-                    errores.Add($"Fila {i + 1} de Productos Preparados: Debe seleccionar un producto preparado en cada fila.");
+                string nombre = pp?.nombre?.Trim().ToLower();
 
-                if (pp.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Productos Preparados: La cantidad de producto preparado debe ser mayor a 0.");
-
-                if (pp.cantidad == 1 && (string.IsNullOrWhiteSpace(pp.unidad_de_medida) || pp.unidad_de_medida.ToLower() != "unidad"))
-                    errores.Add($"Fila {i + 1} de Productos Preparados: Si la cantidad de producto preparado es 1, la unidad de medida debe ser unidad.");
-
-                if (pp.cantidad > 1 && (string.IsNullOrWhiteSpace(pp.unidad_de_medida) || pp.unidad_de_medida.ToLower() != "unidades"))
-                    errores.Add($"Fila {i + 1} de Productos Preparados: Si las cantidades de productos preparados son mayores a 1, la unidad de medida debe ser unidades.");
-            }
-        }
-
-        // Validar que no existan filas completamente vacías en ProductosPreparadosUtilizados
-        if (receta.ProductosPreparadosUtilizados != null)
-        {
-            for (int i = 0; i < receta.ProductosPreparadosUtilizados.Count; i++)
-            {
-                var pp = receta.ProductosPreparadosUtilizados[i];
                 if (string.IsNullOrWhiteSpace(pp.nombre) && pp.cantidad == 0 && string.IsNullOrWhiteSpace(pp.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Productos Preparados: No puede dejar filas vacías. Elimínelas o complételas.");
+                    errores.Add($"Fila {i + 1} de Productos Preparados: No puede dejar filas vacías.");
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(pp.nombre))
+                    errores.Add($"Fila {i + 1} de Productos Preparados: Debe seleccionar un producto preparado.");
+
+                if (pp.cantidad <= 0)
+                    errores.Add($"Fila {i + 1} de Productos Preparados: La cantidad debe ser mayor a cero.");
+
+                if (string.IsNullOrWhiteSpace(pp.unidad_de_medida) ||
+                    (pp.unidad_de_medida.ToLower() != "unidad" && pp.unidad_de_medida.ToLower() != "unidades"))
+                    errores.Add($"Fila {i + 1} de Productos Preparados: La unidad debe ser 'unidad' o 'unidades'.");
+
+                if (pp.cantidad == 1 && pp.unidad_de_medida.ToLower() != "unidad")
+                    errores.Add($"Fila {i + 1} de Productos Preparados: Si la cantidad es 1, debe ser 'unidad'.");
+
+                if (pp.cantidad > 1 && pp.unidad_de_medida.ToLower() != "unidades")
+                    errores.Add($"Fila {i + 1} de Productos Preparados: Si la cantidad es mayor a 1, debe ser 'unidades'.");
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombresPP.Add(nombre))
+                        errores.Add($"Fila {i + 1} de Productos Preparados: Producto preparado repetido: {pp.nombre}");
+                    
+                    // Validar existencia en BD
+                    var producto_preparado = db.tabla_productos_preparados.FirstOrDefault(p => p.nombre.ToLower() == nombre);
+                    if (producto_preparado == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Productos Preparados: El producto preparado '{pp.nombre}' no existe en el sistema.");
+                        continue;
+                    }
+
+                    // Si existe, asignar valores para cálculos
+                    pp.id_producto_preparado_utilizado = producto_preparado.id;
+                    pp.costo_por_cantidad = (decimal)(producto_preparado.costo_por_peso ?? 0);
+                    pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
+                    costoTotalReceta += pp.total_costo;
+
                 }
             }
         }
 
-        // Si hay errores, retornar la vista con los errores y detener el flujo
         if (errores.Any())
         {
             ViewBag.Errores = errores;
+            ViewBag.Editando = true;
             ViewBag.MateriasPrimas = new SelectList(db.tabla_materias_primas.ToList(), "nombre", "nombre");
             ViewBag.ProductosPreparados = new SelectList(db.tabla_productos_preparados.ToList(), "nombre", "nombre");
+
             var lista = db.tabla_costos_recetas.Select(rec => new Receta
             {
                 id = rec.id,
                 nombre = rec.nombre,
                 porcion = rec.porcion ?? 0,
                 costo_total_receta = rec.costo_total_receta ?? 0,
-                costo_por_porcion = rec.costo_por_porcion ?? 0
+                costo_por_porcion = rec.costo_por_porcion ?? 0,
+
+                MateriasPrimasUtilizadas = db.costos_receta_materias_primas_utilizadas
+                .Where(mp => mp.id_receta == rec.id)
+                .Select(mp => new MateriaPrimaUtilizada
+                {
+                    id = mp.id,
+                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada ?? 0,
+                    nombre = mp.tabla_materias_primas.nombre,
+                    cantidad = mp.cantidad ?? 0,
+                    unidad_de_medida = mp.unidad_de_medida,
+                    costo_por_cantidad = mp.costo_por_cantidad ?? 0,
+                    total_costo = mp.total_costo ?? 0
+                }).ToList(),
+
+                ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
+                .Where(pp => pp.id_receta == rec.id)
+                .Select(pp => new ProductoPreparadoUtilizado
+                {
+                    id = pp.id,
+                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0,
+                    nombre = pp.tabla_productos_preparados.nombre,
+                    cantidad = pp.cantidad ?? 0,
+                    unidad_de_medida = pp.unidad_de_medida,
+                    costo_por_cantidad = pp.costo_por_cantidad ?? 0,
+                    total_costo = pp.total_costo ?? 0
+                }).ToList()
             }).ToList();
 
             return View("costos_recetas", new InsumosModel
@@ -1718,7 +1772,36 @@ public class InsumosController : Controller
             });
         }
 
-        // Calcular costo por porción
+        if (receta.MateriasPrimasUtilizadas != null)
+        {
+            foreach (var mp in receta.MateriasPrimasUtilizadas)
+            {
+                var materiaPrima = db.tabla_materias_primas.FirstOrDefault(m => m.nombre == mp.nombre);
+                if (materiaPrima != null)
+                {
+                    mp.id_materia_prima_utilizada = materiaPrima.id;
+                    mp.costo_por_cantidad = (decimal)(materiaPrima.costo_por_gramo_con_merma ?? 0);
+                    mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
+                    costoTotalReceta += mp.total_costo;
+                }
+            }
+        }
+
+        if (receta.ProductosPreparadosUtilizados != null)
+        {
+            foreach (var pp in receta.ProductosPreparadosUtilizados)
+            {
+                var productoPreparado = db.tabla_productos_preparados.FirstOrDefault(p => p.nombre == pp.nombre);
+                if (productoPreparado != null)
+                {
+                    pp.id_producto_preparado_utilizado = productoPreparado.id;
+                    pp.costo_por_cantidad = (decimal)(productoPreparado.costo_por_peso ?? 0);
+                    pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
+                    costoTotalReceta += pp.total_costo;
+                }
+            }
+        }
+
         decimal costoPorPorcion = (receta.porcion > 0) ? (costoTotalReceta / receta.porcion) : 0;
 
         var r = db.tabla_costos_recetas.Find(receta.id);
@@ -1729,16 +1812,14 @@ public class InsumosController : Controller
         r.costo_total_receta = costoTotalReceta;
         r.costo_por_porcion = costoPorPorcion;
 
-        // Actualizar detalles: eliminar y volver a agregar
-        var existentesMP = db.costos_receta_materias_primas_utilizadas.Where(x => x.id_receta == r.id).ToList();
-        foreach (var item in existentesMP) db.costos_receta_materias_primas_utilizadas.Remove(item);
-
-        var existentesPP = db.costos_receta_productos_preparados_utilizados.Where(x => x.id_receta == r.id).ToList();
-        foreach (var item in existentesPP) db.costos_receta_productos_preparados_utilizados.Remove(item);
+        db.costos_receta_materias_primas_utilizadas.RemoveRange(
+            db.costos_receta_materias_primas_utilizadas.Where(x => x.id_receta == receta.id));
+        db.costos_receta_productos_preparados_utilizados.RemoveRange(
+            db.costos_receta_productos_preparados_utilizados.Where(x => x.id_receta == receta.id));
 
         if (receta.MateriasPrimasUtilizadas != null)
         {
-            foreach (var mp in receta.MateriasPrimasUtilizadas.Where(mp => mp != null && !string.IsNullOrWhiteSpace(mp.nombre)))
+            foreach (var mp in receta.MateriasPrimasUtilizadas)
             {
                 db.costos_receta_materias_primas_utilizadas.Add(new costos_receta_materias_primas_utilizadas
                 {
@@ -1754,7 +1835,7 @@ public class InsumosController : Controller
 
         if (receta.ProductosPreparadosUtilizados != null)
         {
-            foreach (var pp in receta.ProductosPreparadosUtilizados.Where(pp => pp != null && !string.IsNullOrWhiteSpace(pp.nombre)))
+            foreach (var pp in receta.ProductosPreparadosUtilizados)
             {
                 db.costos_receta_productos_preparados_utilizados.Add(new costos_receta_productos_preparados_utilizados
                 {
@@ -1767,6 +1848,7 @@ public class InsumosController : Controller
                 });
             }
         }
+
         db.SaveChanges();
         TempData["SuccessMessage"] = "¡Receta actualizada con éxito!";
         return RedirectToAction("costos_recetas");
@@ -1800,34 +1882,41 @@ public class InsumosController : Controller
 
         if (!string.IsNullOrEmpty(search))
         {
-            query = query.Where(p =>
-                p.nombre_receta.Contains(search) ||
-                p.costo_total_receta.ToString().Contains(search) ||
-                p.margen_de_utilidad.ToString().Contains(search) ||
-                p.costo_sin_margen_de_utilidad.ToString().Contains(search) ||
-                p.costo_con_margen_de_utilidad.ToString().Contains(search) ||
-                p.costo_empaque_decoracion_utilizado.ToString().Contains(search) ||
-                p.costo_implemento_utilizado.ToString().Contains(search) ||
-                p.costo_suministro_utilizado.ToString().Contains(search) ||
-                p.iva.ToString().Contains(search) ||
-                p.impuesto_de_servicio.ToString().Contains(search) ||
-                p.envio.ToString().Contains(search) ||
-                p.plataforma_de_envio.Contains(search) ||
-                p.precio_final_sugerido.ToString().Contains(search) ||
+            query = query.Where(pf =>
+                pf.nombre_receta.Contains(search) ||
+                pf.costo_total_receta.ToString().Contains(search) ||
+                pf.margen_de_utilidad.ToString().Contains(search) ||
+                pf.costo_sin_margen_de_utilidad.ToString().Contains(search) ||
+                pf.costo_con_margen_de_utilidad.ToString().Contains(search) ||
+                pf.costo_empaque_decoracion_utilizado.ToString().Contains(search) ||
+                pf.costo_implemento_utilizado.ToString().Contains(search) ||
+                pf.costo_suministro_utilizado.ToString().Contains(search) ||
+                pf.factura.ToString().Contains(search) ||
+                pf.factura_por_insumo.ToString().Contains(search) ||
+                pf.costo_total_de_impresion_de_factura.ToString().Contains(search) ||
+                pf.costo_total_empaque_decoracion_implemento_suministro.ToString().Contains(search) ||
+                pf.costo_suministro_por_porcentaje_de_ganancia.ToString().Contains(search) ||
+                pf.costo_implemento_por_porcentaje_de_ganancia.ToString().Contains(search) ||
+                pf.costo_suministro_por_porcentaje_de_ganancia.ToString().Contains(search) ||
+                pf.iva.ToString().Contains(search) ||
+                pf.impuesto_de_servicio.ToString().Contains(search) ||
+                pf.envio.ToString().Contains(search) ||
+                pf.plataforma_de_envio.Contains(search) ||
+                pf.precio_final_sugerido.ToString().Contains(search) ||
 
-                db.precios_empaques_decoraciones_utilizados.Any(e =>
-                    e.id_precio_final_sugerido == p.id &&
+                db.precios_empaques_decoraciones_utilizados.Any(ed =>
+                    ed.id_precio_final_sugerido == pf.id &&
                     (
-                        e.tabla_empaques_decoraciones.nombre.Contains(search) ||
-                        e.cantidad.ToString().Contains(search) ||
-                        e.unidad_de_medida.Contains(search) ||
-                        e.costo_por_cantidad.ToString().Contains(search) ||
-                        e.total_costo.ToString().Contains(search)
+                        ed.tabla_empaques_decoraciones.nombre.Contains(search) ||
+                        ed.cantidad.ToString().Contains(search) ||
+                        ed.unidad_de_medida.Contains(search) ||
+                        ed.costo_por_cantidad.ToString().Contains(search) ||
+                        ed.total_costo.ToString().Contains(search)
                     )
                 ) ||
 
                 db.precios_implementos_utilizados.Any(i =>
-                    i.id_precio_final_sugerido == p.id &&
+                    i.id_precio_final_sugerido == pf.id &&
                     (
                         i.tabla_implementos.nombre.Contains(search) ||
                         i.cantidad.ToString().Contains(search) ||
@@ -1838,7 +1927,7 @@ public class InsumosController : Controller
                 ) ||
 
                 db.precios_suministros_utilizados.Any(s =>
-                    s.id_precio_final_sugerido == p.id &&
+                    s.id_precio_final_sugerido == pf.id &&
                     (
                         s.tabla_suministros.nombre.Contains(search) ||
                         s.cantidad.ToString().Contains(search) ||
@@ -1864,6 +1953,14 @@ public class InsumosController : Controller
                 costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado ?? 0,
                 costo_implemento_utilizado = pf.costo_implemento_utilizado ?? 0,
                 costo_suministro_utilizado = pf.costo_suministro_utilizado ?? 0,
+                costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo ?? 0,
+                costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0,
+                factura = pf.factura ?? 0,
+                costo_empaque_decoracion_por_porcentaje_de_ganancia = pf.costo_empaque_decoracion_por_porcentaje_de_ganancia ?? 0,
+                costo_implemento_por_porcentaje_de_ganancia = pf.costo_implemento_por_porcentaje_de_ganancia ?? 0,
+                costo_suministro_por_porcentaje_de_ganancia = pf.costo_suministro_por_porcentaje_de_ganancia ?? 0,
+                costo_total_empaque_decoracion_implemento_suministro = pf.costo_total_empaque_decoracion_implemento_suministro ?? 0,
+                factura_por_insumo = pf.factura_por_insumo ?? 0,
                 iva = pf.iva ?? 0,
                 impuesto_de_servicio = pf.impuesto_de_servicio ?? 0,
                 envio = pf.envio ?? 0,
@@ -1911,10 +2008,10 @@ public class InsumosController : Controller
             }).ToList()
         };
         ViewBag.Search = search;
-        ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre");
-        ViewBag.EmpaquesDecoraciones = new SelectList(db.tabla_empaques_decoraciones.ToList(),"nombre");
-        ViewBag.Implementos = new SelectList(db.tabla_implementos.ToList(), "nombre");
-        ViewBag.Suministros = new SelectList(db.tabla_suministros.ToList(), "nombre");
+        ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre", "nombre");
+        ViewBag.EmpaquesDecoraciones = new SelectList(db.tabla_empaques_decoraciones.ToList(), "nombre", "nombre");
+        ViewBag.Implementos = new SelectList(db.tabla_implementos.ToList(), "nombre", "nombre");
+        ViewBag.Suministros = new SelectList(db.tabla_suministros.ToList(), "nombre", "nombre"); 
         return View(producto_final);
     }
 
@@ -1927,190 +2024,277 @@ public class InsumosController : Controller
 
         // Validar que no exista un producto final con el mismo nombre de receta
         if (db.tabla_precios_finales_sugeridos.Any(p => p.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && p.id != producto_final.id))
+        {
             errores.Add("Ya existe un producto final para esa receta.");
+        }
+
+        // Validar que la receta seleccionada exista en la base de datos
+        tabla_costos_recetas receta = null;
+        if (!string.IsNullOrWhiteSpace(producto_final.nombre_receta))
+        {
+            receta = db.tabla_costos_recetas.FirstOrDefault(r => r.nombre.ToLower() == producto_final.nombre_receta.ToLower());
+            if (receta == null)
+            {
+                errores.Add($"La receta seleccionada '{producto_final.nombre_receta}' no existe en el sistema.");
+            }
+        }
 
         // Validar campos obligatorios
         if (string.IsNullOrWhiteSpace(producto_final.nombre_receta))
+        {
             errores.Add("El nombre de la receta es obligatorio.");
+        }
 
         if (producto_final.margen_de_utilidad < 0 || producto_final.margen_de_utilidad > 100)
+        { 
             errores.Add("El margen de utilidad debe estar entre 0 y 100.");
+        }
 
-        // Validar insumos repetidos y campos obligatorios
+        // Validar detalles (Empaques, Implementos, Suministros)
         if (producto_final.EmpaquesDecoracionesUtilizados != null)
         {
-            var nombres = producto_final.EmpaquesDecoracionesUtilizados.Select(ed => ed.nombre.ToLower()).ToList();
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten empaques/decoraciones repetidos.");
-            foreach (var ed in producto_final.EmpaquesDecoracionesUtilizados)
+            var nombres = new HashSet<string>();
+            for (int i = 0; i < producto_final.EmpaquesDecoracionesUtilizados.Count; i++)
             {
+                var ed = producto_final.EmpaquesDecoracionesUtilizados[i];
+                string nombre = ed?.nombre?.Trim().ToLower();
+
+                if (string.IsNullOrWhiteSpace(ed.nombre) && ed.cantidad == 0 && string.IsNullOrWhiteSpace(ed.unidad_de_medida))
+                {
+                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: No puede dejar filas vacías.");
+                    continue;
+                }
                 if (string.IsNullOrWhiteSpace(ed.nombre))
-                    errores.Add("El nombre del empaque/decoración es obligatorio.");
+                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Debe seleccionar un empaque/decoración.");
                 if (ed.cantidad <= 0)
-                    errores.Add("La cantidad del empaque/decoración debe ser mayor a cero.");
+                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La cantidad debe ser mayor a cero.");
                 if (string.IsNullOrWhiteSpace(ed.unidad_de_medida))
-                    errores.Add("La unidad de medida del empaque/decoración es obligatoria.");
+                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La unidad de medida es obligatoria.");
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombres.Add(nombre))
+                        errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Empaque/decoración repetido: {ed.nombre}");
+
+                    var empaque = db.tabla_empaques_decoraciones.FirstOrDefault(x => x.nombre.ToLower() == nombre);
+                    if (empaque == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Empaques/Decoraciones: El empaque/decoración '{ed.nombre}' no existe.");
+                        continue;
+                    }
+                    ed.id_empaque_decoracion_utilizado = empaque.id;
+                    ed.costo_por_cantidad = empaque.costo_por_cantidad ?? 0;
+                    ed.total_costo = ed.cantidad * ed.costo_por_cantidad;
+                }
             }
         }
 
         if (producto_final.ImplementosUtilizados != null)
         {
-            var nombres = producto_final.ImplementosUtilizados.Select(i => i.nombre.ToLower()).ToList();
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten implementos repetidos.");
-            foreach (var i in producto_final.ImplementosUtilizados)
+            var nombres = new HashSet<string>();
+            for (int i = 0; i < producto_final.ImplementosUtilizados.Count; i++)
             {
-                if (string.IsNullOrWhiteSpace(i.nombre))
-                    errores.Add("El nombre del implemento es obligatorio.");
-                if (i.cantidad <= 0)
-                    errores.Add("La cantidad del implemento debe ser mayor a cero.");
-                if (string.IsNullOrWhiteSpace(i.unidad_de_medida))
-                    errores.Add("La unidad de medida del implemento es obligatoria.");
+                var impl = producto_final.ImplementosUtilizados[i];
+                string nombre = impl?.nombre?.Trim().ToLower();
+
+                if (string.IsNullOrWhiteSpace(impl.nombre) && impl.cantidad == 0 && string.IsNullOrWhiteSpace(impl.unidad_de_medida))
+                {
+                    errores.Add($"Fila {i + 1} de Implementos: No puede dejar filas vacías.");
+                    continue;
+                }
+                if (string.IsNullOrWhiteSpace(impl.nombre))
+                    errores.Add($"Fila {i + 1} de Implementos: Debe seleccionar un implemento.");
+                if (impl.cantidad <= 0)
+                    errores.Add($"Fila {i + 1} de Implementos: La cantidad debe ser mayor a cero.");
+                if (string.IsNullOrWhiteSpace(impl.unidad_de_medida))
+                    errores.Add($"Fila {i + 1} de Implementos: La unidad de medida es obligatoria.");
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombres.Add(nombre))
+                        errores.Add($"Fila {i + 1} de Implementos: Implemento repetido: {impl.nombre}");
+
+                    var implemento = db.tabla_implementos.FirstOrDefault(x => x.nombre.ToLower() == nombre);
+                    if (implemento == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Implementos: El implemento '{impl.nombre}' no existe.");
+                        continue;
+                    }
+                    impl.id_implemento_utilizado = implemento.id;
+                    impl.costo_por_cantidad = implemento.costo_por_cantidad ?? 0;
+                    impl.total_costo = impl.cantidad * impl.costo_por_cantidad;
+                }
             }
         }
 
         if (producto_final.SuministrosUtilizados != null)
         {
-            var nombres = producto_final.SuministrosUtilizados.Select(s => s.nombre.ToLower()).ToList();
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten suministros repetidos.");
-            foreach (var s in producto_final.SuministrosUtilizados)
+            var nombres = new HashSet<string>();
+            for (int i = 0; i < producto_final.SuministrosUtilizados.Count; i++)
             {
-                if (string.IsNullOrWhiteSpace(s.nombre))
-                    errores.Add("El nombre del suministro es obligatorio.");
-                if (s.cantidad <= 0)
-                    errores.Add("La cantidad del suministro debe ser mayor a cero.");
-                if (string.IsNullOrWhiteSpace(s.unidad_de_medida))
-                    errores.Add("La unidad de medida del suministro es obligatoria.");
+                var sum = producto_final.SuministrosUtilizados[i];
+                string nombre = sum?.nombre?.Trim().ToLower();
+
+                if (string.IsNullOrWhiteSpace(sum.nombre) && sum.cantidad == 0 && string.IsNullOrWhiteSpace(sum.unidad_de_medida))
+                {
+                    errores.Add($"Fila {i + 1} de Suministros: No puede dejar filas vacías.");
+                    continue;
+                }
+                if (string.IsNullOrWhiteSpace(sum.nombre))
+                    errores.Add($"Fila {i + 1} de Suministros: Debe seleccionar un suministro.");
+                if (sum.cantidad <= 0)
+                    errores.Add($"Fila {i + 1} de Suministros: La cantidad debe ser mayor a cero.");
+                if (string.IsNullOrWhiteSpace(sum.unidad_de_medida))
+                    errores.Add($"Fila {i + 1} de Suministros: La unidad de medida es obligatoria.");
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombres.Add(nombre))
+                        errores.Add($"Fila {i + 1} de Suministros: Suministro repetido: {sum.nombre}");
+
+                    var suministro = db.tabla_suministros.FirstOrDefault(x => x.nombre.ToLower() == nombre);
+                    if (suministro == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Suministros: El suministro '{sum.nombre}' no existe.");
+                        continue;
+                    }
+                    sum.id_suministro_utilizado = suministro.id;
+                    sum.costo_por_cantidad = suministro.costo_por_cantidad ?? 0;
+                    sum.total_costo = sum.cantidad * sum.costo_por_cantidad;
+                }
             }
         }
 
-        // Validar existencia de EmpaquesDecoraciones
-        if (producto_final.EmpaquesDecoracionesUtilizados != null)
-        {
-            foreach (var ed in producto_final.EmpaquesDecoracionesUtilizados)
-            {
-                var empaque = db.tabla_empaques_decoraciones.FirstOrDefault(x => x.nombre == ed.nombre);
-                if (empaque == null)
-                    errores.Add($"El empaque/decoración '{ed.nombre}' no existe.");
-            }
-        }
-
-        // Validar existencia de Implementos
-        if (producto_final.ImplementosUtilizados != null)
-        {
-            foreach (var i in producto_final.ImplementosUtilizados)
-            {
-                var implemento = db.tabla_implementos.FirstOrDefault(x => x.nombre == i.nombre);
-                if (implemento == null)
-                    errores.Add($"El implemento '{i.nombre}' no existe.");
-            }
-        }
-
-        // Validar existencia de Suministros
-        if (producto_final.SuministrosUtilizados != null)
-        {
-            foreach (var s in producto_final.SuministrosUtilizados)
-            {
-                var suministro = db.tabla_suministros.FirstOrDefault(x => x.nombre == s.nombre);
-                if (suministro == null)
-                    errores.Add($"El suministro '{s.nombre}' no existe.");
-            }
-        }
 
         if (errores.Any())
         {
             ViewBag.Errores = errores;
-            ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre");
-            ViewBag.EmpaquesDecoraciones = new SelectList(db.tabla_empaques_decoraciones.ToList(), "nombre");
-            ViewBag.Implementos = new SelectList(db.tabla_implementos.ToList(), "nombre");
-            ViewBag.Suministros = new SelectList(db.tabla_suministros.ToList(), "nombre");
-            var lista = db.tabla_precios_finales_sugeridos.Select(pf => new ProductoFinal
+            ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre", "nombre");
+            ViewBag.EmpaquesDecoraciones = new SelectList(db.tabla_empaques_decoraciones.ToList(), "nombre", "nombre");
+            ViewBag.Implementos = new SelectList(db.tabla_implementos.ToList(), "nombre", "nombre");
+            ViewBag.Suministros = new SelectList(db.tabla_suministros.ToList(), "nombre", "nombre");
+            var productosFinales = db.tabla_precios_finales_sugeridos.ToList().Select(pf => new ProductoFinal
             {
                 id = pf.id,
-                nombre_receta = pf.nombre_receta
+                nombre_receta = pf.nombre_receta,
+                costo_total_receta = pf.costo_total_receta ?? 0,
+                margen_de_utilidad = pf.margen_de_utilidad ?? 0,
+                costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad ?? 0,
+                costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad ?? 0,
+                costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado ?? 0,
+                costo_implemento_utilizado = pf.costo_implemento_utilizado ?? 0,
+                costo_suministro_utilizado = pf.costo_suministro_utilizado ?? 0,
+                factura = pf.factura ?? 0,
+                factura_por_insumo = pf.factura_por_insumo ?? 0,
+                costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura  ?? 0,
+                costo_total_empaque_decoracion_implemento_suministro = pf.costo_total_empaque_decoracion_implemento_suministro ?? 0,
+                costo_suministro_por_porcentaje_de_ganancia = pf.costo_suministro_por_porcentaje_de_ganancia ?? 0,
+                costo_implemento_por_porcentaje_de_ganancia = pf.costo_implemento_por_porcentaje_de_ganancia ?? 0,
+                costo_empaque_decoracion_por_porcentaje_de_ganancia = pf.costo_empaque_decoracion_por_porcentaje_de_ganancia ?? 0,
+                iva = pf.iva ?? 0,
+                impuesto_de_servicio = pf.impuesto_de_servicio ?? 0,
+                envio = pf.envio ?? 0,
+                plataforma_de_envio = pf.plataforma_de_envio,
+                precio_final_sugerido = pf.precio_final_sugerido ?? 0,
             }).ToList();
             return View("precio_final", new InsumosModel
             {
                 ProductoFinalEditado = producto_final,
-                ProductosFinales = lista
+                ProductosFinales = productosFinales
             });
         }
 
-        // Obtener el costo total de la receta seleccionada
-        var receta = db.tabla_costos_recetas.FirstOrDefault(r => r.nombre == producto_final.nombre_receta);
-        if (receta == null)
-        {
-            ModelState.AddModelError("nombre_receta", "La receta seleccionada no existe.");
-            return View("precio_final", new InsumosModel
-            {
-                ProductoFinalEditado = producto_final,
-                ProductosFinales = db.tabla_precios_finales_sugeridos.Select(pf => new ProductoFinal
-                {
-                    id = pf.id,
-                    nombre_receta = pf.nombre_receta
-                }).ToList()
-            });
-        }
+
+        // Calcula los totales de insumos
+        decimal totalEmpaques = producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.total_costo) ?? 0;
+        decimal totalImplementos = producto_final.ImplementosUtilizados?.Sum(i => i.total_costo) ?? 0;
+        decimal totalSuministros = producto_final.SuministrosUtilizados?.Sum(s => s.total_costo) ?? 0;
+
+        // Calcula el costo de la receta desde la base de datos
         decimal costoReceta = receta?.costo_total_receta ?? 0;
+        decimal margenUtilidad = producto_final.margen_de_utilidad;
+        decimal costoSinUtilidad = 100 - margenUtilidad;
+        decimal costoConUtilidad = costoReceta / costoSinUtilidad;
 
-        // Calcular totales de empaques, implementos y suministros
-        decimal totalEmpaques = 0, totalImplementos = 0, totalSuministros = 0;
-
-        if (producto_final.EmpaquesDecoracionesUtilizados != null)
+        // 1. Costo de impresión de factura por insumo (primer suministro)
+        decimal costoImpresionFacturaPorInsumo = 0;
+        var primerSuministro = producto_final.SuministrosUtilizados?.FirstOrDefault();
+        if (primerSuministro != null)
         {
-            foreach (var e in producto_final.EmpaquesDecoracionesUtilizados)
-            {
-                var empaque = db.tabla_empaques_decoraciones.FirstOrDefault(x => x.nombre == e.nombre);
-                decimal costoUnitario = empaque?.costo_por_cantidad ?? 0;
-                e.costo_por_cantidad = costoUnitario;
-                e.total_costo = e.cantidad * costoUnitario;
-                totalEmpaques += e.total_costo;
-            }
+            costoImpresionFacturaPorInsumo = primerSuministro.costo_por_cantidad / 20;
         }
 
-        if (producto_final.ImplementosUtilizados != null)
+        // 2. Costo total de impresión de factura
+        decimal porcion = receta?.porcion ?? 0;
+        decimal costoTotalImpresionFactura = porcion * costoImpresionFacturaPorInsumo;
+
+        // 3. Factura (suma de totales + impresión)
+        decimal factura = totalImplementos + totalEmpaques + totalSuministros + costoTotalImpresionFactura;
+
+        // 4. Costos por porcentaje de ganancia
+        decimal costoEmpaqueDecoracionPorPorcentajeDeGanancia = factura * 0.10m;
+        decimal costoImplementoPorPorcentajeDeGanancia = factura * 0.10m;
+        decimal costoSuministroPorPorcentajeDeGanancia = factura * 0.10m;
+
+        // 5. Costo total empaque, implemento, suministro
+        decimal costoTotalEmpaqueDecoracionImplementoSuministro =
+            costoEmpaqueDecoracionPorPorcentajeDeGanancia +
+            costoImplementoPorPorcentajeDeGanancia +
+            costoSuministroPorPorcentajeDeGanancia;
+
+        // 6. Factura por insumo (suma de costos por unidad de todos los insumos + impresión)
+        decimal facturaPorInsumo = 0;
+        facturaPorInsumo += producto_final.ImplementosUtilizados?.Sum(i => i.costo_por_cantidad) ?? 0;
+        facturaPorInsumo += producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.costo_por_cantidad) ?? 0;
+        facturaPorInsumo += producto_final.SuministrosUtilizados?.Sum(s => s.costo_por_cantidad) ?? 0;
+        facturaPorInsumo += costoImpresionFacturaPorInsumo;
+
+        // 7. IVA y Servicio
+        decimal baseImpuestos = costoConUtilidad + costoEmpaqueDecoracionPorPorcentajeDeGanancia + costoImplementoPorPorcentajeDeGanancia + costoSuministroPorPorcentajeDeGanancia;
+        decimal iva = baseImpuestos * 0.13m;
+        decimal servicio = baseImpuestos * 0.10m;
+
+        // 8. Envío (igual que antes)
+        decimal envio = 0;
+        switch (producto_final.plataforma_de_envio)
         {
-            foreach (var i in producto_final.ImplementosUtilizados)
-            {
-                var implemento = db.tabla_implementos.FirstOrDefault(x => x.nombre == i.nombre);
-                decimal costoUnitario = implemento?.costo_por_cantidad ?? 0;
-                i.costo_por_cantidad = costoUnitario;
-                i.total_costo = i.cantidad * costoUnitario;
-                totalImplementos += i.total_costo;
-            }
+            case "PedidosYa (25%)":
+            case "Rappi (25%)":
+                envio = baseImpuestos * 0.25m;
+                break;
+            case "DidiFood (30%)":
+                envio = baseImpuestos * 0.30m;
+                break;
+            case "UberEats (40%)":
+                envio = baseImpuestos * 0.40m;
+                break;
+            default: // Propio (0%) u otros
+                envio = 0;
+                break;
         }
 
-        if (producto_final.SuministrosUtilizados != null)
-        {
-            foreach (var s in producto_final.SuministrosUtilizados)
-            {
-                var suministro = db.tabla_suministros.FirstOrDefault(x => x.nombre == s.nombre);
-                decimal costoUnitario = suministro?.costo_por_cantidad ?? 0;
-                s.costo_por_cantidad = costoUnitario;
-                s.total_costo = s.cantidad * costoUnitario;
-                totalSuministros += s.total_costo;
-            }
-        }
-
-        decimal margen = producto_final.margen_de_utilidad;
-        decimal costoConUtilidad = costoReceta * (1 + margen / 100);
-        decimal iva = producto_final.iva;
-        decimal servicio = producto_final.impuesto_de_servicio;
-        decimal envio = producto_final.envio;
-        decimal precioFinal = costoConUtilidad + totalEmpaques + totalImplementos + totalSuministros + iva + servicio + envio;
+        // 9. Precio final sugerido
+        decimal precioFinal = baseImpuestos + iva + servicio + envio;
 
         var precio = new tabla_precios_finales_sugeridos
         {
             id_receta = receta?.id,
             nombre_receta = producto_final.nombre_receta,
             costo_total_receta = costoReceta,
-            margen_de_utilidad = margen,
+            margen_de_utilidad = margenUtilidad,
             costo_sin_margen_de_utilidad = costoReceta,
             costo_con_margen_de_utilidad = costoConUtilidad,
             costo_empaque_decoracion_utilizado = totalEmpaques,
             costo_implemento_utilizado = totalImplementos,
             costo_suministro_utilizado = totalSuministros,
+            costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorInsumo,
+            costo_total_de_impresion_de_factura = costoTotalImpresionFactura,
+            factura = factura,
+            costo_empaque_decoracion_por_porcentaje_de_ganancia = costoEmpaqueDecoracionPorPorcentajeDeGanancia,
+            costo_implemento_por_porcentaje_de_ganancia = costoImplementoPorPorcentajeDeGanancia,
+            costo_suministro_por_porcentaje_de_ganancia = costoSuministroPorPorcentajeDeGanancia,
+            costo_total_empaque_decoracion_implemento_suministro = costoTotalEmpaqueDecoracionImplementoSuministro,
+            factura_por_insumo = facturaPorInsumo,
             iva = iva,
             impuesto_de_servicio = servicio,
             envio = envio,
@@ -2119,6 +2303,7 @@ public class InsumosController : Controller
         };
         db.tabla_precios_finales_sugeridos.Add(precio);
         db.SaveChanges();
+
 
         if (producto_final.EmpaquesDecoracionesUtilizados != null)
         {
@@ -2172,8 +2357,8 @@ public class InsumosController : Controller
         return RedirectToAction("precio_final");
     }
 
-//Editar un producto final existente (GET id)
-public ActionResult EditarProductoFinal(int id)
+    //Editar un producto final existente (GET id)
+    public ActionResult EditarProductoFinal(int id)
     {
         var pf = db.tabla_precios_finales_sugeridos.Find(id);
         if (pf == null) return HttpNotFound();
@@ -2181,7 +2366,6 @@ public ActionResult EditarProductoFinal(int id)
         var producto_final = new ProductoFinal
         {
             id = pf.id,
-            id_receta = pf.id_receta ?? 0,
             nombre_receta = pf.nombre_receta,
             costo_total_receta = pf.costo_total_receta ?? 0,
             margen_de_utilidad = pf.margen_de_utilidad ?? 0,
@@ -2190,6 +2374,14 @@ public ActionResult EditarProductoFinal(int id)
             costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado ?? 0,
             costo_implemento_utilizado = pf.costo_implemento_utilizado ?? 0,
             costo_suministro_utilizado = pf.costo_suministro_utilizado ?? 0,
+            costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo ?? 0,
+            costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0,
+            factura = pf.factura ?? 0,
+            costo_empaque_decoracion_por_porcentaje_de_ganancia = pf.costo_empaque_decoracion_por_porcentaje_de_ganancia ?? 0,
+            costo_implemento_por_porcentaje_de_ganancia = pf.costo_implemento_por_porcentaje_de_ganancia ?? 0,
+            costo_suministro_por_porcentaje_de_ganancia = pf.costo_suministro_por_porcentaje_de_ganancia ?? 0,
+            costo_total_empaque_decoracion_implemento_suministro = pf.costo_total_empaque_decoracion_implemento_suministro ?? 0,
+            factura_por_insumo = pf.factura_por_insumo ?? 0,
             iva = pf.iva ?? 0,
             impuesto_de_servicio = pf.impuesto_de_servicio ?? 0,
             envio = pf.envio ?? 0,
@@ -2236,11 +2428,9 @@ public ActionResult EditarProductoFinal(int id)
                 }).ToList()
         };
 
-        // Obtén el listado de productos finales
-        var lista = db.tabla_precios_finales_sugeridos.Select(prodfinal => new ProductoFinal
+        var productosFinales = db.tabla_precios_finales_sugeridos.ToList().Select(prodfinal => new ProductoFinal
         {
             id = prodfinal.id,
-            id_receta = prodfinal.id_receta ?? 0,
             nombre_receta = prodfinal.nombre_receta,
             costo_total_receta = prodfinal.costo_total_receta ?? 0,
             margen_de_utilidad = prodfinal.margen_de_utilidad ?? 0,
@@ -2249,11 +2439,20 @@ public ActionResult EditarProductoFinal(int id)
             costo_empaque_decoracion_utilizado = prodfinal.costo_empaque_decoracion_utilizado ?? 0,
             costo_implemento_utilizado = prodfinal.costo_implemento_utilizado ?? 0,
             costo_suministro_utilizado = prodfinal.costo_suministro_utilizado ?? 0,
+            costo_de_impresion_de_factura_por_insumo = prodfinal.costo_de_impresion_de_factura_por_insumo ?? 0,
+            costo_total_de_impresion_de_factura = prodfinal.costo_total_de_impresion_de_factura ?? 0,
+            factura = prodfinal.factura ?? 0,
+            costo_empaque_decoracion_por_porcentaje_de_ganancia = prodfinal.costo_empaque_decoracion_por_porcentaje_de_ganancia ?? 0,
+            costo_implemento_por_porcentaje_de_ganancia = prodfinal.costo_implemento_por_porcentaje_de_ganancia ?? 0,
+            costo_suministro_por_porcentaje_de_ganancia = prodfinal.costo_suministro_por_porcentaje_de_ganancia ?? 0,
+            costo_total_empaque_decoracion_implemento_suministro = prodfinal.costo_total_empaque_decoracion_implemento_suministro ?? 0,
+            factura_por_insumo = prodfinal.factura_por_insumo ?? 0,
             iva = prodfinal.iva ?? 0,
             impuesto_de_servicio = prodfinal.impuesto_de_servicio ?? 0,
             envio = prodfinal.envio ?? 0,
             plataforma_de_envio = prodfinal.plataforma_de_envio,
             precio_final_sugerido = prodfinal.precio_final_sugerido ?? 0,
+
             EmpaquesDecoracionesUtilizados = db.precios_empaques_decoraciones_utilizados
                 .Where(ed => ed.id_precio_final_sugerido == prodfinal.id)
                 .Select(ed => new EmpaqueDecoracionUtilizado
@@ -2266,8 +2465,9 @@ public ActionResult EditarProductoFinal(int id)
                     costo_por_cantidad = ed.costo_por_cantidad ?? 0,
                     total_costo = ed.total_costo ?? 0
                 }).ToList(),
+            
             ImplementosUtilizados = db.precios_implementos_utilizados
-                .Where(i => i.id_precio_final_sugerido == pf.id)
+                .Where(i => i.id_precio_final_sugerido == prodfinal.id)
                 .Select(i => new ImplementoUtilizado
                 {
                     id = i.id,
@@ -2278,8 +2478,9 @@ public ActionResult EditarProductoFinal(int id)
                     costo_por_cantidad = i.costo_por_cantidad ?? 0,
                     total_costo = i.total_costo ?? 0
                 }).ToList(),
+            
             SuministrosUtilizados = db.precios_suministros_utilizados
-                .Where(s => s.id_precio_final_sugerido == pf.id)
+                .Where(s => s.id_precio_final_sugerido == prodfinal.id)
                 .Select(s => new SuministroUtilizado
                 {
                     id = s.id,
@@ -2293,14 +2494,14 @@ public ActionResult EditarProductoFinal(int id)
         }).ToList();
 
         ViewBag.Editando = true;
-        ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre");
-        ViewBag.EmpaquesDecoraciones = new SelectList(db.tabla_empaques_decoraciones.ToList(), "nombre");
-        ViewBag.Implementos = new SelectList(db.tabla_implementos.ToList(), "nombre");
-        ViewBag.Suministros = new SelectList(db.tabla_suministros.ToList(), "nombre");
+        ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre", "nombre", producto_final.nombre_receta);
+        ViewBag.EmpaquesDecoraciones = new SelectList(db.tabla_empaques_decoraciones.ToList(), "nombre", "nombre");
+        ViewBag.Implementos = new SelectList(db.tabla_implementos.ToList(), "nombre", "nombre");
+        ViewBag.Suministros = new SelectList(db.tabla_suministros.ToList(), "nombre", "nombre"); 
         return View("precio_final", new InsumosModel
         {
             ProductoFinalEditado = producto_final,
-            ProductosFinales = lista
+            ProductosFinales = productosFinales
         });
     }
 
@@ -2311,63 +2512,162 @@ public ActionResult EditarProductoFinal(int id)
     {
         var errores = new List<string>();
 
-        // Validar que no exista otro producto final con el mismo nombre de receta
         if (db.tabla_precios_finales_sugeridos.Any(pf => pf.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && pf.id != producto_final.id))
             errores.Add("Ya existe un producto final para esa receta.");
 
-        // Validar campos obligatorios
         if (string.IsNullOrWhiteSpace(producto_final.nombre_receta))
             errores.Add("El nombre de la receta es obligatorio.");
 
         if (producto_final.margen_de_utilidad < 0 || producto_final.margen_de_utilidad > 100)
             errores.Add("El margen de utilidad debe estar entre 0 y 100.");
 
-        // Validar que no haya empaques, implementos o suministros repetidos
+        // Validar detalles (Empaques, Implementos, Suministros)
         if (producto_final.EmpaquesDecoracionesUtilizados != null)
         {
-            var nombres = producto_final.EmpaquesDecoracionesUtilizados.Select(ed => ed.nombre.ToLower()).ToList();
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten empaques/decoraciones repetidos.");
-            foreach (var ed in producto_final.EmpaquesDecoracionesUtilizados)
+            var nombres = new HashSet<string>();
+            for (int i = 0; i < producto_final.EmpaquesDecoracionesUtilizados.Count; i++)
             {
+                var ed = producto_final.EmpaquesDecoracionesUtilizados[i];
+                string nombre = ed?.nombre?.Trim().ToLower();
+
+                if (string.IsNullOrWhiteSpace(ed.nombre) && ed.cantidad == 0 && string.IsNullOrWhiteSpace(ed.unidad_de_medida))
+                {
+                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: No puede dejar filas vacías.");
+                    continue;
+                }
+
                 if (string.IsNullOrWhiteSpace(ed.nombre))
-                    errores.Add("El nombre del empaque/decoración es obligatorio.");
+                {
+                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Debe seleccionar un empaque/decoración.");
+                }
+
                 if (ed.cantidad <= 0)
-                    errores.Add("La cantidad del empaque/decoración debe ser mayor a cero.");
+                {
+                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La cantidad debe ser mayor a cero.");
+                }
+
                 if (string.IsNullOrWhiteSpace(ed.unidad_de_medida))
-                    errores.Add("La unidad de medida del empaque/decoración es obligatoria.");
+                {
+                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La unidad de medida es obligatoria.");
+                }
+                
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombres.Add(nombre))
+                    {
+                        errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Empaque/decoración repetido: {ed.nombre}");
+                    }
+
+                    var empaque = db.tabla_empaques_decoraciones.FirstOrDefault(x => x.nombre.ToLower() == nombre);
+                    
+                    if (empaque == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Empaques/Decoraciones: El empaque/decoración '{ed.nombre}' no existe.");
+                        continue;
+                    }
+                    ed.id_empaque_decoracion_utilizado = empaque.id;
+                    ed.costo_por_cantidad = empaque.costo_por_cantidad ?? 0;
+                    ed.total_costo = ed.cantidad * ed.costo_por_cantidad;
+                }
             }
         }
 
         if (producto_final.ImplementosUtilizados != null)
         {
-            var nombres = producto_final.ImplementosUtilizados.Select(i => i.nombre.ToLower()).ToList();
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten implementos repetidos.");
-            foreach (var i in producto_final.ImplementosUtilizados)
+            var nombres = new HashSet<string>();
+            for (int i = 0; i < producto_final.ImplementosUtilizados.Count; i++)
             {
-                if (string.IsNullOrWhiteSpace(i.nombre))
-                    errores.Add("El nombre del implemento es obligatorio.");
-                if (i.cantidad <= 0)
-                    errores.Add("La cantidad del implemento debe ser mayor a cero.");
-                if (string.IsNullOrWhiteSpace(i.unidad_de_medida))
-                    errores.Add("La unidad de medida del implemento es obligatoria.");
+                var impl = producto_final.ImplementosUtilizados[i];
+                string nombre = impl?.nombre?.Trim().ToLower();
+
+                if (string.IsNullOrWhiteSpace(impl.nombre) && impl.cantidad == 0 && string.IsNullOrWhiteSpace(impl.unidad_de_medida))
+                {
+                    errores.Add($"Fila {i + 1} de Implementos: No puede dejar filas vacías.");
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(impl.nombre))
+                {
+                    errores.Add($"Fila {i + 1} de Implementos: Debe seleccionar un implemento.");
+                }
+
+                if (impl.cantidad <= 0)
+                {
+                    errores.Add($"Fila {i + 1} de Implementos: La cantidad debe ser mayor a cero.");
+                }
+
+                if (string.IsNullOrWhiteSpace(impl.unidad_de_medida))
+                {
+                    errores.Add($"Fila {i + 1} de Implementos: La unidad de medida es obligatoria.");
+                }
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombres.Add(nombre))
+                    {
+                        errores.Add($"Fila {i + 1} de Implementos: Implemento repetido: {impl.nombre}");
+                    }
+
+                    var implemento = db.tabla_implementos.FirstOrDefault(x => x.nombre.ToLower() == nombre);
+                    
+                    if (implemento == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Implementos: El implemento '{impl.nombre}' no existe.");
+                        continue;
+                    }
+                    impl.id_implemento_utilizado = implemento.id;
+                    impl.costo_por_cantidad = implemento.costo_por_cantidad ?? 0;
+                    impl.total_costo = impl.cantidad * impl.costo_por_cantidad;
+                }
             }
         }
 
         if (producto_final.SuministrosUtilizados != null)
         {
-            var nombres = producto_final.SuministrosUtilizados.Select(s => s.nombre.ToLower()).ToList();
-            if (nombres.Count != nombres.Distinct().Count())
-                errores.Add("No se permiten suministros repetidos.");
-            foreach (var s in producto_final.SuministrosUtilizados)
+            var nombres = new HashSet<string>();
+            for (int i = 0; i < producto_final.SuministrosUtilizados.Count; i++)
             {
-                if (string.IsNullOrWhiteSpace(s.nombre))
-                    errores.Add("El nombre del suministro es obligatorio.");
-                if (s.cantidad <= 0)
-                    errores.Add("La cantidad del suministro debe ser mayor a cero.");
-                if (string.IsNullOrWhiteSpace(s.unidad_de_medida))
-                    errores.Add("La unidad de medida del suministro es obligatoria.");
+                var sum = producto_final.SuministrosUtilizados[i];
+                string nombre = sum?.nombre?.Trim().ToLower();
+
+                if (string.IsNullOrWhiteSpace(sum.nombre) && sum.cantidad == 0 && string.IsNullOrWhiteSpace(sum.unidad_de_medida))
+                {
+                    errores.Add($"Fila {i + 1} de Suministros: No puede dejar filas vacías.");
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(sum.nombre))
+                {
+                    errores.Add($"Fila {i + 1} de Suministros: Debe seleccionar un suministro.");
+                }
+
+                if (sum.cantidad <= 0)
+                {
+                    errores.Add($"Fila {i + 1} de Suministros: La cantidad debe ser mayor a cero.");
+                }
+
+                if (string.IsNullOrWhiteSpace(sum.unidad_de_medida))
+                {
+                    errores.Add($"Fila {i + 1} de Suministros: La unidad de medida es obligatoria.");
+                }
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                {
+                    if (!nombres.Add(nombre))
+                    {
+                        errores.Add($"Fila {i + 1} de Suministros: Suministro repetido: {sum.nombre}");
+                    }
+
+                    var suministro = db.tabla_suministros.FirstOrDefault(x => x.nombre.ToLower() == nombre);
+                    if (suministro == null)
+                    {
+                        errores.Add($"Fila {i + 1} de Suministros: El suministro '{sum.nombre}' no existe.");
+                        continue;
+                    }
+                    sum.id_suministro_utilizado = suministro.id;
+                    sum.costo_por_cantidad = suministro.costo_por_cantidad ?? 0;
+                    sum.total_costo = sum.cantidad * sum.costo_por_cantidad;
+                }
             }
         }
 
@@ -2380,55 +2680,41 @@ public ActionResult EditarProductoFinal(int id)
             errores.Add("La receta seleccionada no existe.");
         decimal costoReceta = receta?.costo_total_receta ?? 0;
 
-        // Validar existencia de EmpaquesDecoraciones
-        if (producto_final.EmpaquesDecoracionesUtilizados != null)
-        {
-            foreach (var ed in producto_final.EmpaquesDecoracionesUtilizados)
-            {
-                var empaque = db.tabla_empaques_decoraciones.FirstOrDefault(x => x.nombre == ed.nombre);
-                if (empaque == null)
-                    errores.Add($"El empaque/decoración '{ed.nombre}' no existe.");
-            }
-        }
-
-        // Validar existencia de Implementos
-        if (producto_final.ImplementosUtilizados != null)
-        {
-            foreach (var i in producto_final.ImplementosUtilizados)
-            {
-                var implemento = db.tabla_implementos.FirstOrDefault(x => x.nombre == i.nombre);
-                if (implemento == null)
-                    errores.Add($"El implemento '{i.nombre}' no existe.");
-            }
-        }
-
-        // Validar existencia de Suministros
-        if (producto_final.SuministrosUtilizados != null)
-        {
-            foreach (var s in producto_final.SuministrosUtilizados)
-            {
-                var suministro = db.tabla_suministros.FirstOrDefault(x => x.nombre == s.nombre);
-                if (suministro == null)
-                    errores.Add($"El suministro '{s.nombre}' no existe.");
-            }
-        }
-
         if (errores.Any())
         {
             ViewBag.Errores = errores;
-            ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre");
-            ViewBag.EmpaquesDecoraciones = new SelectList(db.tabla_empaques_decoraciones.ToList(), "nombre");
-            ViewBag.Implementos = new SelectList(db.tabla_implementos.ToList(), "nombre");
-            ViewBag.Suministros = new SelectList(db.tabla_suministros.ToList(), "nombre");
-            var lista = db.tabla_precios_finales_sugeridos.Select(pf => new ProductoFinal
+            ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre", "nombre");
+            ViewBag.EmpaquesDecoraciones = new SelectList(db.tabla_empaques_decoraciones.ToList(), "nombre", "nombre");
+            ViewBag.Implementos = new SelectList(db.tabla_implementos.ToList(), "nombre", "nombre");
+            ViewBag.Suministros = new SelectList(db.tabla_suministros.ToList(), "nombre", "nombre");
+            var productosFinales = db.tabla_precios_finales_sugeridos.ToList().Select(pf => new ProductoFinal
             {
                 id = pf.id,
-                nombre_receta = pf.nombre_receta
+                nombre_receta = pf.nombre_receta,
+                costo_total_receta = pf.costo_total_receta ?? 0,
+                margen_de_utilidad = pf.margen_de_utilidad ?? 0,
+                costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad ?? 0,
+                costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad ?? 0,
+                costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado ?? 0,
+                costo_implemento_utilizado = pf.costo_implemento_utilizado ?? 0,
+                costo_suministro_utilizado = pf.costo_suministro_utilizado ?? 0,
+                costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo ?? 0,
+                costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0,
+                factura = pf.factura ?? 0,
+                costo_empaque_decoracion_por_porcentaje_de_ganancia = pf.costo_empaque_decoracion_por_porcentaje_de_ganancia ?? 0,
+                costo_implemento_por_porcentaje_de_ganancia = pf.costo_implemento_por_porcentaje_de_ganancia ?? 0,
+                costo_suministro_por_porcentaje_de_ganancia = pf.costo_suministro_por_porcentaje_de_ganancia ?? 0,
+                costo_total_empaque_decoracion_implemento_suministro = pf.costo_total_empaque_decoracion_implemento_suministro ?? 0,
+                factura_por_insumo = pf.factura_por_insumo ?? 0,
+                iva = pf.iva ?? 0,
+                impuesto_de_servicio = pf.impuesto_de_servicio ?? 0,
+                envio = pf.envio ?? 0,
+                plataforma_de_envio = pf.plataforma_de_envio,
             }).ToList();
             return View("precio_final", new InsumosModel
             {
                 ProductoFinalEditado = producto_final,
-                ProductosFinales = lista
+                ProductosFinales = productosFinales
             });
         }
 
@@ -2436,46 +2722,75 @@ public ActionResult EditarProductoFinal(int id)
         decimal totalEmpaques = 0, totalImplementos = 0, totalSuministros = 0;
 
         if (producto_final.EmpaquesDecoracionesUtilizados != null)
-        {
-            foreach (var ed in producto_final.EmpaquesDecoracionesUtilizados)
-            {
-                var empaque = db.tabla_empaques_decoraciones.FirstOrDefault(x => x.nombre == ed.nombre);
-                decimal costoUnitario = empaque?.costo_por_cantidad ?? 0;
-                ed.costo_por_cantidad = costoUnitario;
-                ed.total_costo = ed.cantidad * costoUnitario;
-                totalEmpaques += ed.total_costo;
-            }
-        }
-        if (producto_final.ImplementosUtilizados != null)
-        {
-            foreach (var i in producto_final.ImplementosUtilizados)
-            {
-                var implemento = db.tabla_implementos.FirstOrDefault(x => x.nombre == i.nombre);
-                decimal costoUnitario = implemento?.costo_por_cantidad ?? 0;
-                i.costo_por_cantidad = costoUnitario;
-                i.total_costo = i.cantidad * costoUnitario;
-                totalImplementos += i.total_costo;
-            }
-        }
-        if (producto_final.SuministrosUtilizados != null)
-        {
-            foreach (var s in producto_final.SuministrosUtilizados)
-            {
-                var suministro = db.tabla_suministros.FirstOrDefault(x => x.nombre == s.nombre);
-                decimal costoUnitario = suministro?.costo_por_cantidad ?? 0;
-                s.costo_por_cantidad = costoUnitario;
-                s.total_costo = s.cantidad * costoUnitario;
-                totalSuministros += s.total_costo;
-            }
-        }
+            totalEmpaques = producto_final.EmpaquesDecoracionesUtilizados.Sum(e => e.total_costo);
 
-        // Calcular campos derivados
+        if (producto_final.ImplementosUtilizados != null)
+            totalImplementos = producto_final.ImplementosUtilizados.Sum(i => i.total_costo);
+
+        if (producto_final.SuministrosUtilizados != null)
+            totalSuministros = producto_final.SuministrosUtilizados.Sum(s => s.total_costo);
+
         decimal margen = producto_final.margen_de_utilidad;
         decimal costoConUtilidad = costoReceta * (1 + margen / 100);
-        decimal iva = producto_final.iva;
-        decimal servicio = producto_final.impuesto_de_servicio;
-        decimal envio = producto_final.envio;
-        decimal precioFinal = costoConUtilidad + totalEmpaques + totalImplementos + totalSuministros + iva + servicio + envio;
+        // 1. Costo de impresión de factura por insumo (primer suministro)
+        decimal costoImpresionFacturaPorInsumo = 0;
+        var primerSuministro = producto_final.SuministrosUtilizados?.FirstOrDefault();
+        if (primerSuministro != null)
+        {
+            costoImpresionFacturaPorInsumo = primerSuministro.costo_por_cantidad / 20;
+        }
+
+        // 2. Costo total de impresión de factura
+        decimal porcion = receta?.porcion ?? 0;
+        decimal costoTotalImpresionFactura = porcion * costoImpresionFacturaPorInsumo;
+
+        // 3. Factura (suma de totales + impresión)
+        decimal factura = totalImplementos + totalEmpaques + totalSuministros + costoTotalImpresionFactura;
+
+        // 4. Costos por porcentaje de ganancia
+        decimal costoEmpaqueDecoracionPorPorcentajeDeGanancia = factura * 0.10m;
+        decimal costoImplementoPorPorcentajeDeGanancia = factura * 0.10m;
+        decimal costoSuministroPorPorcentajeDeGanancia = factura * 0.10m;
+
+        // 5. Costo total empaque, implemento, suministro
+        decimal costoTotalEmpaqueDecoracionImplementoSuministro =
+            costoEmpaqueDecoracionPorPorcentajeDeGanancia +
+            costoImplementoPorPorcentajeDeGanancia +
+            costoSuministroPorPorcentajeDeGanancia;
+
+        // 6. Factura por insumo (suma de costos por unidad de todos los insumos + impresión)
+        decimal facturaPorInsumo = 0;
+        facturaPorInsumo += producto_final.ImplementosUtilizados?.Sum(i => i.costo_por_cantidad) ?? 0;
+        facturaPorInsumo += producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.costo_por_cantidad) ?? 0;
+        facturaPorInsumo += producto_final.SuministrosUtilizados?.Sum(s => s.costo_por_cantidad) ?? 0;
+        facturaPorInsumo += costoImpresionFacturaPorInsumo;
+
+        // 7. IVA y Servicio
+        decimal baseImpuestos = costoConUtilidad + costoEmpaqueDecoracionPorPorcentajeDeGanancia + costoImplementoPorPorcentajeDeGanancia + costoSuministroPorPorcentajeDeGanancia;
+        decimal iva = baseImpuestos * 0.13m;
+        decimal servicio = baseImpuestos * 0.10m;
+
+        // 8. Envío (igual que antes)
+        decimal envio = 0;
+        switch (producto_final.plataforma_de_envio)
+        {
+            case "PedidosYa (25%)":
+            case "Rappi (25%)":
+                envio = baseImpuestos * 0.25m;
+                break;
+            case "DidiFood (30%)":
+                envio = baseImpuestos * 0.30m;
+                break;
+            case "UberEats (40%)":
+                envio = baseImpuestos * 0.40m;
+                break;
+            default: // Propio (0%) u otros
+                envio = 0;
+                break;
+        }
+
+        // 9. Precio final sugerido
+        decimal precioFinal = baseImpuestos + iva + servicio + envio;
 
         // Actualizar campos principales
         p.id_receta = receta?.id;
@@ -2484,9 +2799,19 @@ public ActionResult EditarProductoFinal(int id)
         p.margen_de_utilidad = margen;
         p.costo_sin_margen_de_utilidad = costoReceta;
         p.costo_con_margen_de_utilidad = costoConUtilidad;
+        p.factura = factura;
+        p.factura_por_insumo = facturaPorInsumo;
         p.costo_empaque_decoracion_utilizado = totalEmpaques;
         p.costo_implemento_utilizado = totalImplementos;
         p.costo_suministro_utilizado = totalSuministros;
+        p.costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorInsumo;
+        p.costo_total_de_impresion_de_factura = costoTotalImpresionFactura;
+        p.factura = factura;
+        p.costo_empaque_decoracion_por_porcentaje_de_ganancia = costoEmpaqueDecoracionPorPorcentajeDeGanancia;
+        p.costo_implemento_por_porcentaje_de_ganancia = costoImplementoPorPorcentajeDeGanancia;
+        p.costo_suministro_por_porcentaje_de_ganancia = costoSuministroPorPorcentajeDeGanancia;
+        p.costo_total_empaque_decoracion_implemento_suministro = costoTotalEmpaqueDecoracionImplementoSuministro;
+        p.factura_por_insumo = facturaPorInsumo;
         p.iva = iva;
         p.impuesto_de_servicio = servicio;
         p.envio = envio;

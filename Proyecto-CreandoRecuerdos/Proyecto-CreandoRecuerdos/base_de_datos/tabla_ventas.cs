@@ -18,6 +18,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public tabla_ventas()
         {
             this.tabla_detalle_venta = new HashSet<tabla_detalle_venta>();
+            this.tabla_valoraciones = new HashSet<tabla_valoraciones>();
         }
     
         public int id_venta { get; set; }
@@ -25,10 +26,18 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public int id_cliente { get; set; }
         public Nullable<System.DateTime> fecha { get; set; }
         public decimal total { get; set; }
+        public Nullable<int> id_estado { get; set; }
+        public Nullable<int> tiempo_estimado { get; set; }
+        public string metodo_pago { get; set; }
+        public Nullable<bool> para_llevar { get; set; }
+        public string pin { get; set; }
     
         public virtual tabla_clientes tabla_clientes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tabla_detalle_venta> tabla_detalle_venta { get; set; }
         public virtual tabla_usuarios tabla_usuarios { get; set; }
+        public virtual tabla_estados_pedido tabla_estados_pedido { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tabla_valoraciones> tabla_valoraciones { get; set; }
     }
 }

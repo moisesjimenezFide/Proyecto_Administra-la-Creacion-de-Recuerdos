@@ -8,7 +8,6 @@
     string titulo = editando ? "Edición de Productos Finales" : "Registro de Productos Finales";
     string textoBoton = editando ? "Actualizar" : "Agregar";
     string accion = editando ? "EditarProductoFinal" : "CrearProductoFinal";
-
 }
 
 @section Styles {
@@ -54,20 +53,31 @@
         }
 
             .btn-custom-pink:hover {
-                background-color: #d66da3;
+                background-color: #D66DA3;
                 color: white;
+            }
+
+        .input-percent {
+            position: relative;
+        }
+
+            .input-percent .percent-sign {
+                position: absolute;
+                margin-left: 50px;
+                top: 58%;
             }
     </style>
 }
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
-        <i class="fas fa-calculator me-2"></i>Gestión de Precios Finales Sugeridos de Productos Finales
+        <i class="fas fa-calculator me-2"></i> Gestión de Precios Finales Sugeridos de Productos Finales
     </h2>
 </div>
 
 <!-- Formulario de búsqueda -->
-<form method="get" action="@Url.Action("precio_final", "Insumos")" class="container mt-4">
+<form method="get" action="@Url.Action("precio_final", "Insumos")" class="mt-4">
+    <h4><strong>Búsqueda de Productos Finales</strong></h4>
     <div class="input-group mb-4">
         <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
         <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink" title="Buscar"></button>
@@ -88,82 +98,86 @@
 
         if (ViewBag.Errores != null)
         {
-           @:<script>
-           @:     $(function () {
-           @:         Swal.fire({
-           @:             icon: 'error',
-           @:             title: 'Validación',
-           @:             html: '@Html.Raw(string.Join("<br/>", (IEnumerable<string>)ViewBag.Errores))',
-           @:             confirmButtonText: 'Aceptar',
-           @:             confirmButtonColor: '#E27AB0'
-           @:         });
-           @:     });
-           @: </script>
+            <script>
+                $(function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validación',
+                        html: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(string.Join("<br/>", (IEnumerable<string>)ViewBag.Errores))),
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#E27AB0'
+                    });
+                });
+            </script>
         }
 
         <div class="mb-3 text-start">
             <label for="titulo_receta_seleccionada" class="form-label">Receta Seleccionada</label>
             <div class="col-md-4">
                 @Html.DropDownList(
-                    "nombre_receta",
-                    ViewBag.Recetas as SelectList,
-                    "Seleccione una receta",
-                    new
-                         {
-                        @class = "form-control",
-                        @Value = editando ? productoFinalEditado.nombre_receta : null
-                    }
+                "nombre_receta",
+                ViewBag.Recetas as SelectList,
+                "Seleccione una receta",
+                new { @class = "form-control" }
                 )
             </div>
-            <input type="hidden" id="costo_total_receta" name="costo_total_receta" value="@(editando ? productoFinalEditado.costo_total_receta.ToString() : "0")" />
+            <input type="hidden" id="costo_total_receta" name="costo_total_receta" value="@(editando ? productoFinalEditado.costo_total_receta.ToString() : " 0")" />
         </div>
 
         <div class="mb-3 text-start">
-            <label for="margen_de_utilidad" class="form-label">Margen de Utilidad (%)</label>
-            <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" required="required" value="@(editando ? productoFinalEditado.margen_de_utilidad.ToString() : "")" />
-        </div>
+            <div class="input-percent">
+                <label for="margen_de_utilidad" class="form-label">Margen de Utilidad (%)</label>
+                <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" required="required" value="@(editando ? productoFinalEditado.margen_de_utilidad.ToString("0.##") : "")" min="0" max="100" />
+                <span class="percent-sign">%</span>
+            </div>
+         </div>
 
         <div class="mb-3 text-start">
             <label for="plataforma_de_envio" class="form-label">Plataforma de Envío</label>
             <select name="plataforma_de_envio" id="plataforma_de_envio" class="form-control" required="required">
                 <option value="">Seleccione una plataforma de envío</option>
-                <option value="Propio" @(editando && productoFinalEditado?.plataforma_de_envio == "Propio" ? "selected" : "")>Propio</option>
-                <option value="PedidosYa" @(editando && productoFinalEditado?.plataforma_de_envio == "PedidosYa" ? "selected" : "")>PedidosYa</option>
-                <option value="Rappi" @(editando && productoFinalEditado?.plataforma_de_envio == "Rappi" ? "selected" : "")>Rappi</option>
-                <option value="DidiFood" @(editando && productoFinalEditado?.plataforma_de_envio == "DidiFood" ? "selected" : "")>DidiFood</option>
-                <option value="UberEats" @(editando && productoFinalEditado?.plataforma_de_envio == "UberEats" ? "selected" : "")>UberEats</option>
+                <option value="Propio (0%)" @(editando && productoFinalEditado?.plataforma_de_envio == "Propio (0%)" ? "selected" : "")>Propio</option>
+                <option value="PedidosYa (25%)" @(editando && productoFinalEditado?.plataforma_de_envio == "PedidosYa (25%)" ? "selected" : "")>PedidosYa</option>
+                <option value="Rappi (25%)" @(editando && productoFinalEditado?.plataforma_de_envio == "Rappi (25%)" ? "selected" : "")>Rappi</option>
+                <option value="DidiFood (30%)" @(editando && productoFinalEditado?.plataforma_de_envio == "DidiFood (30%)" ? "selected" : "")>DidiFood</option>
+                <option value="UberEats (40%)" @(editando && productoFinalEditado?.plataforma_de_envio == "UberEats (40%)" ? "selected" : "")>UberEats</option>
             </select>
         </div>
 
+        <!-- EMPAQUES y/o DECORACIONES -->
         <h4>Empaques y/o Decoraciones Utilizados(as)</h4>
         <div id="empaques_decoraciones-container">
-            @if (editando && productoFinalEditado?.EmpaquesDecoracionesUtilizados != null)
+            @if (editando && productoFinalEditado?.EmpaquesDecoracionesUtilizados != null && productoFinalEditado.EmpaquesDecoracionesUtilizados.Count > 0)
             {
                 for (int i = 0; i < productoFinalEditado.EmpaquesDecoracionesUtilizados.Count; i++)
                 {
-                    var empaque_decoracion = productoFinalEditado.EmpaquesDecoracionesUtilizados[i];
+                    var item = productoFinalEditado.EmpaquesDecoracionesUtilizados[i];
 
-                    <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
+                    <div class="row fila-insumo template-empaque_decoracion">
                         <div class="col-md-4">
                             <label>Nombre</label>
                             @Html.DropDownList(
                                 $"EmpaquesDecoracionesUtilizados[{i}].nombre",
-                                ViewBag.EmpaquesDecoraciones as SelectList,
-                                empaque_decoracion.nombre,
+                                new SelectList(ViewBag.EmpaquesDecoraciones as SelectList, "Value", "Text", item.nombre),
+                                "Seleccione un empaque o decoración",
                                 new { @class = "form-control" }
                             )
                         </div>
+
                         <div class="col-md-3">
                             <label>Cantidad</label>
-                            <input type="number" name="EmpaquesDecoracionesUtilizados[@i].cantidad" class="form-control" value="@empaque_decoracion.cantidad" />
+                            <input type="number" name="EmpaquesDecoracionesUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
                         </div>
+
                         <div class="col-md-3">
                             <label>Unidad de medida</label>
-                            <input type="text" name="EmpaquesDecoracionesUtilizados[@i].unidad_de_medida" class="form-control" value="@empaque_decoracion.unidad_de_medida" />
+                            <input type="text" name="EmpaquesDecoracionesUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
                         </div>
+
                         <div class="col-md-2">
                             <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                         </div>
+
                     </div>
                 }
             }
@@ -171,50 +185,62 @@
             <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
                 <div class="col-md-4">
                     <label>Nombre</label>
-                    @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].nombre", ViewBag.Suministros as SelectList, "Seleccione un suministro", new { @class = "form-control" })
+                    @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].nombre", 
+                    ViewBag.EmpaquesDecoraciones as SelectList, 
+                    "Seleccione un empaque o decoración", 
+                    new { @class = "form-control" })
                 </div>
+
                 <div class="col-md-3">
                     <label>Cantidad</label>
                     <input type="number" name="EmpaquesDecoracionesUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
+
                 <div class="col-md-3">
                     <label>Unidad de medida</label>
                     <input type="text" name="EmpaquesDecoracionesUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
+
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                 </div>
+
             </div>
+
             <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('empaques_decoraciones-container', 'template-empaque_decoracion')">+ Agregar Empaque o Decoración</button>
         </div>
         <br />
 
+        <!-- IMPLEMENTOS -->
         <h4>Implementos Utilizados</h4>
         <div id="implementos-container">
-            @if (editando && productoFinalEditado?.ImplementosUtilizados != null)
+            @if (editando && productoFinalEditado?.ImplementosUtilizados != null && productoFinalEditado.ImplementosUtilizados.Count > 0)
             {
                 for (int i = 0; i < productoFinalEditado.ImplementosUtilizados.Count; i++)
                 {
-                    var implemento = productoFinalEditado.ImplementosUtilizados[i];
+                    var item = productoFinalEditado.ImplementosUtilizados[i];
 
-                    <div class="row fila-insumo template-implemento" style="display: none;">
+                    <div class="row fila-insumo template-implemento">
                         <div class="col-md-4">
                             <label>Nombre</label>
                             @Html.DropDownList(
-                                $"ImplementosUtilizados[{i}].nombre",
-                                ViewBag.Implementos as SelectList,
-                                implemento.nombre,
-                                new { @class = "form-control" }
-                            )
+                            $"ImplementosUtilizados[{i}].nombre",
+                            new SelectList(ViewBag.Implementos as SelectList, "Value", "Text", item.nombre),
+                            "Seleccione un implemento",
+                            new { @class = "form-control" }
+                        )
                         </div>
+
                         <div class="col-md-3">
                             <label>Cantidad</label>
-                            <input type="number" name="ImplementosUtilizados[@i].cantidad" class="form-control" value="@implemento.cantidad" />
+                            <input type="number" name="ImplementosUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
                         </div>
+
                         <div class="col-md-3">
                             <label>Unidad de medida</label>
-                            <input type="text" name="ImplementosUtilizados[@i].unidad_de_medida" class="form-control" value="@implemento.unidad_de_medida" />
+                            <input type="text" name="ImplementosUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
                         </div>
+
                         <div class="col-md-2">
                             <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                         </div>
@@ -225,53 +251,66 @@
             <div class="row fila-insumo template-implemento" style="display: none;">
                 <div class="col-md-4">
                     <label>Nombre</label>
-                    @Html.DropDownList("ImplementosUtilizados[__index__].nombre", ViewBag.Implementos as SelectList, "Seleccione un implemento", new { @class = "form-control" })
+                    @Html.DropDownList("ImplementosUtilizados[__index__].nombre", 
+                    ViewBag.Implementos as SelectList, 
+                    "Seleccione un implemento", 
+                    new { @class = "form-control" })
                 </div>
+
                 <div class="col-md-3">
                     <label>Cantidad</label>
                     <input type="number" name="ImplementosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
+
                 <div class="col-md-3">
                     <label>Unidad de medida</label>
                     <input type="text" name="ImplementosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
+
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                 </div>
+
             </div>
+
             <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('implementos-container', 'template-implemento')">+ Agregar Implemento</button>
         </div>
         <br />
 
-        <h4>Suministros de Limpieza e Higiene Utilizados</h4>
+        <!-- SUMINISTROS -->
+        <h4>Suministros Utilizados</h4>
         <div id="suministros-container">
-            @if (editando && productoFinalEditado?.SuministrosUtilizados != null)
+            @if (editando && productoFinalEditado?.SuministrosUtilizados != null && productoFinalEditado.SuministrosUtilizados.Count > 0)
             {
                 for (int i = 0; i < productoFinalEditado.SuministrosUtilizados.Count; i++)
                 {
-                    var suministro = productoFinalEditado.SuministrosUtilizados[i];
+                    var item = productoFinalEditado.SuministrosUtilizados[i];
 
-                    <div class="row fila-insumo template-suministro" style="display: none;">
+                    <div class="row fila-insumo template-suministro">
                         <div class="col-md-4">
                             <label>Nombre</label>
                             @Html.DropDownList(
-                                $"SuministrosUtilizados[{i}].nombre",
-                                ViewBag.Suministros as SelectList,
-                                suministro.nombre,
-                                new { @class = "form-control" }
-                            )
+                            $"SuministrosUtilizados[{i}].nombre",
+                            new SelectList(ViewBag.Suministros as SelectList, "Value", "Text", item.nombre),
+                            "Seleccione un suministro",
+                            new { @class = "form-control" }
+                        )
                         </div>
+
                         <div class="col-md-3">
                             <label>Cantidad</label>
-                            <input type="number" name="SuministrosUtilizados[@i].cantidad" class="form-control" value="@suministro.cantidad" />
+                            <input type="number" name="SuministrosUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
                         </div>
+
                         <div class="col-md-3">
                             <label>Unidad de medida</label>
-                            <input type="text" name="SuministrosUtilizados[@i].unidad_de_medida" class="form-control" value="@suministro.unidad_de_medida" />
+                            <input type="text" name="SuministrosUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
                         </div>
+
                         <div class="col-md-2">
                             <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
                         </div>
+
                     </div>
                 }
             }
@@ -279,120 +318,160 @@
             <div class="row fila-insumo template-suministro" style="display: none;">
                 <div class="col-md-4">
                     <label>Nombre</label>
-                    @Html.DropDownList("SuministrosUtilizados[__index__].nombre", ViewBag.Suministros as SelectList, "Seleccione un suministro", new { @class = "form-control" })
+                    @Html.DropDownList("SuministrosUtilizados[__index__].nombre", 
+                    ViewBag.Suministros as SelectList, 
+                    "Seleccione un suministro", 
+                    new { @class = "form-control" })
                 </div>
+
                 <div class="col-md-3">
                     <label>Cantidad</label>
                     <input type="number" name="SuministrosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
+
                 <div class="col-md-3">
                     <label>Unidad de medida</label>
                     <input type="text" name="SuministrosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
+
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                 </div>
+
             </div>
             <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('suministros-container', 'template-suministro')">+ Agregar Suministro</button>
         </div>
         <br />
 
-        <div class="d-flex justify-content-end gap-2">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
             @if (editando)
             {
                 <a href="@Url.Action("precio_final", "Insumos")" class="btn btn-secondary">Salir</a>
             }
+
             <button type="reset" class="btn btn-danger">Cancelar</button>
             <button type="submit" class="btn btn-custom-pink">@textoBoton</button>
+
         </div>
+
     }
 </div>
 
 <!-- Listado -->
 <div class="container">
     <h4><strong>Listado de Productos Finales</strong></h4>
-
     @if (Model.ProductosFinales == null || Model.ProductosFinales.Count == 0)
+{
+<div class="alert alert-info text-center" style="margin: 1rem 0;">
+    @if (!string.IsNullOrEmpty(ViewBag.Search as string))
     {
-        <div class="alert alert-info text-center" style="margin: 1rem 0;">
-            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
-            {
-                <span>No se encontraron coincidencias.</span>
-            }
-            else
-            {
-                <span>No hay productos finales registrados.</span>
-            }
-        </div>
+        <span>No se encontraron coincidencias.</span>
     }
     else
     {
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sm text-start">
-                <thead>
-                    <tr>
-                        <th>Nombre de Receta</th>
-                        <th>Costo Total de Receta (₡)</th>
-                        <th>Margen de margen_de_utilidad (%)</th>
-                        <th>Costo sin Margen de margen_de_utilidad (₡)</th>
-                        <th>Costo con Margen de margen_de_utilidad (₡)</th>
-                        <th>Empaques y/o Decoraciones Utilizados(as)</th>
-                        <th>Costo Empaques y/o Decoraciones (₡)</th>
-                        <th>Implementos utilizados</th>
-                        <th>Costo Implementos (₡)</th>
-                        <th>Suministros de Liempieza e Higiene Utilizados</th>
-                        <th>Costo suministros (₡)</th>
-                        <th>IVA (%)</th>
-                        <th>Servicio (%)</th>
-                        <th>Envío (₡)</th>
-                        <th>Precio Final (₡)</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var productofinal in Model.ProductosFinales)
-                    {
-                        <tr>
-                            <td>@productofinal.nombre_receta</td>
-                            <td>@productofinal.costo_total_receta.ToString("₡")</td>
-                            <td>@productofinal.margen_de_utilidad</td>
-                            <td>@productofinal.costo_sin_margen_de_utilidad.ToString("₡")</td>
-                            <td>@productofinal.costo_con_margen_de_utilidad.ToString("₡")</td>
-                            <td>
-                                @foreach (var empaque_decoracion in productofinal.EmpaquesDecoracionesUtilizados)
-                                {
-                                    <div>@empaque_decoracion.nombre (@empaque_decoracion.cantidad @empaque_decoracion.unidad_de_medida)</div>
-                                }
-                            </td>
-                            <td>@productofinal.costo_empaque_decoracion_utilizado.ToString("₡")</td>
-                            <td>
-                                @foreach (var implemento in productofinal.ImplementosUtilizados)
-                                {
-                                    <div>@implemento.nombre (@implemento.cantidad @implemento.unidad_de_medida)</div>
-                                }
-                            </td>
-                            <td>@productofinal.costo_implemento_utilizado.ToString("₡")</td>
-                            <td>
-                                @foreach (var suministro in productofinal.SuministrosUtilizados)
-                                {
-                                    <div>@suministro.nombre (@suministro.cantidad @suministro.unidad_de_medida)</div>
-                                }
-                            </td>
-                            <td>@productofinal.costo_suministro_utilizado.ToString("₡")</td>
-                            <td>@productofinal.iva.ToString("₡")</td>
-                            <td>@productofinal.impuesto_de_servicio.ToString("₡")</td>
-                            <td>@productofinal.envio.ToString("₡")</td>
-                            <td><strong>@productofinal.precio_final_sugerido.ToString("₡")</strong></td>
-                            <td>
-                                <a href="@Url.Action("EditarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
-                                <a href="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })"></a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+        <span>No hay productos finales registradas.</span>
     }
+</div>
+}
+else
+{
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-sm text-start">
+        <thead>
+            <tr>
+                <th>Nombre de Receta</th>
+                <th>Costo Total de Receta (₡)</th>
+                <th>Margen de margen_de_utilidad (%)</th>
+                <th>Costo sin Margen de margen_de_utilidad (%)</th>
+                <th>Costo con Margen de margen_de_utilidad (₡)</th>
+                <th>Empaques y/o Decoraciones Utilizados(as)</th>
+                <th>Costo Empaques y/o Decoraciones (₡)</th>
+                <th>Implementos utilizados</th>
+                <th>Costo Implementos (₡)</th>
+                <th>Suministros de Limpieza e Higiene Utilizados</th>
+                <th>Costo suministros (₡)</th>
+                <th>Costo Impresión Factura/Ins.</th>
+                <th>Costo Total Impresión Factura</th>
+                <th>Factura</th>
+                <th>Empaque o Decoración por Ganancia</th>
+                <th>Implemento por Ganancia</th>
+                <th>Suministro por Ganancia</th>
+                <th>Total Empaque_Decoracion/Impl./Sum.</th>
+                <th>Factura por Insumo</th>
+                <th>IVA (%)</th>
+                <th>Servicio (%)</th>
+                <th>Plataforma de Envío</th>
+                <th>Envío (₡)</th>
+                <th>Precio Final (₡)</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var productofinal in Model.ProductosFinales)
+            {
+                <tr>
+                    <td>
+                        @{
+                            var receta = Model.CostosRecetas?.FirstOrDefault(r => r.nombre == productofinal.nombre_receta);
+                        }
+                        @productofinal.nombre_receta
+                    </td>
+
+                    <td>
+                        ₡@productofinal.costo_total_receta.ToString("N2")
+                    </td>
+
+                    <td>@productofinal.margen_de_utilidad%</td>
+                    <td>@(100 - productofinal.margen_de_utilidad)%</td>
+                    <td>₡@productofinal.costo_con_margen_de_utilidad.ToString("N2")</td>
+                    <td>
+                        @foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
+                        {
+                            <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                        }
+                    </td>
+                    <td>₡@productofinal.costo_empaque_decoracion_utilizado.ToString("N2")</td>
+
+                    <td>
+                        @foreach (var item in productofinal.ImplementosUtilizados)
+                        {
+                            <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                        }
+                    </td>
+                    <td>₡@productofinal.costo_implemento_utilizado.ToString("N2")</td>
+
+                    <td>
+                        @foreach (var item in productofinal.SuministrosUtilizados)
+                        {
+                            <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                        }
+                    </td>
+                    <td>₡@productofinal.costo_suministro_utilizado.ToString("N2")</td>
+
+                    <td>₡@productofinal.costo_de_impresion_de_factura_por_insumo.ToString("N2")</td>
+                    <td>₡@productofinal.costo_total_de_impresion_de_factura.ToString("N2")</td>
+                    <td>₡@productofinal.factura.ToString("N2")</td>
+                    <td>₡@productofinal.costo_empaque_decoracion_por_porcentaje_de_ganancia.ToString("N2")</td>
+                    <td>₡@productofinal.costo_implemento_por_porcentaje_de_ganancia.ToString("N2")</td>
+                    <td>₡@productofinal.costo_suministro_por_porcentaje_de_ganancia.ToString("N2")</td>
+                    <td>₡@productofinal.costo_total_empaque_decoracion_implemento_suministro.ToString("N2")</td>
+                    <td>₡@productofinal.factura_por_insumo.ToString("N2")</td>
+                    <td>₡@productofinal.iva.ToString("N2")</td>
+                    <td>₡@productofinal.impuesto_de_servicio.ToString("N2")</td>
+                    <td>@productofinal.plataforma_de_envio</td>
+                    <td>₡@productofinal.envio.ToString("N2")</td>
+                    <td><strong>₡@productofinal.precio_final_sugerido.ToString("N2")</strong></td>
+
+                    <td>
+                        <a href="@Url.Action("EditarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                        <a href="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })"></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}
 </div>
 
 @section Scripts {
@@ -420,7 +499,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#E27AB0',
-                cancelButtonColor: '#e74c3c',
+                cancelButtonColor: '#E74C3C',
                 confirmButtonText: 'Aceptar',
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
@@ -430,71 +509,8 @@
             });
         });
     </script>
+
     <script>
-        $('form').on('submit', function (e) {
-            var valido = true;
-            var mensaje = "";
-
-            // Validar campos de texto
-            $(this).find('input[type="text"]').each(function () {
-                var valor = $(this).val();
-                if (!valor || valor.trim().length === 0) {
-                    valido = false;
-                    mensaje = "No se permiten campos de texto vacíos o solo espacios en blanco.";
-                    $(this).focus();
-                    return false;
-                }
-            });
-
-            // Validar campos numéricos
-            if (valido) {
-                $(this).find('input[type="number"]').each(function () {
-                    var valor = $(this).val();
-                    if (!/^\d+(\.\d+)?$/.test(valor) || parseFloat(valor) <= 0) {
-                        valido = false;
-                        mensaje = "Los campos numéricos deben ser mayores a cero y solo aceptar números positivos.";
-                        $(this).focus();
-                        return false;
-                    }
-                });
-            }
-
-            // Validar nombre duplicado
-            var nombre = $('#nombre').val().toLowerCase();
-            var id = $('#id').val();
-            if (nombresExistentes.includes(nombre)) {
-                valido = false;
-                mensaje = "Ya existe un producto final con ese nombre.";
-                $('#nombre').focus();
-            }
-
-            if (!valido) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validación',
-                    text: mensaje,
-                    confirmButtonText: 'Aceptar',
-                    confirmButtonColor: '#E27AB0'
-                });
-                return false;
-            }
-
-            e.preventDefault();
-            var data = $(this).serialize();
-            $.post($(this).attr('action'), data)
-                .done(function () { location.reload(); })
-                .fail(function () {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Error al guardar en la base de datos',
-                        confirmButtonText: 'Aceptar',
-                        confirmButtonColor: '#E27AB0'
-                    });
-                });
-        });
-
         // Catálogos para cálculos en JS
         var recetas = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.CostosRecetas?.Select(r => new { r.nombre, r.costo_total_receta })));
         var empaques = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EmpaquesDecoraciones?.Select(e => new { e.nombre, e.costo_por_cantidad })));
@@ -516,14 +532,15 @@
 
         function calcularTotalesPorInsumo(container, catalogo, cantidadName, selectName) {
             var total = 0;
-            $(container + ' .fila-insumo:not([style*="display: none"])').each(function () {
+             $(container + ' .fila-insumo:not([style*="display: none"])').each(function () {
                 var nombre = $(this).find('select[name="' + selectName + '"]').val();
                 var cantidad = parseFloat($(this).find('input[name="' + cantidadName + '"]').val()) || 0;
                 var costoUnitario = obtenerCostoUnitario(nombre, catalogo);
                 total += cantidad * costoUnitario;
-            });
+        });
 
-            return total;
+        return total;
+
         }
 
         function calcularPrecioFinal() {
@@ -535,42 +552,144 @@
             var totalEmpaques = calcularTotalesPorInsumo('#empaques_decoraciones-container', empaques, 'CantidadEmpaqueDecoracionSeleccionado', 'EmpaqueDecoracionSeleccionado');
             var totalImplementos = calcularTotalesPorInsumo('#implementos-container', implementos, 'CantidadImplementoSeleccionado', 'ImplementoSeleccionado');
             var totalSuministros = calcularTotalesPorInsumo('#suministros-container', suministros, 'CantidadsuministroSeleccionado', 'SuministroSeleccionado');
-            var costoSinMargenUtilidad = 100 - margen_de_utilidad;
+            var costoSinMargenUtilidad = 100% - margen_de_utilidad;
             var costoConUtilidad = costoTotalReceta / (costoSinMargenUtilidad / 100);
-            var precioFinal = costoConUtilidad + totalEmpaques + totalImplementos + totalSuministros + iva + servicio + envio;
-            $('#precioFinalSugerido').text(precioFinal.toFixed(2));
+
+            // 1. Costo de impresión de factura por insumo (suministro de impresión lasér)
+            var costoImpresionFacturaPorInsumo = 0;
+            var suministroImpresionLaser = $('#suministros-container .fila-insumo:not([style*="display: none"]) input[name$=".costo_por_cantidad"]').first().val();
+            if (suministroImpresionLaser) {
+                costoImpresionFacturaPorInsumo = parseFloat(suministroImpresionLaser) / 20;
+            }
+
+            // 2. Costo total de impresión de factura
+            var porcion = parseFloat($('#porcion').val()) || 0;
+            var costoTotalImpresionFactura = porcion * costoImpresionFacturaPorInsumo;
+
+            // 3. Factura
+            var factura = totalImplementos + totalEmpaques + totalSuministros + costoTotalImpresionFactura;
+
+            // 4. Costos por porcentaje de ganancia
+            var costoEmpaqueDecoracionPorPorcentajeDeGanancia = factura * 0.10;
+            var costoImplementoPorPorcentajeDeGanancia = factura * 0.10;
+            var costoSuministroPorPorcentajeDeGanancia = factura * 0.10;
+
+            // 5. Costo total empaque, implemento, suministro
+            var costoTotalEmpaqueDecoracionImplementoSuministro =
+                costoEmpaqueDecoracionPorPorcentajeDeGanancia +
+                costoImplementoPorPorcentajeDeGanancia +
+                costoSuministroPorPorcentajeDeGanancia;
+
+            // 6. Factura por insumo
+            var facturaPorInsumo = 0;
+            $('#implementos-container .fila-insumo:not([style*="display: none"]) input[name$=".costo_por_cantidad"]').each(function () {
+                facturaPorInsumo += parseFloat($(this).val()) || 0;
+            });
+            $('#empaques_decoraciones-container .fila-insumo:not([style*="display: none"]) input[name$=".costo_por_cantidad"]').each(function () {
+                facturaPorInsumo += parseFloat($(this).val()) || 0;
+            });
+            $('#suministros-container .fila-insumo:not([style*="display: none"]) input[name$=".costo_por_cantidad"]').each(function () {
+                facturaPorInsumo += parseFloat($(this).val()) || 0;
+            });
+            facturaPorInsumo += costoImpresionFacturaPorInsumo;
+
+            // 7. Base para impuestos
+            var baseImpuestos = costoConUtilidad + costoEmpaqueDecoracionPorPorcentajeDeGanancia + costoImplementoPorPorcentajeDeGanancia + costoSuministroPorPorcentajeDeGanancia;
+            var iva = baseImpuestos * 0.13;
+            var servicio = baseImpuestos * 0.10;
+
+            // 8. Envío
+            var plataforma = $('#plataforma_de_envio').val();
+            var porcentajeEnvio = 0;
+            switch (plataforma) {
+                case "PedidosYa (25%)":
+                case "Rappi (25%)":
+                    porcentajeEnvio = 0.25;
+                    break;
+                case "DidiFood (30%)":
+                    porcentajeEnvio = 0.30;
+                    break;
+                case "UberEats (40%)":
+                    porcentajeEnvio = 0.40;
+                    break;
+                case "Propio (0%)":
+                default:
+                    porcentajeEnvio = 0.0;
+                    break;
+            }
+            var envio = baseImpuestos * porcentajeEnvio;
+
+            // 9. Precio final sugerido
+            var precioFinal = baseImpuestos + iva + servicio + envio;
+
+            // Mostrar resultados en la vista
+            $('#costo_total_receta').val(costoReceta.toFixed(2));
+            $('#costo_sin_margen_de_utilidad').val(costoSinUtilidad.toFixed(2));
+            $('#costo_con_margen_de_utilidad').val(costoConUtilidad.toFixed(2));
+            $('#costo_empaque_decoracion_utilizado').val(totalEmpaques.toFixed(2));
+            $('#costo_implemento_utilizado').val(totalImplementos.toFixed(2));
+            $('#costo_suministro_utilizado').val(totalSuministros.toFixed(2));
+            $('#costo_de_impresion_de_factura_por_insumo').val(costoImpresionFacturaPorInsumo.toFixed(2));
+            $('#costo_total_de_impresion_de_factura').val(costoTotalImpresionFactura.toFixed(2));
+            $('#factura').val(factura.toFixed(2));
+            $('#costo_empaque_decoracion_por_porcentaje_de_ganancia').val(costoEmpaqueDecoracionPorPorcentajeDeGanancia.toFixed(2));
+            $('#costo_implemento_por_porcentaje_de_ganancia').val(costoImplementoPorPorcentajeDeGanancia.toFixed(2));
+            $('#costo_suministro_por_porcentaje_de_ganancia').val(costoSuministroPorPorcentajeDeGanancia.toFixed(2));
+            $('#costo_total_empaque_decoracion_implemento_suministro').val(costoTotalEmpaqueDecoracionImplementoSuministro.toFixed(2));
+            $('#factura_por_insumo').val(facturaPorInsumo.toFixed(2));
+            $('#iva').val(iva.toFixed(2));
+            $('#impuesto_de_servicio').val(servicio.toFixed(2));
+            $('#envio').val(envio.toFixed(2));
+            $('#precio_final_sugerido').val(precioFinal.toFixed(2));
         }
 
         function agregarFila(containerId, templateClass) {
-            var container = document.getElementById(containerId);
-            var index = container.querySelectorAll('.fila-insumo:not([style*="display: none"])').length;
-            var template = document.querySelector('.' + templateClass).cloneNode(true);
-            template.style.display = '';
+            const container = document.getElementById(containerId);
+            const template = container.querySelector(`.${templateClass}[style*="display: none"]`);
+            const filas = container.querySelectorAll('.fila-insumo:not([style*="display: none"])');
+            const index = filas.length;
 
-            // Reemplaza todos los [__index__] en los names de los inputs/selects
-            template.querySelectorAll('input, select').forEach(function (input) {
+            const clone = template.cloneNode(true);
+            clone.style.display = '';
+            clone.classList.remove(templateClass);
+
+            clone.querySelectorAll('input, select').forEach(input => {
                 if (input.name) {
-                    input.name = input.name.replace(/\[__index__\]/g, '[' + index + ']');
+                    input.name = input.name.replace(/__index__/g, index);
+                }
+                if (input.tagName === "SELECT") {
+                    input.selectedIndex = 0;
+                }
+                if (input.tagName === "INPUT") {
+                    input.value = "";
                 }
             });
 
-            container.appendChild(template);
-        }
-        
-        function eliminarFila(boton) {
-            var fila = boton.closest(".fila-insumo");
-            if (fila && fila.parentElement.children.length > 1)
-            {
-                fila.remove();
-            }
+            container.appendChild(clone);
         }
 
-        $(document).on('change', '#nombre_receta', actualizarCostoReceta);
-        $(document).on('input', '#margen_de_utilidad', calcularPrecioFinal);
-        $(document).ready(actualizarCostoReceta);
-        $(document).on('input change', '#empaques_decoraciones-container input, #empaques_decoraciones-container select', calcularPrecioFinal);
-        $(document).on('input change', '#implementos-container input, #implementos-container select', calcularPrecioFinal);
-        $(document).on('input change', '#suministros-container input, #suministros-container select', calcularPrecioFinal);
-        $(document).ready(calcularPrecioFinal);
+
+        function eliminarFila(boton) {
+            const fila = boton.closest(".fila-insumo");
+            const container = fila.parentElement;
+            fila.remove();
+
+            const filas = container.querySelectorAll('.fila-insumo:not([style*="display: none"])');
+            filas.forEach((f, idx) => {
+                f.querySelectorAll('input, select').forEach(input => {
+                    if (input.name) {
+                        input.name = input.name.replace(/\[\d+\]/g, `[${idx}]`);
+                    }
+                });
+            });
+        }
+
+       $(document).on('change', '#nombre_receta', actualizarCostoReceta);
+       $(document).on('input', '#margen_de_utilidad', calcularPrecioFinal);
+       $(document).ready(actualizarCostoReceta);
+       $(document).on('input change', '#empaques_decoraciones-container input, #empaques_decoraciones-container select', calcularPrecioFinal);
+       $(document).on('input change', '#implementos-container input, #implementos-container select', calcularPrecioFinal);
+       $(document).on('input change', '#suministros-container input, #suministros-container select', calcularPrecioFinal);
+       $(document).ready(calcularPrecioFinal);
     </script>
 }

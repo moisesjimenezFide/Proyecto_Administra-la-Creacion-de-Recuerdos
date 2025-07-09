@@ -200,7 +200,7 @@
     <Property Name="nombre_receta" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="costo_total_receta" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="margen_de_utilidad" Type="Decimal" Precision="5" Scale="2" />
-    <Property Name="costo_sin_margen_de_utilidad" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="costo_sin_margen_de_utilidad" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="costo_con_margen_de_utilidad" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="costo_empaque_decoracion_utilizado" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="costo_implemento_utilizado" Type="Decimal" Precision="18" Scale="2" />
@@ -214,6 +214,14 @@
     <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_pr__08B54D69" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_implementos_utilizados" />
     <NavigationProperty Name="precios_suministros_utilizados" Relationship="Self.FK__precios_s__id_pr__09A971A2" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_suministros_utilizados" />
     <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__tabla_pre__id_re__0F624AF8" FromRole="tabla_precios_finales_sugeridos" ToRole="tabla_costos_recetas" />
+    <Property Name="costo_de_impresion_de_factura_por_insumo" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="costo_total_de_impresion_de_factura" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="factura" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="costo_empaque_decoracion_por_porcentaje_de_ganancia" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="costo_implemento_por_porcentaje_de_ganancia" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="costo_suministro_por_porcentaje_de_ganancia" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="costo_total_empaque_decoracion_implemento_suministro" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="factura_por_insumo" Type="Decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="tabla_productos">
     <Key>
@@ -321,6 +329,13 @@
     <NavigationProperty Name="tabla_clientes" Relationship="Self.FK__tabla_ven__id_cl__14270015" FromRole="tabla_ventas" ToRole="tabla_clientes" />
     <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_ve__0D7A0286" FromRole="tabla_ventas" ToRole="tabla_detalle_venta" />
     <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_ven__id_us__151B244E" FromRole="tabla_ventas" ToRole="tabla_usuarios" />
+    <Property Name="id_estado" Type="Int32" />
+    <Property Name="tiempo_estimado" Type="Int32" />
+    <Property Name="metodo_pago" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="para_llevar" Type="Boolean" />
+    <Property Name="pin" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tabla_estados_pedido" Relationship="BD_CREANDO_RECUERDOSModel.FK_ventas_estados" FromRole="tabla_ventas" ToRole="tabla_estados_pedido" />
+    <NavigationProperty Name="tabla_valoraciones" Relationship="BD_CREANDO_RECUERDOSModel.FK_valoraciones_pedidos" FromRole="tabla_ventas" ToRole="tabla_valoraciones" />
   </EntityType>
   <EntityType Name="Vehiculos">
     <Key>
@@ -822,6 +837,57 @@
       <Parameter Name="ip_solicitud" Mode="In" Type="String" />
       <Parameter Name="descripcion" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="tabla_estados_pedido" EntityType="BD_CREANDO_RECUERDOSModel.tabla_estados_pedido" />
+    <EntitySet Name="tabla_valoraciones" EntityType="BD_CREANDO_RECUERDOSModel.tabla_valoraciones" />
+    <AssociationSet Name="FK_ventas_estados" Association="BD_CREANDO_RECUERDOSModel.FK_ventas_estados">
+      <End Role="tabla_estados_pedido" EntitySet="tabla_estados_pedido" />
+      <End Role="tabla_ventas" EntitySet="tabla_ventas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_valoraciones_pedidos" Association="BD_CREANDO_RECUERDOSModel.FK_valoraciones_pedidos">
+      <End Role="tabla_ventas" EntitySet="tabla_ventas" />
+      <End Role="tabla_valoraciones" EntitySet="tabla_valoraciones" />
+    </AssociationSet>
+    <FunctionImport Name="sp_actualizar_estado_pedido" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_actualizar_estado_pedido_Result)">
+      <Parameter Name="id_pedido" Mode="In" Type="Int32" />
+      <Parameter Name="nuevo_estado" Mode="In" Type="String" />
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_agregar_detalle_pedido">
+      <Parameter Name="id_venta" Mode="In" Type="Int32" />
+      <Parameter Name="id_producto" Mode="In" Type="Int32" />
+      <Parameter Name="cantidad" Mode="In" Type="Int32" />
+      <Parameter Name="precio_unitario" Mode="In" Type="Decimal" />
+      <Parameter Name="personalizacion" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_cancelar_pedido" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_cancelar_pedido_Result)">
+      <Parameter Name="id_pedido" Mode="In" Type="Int32" />
+      <Parameter Name="pin" Mode="In" Type="String" />
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_crear_pedido" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_crear_pedido_Result)">
+      <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+      <Parameter Name="id_cliente" Mode="In" Type="Int32" />
+      <Parameter Name="total" Mode="In" Type="Decimal" />
+      <Parameter Name="estado" Mode="In" Type="String" />
+      <Parameter Name="metodo_pago" Mode="In" Type="String" />
+      <Parameter Name="para_llevar" Mode="In" Type="Boolean" />
+      <Parameter Name="pin" Mode="In" Type="String" />
+      <Parameter Name="tiempo_estimado" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_obtener_detalle_pedido" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_detalle_pedido_Result)">
+      <Parameter Name="id_pedido" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_obtener_pedidos" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_pedidos_Result)">
+      <Parameter Name="estado" Mode="In" Type="String" />
+      <Parameter Name="fecha_inicio" Mode="In" Type="DateTime" />
+      <Parameter Name="fecha_fin" Mode="In" Type="DateTime" />
+      <Parameter Name="metodo_pago" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_registrar_valoracion" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_registrar_valoracion_Result)">
+      <Parameter Name="id_pedido" Mode="In" Type="Int32" />
+      <Parameter Name="calificacion" Mode="In" Type="Int32" />
+      <Parameter Name="comentarios" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="sp_autenticar_usuario_Result">
     <Property Type="Int32" Name="Resultado" Nullable="true" />
@@ -883,5 +949,95 @@
     <Property Type="Boolean" Name="activo" Nullable="true" />
     <Property Type="DateTime" Name="fecha_creacion" Nullable="true" Precision="23" />
     <Property Type="String" Name="contrasenna" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <EntityType Name="tabla_estados_pedido">
+    <Key>
+      <PropertyRef Name="id_estado" />
+    </Key>
+    <Property Name="id_estado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tabla_ventas" Relationship="BD_CREANDO_RECUERDOSModel.FK_ventas_estados" FromRole="tabla_estados_pedido" ToRole="tabla_ventas" />
+  </EntityType>
+  <EntityType Name="tabla_valoraciones">
+    <Key>
+      <PropertyRef Name="id_valoracion" />
+    </Key>
+    <Property Name="id_valoracion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_pedido" Type="Int32" Nullable="false" />
+    <Property Name="calificacion" Type="Int32" Nullable="false" />
+    <Property Name="comentarios" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="fecha" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="tabla_ventas" Relationship="BD_CREANDO_RECUERDOSModel.FK_valoraciones_pedidos" FromRole="tabla_valoraciones" ToRole="tabla_ventas" />
+  </EntityType>
+  <Association Name="FK_ventas_estados">
+    <End Type="BD_CREANDO_RECUERDOSModel.tabla_estados_pedido" Role="tabla_estados_pedido" Multiplicity="0..1" />
+    <End Type="BD_CREANDO_RECUERDOSModel.tabla_ventas" Role="tabla_ventas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_estados_pedido">
+        <PropertyRef Name="id_estado" />
+      </Principal>
+      <Dependent Role="tabla_ventas">
+        <PropertyRef Name="id_estado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_valoraciones_pedidos">
+    <End Type="BD_CREANDO_RECUERDOSModel.tabla_ventas" Role="tabla_ventas" Multiplicity="1" />
+    <End Type="BD_CREANDO_RECUERDOSModel.tabla_valoraciones" Role="tabla_valoraciones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_ventas">
+        <PropertyRef Name="id_venta" />
+      </Principal>
+      <Dependent Role="tabla_valoraciones">
+        <PropertyRef Name="id_pedido" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="sp_actualizar_estado_pedido_Result">
+    <Property Type="Int32" Name="resultado" Nullable="false" />
+    <Property Type="String" Name="mensaje" Nullable="false" MaxLength="32" />
+    <Property Type="Int32" Name="id_pedido" Nullable="true" />
+    <Property Type="String" Name="nuevo_estado" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_cancelar_pedido_Result">
+    <Property Type="Int32" Name="resultado" Nullable="false" />
+    <Property Type="String" Name="mensaje" Nullable="false" MaxLength="29" />
+    <Property Type="Int32" Name="id_pedido" Nullable="true" />
+    <Property Type="String" Name="numero_pedido" Nullable="true" MaxLength="13" />
+  </ComplexType>
+  <ComplexType Name="sp_crear_pedido_Result">
+    <Property Type="Int32" Name="id_pedido" Nullable="true" />
+    <Property Type="String" Name="numero_pedido" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="pin" Nullable="true" MaxLength="4" />
+    <Property Type="Int32" Name="tiempo_estimado" Nullable="true" />
+    <Property Type="Int32" Name="resultado" Nullable="false" />
+    <Property Type="String" Name="mensaje" Nullable="false" MaxLength="26" />
+  </ComplexType>
+  <ComplexType Name="sp_obtener_detalle_pedido_Result">
+    <Property Type="Int32" Name="id_producto" Nullable="false" />
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="descripcion" Nullable="true" MaxLength="255" />
+    <Property Type="String" Name="img_url" Nullable="true" MaxLength="255" />
+    <Property Type="Int32" Name="cantidad" Nullable="false" />
+    <Property Type="Decimal" Name="precio_unitario" Nullable="false" Precision="10" Scale="2" />
+    <Property Type="Decimal" Name="subtotal" Nullable="true" Precision="21" Scale="2" />
+  </ComplexType>
+  <ComplexType Name="sp_obtener_pedidos_Result">
+    <Property Type="Int32" Name="id_pedido" Nullable="false" />
+    <Property Type="String" Name="numero_pedido" Nullable="true" MaxLength="13" />
+    <Property Type="String" Name="nombre_usuario" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="nombre_cliente" Nullable="false" MaxLength="201" />
+    <Property Type="DateTime" Name="fecha" Nullable="true" Precision="23" />
+    <Property Type="Decimal" Name="total" Nullable="false" Precision="10" Scale="2" />
+    <Property Type="String" Name="estado" Nullable="false" MaxLength="9" />
+    <Property Type="Int32" Name="id_usuario" Nullable="false" />
+    <Property Type="Int32" Name="id_cliente" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="sp_registrar_valoracion_Result">
+    <Property Type="Int32" Name="resultado" Nullable="false" />
+    <Property Type="String" Name="mensaje" Nullable="false" MaxLength="35" />
+    <Property Type="Int32" Name="id_pedido" Nullable="true" />
+    <Property Type="Int32" Name="calificacion" Nullable="true" />
   </ComplexType>
 </Schema>

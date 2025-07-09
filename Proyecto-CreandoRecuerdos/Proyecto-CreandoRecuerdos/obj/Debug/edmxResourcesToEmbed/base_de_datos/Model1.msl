@@ -187,6 +187,14 @@
     <EntitySetMapping Name="tabla_precios_finales_sugeridos">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_precios_finales_sugeridos">
         <MappingFragment StoreEntitySet="tabla_precios_finales_sugeridos">
+          <ScalarProperty Name="factura_por_insumo" ColumnName="factura_por_insumo" />
+          <ScalarProperty Name="costo_total_empaque_decoracion_implemento_suministro" ColumnName="costo_total_empaque_decoracion_implemento_suministro" />
+          <ScalarProperty Name="costo_suministro_por_porcentaje_de_ganancia" ColumnName="costo_suministro_por_porcentaje_de_ganancia" />
+          <ScalarProperty Name="costo_implemento_por_porcentaje_de_ganancia" ColumnName="costo_implemento_por_porcentaje_de_ganancia" />
+          <ScalarProperty Name="costo_empaque_decoracion_por_porcentaje_de_ganancia" ColumnName="costo_empaque_decoracion_por_porcentaje_de_ganancia" />
+          <ScalarProperty Name="factura" ColumnName="factura" />
+          <ScalarProperty Name="costo_total_de_impresion_de_factura" ColumnName="costo_total_de_impresion_de_factura" />
+          <ScalarProperty Name="costo_de_impresion_de_factura_por_insumo" ColumnName="costo_de_impresion_de_factura_por_insumo" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="id_receta" ColumnName="id_receta" />
           <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
@@ -296,6 +304,11 @@
     <EntitySetMapping Name="tabla_ventas">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_ventas">
         <MappingFragment StoreEntitySet="tabla_ventas">
+          <ScalarProperty Name="pin" ColumnName="pin" />
+          <ScalarProperty Name="para_llevar" ColumnName="para_llevar" />
+          <ScalarProperty Name="metodo_pago" ColumnName="metodo_pago" />
+          <ScalarProperty Name="tiempo_estimado" ColumnName="tiempo_estimado" />
+          <ScalarProperty Name="id_estado" ColumnName="id_estado" />
           <ScalarProperty Name="id_venta" ColumnName="id_venta" />
           <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
           <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
@@ -435,5 +448,96 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_registrar_actividad" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_registrar_actividad" />
     <FunctionImportMapping FunctionImportName="sp_registrar_auditoria" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_registrar_auditoria" />
+    <EntitySetMapping Name="tabla_estados_pedido">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_estados_pedido">
+        <MappingFragment StoreEntitySet="tabla_estados_pedido">
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id_estado" ColumnName="id_estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tabla_valoraciones">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_valoraciones">
+        <MappingFragment StoreEntitySet="tabla_valoraciones">
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="comentarios" ColumnName="comentarios" />
+          <ScalarProperty Name="calificacion" ColumnName="calificacion" />
+          <ScalarProperty Name="id_pedido" ColumnName="id_pedido" />
+          <ScalarProperty Name="id_valoracion" ColumnName="id_valoracion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_actualizar_estado_pedido" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_actualizar_estado_pedido">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_actualizar_estado_pedido_Result">
+          <ScalarProperty Name="resultado" ColumnName="resultado" />
+          <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+          <ScalarProperty Name="id_pedido" ColumnName="id_pedido" />
+          <ScalarProperty Name="nuevo_estado" ColumnName="nuevo_estado" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_agregar_detalle_pedido" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_agregar_detalle_pedido" />
+    <FunctionImportMapping FunctionImportName="sp_cancelar_pedido" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_cancelar_pedido">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_cancelar_pedido_Result">
+          <ScalarProperty Name="resultado" ColumnName="resultado" />
+          <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+          <ScalarProperty Name="id_pedido" ColumnName="id_pedido" />
+          <ScalarProperty Name="numero_pedido" ColumnName="numero_pedido" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_crear_pedido" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_crear_pedido">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_crear_pedido_Result">
+          <ScalarProperty Name="id_pedido" ColumnName="id_pedido" />
+          <ScalarProperty Name="numero_pedido" ColumnName="numero_pedido" />
+          <ScalarProperty Name="pin" ColumnName="pin" />
+          <ScalarProperty Name="tiempo_estimado" ColumnName="tiempo_estimado" />
+          <ScalarProperty Name="resultado" ColumnName="resultado" />
+          <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_obtener_detalle_pedido" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_detalle_pedido">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_obtener_detalle_pedido_Result">
+          <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="img_url" ColumnName="img_url" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="precio_unitario" ColumnName="precio_unitario" />
+          <ScalarProperty Name="subtotal" ColumnName="subtotal" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_obtener_pedidos" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_obtener_pedidos">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_obtener_pedidos_Result">
+          <ScalarProperty Name="id_pedido" ColumnName="id_pedido" />
+          <ScalarProperty Name="numero_pedido" ColumnName="numero_pedido" />
+          <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
+          <ScalarProperty Name="nombre_cliente" ColumnName="nombre_cliente" />
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="estado" ColumnName="estado" />
+          <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+          <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_registrar_valoracion" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_registrar_valoracion">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_registrar_valoracion_Result">
+          <ScalarProperty Name="resultado" ColumnName="resultado" />
+          <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+          <ScalarProperty Name="id_pedido" ColumnName="id_pedido" />
+          <ScalarProperty Name="calificacion" ColumnName="calificacion" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

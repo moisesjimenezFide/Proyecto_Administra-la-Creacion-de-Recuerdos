@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="544f4761a0114622b6afc6e1be2a5dbc" Name="Diagram1" ZoomLevel="108">
+      <Diagram DiagramId="544f4761a0114622b6afc6e1be2a5dbc" Name="Diagram1" ZoomLevel="52">
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.costos_receta_materias_primas_utilizadas" Width="1.5" PointX="13" PointY="19.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.costos_receta_productos_preparados_utilizados" Width="1.5" PointX="16" PointY="19.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.precios_empaques_decoraciones_utilizados" Width="1.5" PointX="15.25" PointY="26.25" IsExpanded="true" />
@@ -19,7 +19,7 @@
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_horarios" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_implementos" Width="1.5" PointX="16" PointY="34.25" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_materias_primas" Width="1.5" PointX="10.75" PointY="14.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_precios_finales_sugeridos" Width="1.5" PointX="13" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_precios_finales_sugeridos" Width="1.5" PointX="13" PointY="23.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_productos" Width="1.5" PointX="8.25" PointY="14.25" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_productos_preparados" Width="1.5" PointX="13.75" PointY="15" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_recomendaciones" Width="1.5" PointX="10.5" PointY="11.75" IsExpanded="true" />
@@ -52,6 +52,10 @@
         <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK_usuario" ManuallyRouted="false" />
         <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK__tabla_ven__id_us__151B244E" ManuallyRouted="false" />
         <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK_Vehiculos_Vendedores" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_estados_pedido" Width="1.5" PointX="6" PointY="18" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_valoraciones" Width="1.5" PointX="10.5" PointY="0.75" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK_ventas_estados" />
+        <AssociationConnector Association="BD_CREANDO_RECUERDOSModel.FK_valoraciones_pedidos" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

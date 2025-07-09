@@ -150,6 +150,14 @@ namespace Proyecto_CreandoRecuerdos.Models
         public List<EmpaqueDecoracionUtilizado> EmpaquesDecoracionesUtilizados { get; set; } = new List<EmpaqueDecoracionUtilizado>();
         public List<ImplementoUtilizado> ImplementosUtilizados { get; set; } = new List<ImplementoUtilizado>();
         public List<SuministroUtilizado> SuministrosUtilizados { get; set; } = new List<SuministroUtilizado>();
+        public decimal costo_de_impresion_de_factura_por_insumo { get; set; }
+        public decimal costo_total_de_impresion_de_factura { get; set; }
+        public decimal factura { get; set; }
+        public decimal costo_empaque_decoracion_por_porcentaje_de_ganancia { get; set; }
+        public decimal costo_implemento_por_porcentaje_de_ganancia { get; set; }
+        public decimal costo_suministro_por_porcentaje_de_ganancia { get; set; }
+        public decimal costo_total_empaque_decoracion_implemento_suministro { get; set; }
+        public decimal factura_por_insumo { get; set; }
     }
 
     public class EmpaqueDecoracionUtilizado

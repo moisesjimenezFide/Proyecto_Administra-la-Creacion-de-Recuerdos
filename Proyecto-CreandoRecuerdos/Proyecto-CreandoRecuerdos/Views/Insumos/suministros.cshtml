@@ -1,11 +1,11 @@
 @model Proyecto_CreandoRecuerdos.Models.InsumosModel
 
 @{
-    ViewData["Title"] = "Creando Recuerdos - Gestión de Costos de Suministros de Limpieza e Higiene";
+    ViewData["Title"] = "Creando Recuerdos - Gestión de Costos de Suministros";
     Layout = "~/Views/Shared/_Layout.cshtml";
     bool editando = ViewBag.Editando ?? false;
     var suministroEditado = Model.SuministroEditado;
-    string titulo = editando ? "Edición de Suministros de Limpieza e Higiene" : "Registro de suministros de Limpieza e Higiene";
+    string titulo = editando ? "Edición de Suministros" : "Registro de Suministros";
     string textoBoton = editando ? "Actualizar" : "Agregar";
     string accion = editando ? "EditarSuministro" : "CrearSuministro";
 }
@@ -61,13 +61,13 @@
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
-        <i class="fas fa-calculator me-2"></i> Gestión de Costos de Suministros de Limpieza e Higiene
+        <i class="fas fa-calculator me-2"></i> Gestión de Costos de Suministros
     </h2>
 </div>
 
 <!-- Formulario de búsqueda -->
 <form method="get" action="@Url.Action("suministros", "Insumos")" class="mt-4">
-    <h4><strong>Búsqueda de suministros de Limpieza e Higiene</strong></h4>
+    <h4><strong>Búsqueda de suministros</strong></h4>
     <div class="input-group mb-4">
         <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
         <button type="submit" class=" fas fa-search ms-1 btn btn-custom-pink" title="Buscar"></button>
@@ -150,7 +150,7 @@
 
 <!-- Listado -->
 <div class="container">
-    <h4><strong>Listado de Suministros de Limpieza e Higiene</strong></h4>
+    <h4><strong>Listado de Suministros</strong></h4>
     @if (Model.Suministros == null || Model.Suministros.Count == 0)
     {
         <div class="alert alert-info text-center" style="margin: 1rem 0;">

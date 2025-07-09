@@ -53,7 +53,7 @@
         }
 
             .btn-custom-pink:hover {
-                background-color: #d66da3;
+                background-color: #D66DA3;
                 color: white;
             }
     </style>
@@ -93,7 +93,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Validación',
-                        html: '@Html.Raw(string.Join("<br/>", (IEnumerable<string>)ViewBag.Errores))',
+                        html: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(string.Join("<br/>", (IEnumerable<string>)ViewBag.Errores))),
                         confirmButtonText: 'Aceptar',
                         confirmButtonColor: '#E27AB0'
                     });
@@ -125,8 +125,8 @@
                                         <label>Nombre</label>
                                         @Html.DropDownList(
                                             $"MateriasPrimasUtilizadas[{i}].nombre",
-                                            ViewBag.MateriasPrimas as SelectList,
-                                            null, // No mostrar "Seleccione..." en filas existentes
+                                            new SelectList(ViewBag.MateriasPrimas as SelectList, "Value", "Text", materia_prima.nombre),
+                                            "Seleccione una materia prima",
                                             new { @class = "form-control" }
                                         )
                                     </div>
@@ -139,7 +139,7 @@
                                         <input type="text" name="MateriasPrimasUtilizadas[@i].unidad_de_medida" class="form-control" value="@materia_prima.unidad_de_medida" />
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                                        <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                                     </div>
                                 </div>
                             }
@@ -185,8 +185,8 @@
                                         <label>Nombre</label>
                                         @Html.DropDownList(
                                             $"ProductosPreparadosUtilizados[{i}].nombre",
-                                            ViewBag.ProductosPreparados as SelectList,
-                                            null, // No mostrar "Seleccione..." en filas existentes
+                                            new SelectList(ViewBag.ProductosPreparados as SelectList, "Value", "Text", producto_preparado.nombre),
+                                            "Seleccione un producto preparado", 
                                             new { @class = "form-control" }
                                         )
                                     </div>
@@ -224,7 +224,7 @@
                                 <input type="text" name="ProductosPreparadosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                                <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                             </div>
                         </div>
                         <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('productos_preparados-container', 'template-producto_preparado')">+ Agregar</button>
@@ -437,35 +437,40 @@
         }
 
         function agregarFila(containerId, templateClass) {
-            var container = document.getElementById(containerId);
-            var index = container.querySelectorAll('.fila-insumo:not(.template-materia_prima):not([style*="display: none"])').length;
-            var template = container.querySelector('.' + templateClass + '[style*="display: none"]');
-            var clone = template.cloneNode(true);
+            const container = document.getElementById(containerId);
+            const template = container.querySelector(`.${templateClass}[style*="display: none"]`);
+            const filas = container.querySelectorAll('.fila-insumo:not([style*="display: none"])');
+            const index = filas.length;
+
+            const clone = template.cloneNode(true);
             clone.style.display = '';
-            clone.classList.remove(templateClass); // Opcional: para evitar que se vuelva a clonar
-            clone.querySelectorAll('input, select').forEach(function (input) {
+            clone.classList.remove(templateClass);
+
+            clone.querySelectorAll('input, select').forEach(input => {
                 if (input.name) {
-                    input.name = input.name.replace(/\[__index__\]/g, '[' + index + ']');
+                    input.name = input.name.replace(/__index__/g, index);
                 }
                 if (input.tagName === "SELECT") {
-                    input.selectedIndex = 0; // Deja el dropdown en la opción por defecto
+                    input.selectedIndex = 0;
                 }
                 if (input.tagName === "INPUT") {
-                    input.value = ""; // Limpia los campos
+                    input.value = "";
                 }
             });
+
             container.appendChild(clone);
         }
 
         function eliminarFila(boton) {
-            var fila = boton.closest(".fila-insumo");
+            const fila = boton.closest(".fila-insumo");
+            const container = fila.parentElement;
             fila.remove();
-            // Reindexar los names de todas las filas visibles
-            var filas = fila.parentElement.querySelectorAll('.fila-insumo:not([style*="display: none"])');
-            filas.forEach(function (f, idx) {
-                f.querySelectorAll('input, select').forEach(function (input) {
+
+            const filas = container.querySelectorAll('.fila-insumo:not([style*="display: none"])');
+            filas.forEach((f, idx) => {
+                f.querySelectorAll('input, select').forEach(input => {
                     if (input.name) {
-                        input.name = input.name.replace(/\[\d+\]/g, '[' + idx + ']');
+                        input.name = input.name.replace(/\[\d+\]/g, `[${idx}]`);
                     }
                 });
             });

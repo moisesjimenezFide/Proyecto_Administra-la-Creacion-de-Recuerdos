@@ -52,6 +52,8 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public virtual DbSet<tabla_ventas> tabla_ventas { get; set; }
         public virtual DbSet<Vehiculos> Vehiculos { get; set; }
         public virtual DbSet<Vendedores> Vendedores { get; set; }
+        public virtual DbSet<tabla_estados_pedido> tabla_estados_pedido { get; set; }
+        public virtual DbSet<tabla_valoraciones> tabla_valoraciones { get; set; }
     
         public virtual int sp_activar_usuario(Nullable<int> id)
         {
@@ -398,6 +400,149 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
                 new ObjectParameter("descripcion", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_registrar_auditoria", id_usuarioParameter, tipo_accionParameter, tabla_afectadaParameter, id_registro_afectadoParameter, valores_anterioresParameter, valores_nuevosParameter, ip_solicitudParameter, descripcionParameter);
+        }
+    
+        public virtual ObjectResult<sp_actualizar_estado_pedido_Result> sp_actualizar_estado_pedido(Nullable<int> id_pedido, string nuevo_estado, Nullable<int> id_usuario)
+        {
+            var id_pedidoParameter = id_pedido.HasValue ?
+                new ObjectParameter("id_pedido", id_pedido) :
+                new ObjectParameter("id_pedido", typeof(int));
+    
+            var nuevo_estadoParameter = nuevo_estado != null ?
+                new ObjectParameter("nuevo_estado", nuevo_estado) :
+                new ObjectParameter("nuevo_estado", typeof(string));
+    
+            var id_usuarioParameter = id_usuario.HasValue ?
+                new ObjectParameter("id_usuario", id_usuario) :
+                new ObjectParameter("id_usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_actualizar_estado_pedido_Result>("sp_actualizar_estado_pedido", id_pedidoParameter, nuevo_estadoParameter, id_usuarioParameter);
+        }
+    
+        public virtual int sp_agregar_detalle_pedido(Nullable<int> id_venta, Nullable<int> id_producto, Nullable<int> cantidad, Nullable<decimal> precio_unitario, string personalizacion)
+        {
+            var id_ventaParameter = id_venta.HasValue ?
+                new ObjectParameter("id_venta", id_venta) :
+                new ObjectParameter("id_venta", typeof(int));
+    
+            var id_productoParameter = id_producto.HasValue ?
+                new ObjectParameter("id_producto", id_producto) :
+                new ObjectParameter("id_producto", typeof(int));
+    
+            var cantidadParameter = cantidad.HasValue ?
+                new ObjectParameter("cantidad", cantidad) :
+                new ObjectParameter("cantidad", typeof(int));
+    
+            var precio_unitarioParameter = precio_unitario.HasValue ?
+                new ObjectParameter("precio_unitario", precio_unitario) :
+                new ObjectParameter("precio_unitario", typeof(decimal));
+    
+            var personalizacionParameter = personalizacion != null ?
+                new ObjectParameter("personalizacion", personalizacion) :
+                new ObjectParameter("personalizacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_agregar_detalle_pedido", id_ventaParameter, id_productoParameter, cantidadParameter, precio_unitarioParameter, personalizacionParameter);
+        }
+    
+        public virtual ObjectResult<sp_cancelar_pedido_Result> sp_cancelar_pedido(Nullable<int> id_pedido, string pin, Nullable<int> id_usuario)
+        {
+            var id_pedidoParameter = id_pedido.HasValue ?
+                new ObjectParameter("id_pedido", id_pedido) :
+                new ObjectParameter("id_pedido", typeof(int));
+    
+            var pinParameter = pin != null ?
+                new ObjectParameter("pin", pin) :
+                new ObjectParameter("pin", typeof(string));
+    
+            var id_usuarioParameter = id_usuario.HasValue ?
+                new ObjectParameter("id_usuario", id_usuario) :
+                new ObjectParameter("id_usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_cancelar_pedido_Result>("sp_cancelar_pedido", id_pedidoParameter, pinParameter, id_usuarioParameter);
+        }
+    
+        public virtual ObjectResult<sp_crear_pedido_Result> sp_crear_pedido(Nullable<int> id_usuario, Nullable<int> id_cliente, Nullable<decimal> total, string estado, string metodo_pago, Nullable<bool> para_llevar, string pin, Nullable<int> tiempo_estimado)
+        {
+            var id_usuarioParameter = id_usuario.HasValue ?
+                new ObjectParameter("id_usuario", id_usuario) :
+                new ObjectParameter("id_usuario", typeof(int));
+    
+            var id_clienteParameter = id_cliente.HasValue ?
+                new ObjectParameter("id_cliente", id_cliente) :
+                new ObjectParameter("id_cliente", typeof(int));
+    
+            var totalParameter = total.HasValue ?
+                new ObjectParameter("total", total) :
+                new ObjectParameter("total", typeof(decimal));
+    
+            var estadoParameter = estado != null ?
+                new ObjectParameter("estado", estado) :
+                new ObjectParameter("estado", typeof(string));
+    
+            var metodo_pagoParameter = metodo_pago != null ?
+                new ObjectParameter("metodo_pago", metodo_pago) :
+                new ObjectParameter("metodo_pago", typeof(string));
+    
+            var para_llevarParameter = para_llevar.HasValue ?
+                new ObjectParameter("para_llevar", para_llevar) :
+                new ObjectParameter("para_llevar", typeof(bool));
+    
+            var pinParameter = pin != null ?
+                new ObjectParameter("pin", pin) :
+                new ObjectParameter("pin", typeof(string));
+    
+            var tiempo_estimadoParameter = tiempo_estimado.HasValue ?
+                new ObjectParameter("tiempo_estimado", tiempo_estimado) :
+                new ObjectParameter("tiempo_estimado", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_crear_pedido_Result>("sp_crear_pedido", id_usuarioParameter, id_clienteParameter, totalParameter, estadoParameter, metodo_pagoParameter, para_llevarParameter, pinParameter, tiempo_estimadoParameter);
+        }
+    
+        public virtual ObjectResult<sp_obtener_detalle_pedido_Result> sp_obtener_detalle_pedido(Nullable<int> id_pedido)
+        {
+            var id_pedidoParameter = id_pedido.HasValue ?
+                new ObjectParameter("id_pedido", id_pedido) :
+                new ObjectParameter("id_pedido", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_obtener_detalle_pedido_Result>("sp_obtener_detalle_pedido", id_pedidoParameter);
+        }
+    
+        public virtual ObjectResult<sp_obtener_pedidos_Result> sp_obtener_pedidos(string estado, Nullable<System.DateTime> fecha_inicio, Nullable<System.DateTime> fecha_fin, string metodo_pago)
+        {
+            var estadoParameter = estado != null ?
+                new ObjectParameter("estado", estado) :
+                new ObjectParameter("estado", typeof(string));
+    
+            var fecha_inicioParameter = fecha_inicio.HasValue ?
+                new ObjectParameter("fecha_inicio", fecha_inicio) :
+                new ObjectParameter("fecha_inicio", typeof(System.DateTime));
+    
+            var fecha_finParameter = fecha_fin.HasValue ?
+                new ObjectParameter("fecha_fin", fecha_fin) :
+                new ObjectParameter("fecha_fin", typeof(System.DateTime));
+    
+            var metodo_pagoParameter = metodo_pago != null ?
+                new ObjectParameter("metodo_pago", metodo_pago) :
+                new ObjectParameter("metodo_pago", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_obtener_pedidos_Result>("sp_obtener_pedidos", estadoParameter, fecha_inicioParameter, fecha_finParameter, metodo_pagoParameter);
+        }
+    
+        public virtual ObjectResult<sp_registrar_valoracion_Result> sp_registrar_valoracion(Nullable<int> id_pedido, Nullable<int> calificacion, string comentarios)
+        {
+            var id_pedidoParameter = id_pedido.HasValue ?
+                new ObjectParameter("id_pedido", id_pedido) :
+                new ObjectParameter("id_pedido", typeof(int));
+    
+            var calificacionParameter = calificacion.HasValue ?
+                new ObjectParameter("calificacion", calificacion) :
+                new ObjectParameter("calificacion", typeof(int));
+    
+            var comentariosParameter = comentarios != null ?
+                new ObjectParameter("comentarios", comentarios) :
+                new ObjectParameter("comentarios", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_registrar_valoracion_Result>("sp_registrar_valoracion", id_pedidoParameter, calificacionParameter, comentariosParameter);
         }
     }
 }
