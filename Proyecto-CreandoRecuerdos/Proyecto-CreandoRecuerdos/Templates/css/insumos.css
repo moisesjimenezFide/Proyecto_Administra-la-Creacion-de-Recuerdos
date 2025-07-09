@@ -1,0 +1,43 @@
+﻿label.form-label {
+    font-weight: bold;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table th {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.table th, .table td {
+    min-width: 120px;
+    white-space: nowrap;
+    word-break: break-word;
+    padding: 0.5rem;
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+
+.btn-sm {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+}
+
+.btn {
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.btn-custom-pink {
+    background-color: #E27AB0;
+    color: white;
+    border: none;
+}
+
+    .btn-custom-pink:hover {
+        background-color: #d66da3;
+        color: white;
+    }

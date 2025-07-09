@@ -17,9 +17,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult HistorialActividades()
         {
             // Verificar si el usuario es administrador
-            if (Session["Rol"]?.ToString() != "1")
+            if (Session["Rol"] == null || (int)Session["Rol"] != 1)
             {
-                return RedirectToAction("Inicio", "Inicio");
+                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
             }
 
             using (var context = new BD_CREANDO_RECUERDOSEntities4())

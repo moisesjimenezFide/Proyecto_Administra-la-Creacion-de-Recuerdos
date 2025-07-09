@@ -11,52 +11,7 @@
 }
 
 @section Styles {
-    <link href="~/Templates/css/menu.css" rel="stylesheet" />
-    <style>
-        label.form-label {
-            font-weight: bold;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .table th {
-            font-size: 1rem;
-            font-weight: bold;
-        }
-
-        .table th, .table td {
-            min-width: 120px;
-            white-space: nowrap;
-            word-break: break-word;
-            padding: 0.5rem;
-            vertical-align: middle;
-            font-size: 0.95rem;
-        }
-
-        .btn-sm {
-            font-size: 0.8rem;
-            padding: 0.3rem 0.6rem;
-        }
-
-        .btn {
-            font-size: 0.9rem;
-            padding: 0.25rem 0.5rem;
-        }
-
-        .btn-custom-pink {
-            background-color: #E27AB0;
-            color: white;
-            border: none;
-        }
-
-            .btn-custom-pink:hover {
-                background-color: #d66da3;
-                color: white;
-            }
-    </style>
+    <link href="~/Templates/css/insumos.css" rel="stylesheet" />
 }
 
 <div class="container my-5 text-center">
@@ -89,7 +44,7 @@
 
         if (ViewBag.Errores != null)
         {
-           @:<script>
+            @:<script>
            @:     $(function () {
            @:         Swal.fire({
            @:             icon: 'error',
@@ -206,116 +161,6 @@
 </div>
 
 @section Scripts {
-    <script>
-        $('form').on('submit', function (e) {
-            var valido = true;
-            var mensaje = "";
-
-            // Validar campos de texto
-            $(this).find('input[type="text"]').each(function () {
-                var valor = $(this).val();
-                if (!valor || valor.trim().length === 0) {
-                    valido = false;
-                    mensaje = "No se permiten campos de texto vacíos o solo espacios en blanco.";
-                    $(this).focus();
-                    return false;
-                }
-            });
-
-            // Validar campos numéricos
-            if (valido) {
-                $(this).find('input[type="number"]').each(function () {
-                    var valor = $(this).val();
-                    if (!/^\d+(\.\d+)?$/.test(valor) || parseFloat(valor) <= 0) {
-                        valido = false;
-                        mensaje = "Los campos numéricos deben ser mayores a cero y solo aceptar números positivos.";
-                        $(this).focus();
-                        return false;
-                    }
-                });
-            }
-
-            // Validar nombre duplicado
-            var nombre = $('#nombre').val().toLowerCase();
-            var id = $('#id').val();
-            if (nombresExistentes.includes(nombre)) {
-                valido = false;
-                mensaje = "Ya existe un suministro con ese nombre.";
-                $('#nombre').focus();
-            }
-
-            if (!valido) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Validación',
-                    text: mensaje,
-                    confirmButtonText: 'Aceptar',
-                    confirmButtonColor: '#E27AB0'
-                });
-                return false;
-            }
-
-            e.preventDefault();
-            var data = $(this).serialize();
-            $.post($(this).attr('action'), data)
-            .done(function () { location.reload(); })
-            .fail(function () {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error al guardar en la base de datos',
-                    confirmButtonText: 'Aceptar',
-                    confirmButtonColor: '#E27AB0'
-                });
-            });
-        });
-    </script>
-
-    <script>
-        @if (TempData["SuccessMessage"] != null)
-        {
-           <text>
-            Swal.fire({
-                icon: 'success',
-                iconColor: '#82E0AA',
-                text: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(TempData["SuccessMessage"])),
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#E27AB0'
-            });
-           </text>
-        }
-
-        $(document).on('click', '.btn-eliminar', function (e) {
-            e.preventDefault();
-            var url = $(this).data('url');
-
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡Esta acción no se puede deshacer!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#E27AB0',
-                cancelButtonColor: '#e74c3c',
-                confirmButtonText: 'Aceptar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = url;
-                }
-            });
-        });
-    </script>
-
-    <script>
-        function mostrarCostoPorCantidad() {
-            var costo = parseFloat($('#costo').val()) || 0;
-            var cantidad = parseFloat($('#cantidad').val()) || 1;
-            var resultado = (cantidad > 0) ? (costo / cantidad) : 0;
-            $('#costoPorCantidad').val(resultado.toFixed(4));
-        }
-
-        $('#costo, #cantidad').on('input', mostrarCostoPorCantidad);
-        $(document).ready(mostrarCostoPorCantidad);
-    </script>
+    <script src="~/Templates/js/insumos.js"></script>
+    @Html.Partial("accion_exitosa")
 }

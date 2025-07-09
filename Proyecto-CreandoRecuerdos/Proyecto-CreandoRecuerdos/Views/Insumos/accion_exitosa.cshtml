@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "_SuccessMessage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var msg = TempData["SuccessMessage"];
+}
+@if (msg != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            iconColor: '#82E0AA',
+            text: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(msg)),
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#E27AB0'
+        });
+    </script>
+}

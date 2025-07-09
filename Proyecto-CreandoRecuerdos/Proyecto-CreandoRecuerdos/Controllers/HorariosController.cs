@@ -11,6 +11,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult Horarios()
         {
+            if (Session["Rol"] == null || (int)Session["Rol"] != 1)
+            {
+                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+            }
+
             using (var context = new BD_CREANDO_RECUERDOSEntities4())
             {
                 var horarios = context.tabla_horarios.ToList();

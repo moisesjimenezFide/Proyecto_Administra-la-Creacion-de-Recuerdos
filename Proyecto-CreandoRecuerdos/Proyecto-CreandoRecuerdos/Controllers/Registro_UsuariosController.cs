@@ -15,9 +15,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             return View();
         }
 
-
-
-
+        [HttpGet]
+        public ActionResult iniciar_sesion()
+        {
+            return View();
+        }
 
         // Craer cuenta simple
         [HttpPost]

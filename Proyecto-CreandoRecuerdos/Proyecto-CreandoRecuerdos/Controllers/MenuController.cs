@@ -30,6 +30,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult menu_admin()
         {
+            if (Session["Rol"] == null || (int)Session["Rol"] != 1)
+            {
+                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+            }
+
             using (var db = new BD_CREANDO_RECUERDOSEntities4())
             {
                 var resultados = db.sp_consultar_productos().ToList();

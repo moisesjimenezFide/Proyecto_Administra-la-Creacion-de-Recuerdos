@@ -13,6 +13,13 @@ public class InsumosController : Controller
     //Listar y buscar materias primas
     public ActionResult materias_primas(string search)
     {
+        // Verificar si el usuario es administrador
+        if (Session["Rol"] == null || (int)Session["Rol"] != 1)
+        {
+            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+        }
+
+        // Obtener las materias primas y aplicar el filtro de búsqueda
         var query = db.tabla_materias_primas.AsQueryable();
         if (!string.IsNullOrEmpty(search))
         {
@@ -280,6 +287,13 @@ public class InsumosController : Controller
     // Listar y buscar productos preparados
     public ActionResult productos_preparados(string search)
     {
+        // Verificar si el usuario es administrador
+        if (Session["Rol"] == null || (int)Session["Rol"] != 1)
+        {
+            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+        }
+
+        // Obtener los productos preparados y aplicar el filtro de búsqueda
         var query = db.tabla_productos_preparados.AsQueryable();
         if (!string.IsNullOrEmpty(search))
         {
@@ -524,6 +538,13 @@ public class InsumosController : Controller
     // Listar y buscar empaques y/o decoraciones
     public ActionResult empaques_decoraciones(string search)
     {
+        // Verificar si el usuario es administrador
+        if (Session["Rol"] == null || (int)Session["Rol"] != 1)
+        {
+            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+        }
+
+        // Obtener los empaques o las decoraciones y aplicar el filtro de búsqueda
         var query = db.tabla_empaques_decoraciones.AsQueryable();
         if (!string.IsNullOrEmpty(search))
         {
@@ -740,6 +761,13 @@ public class InsumosController : Controller
     // Listar y buscar implementos
     public ActionResult implementos(string search)
     {
+        // Verificar si el usuario es administrador
+        if (Session["Rol"] == null || (int)Session["Rol"] != 1)
+        {
+            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+        }
+
+        // Obtener los implementos y aplicar el filtro de búsqueda
         var query = db.tabla_implementos.AsQueryable();
         if (!string.IsNullOrEmpty(search))
         {
@@ -957,6 +985,13 @@ public class InsumosController : Controller
     // Listar y buscar suministros
     public ActionResult suministros(string search)
     {
+        // Verificar si el usuario es administrador
+        if (Session["Rol"] == null || (int)Session["Rol"] != 1)
+        {
+            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+        }
+
+        // Obtener los suministros y aplicar el filtro de búsqueda
         var query = db.tabla_suministros.AsQueryable();
         if (!string.IsNullOrEmpty(search))
         {
@@ -1175,7 +1210,14 @@ public class InsumosController : Controller
 
     // Listar y buscar recetas
     public ActionResult costos_recetas(string search)
-    { 
+    {
+        // Verificar si el usuario es administrador
+        if (Session["Rol"] == null || (int)Session["Rol"] != 1)
+        {
+            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+        }
+
+        // Obtener las recetas y aplicar el filtro de búsqueda
         var query = db.tabla_costos_recetas.AsQueryable();
 
         if (!string.IsNullOrEmpty(search))
@@ -1878,6 +1920,12 @@ public class InsumosController : Controller
     // Listar y buscar productos finales
     public ActionResult precio_final(string search)
     {
+        // Verificar si el usuario es administrador
+        if (Session["Rol"] == null || (int)Session["Rol"] != 1)
+        {
+            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+        }
+
         var query = db.tabla_precios_finales_sugeridos.AsQueryable();
 
         if (!string.IsNullOrEmpty(search))
@@ -2268,7 +2316,7 @@ public class InsumosController : Controller
             case "UberEats (40%)":
                 envio = baseImpuestos * 0.40m;
                 break;
-            default: // Propio (0%) u otros
+            default: // Propio (0%)
                 envio = 0;
                 break;
         }
@@ -2784,7 +2832,7 @@ public class InsumosController : Controller
             case "UberEats (40%)":
                 envio = baseImpuestos * 0.40m;
                 break;
-            default: // Propio (0%) u otros
+            default: // Propio (0%)
                 envio = 0;
                 break;
         }
