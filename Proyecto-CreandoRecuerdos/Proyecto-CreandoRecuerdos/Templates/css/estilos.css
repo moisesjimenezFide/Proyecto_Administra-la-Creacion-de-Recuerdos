@@ -12,7 +12,7 @@
 /* Estructura base - Manteniendo fuente Sono */
 html, body {
     height: 100%;
-    min-height: 100%;
+    width: auto;
     padding: 0;
     margin: 0;
     overflow-x: hidden;
@@ -24,25 +24,18 @@ html, body {
     color: var(--texto-oscuro);
 }
 
-body {
-    min-height: 100vh;
-}
-
-#scaled-wrapper {
+#container-wrap2 {
+    width: auto;
+    height: auto;
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-}
-
-.container {
-    flex: 1 0 auto;
 }
 
 #container-wrap {
-    width: 100vw;
-    transform: scale(1);
-    transform-origin: top center;
+    justify-content: space-around;
+    width: auto;
+    height: auto;
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
@@ -263,71 +256,3 @@ html, body {
     overflow-x: hidden;
 }
 
-@media (max-width: 150px) {
-    .footer, #footer {
-        overflow: visible;
-        width: 100%;
-        min-height: 100px;
-        height: auto;
-    }
-}
-
-/* Ajustes para zoom entre 50% y 25% */
-@media (max-width: 1920px) and (min-width: 960px) {
-
-    .navbar-brand {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 960px) and (min-width: 480px) {
-
-    .navbar-brand {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-
-    .navbar-brand {
-        font-size: 0.8rem;
-    }
-}
-
-@media (min-width: 150px) and (max-width: 5824 px) {
-
-    html, body {
-        transform: scale(1);
-        transform-origin: top center;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        margin-left: auto;
-        margin-right: auto;
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-
-    scaled-wrapper {
-        margin: 0;
-        padding: 0;
-        margin-left: auto;
-        margin-right: auto;
-        width: 65%;
-        height: auto;
-    }
-
-    #container-wrap {
-        width: auto%;
-        margin-left: auto;
-        margin-right: auto;
-        height: auto;
-    }
-
-    #footer, .footer {
-        width: auto;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
