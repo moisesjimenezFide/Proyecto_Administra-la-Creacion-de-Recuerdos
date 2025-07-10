@@ -34,6 +34,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
+
 .container {
     flex: 1 0 auto;
 }
@@ -287,7 +288,7 @@ html, body {
 }
 
 @media (max-width: 480px) {
-    
+
     .navbar-brand {
         font-size: 0.8rem;
     }
@@ -330,7 +331,3 @@ html, body {
         margin-right: auto;
     }
 }
-
-
-
-

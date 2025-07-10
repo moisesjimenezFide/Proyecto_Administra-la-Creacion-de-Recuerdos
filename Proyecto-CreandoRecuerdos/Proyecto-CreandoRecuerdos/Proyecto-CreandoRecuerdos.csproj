@@ -469,7 +469,6 @@
     <Content Include="Templates\js\insumos.js" />
     <Content Include="Templates\js\menu.js" />
     <Content Include="Templates\js\menu_admin.js" />
-    <Content Include="Templates\js\footer_visibility_content_zoom_out.js" />
     <Content Include="Templates\js\pedidos.js" />
     <Content Include="Templates\js\registrar_usuario.js" />
     <Content Include="Templates\js\registro_ventas.js" />
