@@ -1,7 +1,7 @@
 ﻿@model Proyecto_CreandoRecuerdos.Models.SolicitudAusenciaModel
 
 @{
-    ViewBag.Title = "Solicitud de Ausencia";
+    ViewData["Title"] = "Solicitud de Ausencia";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var solicitudes = ViewBag.Solicitudes as List<Proyecto_CreandoRecuerdos.base_de_datos.tabla_solicitudes_ausencias>;
 }
