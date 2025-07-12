@@ -84,7 +84,7 @@
         <div class="mb-3 text-start">
             <div class="input-percent">
                 <label for="margen_de_utilidad" class="form-label">Margen de Utilidad (%)</label>
-                <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" required="required" value="@(editando ? productoFinalEditado.margen_de_utilidad.ToString("0.##") : "")" min="0" max="100" />
+                <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" value="@(editando ? productoFinalEditado.margen_de_utilidad.ToString("0.##") : "")" min="0" max="100" />
                 <span class="percent-sign">%</span>
             </div>
         </div>
