@@ -58,12 +58,12 @@
 
         <div class="mb-3 text-start">
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" name="nombre" id="nombre" class="form-control" required="required" value="@(editando ? recetaEditada.nombre : "")" />
+            <input type="text" name="nombre" id="nombre" class="form-control" value="@(editando ? recetaEditada.nombre : "")" />
         </div>
 
         <div class="mb-3 text-start">
             <label for="porcion" class="form-label">Porción</label>
-            <input type="number" name="porcion" id="porcion" class="form-control" required="required" value="@(editando ? recetaEditada.porcion.ToString() : "")" />
+            <input type="number" name="porcion" id="porcion" class="form-control" value="@(editando ? recetaEditada.porcion.ToString() : "")" />
         </div>
 
         <!-- Materias Primas Utilizadas -->
