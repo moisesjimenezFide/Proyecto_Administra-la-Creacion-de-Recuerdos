@@ -48,15 +48,15 @@ public class InsumosController : Controller
                 marca = m.marca,
                 presentacion = m.presentacion,
                 proveedor = m.proveedor,
-                costo = (decimal)m.costo,
-                peso = (int)m.peso,
+                costo = (decimal)(m.costo ?? 0),
+                peso = (int)(m.peso ?? 0),
                 unidad_de_medida = m.unidad_de_medida,
-                costo_por_gramo = (decimal)m.costo_por_gramo,
-                merma_total_en_gramos = (int)m.merma_total_en_gramos,
-                porcentaje_de_merma = (decimal)m.porcentaje_de_merma,
-                costo_de_merma_total = (decimal)m.costo_de_merma_total,
-                costo_total_mas_merma_total = (decimal)m.costo_total_mas_merma_total,
-                costo_por_gramo_con_merma = (decimal)m.costo_por_gramo_con_merma
+                costo_por_gramo = (decimal)(m.costo_por_gramo ?? 0),
+                merma_total_en_gramos = (int)(m.merma_total_en_gramos ?? 0),
+                porcentaje_de_merma = (decimal)(m.porcentaje_de_merma ?? 0),
+                costo_de_merma_total = (decimal)(m.costo_de_merma_total ?? 0),
+                costo_total_mas_merma_total = (decimal)(m.costo_total_mas_merma_total ?? 0),
+                costo_por_gramo_con_merma = (decimal)(m.costo_por_gramo_con_merma ?? 0)
             }).ToList()
         };
         ViewBag.Search = search;
@@ -70,12 +70,32 @@ public class InsumosController : Controller
     {
         var errores = new List<string>();
 
-        // Validar que no exista otra materia prima con el mismo nombre
-        if (db.tabla_materias_primas.Any(m => m.nombre.ToLower() == materia_prima.nombre.ToLower()))
-            errores.Add("Ya existe una materia prima con ese nombre.");
+        // 1. Validar si existe la combinación exacta de los 4 campos
+        bool existeExacto = db.tabla_materias_primas.Any(m =>
+            m.nombre.ToLower() == materia_prima.nombre.ToLower() &&
+            m.marca.ToLower() == materia_prima.marca.ToLower() &&
+            m.presentacion.ToLower() == materia_prima.presentacion.ToLower() &&
+            m.proveedor.ToLower() == materia_prima.proveedor.ToLower()
+        );
+        if (existeExacto)
+        {
+            errores.Add("Ya existe una materia prima con el mismo nombre, marca, presentación y proveedor.");
+        }
+        else
+        {
+            // 2. Validar individualmente cada campo
+            if (db.tabla_materias_primas.Any(m => m.nombre.ToLower() == materia_prima.nombre.ToLower()))
+                errores.Add("El nombre ya existe en otra materia prima.");
+            if (db.tabla_materias_primas.Any(m => m.marca.ToLower() == materia_prima.marca.ToLower()))
+                errores.Add("La marca ya existe en otra materia prima.");
+            if (db.tabla_materias_primas.Any(m => m.presentacion.ToLower() == materia_prima.presentacion.ToLower()))
+                errores.Add("La presentación ya existe en otra materia prima.");
+            if (db.tabla_materias_primas.Any(m => m.proveedor.ToLower() == materia_prima.proveedor.ToLower()))
+                errores.Add("El proveedor ya existe en otra materia prima.");
+        }
 
-            // Validar campos obligatorios y valores numéricos
-            if (string.IsNullOrWhiteSpace(materia_prima.nombre) ||
+        // Validar campos obligatorios y valores numéricos
+        if (string.IsNullOrWhiteSpace(materia_prima.nombre) ||
                                       string.IsNullOrWhiteSpace(materia_prima.marca) ||
                                       string.IsNullOrWhiteSpace(materia_prima.presentacion) ||
                                       string.IsNullOrWhiteSpace(materia_prima.proveedor) ||
@@ -152,15 +172,15 @@ public class InsumosController : Controller
             marca = m.marca,
             presentacion = m.presentacion,
             proveedor = m.proveedor,
-            costo = (decimal)m.costo,
-            peso = (int)m.peso,
+            costo = (decimal)(m.costo ?? 0),
+            peso = (int)(m.peso ?? 0),
             unidad_de_medida = m.unidad_de_medida,
-            costo_por_gramo = (decimal)m.costo_por_gramo,
-            merma_total_en_gramos = (int)m.merma_total_en_gramos,
-            porcentaje_de_merma = (decimal)m.porcentaje_de_merma,
-            costo_de_merma_total = (decimal)m.costo_de_merma_total,
-            costo_total_mas_merma_total = (decimal)m.costo_total_mas_merma_total,
-            costo_por_gramo_con_merma = (decimal)m.costo_por_gramo_con_merma
+            costo_por_gramo = (decimal)(m.costo_por_gramo ?? 0),
+            merma_total_en_gramos = (int)(m.merma_total_en_gramos ?? 0),
+            porcentaje_de_merma = (decimal)(m.porcentaje_de_merma ?? 0),
+            costo_de_merma_total = (decimal)(m.costo_de_merma_total ?? 0),
+            costo_total_mas_merma_total = (decimal)(m.costo_total_mas_merma_total ?? 0),
+            costo_por_gramo_con_merma = (decimal)(m.costo_por_gramo_con_merma ?? 0)
         };
 
         //Obtén el listado de materias primas
@@ -171,15 +191,15 @@ public class InsumosController : Controller
             marca = mp.marca,
             presentacion = mp.presentacion,
             proveedor = mp.proveedor,
-            costo = (decimal)mp.costo,
-            peso = (int)mp.peso,
+            costo = (decimal)(mp.costo ?? 0),
+            peso = (int)(mp.peso ?? 0),
             unidad_de_medida = mp.unidad_de_medida,
-            costo_por_gramo = (decimal)mp.costo_por_gramo,
-            merma_total_en_gramos = (int)mp.merma_total_en_gramos,
-            porcentaje_de_merma = (decimal)mp.porcentaje_de_merma,
-            costo_de_merma_total = (decimal)mp.costo_de_merma_total,
-            costo_total_mas_merma_total = (decimal)mp.costo_total_mas_merma_total,
-            costo_por_gramo_con_merma = (decimal)mp.costo_por_gramo_con_merma
+            costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0),
+            merma_total_en_gramos = (int)(mp.merma_total_en_gramos ?? 0),
+            porcentaje_de_merma = (decimal)(mp.porcentaje_de_merma ?? 0),
+            costo_de_merma_total = (decimal)(mp.costo_de_merma_total ?? 0),
+            costo_total_mas_merma_total = (decimal)(mp.costo_total_mas_merma_total ?? 0),
+            costo_por_gramo_con_merma = (decimal)(mp.costo_por_gramo_con_merma ?? 0)
         }).ToList();
 
         ViewBag.Editando = true;
@@ -196,10 +216,39 @@ public class InsumosController : Controller
     {
         var errores = new List<string>();
 
-        // Validar que no exista otra materia prima con el mismo nombre
-        if (db.tabla_materias_primas.Any(mp => mp.nombre.ToLower() == materia_prima.nombre.ToLower() && mp.id != materia_prima.id))
-            errores.Add("Ya existe una materia prima con ese nombre.");
+        // Buscar si existe un registro con la misma combinación de los 4 campos (excepto el actual)
+        var existe = db.tabla_materias_primas.Any(mp =>
+            mp.id != materia_prima.id &&
+            mp.nombre.ToLower() == materia_prima.nombre.ToLower() &&
+            mp.marca.ToLower() == materia_prima.marca.ToLower() &&
+            mp.presentacion.ToLower() == materia_prima.presentacion.ToLower() &&
+            mp.proveedor.ToLower() == materia_prima.proveedor.ToLower()
+        );
+        if (existe)
+        {
+            errores.Add("Ya existe una materia prima con el mismo nombre, marca, presentación y proveedor.");
+        }
+        else
+        {
+            // Validar individualmente cada campo, pero solo si hay coincidencia con los otros campos
+            var repetidos = db.tabla_materias_primas.Where(mp => mp.id != materia_prima.id);
 
+            if (repetidos.Any(mp =>
+                mp.nombre.ToLower() == materia_prima.nombre.ToLower() &&
+                mp.presentacion.ToLower() == materia_prima.presentacion.ToLower() &&
+                mp.proveedor.ToLower() == materia_prima.proveedor.ToLower()))
+            {
+                errores.Add("Ya existe una materia prima con el mismo nombre, presentación y proveedor.");
+            }
+            if (repetidos.Any(mp =>
+                mp.nombre.ToLower() == materia_prima.nombre.ToLower() &&
+                mp.marca.ToLower() == materia_prima.marca.ToLower() &&
+                mp.presentacion.ToLower() == materia_prima.presentacion.ToLower()))
+            {
+                errores.Add("Ya existe una materia prima con el mismo nombre, marca y presentación.");
+            }
+            // Puedes agregar más combinaciones si lo deseas
+        }
 
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(materia_prima.nombre) ||
@@ -223,15 +272,15 @@ public class InsumosController : Controller
                 marca = mp.marca,
                 presentacion = mp.presentacion,
                 proveedor = mp.proveedor,
-                costo = (decimal)mp.costo,
-                peso = (int)mp.peso,
+                costo = (decimal)(mp.costo ?? 0),
+                peso = (int)(mp.peso ?? 0),
                 unidad_de_medida = mp.unidad_de_medida,
-                costo_por_gramo = (decimal)mp.costo_por_gramo,
-                merma_total_en_gramos = (int)mp.merma_total_en_gramos,
-                porcentaje_de_merma = (decimal)mp.porcentaje_de_merma,
-                costo_de_merma_total = (decimal)mp.costo_de_merma_total,
-                costo_total_mas_merma_total = (decimal)mp.costo_total_mas_merma_total,
-                costo_por_gramo_con_merma = (decimal)mp.costo_por_gramo_con_merma
+                costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0),
+                merma_total_en_gramos = (int)(mp.merma_total_en_gramos ?? 0),
+                porcentaje_de_merma = (decimal)(mp.porcentaje_de_merma ?? 0),
+                costo_de_merma_total = (decimal)(mp.costo_de_merma_total ?? 0),
+                costo_total_mas_merma_total = (decimal)(mp.costo_total_mas_merma_total ?? 0),
+                costo_por_gramo_con_merma = (decimal)(mp.costo_por_gramo_con_merma ?? 0)
             }).ToList();
             return View("materias_primas", new InsumosModel
             {
@@ -326,8 +375,8 @@ public class InsumosController : Controller
                 costo = (decimal)p.costo,
                 peso = (int)p.peso,
                 unidad_de_medida = p.unidad_de_medida,
-                costo_por_peso = (decimal)p.costo_por_peso,
-                costo_por_porcion_con_merma = (decimal)p.costo_por_porcion_con_merma
+                costo_por_peso = (decimal)(p.costo_por_peso ?? 0),
+                costo_por_porcion_con_merma = (decimal)(p.costo_por_porcion_con_merma ?? 0)
             }).ToList()
         };
         ViewBag.Search = search;
@@ -571,7 +620,7 @@ public class InsumosController : Controller
                 costo = (decimal)ed.costo,
                 cantidad = (int)ed.cantidad,
                 unidad_de_medida = ed.unidad_de_medida,
-                costo_por_cantidad = (decimal)ed.costo_por_cantidad
+                costo_por_cantidad = (decimal)(ed.costo_por_cantidad ?? 0)
             }).ToList()
         };
         ViewBag.Search = search;
@@ -794,7 +843,7 @@ public class InsumosController : Controller
                 costo = (decimal)i.costo,
                 cantidad = (int)i.cantidad,
                 unidad_de_medida = i.unidad_de_medida,
-                costo_por_cantidad = (decimal)i.costo_por_cantidad
+                costo_por_cantidad = (decimal)(i.costo_por_cantidad ?? 0)
             }).ToList()
         };
         ViewBag.Search = search;
@@ -1018,7 +1067,7 @@ public class InsumosController : Controller
                 costo = (decimal)s.costo,
                 cantidad = (int)s.cantidad,
                 unidad_de_medida = s.unidad_de_medida,
-                costo_por_cantidad = (decimal)s.costo_por_cantidad
+                costo_por_cantidad = (decimal)(s.costo_por_cantidad ?? 0)
             }).ToList()
         };
         ViewBag.Search = search;

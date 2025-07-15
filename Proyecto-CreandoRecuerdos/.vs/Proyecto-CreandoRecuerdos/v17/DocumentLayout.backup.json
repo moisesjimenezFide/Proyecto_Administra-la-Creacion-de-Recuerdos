@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\templates\\css\\home.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\templates\\css\\home.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\controllers\\insumoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\controllers\\insumoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\views\\inicio\\inicio.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\views\\inicio\\inicio.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\views\\insumos\\materias_primas.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\views\\insumos\\materias_primas.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\templates\\img\\recuerdos.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
-      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\templates\\img\\recuerdos.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\models\\insumosmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\models\\insumosmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\templates\\img\\logo.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
-      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\templates\\img\\logo.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\views\\insumos\\costos_recetas.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\views\\insumos\\costos_recetas.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,56 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "home.css",
-              "DocumentMoniker": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Templates\\css\\home.css",
-              "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Templates\\css\\home.css",
-              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Templates\\css\\home.css",
-              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Templates\\css\\home.css",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAACQAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-07-10T23:27:23.62Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "inicio.cshtml",
-              "DocumentMoniker": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Views\\Inicio\\inicio.cshtml",
-              "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Views\\Inicio\\inicio.cshtml",
-              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Views\\Inicio\\inicio.cshtml",
-              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Views\\Inicio\\inicio.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAvAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "costos_recetas.cshtml",
+              "DocumentMoniker": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Views\\Insumos\\costos_recetas.cshtml",
+              "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Views\\Insumos\\costos_recetas.cshtml",
+              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Views\\Insumos\\costos_recetas.cshtml",
+              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Views\\Insumos\\costos_recetas.cshtml",
+              "ViewState": "AgIAACkAAAAAAAAAAAAkwD4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-07-10T23:17:35.924Z",
+              "WhenOpened": "2025-07-15T10:12:08.146Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Recuerdos.png",
-              "DocumentMoniker": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Templates\\img\\Recuerdos.png",
-              "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Templates\\img\\Recuerdos.png",
-              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Templates\\img\\Recuerdos.png",
-              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Templates\\img\\Recuerdos.png",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2025-07-10T23:17:11.702Z",
+              "Title": "InsumosModel.cs",
+              "DocumentMoniker": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Models\\InsumosModel.cs",
+              "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Models\\InsumosModel.cs",
+              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Models\\InsumosModel.cs",
+              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Models\\InsumosModel.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAAwB4AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T08:06:40.997Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "logo.png",
-              "DocumentMoniker": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Templates\\img\\logo.png",
-              "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Templates\\img\\logo.png",
-              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Templates\\img\\logo.png",
-              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Templates\\img\\logo.png",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2025-07-10T23:17:05.149Z",
+              "DocumentIndex": 1,
+              "Title": "materias_primas.cshtml",
+              "DocumentMoniker": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Views\\Insumos\\materias_primas.cshtml",
+              "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Views\\Insumos\\materias_primas.cshtml",
+              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Views\\Insumos\\materias_primas.cshtml",
+              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Views\\Insumos\\materias_primas.cshtml",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAowE8AAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-15T07:58:41.784Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "InsumosController.cs",
+              "DocumentMoniker": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Controllers\\InsumosController.cs",
+              "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Controllers\\InsumosController.cs",
+              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Controllers\\InsumosController.cs",
+              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Controllers\\InsumosController.cs",
+              "ViewState": "AgIAANoAAAAAAAAAAAAswOoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T05:39:15.947Z",
               "EditorCaption": ""
             }
           ]
