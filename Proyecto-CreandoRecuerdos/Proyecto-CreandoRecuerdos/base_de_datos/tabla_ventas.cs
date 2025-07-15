@@ -20,6 +20,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             this.tabla_detalle_venta = new HashSet<tabla_detalle_venta>();
             this.tabla_notificaciones_vistas = new HashSet<tabla_notificaciones_vistas>();
             this.tabla_valoraciones = new HashSet<tabla_valoraciones>();
+            this.tabla_notificaciones_vistas = new HashSet<tabla_notificaciones_vistas>();
         }
     
         public int id_venta { get; set; }
@@ -47,5 +48,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public virtual tabla_usuarios tabla_usuarios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tabla_valoraciones> tabla_valoraciones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tabla_notificaciones_vistas> tabla_notificaciones_vistas { get; set; }
     }
 }

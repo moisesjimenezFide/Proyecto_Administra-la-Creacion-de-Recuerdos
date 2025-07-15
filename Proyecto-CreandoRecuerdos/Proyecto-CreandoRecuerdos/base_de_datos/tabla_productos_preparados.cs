@@ -24,7 +24,6 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public string tipo { get; set; }
         public string nombre { get; set; }
         public string marca { get; set; }
-        public string presentacion { get; set; }
         public string proveedor { get; set; }
         public Nullable<int> volumen_de_porcion { get; set; }
         public Nullable<decimal> costo { get; set; }
@@ -32,6 +31,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public string unidad_de_medida { get; set; }
         public Nullable<decimal> costo_por_peso { get; set; }
         public Nullable<decimal> costo_por_porcion_con_merma { get; set; }
+        public int cantidad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<costos_receta_productos_preparados_utilizados> costos_receta_productos_preparados_utilizados { get; set; }

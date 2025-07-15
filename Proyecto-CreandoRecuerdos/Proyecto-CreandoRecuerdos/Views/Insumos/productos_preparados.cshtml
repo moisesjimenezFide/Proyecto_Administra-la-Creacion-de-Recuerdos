@@ -71,8 +71,8 @@
         </div>
 
         <div class="mb-3 text-start">
-            <label for="presentacion" class="form-label">Presentación</label>
-            <input type="text" name="presentacion" id="presentacion" class="form-control" value="@(editando ? productoPreparadoEditado.presentacion : "")" />
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" name="cantidad" id="cantidad" class="form-control" value="@(editando ? productoPreparadoEditado.cantidad.ToString() : "")" min="1" />
         </div>
 
         <div class="mb-3 text-start">
@@ -88,11 +88,6 @@
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
             <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? productoPreparadoEditado.costo.ToString() : "")" />
-        </div>
-
-        <div class="mb-3 text-start">
-            <label for="peso" class="form-label">Peso</label>
-            <input type="number" name="peso" id="peso" class="form-control" value="@(editando ? productoPreparadoEditado.peso.ToString() : "")" />
         </div>
 
         <div class="mb-3 text-start">
@@ -136,9 +131,9 @@
                         <th>Tipo</th>
                         <th>Nombre</th>
                         <th>Marca</th>
-                        <th>Presentación</th>
+                        <th>Cantidad</th>
                         <th>Proveedor</th>
-                        <th>Porción</th>
+                        <th>Volumen de Porción</th>
                         <th>Costo (₡)</th>
                         <th>Peso</th>
                         <th>Unidad</th>
@@ -154,11 +149,11 @@
                             <td>@producto_preparado.tipo</td>
                             <td>@producto_preparado.nombre</td>
                             <td>@producto_preparado.marca</td>
-                            <td>@producto_preparado.presentacion</td>
+                            <td>@producto_preparado.cantidad</td>
                             <td>@producto_preparado.proveedor</td>
                             <td>@producto_preparado.volumen_de_porcion</td>
                             <td>@producto_preparado.costo</td>
-                            <td>@producto_preparado.peso</td>
+                            <td>@(producto_preparado.cantidad * producto_preparado.volumen_de_porcion)</td>
                             <td>@producto_preparado.unidad_de_medida</td>
                             <td>@producto_preparado.costo_por_peso</td>
                             <td>@producto_preparado.costo_por_porcion_con_merma</td>

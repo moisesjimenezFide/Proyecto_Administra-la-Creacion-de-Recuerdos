@@ -70,28 +70,26 @@ public class InsumosController : Controller
     {
         var errores = new List<string>();
 
-        // 1. Validar si existe la combinación exacta de los 4 campos
+        // Normalizar valores para comparación
+        string nombre = materia_prima.nombre?.Trim().ToLower() ?? "";
+        string marca = materia_prima.marca?.Trim().ToLower() ?? "";
+        string presentacion = materia_prima.presentacion?.Trim().ToLower() ?? "";
+        string proveedor = materia_prima.proveedor?.Trim().ToLower() ?? "";
+        decimal costo = materia_prima.costo;
+        int peso = materia_prima.peso;
+
+        // 1. Duplicado exacto (todos los campos)
         bool existeExacto = db.tabla_materias_primas.Any(m =>
-            m.nombre.ToLower() == materia_prima.nombre.ToLower() &&
-            m.marca.ToLower() == materia_prima.marca.ToLower() &&
-            m.presentacion.ToLower() == materia_prima.presentacion.ToLower() &&
-            m.proveedor.ToLower() == materia_prima.proveedor.ToLower()
+            m.nombre.ToLower() == nombre &&
+            m.marca.ToLower() == marca &&
+            m.presentacion.ToLower() == presentacion &&
+            m.proveedor.ToLower() == proveedor &&
+            m.costo == costo &&
+            m.peso == peso
         );
         if (existeExacto)
         {
-            errores.Add("Ya existe una materia prima con el mismo nombre, marca, presentación y proveedor.");
-        }
-        else
-        {
-            // 2. Validar individualmente cada campo
-            if (db.tabla_materias_primas.Any(m => m.nombre.ToLower() == materia_prima.nombre.ToLower()))
-                errores.Add("El nombre ya existe en otra materia prima.");
-            if (db.tabla_materias_primas.Any(m => m.marca.ToLower() == materia_prima.marca.ToLower()))
-                errores.Add("La marca ya existe en otra materia prima.");
-            if (db.tabla_materias_primas.Any(m => m.presentacion.ToLower() == materia_prima.presentacion.ToLower()))
-                errores.Add("La presentación ya existe en otra materia prima.");
-            if (db.tabla_materias_primas.Any(m => m.proveedor.ToLower() == materia_prima.proveedor.ToLower()))
-                errores.Add("El proveedor ya existe en otra materia prima.");
+            errores.Add("Ya existe una materia prima con el mismo nombre, marca, presentación, proveedor, costo y peso.");
         }
 
         // Validar campos obligatorios y valores numéricos
@@ -216,38 +214,27 @@ public class InsumosController : Controller
     {
         var errores = new List<string>();
 
-        // Buscar si existe un registro con la misma combinación de los 4 campos (excepto el actual)
-        var existe = db.tabla_materias_primas.Any(mp =>
-            mp.id != materia_prima.id &&
-            mp.nombre.ToLower() == materia_prima.nombre.ToLower() &&
-            mp.marca.ToLower() == materia_prima.marca.ToLower() &&
-            mp.presentacion.ToLower() == materia_prima.presentacion.ToLower() &&
-            mp.proveedor.ToLower() == materia_prima.proveedor.ToLower()
-        );
-        if (existe)
-        {
-            errores.Add("Ya existe una materia prima con el mismo nombre, marca, presentación y proveedor.");
-        }
-        else
-        {
-            // Validar individualmente cada campo, pero solo si hay coincidencia con los otros campos
-            var repetidos = db.tabla_materias_primas.Where(mp => mp.id != materia_prima.id);
+        // Normalizar valores para comparación
+        string nombre = materia_prima.nombre?.Trim().ToLower() ?? "";
+        string marca = materia_prima.marca?.Trim().ToLower() ?? "";
+        string presentacion = materia_prima.presentacion?.Trim().ToLower() ?? "";
+        string proveedor = materia_prima.proveedor?.Trim().ToLower() ?? "";
+        decimal costo = materia_prima.costo;
+        int peso = materia_prima.peso;
 
-            if (repetidos.Any(mp =>
-                mp.nombre.ToLower() == materia_prima.nombre.ToLower() &&
-                mp.presentacion.ToLower() == materia_prima.presentacion.ToLower() &&
-                mp.proveedor.ToLower() == materia_prima.proveedor.ToLower()))
-            {
-                errores.Add("Ya existe una materia prima con el mismo nombre, presentación y proveedor.");
-            }
-            if (repetidos.Any(mp =>
-                mp.nombre.ToLower() == materia_prima.nombre.ToLower() &&
-                mp.marca.ToLower() == materia_prima.marca.ToLower() &&
-                mp.presentacion.ToLower() == materia_prima.presentacion.ToLower()))
-            {
-                errores.Add("Ya existe una materia prima con el mismo nombre, marca y presentación.");
-            }
-            // Puedes agregar más combinaciones si lo deseas
+        // 1. Duplicado exacto (todos los campos)
+        bool existeExacto = db.tabla_materias_primas.Any(mp =>
+            mp.id != materia_prima.id &&
+            mp.nombre.ToLower() == nombre &&
+            mp.marca.ToLower() == marca &&
+            mp.presentacion.ToLower() == presentacion &&
+            mp.proveedor.ToLower() == proveedor &&
+            mp.costo == costo &&
+            mp.peso == peso
+        );
+        if (existeExacto)
+        {
+            errores.Add("Ya existe una materia prima con el mismo nombre, marca, presentación, proveedor, costo y peso.");
         }
 
         // Validar campos obligatorios y valores numéricos
@@ -265,7 +252,7 @@ public class InsumosController : Controller
         if (errores.Any())
         {
             ViewBag.Errores = errores;
-            ViewBag.Editando = true;
+
             var lista = db.tabla_materias_primas.Select(mp => new MateriaPrima
             {
                 id = mp.id,
@@ -351,7 +338,7 @@ public class InsumosController : Controller
                 p.tipo.Contains(search) ||
                 p.nombre.Contains(search) ||
                 p.marca.Contains(search) ||
-                p.presentacion.Contains(search) ||
+                p.cantidad.ToString().Contains(search) ||
                 p.proveedor.Contains(search) ||
                 p.volumen_de_porcion.ToString().Contains(search) ||
                 p.unidad_de_medida.Contains(search) ||
@@ -370,7 +357,7 @@ public class InsumosController : Controller
                 tipo = p.tipo,
                 nombre = p.nombre,
                 marca = p.marca,
-                presentacion = p.presentacion,
+                cantidad = (int)p.cantidad,
                 proveedor = p.proveedor,
                 volumen_de_porcion = (int)p.volumen_de_porcion,
                 costo = (decimal)p.costo,
@@ -390,21 +377,40 @@ public class InsumosController : Controller
     public ActionResult CrearProductoPreparado(ProductoPreparado producto_preparado)
     {
         var errores = new List<string>();
+        
+        // Normalizar valores para comparación
+        string tipo = producto_preparado.tipo?.Trim().ToLower() ?? "";
+        string nombre = producto_preparado.nombre?.Trim().ToLower() ?? "";
+        string marca = producto_preparado.marca?.Trim().ToLower() ?? "";
+        int cantidad = producto_preparado.cantidad;
+        string proveedor = producto_preparado.proveedor?.Trim().ToLower() ?? "";
+        decimal costo = producto_preparado.costo;
+        int peso = producto_preparado.peso;
+        
+        // 1. Duplicado exacto (todos los campos)
+        if (db.tabla_productos_preparados.Any(p =>
+            p.tipo.ToLower() == tipo &&
+            p.nombre.ToLower() == nombre &&
+            p.marca.ToLower() == marca &&
+            p.cantidad == cantidad &&
+            p.proveedor.ToLower() == proveedor &&
+            p.costo == costo &&
+            p.peso == peso))
 
-        // Validar que no exista otro producto preparado con el mismo nombre
-        if (db.tabla_productos_preparados.Any(p => p.nombre.ToLower() == producto_preparado.nombre.ToLower()))
-            errores.Add("Ya existe un producto preparado con ese nombre.");
+        {
+            errores.Add("Ya existe un producto preparado con los mismos datos.");
+        }
 
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(producto_preparado.tipo) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.nombre) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.marca) ||
-                                      string.IsNullOrWhiteSpace(producto_preparado.presentacion) ||
+                                      string.IsNullOrWhiteSpace(producto_preparado.cantidad.ToString()) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.proveedor) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (producto_preparado.costo <= 0 || producto_preparado.peso <= 0 || producto_preparado.volumen_de_porcion <= 0)
+        if (producto_preparado.costo <= 0 || producto_preparado.cantidad <= 0 || producto_preparado.volumen_de_porcion <= 0)
             errores.Add("Los valores numéricos deben ser mayores a cero.");
 
         if (errores.Any())
@@ -416,7 +422,7 @@ public class InsumosController : Controller
                 tipo = p.tipo,
                 nombre = p.nombre,
                 marca = p.marca,
-                presentacion = p.presentacion,
+                cantidad = (int)p.cantidad,
                 proveedor = p.proveedor,
                 volumen_de_porcion = (int)p.volumen_de_porcion,
                 costo = (decimal)p.costo,
@@ -432,7 +438,9 @@ public class InsumosController : Controller
             });
         }
 
-        decimal costoPorPeso = (producto_preparado.peso > 0) ? (producto_preparado.costo / producto_preparado.peso) : 0;
+        // Calcula el peso automáticamente
+        int pesoCalculado = producto_preparado.cantidad * producto_preparado.volumen_de_porcion;
+        decimal costoPorPeso = (pesoCalculado > 0) ? (producto_preparado.costo / pesoCalculado) : 0;
         decimal costoPorPorcionConMerma = (producto_preparado.volumen_de_porcion > 0) ? (producto_preparado.costo / producto_preparado.volumen_de_porcion) : 0;
 
         db.tabla_productos_preparados.Add(new tabla_productos_preparados
@@ -440,7 +448,7 @@ public class InsumosController : Controller
             tipo = producto_preparado.tipo,
             nombre = producto_preparado.nombre,
             marca = producto_preparado.marca,
-            presentacion = producto_preparado.presentacion,
+            cantidad = producto_preparado.cantidad,
             proveedor = producto_preparado.proveedor,
             volumen_de_porcion = producto_preparado.volumen_de_porcion,
             costo = producto_preparado.costo,
@@ -465,11 +473,10 @@ public class InsumosController : Controller
             tipo = p.tipo,
             nombre = p.nombre,
             marca = p.marca,
-            presentacion = p.presentacion,
+            cantidad = (int)p.cantidad,
             proveedor = p.proveedor,
             volumen_de_porcion = (int)p.volumen_de_porcion,
             costo = (decimal)p.costo,
-            peso = (int)p.peso,
             unidad_de_medida = p.unidad_de_medida,
             costo_por_peso = (decimal)p.costo_por_peso,
             costo_por_porcion_con_merma = (decimal)p.costo_por_porcion_con_merma
@@ -482,11 +489,10 @@ public class InsumosController : Controller
             tipo = prodprep.tipo,
             nombre = prodprep.nombre,
             marca = prodprep.marca,
-            presentacion = prodprep.presentacion,
+            cantidad = (int)prodprep.cantidad,
             proveedor = prodprep.proveedor,
             volumen_de_porcion = (int)prodprep.volumen_de_porcion,
             costo = (decimal)prodprep.costo,
-            peso = (int)prodprep.peso,
             unidad_de_medida = prodprep.unidad_de_medida,
             costo_por_peso = (decimal)prodprep.costo_por_peso,
             costo_por_porcion_con_merma = (decimal)prodprep.costo_por_porcion_con_merma
@@ -514,12 +520,12 @@ public class InsumosController : Controller
         if (string.IsNullOrWhiteSpace(producto_preparado.tipo) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.nombre) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.marca) ||
-                                      string.IsNullOrWhiteSpace(producto_preparado.presentacion) ||
+                                      string.IsNullOrWhiteSpace(producto_preparado.cantidad.ToString()) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.proveedor) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (producto_preparado.costo <= 0 || producto_preparado.peso <= 0 || producto_preparado.volumen_de_porcion <= 0)
+        if (producto_preparado.costo <= 0 || producto_preparado.cantidad <= 0 || producto_preparado.volumen_de_porcion <= 0)
             errores.Add("Los valores numéricos deben ser mayores a cero.");
 
         if (errores.Any())
@@ -531,7 +537,7 @@ public class InsumosController : Controller
                 tipo = prodprep.tipo,
                 nombre = prodprep.nombre,
                 marca = prodprep.marca,
-                presentacion = prodprep.presentacion,
+                cantidad = prodprep.cantidad,
                 proveedor = prodprep.proveedor,
                 volumen_de_porcion = (int)prodprep.volumen_de_porcion,
                 costo = (decimal)prodprep.costo,
@@ -547,6 +553,9 @@ public class InsumosController : Controller
             });
         }
 
+        // Calcula el peso automáticamente
+        producto_preparado.peso = producto_preparado.cantidad * producto_preparado.volumen_de_porcion;
+
         var pp = db.tabla_productos_preparados.Find(producto_preparado.id);
         if (pp != null)
         {
@@ -556,7 +565,7 @@ public class InsumosController : Controller
             pp.tipo = producto_preparado.tipo;
             pp.nombre = producto_preparado.nombre;
             pp.marca = producto_preparado.marca;
-            pp.presentacion = producto_preparado.presentacion;
+            pp.cantidad = producto_preparado.cantidad;
             pp.proveedor = producto_preparado.proveedor;
             pp.volumen_de_porcion = producto_preparado.volumen_de_porcion;
             pp.costo = producto_preparado.costo;

@@ -45,7 +45,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public string tipo { get; set; }
         public string nombre { get; set; }
         public string marca { get; set; }
-        public string presentacion { get; set; }
+        public int cantidad { get; set; }
         public string proveedor { get; set; }
         public int volumen_de_porcion { get; set; }
         public decimal costo { get; set; }
