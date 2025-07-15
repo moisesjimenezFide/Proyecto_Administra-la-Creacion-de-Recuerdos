@@ -1,0 +1,102 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.ConfirmacionPedidoViewModel
+@{
+    ViewBag.Title = "Confirmación de Pedido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h2 class="mb-0"><i class="fas fa-check-circle me-2"></i>Pedido Confirmado</h2>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-success">
+                <h4 class="alert-heading">¡Gracias por tu pedido!</h4>
+                <p>Hemos recibido tu pedido correctamente.</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4><i class="fas fa-receipt me-2"></i>Detalles del Pedido</h4>
+                    <dl class="row">
+                        <dt class="col-sm-4">Número de Pedido:</dt>
+                        <dd class="col-sm-8">@Model.NumeroPedido</dd>
+
+                        <dt class="col-sm-4">PIN:</dt>
+                        <dd class="col-sm-8">@Model.Pin</dd>
+
+                        <dt class="col-sm-4">Tiempo Estimado:</dt>
+                        <dd class="col-sm-8">@Model.TiempoEstimado minutos</dd>
+
+                        <dt class="col-sm-4">Total:</dt>
+                        <dd class="col-sm-8">₡@Model.Total.ToString("N2")</dd>
+
+                        <dt class="col-sm-4">Método de Pago:</dt>
+                        <dd class="col-sm-8">@Model.MetodoPago</dd>
+                    </dl>
+                    @if (Model.MetodoPago == "sinpe")
+                    {
+                        <div class="alert alert-info mt-3">
+                            <h5><i class="fas fa-mobile-alt me-2"></i> Pago con SINPE Móvil</h5>
+                            <p class="mb-0">Debe realizar el pago por SINPE Móvil con el número que proporcionó.</p>
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(Model.TelefonoMostrado))
+                    {
+                        <div class="alert alert-info mt-3">
+                            <h5><i class="fas fa-phone me-2"></i> Contacto</h5>
+                            <p>Teléfono registrado: <strong>@Model.TelefonoSinpe</strong></p>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <h4><i class="fas fa-list me-2"></i>Productos</h4>
+                    <ul class="list-group">
+                        @foreach (var producto in Model.Productos)
+                        {
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>@producto.Nombre x @producto.Cantidad</span>
+                                    <span class="badge bg-primary rounded-pill">₡@((producto.PrecioUnitario * producto.Cantidad).ToString("N2"))</span>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted"><strong>Notas:</strong> @producto.Personalizacion</small>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>Instrucciones para Recoger tu Pedido</h5>
+                <ul class="mb-0">
+                    <li>Preséntate en el mostrador con tu <strong>Número de Pedido: @Model.NumeroPedido</strong></li>
+                    <li>Proporciona tu <strong>PIN: @Model.Pin</strong> para verificar tu identidad</li>
+                    @if (Model.MetodoPago == "Efectivo")
+                    {
+                        <li>Realiza el pago en efectivo al momento de recoger</li>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.TelefonoSinpe))
+                    {
+                        <li>Pago realizado por: @Model.TelefonoSinpe</li>
+
+                    }
+                </ul>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <a href="@Url.Action("Pedidos", "Pedidos")" class="btn btn-primary">
+                    <i class="fas fa-utensils me-2"></i>Realizar otro pedido
+                </a>
+                <button class="btn btn-outline-secondary" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i>Imprimir comprobante
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+}

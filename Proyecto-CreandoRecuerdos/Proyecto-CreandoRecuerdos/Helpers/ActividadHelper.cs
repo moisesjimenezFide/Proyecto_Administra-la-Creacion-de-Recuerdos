@@ -23,7 +23,7 @@ namespace Proyecto_CreandoRecuerdos.Helpers
                 var ip = HttpContext.Current?.Request.UserHostAddress;
                 var descripcion = GenerarDescripcion(tipoAccion, tablaAfectada, descripcionAdicional);
 
-                using (var context = new BD_CREANDO_RECUERDOSEntities4())
+                using (var context = new BD_CREANDO_RECUERDOSEntities())
                 {
                     context.sp_registrar_auditoria(
                         idUsuario,

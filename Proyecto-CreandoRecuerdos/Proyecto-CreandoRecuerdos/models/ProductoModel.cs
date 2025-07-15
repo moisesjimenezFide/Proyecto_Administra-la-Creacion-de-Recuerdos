@@ -14,5 +14,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public int id_categoria { get; set; }
         public decimal precio_por_unidad { get; set; }
         public string img_url { get; set; }
+        public bool EsRecomendado { get; set; }
+
     }
 }

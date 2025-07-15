@@ -53,7 +53,21 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownClientes">
                                 <li><a class="dropdown-item" asp-controller="Menu" href="@Url.Action("Menu", "menu")" asp-action="Index">Menú</a></li>
-                                <li><a class="dropdown-item" asp-controller="Pedidos" asp-action="Index">Pedidos</a></li>
+
+                                @if (rol == null)
+                                {
+                                    <li><a class="dropdown-item" href="@Url.Action("registro_usuarios", "Registro_Usuarios")">Pedidos</a></li>
+                                }
+                                else if (rol == "3")
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("Pedidos", "Pedidos")" asp-action="Index">Pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("MisPedidos", "Pedidos")" asp-action="MisPedidos"> Mis Pedidos</a></li>
+                                }
+                                else if (rol == "1" || rol == "2")
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("Pedidos", "Pedidos")" asp-action="Index">Pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("Gestionar", "Pedidos")" asp-action="Gestionar">Gestión de Pedidos</a></li>
+                                }
                             </ul>
                         </li>
                         @if (rol == "1")
@@ -193,5 +207,22 @@
     </div>
     @RenderSection("Scripts", required: false)
     @RenderSection("Styles", required: false)
+    @if (TempData["SweetAlert"] != null)
+    {
+        <script>
+    $(document).ready(function() {
+        var alertData = @Html.Raw(TempData["SweetAlert"]);
+        Swal.fire({
+            title: alertData.title,
+            text: alertData.text,
+            icon: alertData.icon,
+            timer: alertData.timer,
+            showConfirmButton: alertData.showConfirmButton,
+            position: 'top-end',
+            toast: true
+        });
+    });
+        </script>
+    }
 </body>
 </html>

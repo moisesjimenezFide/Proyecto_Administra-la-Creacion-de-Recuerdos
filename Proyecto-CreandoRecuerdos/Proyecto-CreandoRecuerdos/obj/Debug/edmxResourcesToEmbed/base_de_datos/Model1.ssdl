@@ -89,6 +89,8 @@
     <Property Name="id_cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="apellido" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="telefono" Type="nvarchar" MaxLength="20" />
+    <Property Name="id_usuario" Type="int" />
   </EntityType>
   <EntityType Name="tabla_costos_recetas">
     <Key>
@@ -110,6 +112,7 @@
     <Property Name="cantidad" Type="int" Nullable="false" />
     <Property Name="precio_unitario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
     <Property Name="subtotal" Type="decimal" Precision="21" Scale="2" StoreGeneratedPattern="Computed" />
+    <Property Name="personalizacion" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="tabla_empaques_decoraciones">
     <Key>
@@ -176,6 +179,15 @@
     <Property Name="costo_de_merma_total" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_total_mas_merma_total" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_por_gramo_con_merma" Type="decimal" Precision="18" Scale="4" />
+  </EntityType>
+  <EntityType Name="tabla_notificaciones_vistas">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_pedido" Type="int" Nullable="false" />
+    <Property Name="id_usuario" Type="int" Nullable="false" />
+    <Property Name="fecha_vista" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="tabla_precios_finales_sugeridos">
     <Key>
@@ -310,6 +322,11 @@
     <Property Name="metodo_pago" Type="nvarchar" MaxLength="50" />
     <Property Name="para_llevar" Type="bit" />
     <Property Name="pin" Type="nvarchar" MaxLength="4" />
+    <Property Name="notificacion" Type="nvarchar" MaxLength="500" />
+    <Property Name="numero_pedido" Type="varchar" MaxLength="20" />
+    <Property Name="fecha_actualizacion" Type="datetime" />
+    <Property Name="telefono" Type="nvarchar" MaxLength="20" />
+    <Property Name="telefono_sinpe" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="Vehiculos">
     <Key>
@@ -560,6 +577,54 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_clientes_usuarios">
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="0..1" />
+    <End Role="tabla_clientes" Type="Self.tabla_clientes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_clientes">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificaciones_vistas_pedidos">
+    <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="1" />
+    <End Role="tabla_notificaciones_vistas" Type="Self.tabla_notificaciones_vistas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_ventas">
+        <PropertyRef Name="id_venta" />
+      </Principal>
+      <Dependent Role="tabla_notificaciones_vistas">
+        <PropertyRef Name="id_pedido" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificaciones_vistas_usuarios">
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
+    <End Role="tabla_notificaciones_vistas" Type="Self.tabla_notificaciones_vistas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_notificaciones_vistas">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tabla_actividades_usuarios">
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
+    <End Role="tabla_actividades" Type="Self.tabla_actividades" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabla_usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="tabla_actividades">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_tabla_recomendaciones_productos">
     <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="1" />
     <End Role="tabla_recomendaciones" Type="Self.tabla_recomendaciones" Multiplicity="*" />
@@ -649,6 +714,11 @@
     <Parameter Name="id_producto" Type="int" Mode="In" />
     <Parameter Name="motivo" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="sp_actualizar_tiempo_estimado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_pedido" Type="int" Mode="In" />
+    <Parameter Name="tiempo_estimado" Type="int" Mode="In" />
+    <Parameter Name="id_usuario" Type="int" Mode="In" />
+  </Function>
   <Function Name="sp_actualizar_usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="id_usuario" Type="int" Mode="In" />
     <Parameter Name="nombre" Type="nvarchar" Mode="In" />
@@ -675,6 +745,7 @@
     <Parameter Name="nombre" Type="varchar" Mode="In" />
     <Parameter Name="correo" Type="varchar" Mode="In" />
     <Parameter Name="contrasenna" Type="varchar" Mode="In" />
+    <Parameter Name="telefono" Type="varchar" Mode="In" />
   </Function>
   <Function Name="sp_crear_empleado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="nombre" Type="nvarchar" Mode="In" />
@@ -689,9 +760,19 @@
     <Parameter Name="total" Type="decimal" Mode="In" />
     <Parameter Name="estado" Type="nvarchar" Mode="In" />
     <Parameter Name="metodo_pago" Type="nvarchar" Mode="In" />
+    <Parameter Name="telefono" Type="nvarchar" Mode="In" />
+    <Parameter Name="telefono_sinpe" Type="nvarchar" Mode="In" />
     <Parameter Name="para_llevar" Type="bit" Mode="In" />
     <Parameter Name="pin" Type="nvarchar" Mode="In" />
     <Parameter Name="tiempo_estimado" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_crear_pedido_completo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_usuario" Type="int" Mode="In" />
+    <Parameter Name="nombre_cliente" Type="nvarchar" Mode="In" />
+    <Parameter Name="telefono" Type="nvarchar" Mode="In" />
+    <Parameter Name="metodo_pago" Type="nvarchar" Mode="In" />
+    <Parameter Name="para_llevar" Type="bit" Mode="In" />
+    <Parameter Name="productos_json" Type="nvarchar(max)" Mode="In" />
   </Function>
   <Function Name="sp_crear_producto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="nombre" Type="nvarchar" Mode="In" />
@@ -716,6 +797,16 @@
     <Parameter Name="id_producto" Type="int" Mode="In" />
     <Parameter Name="motivo" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="sp_manejar_cliente_pedido" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_usuario" Type="int" Mode="In" />
+    <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+    <Parameter Name="telefono" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_notificar_cliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_pedido" Type="int" Mode="In" />
+    <Parameter Name="id_usuario" Type="int" Mode="In" />
+    <Parameter Name="nuevo_estado" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="sp_obtener_detalle_pedido" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="id_pedido" Type="int" Mode="In" />
   </Function>
@@ -731,11 +822,25 @@
     <Parameter Name="tabla_afectada" Type="nvarchar" Mode="In" />
     <Parameter Name="id_registro_afectado" Type="int" Mode="In" />
   </Function>
+  <Function Name="sp_obtener_notificaciones_pendientes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_cliente" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_obtener_o_crear_cliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_usuario" Type="int" Mode="In" />
+    <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+    <Parameter Name="telefono" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="sp_obtener_pedidos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="estado" Type="nvarchar" Mode="In" />
     <Parameter Name="fecha_inicio" Type="datetime" Mode="In" />
     <Parameter Name="fecha_fin" Type="datetime" Mode="In" />
     <Parameter Name="metodo_pago" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_obtener_pedidos_con_notificaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_usuario" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_obtener_productos_por_categoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idCategoria" Type="int" Mode="In" />
   </Function>
   <Function Name="sp_obtener_recomendaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="sp_obtener_roles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -776,6 +881,7 @@
     <EntitySet Name="tabla_horarios" EntityType="Self.tabla_horarios" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_implementos" EntityType="Self.tabla_implementos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_materias_primas" EntityType="Self.tabla_materias_primas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabla_notificaciones_vistas" EntityType="Self.tabla_notificaciones_vistas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_precios_finales_sugeridos" EntityType="Self.tabla_precios_finales_sugeridos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_productos" EntityType="Self.tabla_productos" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tabla_productos_preparados" EntityType="Self.tabla_productos_preparados" Schema="dbo" store:Type="Tables" />
@@ -863,6 +969,22 @@
     <AssociationSet Name="FK__tabla_ven__id_us__151B244E" Association="Self.FK__tabla_ven__id_us__151B244E">
       <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
       <End Role="tabla_ventas" EntitySet="tabla_ventas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_clientes_usuarios" Association="Self.FK_clientes_usuarios">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_clientes" EntitySet="tabla_clientes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificaciones_vistas_pedidos" Association="Self.FK_notificaciones_vistas_pedidos">
+      <End Role="tabla_ventas" EntitySet="tabla_ventas" />
+      <End Role="tabla_notificaciones_vistas" EntitySet="tabla_notificaciones_vistas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificaciones_vistas_usuarios" Association="Self.FK_notificaciones_vistas_usuarios">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_notificaciones_vistas" EntitySet="tabla_notificaciones_vistas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tabla_actividades_usuarios" Association="Self.FK_tabla_actividades_usuarios">
+      <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
+      <End Role="tabla_actividades" EntitySet="tabla_actividades" />
     </AssociationSet>
     <AssociationSet Name="FK_tabla_recomendaciones_productos" Association="Self.FK_tabla_recomendaciones_productos">
       <End Role="tabla_productos" EntitySet="tabla_productos" />

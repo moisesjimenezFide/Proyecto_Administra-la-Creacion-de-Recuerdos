@@ -14,7 +14,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult menu()
         {
-            using (var db = new BD_CREANDO_RECUERDOSEntities4())
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 var resultados = db.sp_consultar_productos().ToList();
 
@@ -35,7 +35,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return RedirectToAction("registro_usuarios", "Registro_Usuarios");
             }
 
-            using (var db = new BD_CREANDO_RECUERDOSEntities4())
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 var resultados = db.sp_consultar_productos().ToList();
 
@@ -51,7 +51,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public JsonResult ObtenerProductosDisponibles()
         {
-            using (var db = new BD_CREANDO_RECUERDOSEntities4())
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 // Obtener TODOS los productos del menú, sin filtrar por recomendaciones
                 var productosDisponibles = db.tabla_productos
@@ -70,7 +70,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
-                using (var db = new BD_CREANDO_RECUERDOSEntities4())
+                using (var db = new BD_CREANDO_RECUERDOSEntities())
                 {
                     string nuevaRutaImagen;
 
@@ -131,7 +131,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 if (ext != ".jpg" && ext != ".jpeg" && ext != ".png")
                     return Json(new { success = false, message = "Solo se permiten imágenes JPG o PNG." });
 
-                using (var db = new BD_CREANDO_RECUERDOSEntities4())
+                using (var db = new BD_CREANDO_RECUERDOSEntities())
                 {
                     string rutaTemporal = "Recuerdos.png";
 
@@ -177,7 +177,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
-                using (var db = new BD_CREANDO_RECUERDOSEntities4())
+                using (var db = new BD_CREANDO_RECUERDOSEntities())
                 {
                     int filasAfectadas = db.sp_eliminar_producto(id);
 
@@ -202,7 +202,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
-                using (var db = new BD_CREANDO_RECUERDOSEntities4())
+                using (var db = new BD_CREANDO_RECUERDOSEntities())
                 {
                     db.sp_insertar_recomendacion(productoId, motivo);
                     return Json(new { success = true });
@@ -216,7 +216,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         public ActionResult Recomendaciones()
         {
-            using (var db = new BD_CREANDO_RECUERDOSEntities4())
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 // 1. Obtener los IDs recomendados
                 var idsRecomendados = db.tabla_recomendaciones.Select(r => r.id_producto).ToList();
@@ -231,7 +231,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public JsonResult RecomendacionesAjax()
         {
-            using (var db = new BD_CREANDO_RECUERDOSEntities4())
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 var ids = db.tabla_recomendaciones.Select(r => r.id_producto).ToList();
                 var productos = db.tabla_productos
@@ -249,7 +249,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
-                using (var db = new BD_CREANDO_RECUERDOSEntities4())
+                using (var db = new BD_CREANDO_RECUERDOSEntities())
                 {
                     var recomendacion = db.tabla_recomendaciones.FirstOrDefault(r => r.id_producto == id);
                     if (recomendacion != null)

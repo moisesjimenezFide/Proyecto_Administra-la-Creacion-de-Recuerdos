@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 public class InsumosController : Controller
 {
-    private BD_CREANDO_RECUERDOSEntities4 db = new BD_CREANDO_RECUERDOSEntities4();
+    private BD_CREANDO_RECUERDOSEntities db = new BD_CREANDO_RECUERDOSEntities();
 
     // ----------- Materias Primas -----------
 

@@ -1,0 +1,185 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.PedidoPagoCompletoModel
+@{
+    ViewBag.Title = "Procesar Pago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2><i class="fas fa-credit-card me-2"></i> Procesar Pago</h2>
+        </div>
+        <div class="card-body">
+            @Html.Partial("_Pago", Model)
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // SCRIPTS HECHOS CON LA AYUDA DE IA
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('confirmarPago').addEventListener('click', function () {
+                const metodoPago = document.querySelector('#metodosPagoTab .nav-link.active').id.replace('-tab', '');
+                const pagoData = {
+                    MetodoPago: metodoPago,
+                    NumeroTarjeta: document.getElementById('numeroTarjeta')?.value,
+                    FechaExpiracion: document.getElementById('fechaExpiracion')?.value,
+                    CVV: document.getElementById('cvv')?.value,
+                    TelefonoSinpe: document.getElementById('telefonoSinpe')?.value,
+                    MontoRecibido: parseFloat(document.getElementById('montoRecibido')?.value) || 0
+                };
+
+                fetch('/Pedidos/ProcesarPago', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(pagoData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = data.redirectUrl;
+                        } else {
+                            alert(data.message);
+                        }
+                    });
+            });
+
+        });
+
+        document.getElementById('montoRecibido').addEventListener('input', function (e) {
+            const total = parseFloat(document.getElementById('orderTotal').textContent.replace('₡', '').replace(',', ''));
+            const montoRecibido = parseFloat(e.target.value) || 0;
+            const cambio = montoRecibido - total;
+            const cambioElement = document.getElementById('cambio');
+
+            if (montoRecibido > 0) {
+                if (cambio >= 0) {
+                    cambioElement.value = `₡${cambio.toFixed(2)}`;
+                    cambioElement.style.color = 'green';
+                } else {
+                    cambioElement.value = `Faltan ₡${Math.abs(cambio).toFixed(2)}`;
+                    cambioElement.style.color = 'red';
+                }
+            } else {
+                cambioElement.value = '';
+            }
+        });
+
+        function validarTarjeta(numero) {
+            // Eliminar espacios y caracteres no numéricos
+            numero = numero.replace(/\s+/g, '').replace(/-/g, '');
+
+            // Verificar que solo contenga números y tenga longitud válida
+            if (!/^\d{13,19}$/.test(numero)) return false;
+
+            // Algoritmo de Luhn
+            let sum = 0;
+            let alternate = false;
+            for (let i = numero.length - 1; i >= 0; i--) {
+                let digit = parseInt(numero.charAt(i));
+                if (alternate) {
+                    digit *= 2;
+                    if (digit > 9) digit -= 9;
+                }
+                sum += digit;
+                alternate = !alternate;
+            }
+            return sum % 10 === 0;
+        }
+
+
+        function calcularCambio(total) {
+            const montoRecibido = parseFloat(document.getElementById('montoRecibido').value) || 0;
+            const cambio = montoRecibido - total;
+            const cambioElement = document.getElementById('cambio');
+
+            if (cambio >= 0) {
+                cambioElement.value = `₡${cambio.toFixed(2)}`;
+                cambioElement.style.color = 'green';
+            } else {
+                cambioElement.value = `Faltan ₡${Math.abs(cambio).toFixed(2)}`;
+                cambioElement.style.color = 'red';
+            }
+        }
+
+        function validarEfectivo(total) {
+            const montoRecibido = parseFloat(document.getElementById('montoRecibido').value) || 0;
+
+            if (montoRecibido <= 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Monto inválido',
+                    text: 'El monto recibido debe ser mayor que cero',
+                });
+                return false;
+            }
+
+            if (montoRecibido < total) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Monto insuficiente',
+                    text: `El monto recibido (₡${montoRecibido.toFixed(2)}) debe ser mayor o igual al total (₡${total.toFixed(2)})`,
+                });
+                return false;
+            }
+
+            // Calcular y mostrar cambio
+            const cambio = montoRecibido - total;
+            const cambioElement = document.getElementById('cambio');
+            cambioElement.value = `₡${cambio.toFixed(2)}`;
+            cambioElement.style.color = 'green';
+
+            return true;
+        }
+
+
+        function validarFechaExpiracion(fecha) {
+            const [mes, ano] = fecha.split('/').map(Number);
+            if (!mes || !ano || mes < 1 || mes > 12) return false;
+
+            const ahora = new Date();
+            const anoActual = ahora.getFullYear() % 100;
+            const mesActual = ahora.getMonth() + 1;
+
+            if (ano < anoActual) return false;
+            if (ano === anoActual && mes < mesActual) return false;
+
+            return true;
+        }
+
+        function validarCVV(cvv) {
+            return /^\d{3,4}$/.test(cvv);
+        }
+
+        document.getElementById('numeroTarjeta').addEventListener('input', function (e) {
+            const valido = validarTarjeta(e.target.value);
+            e.target.classList.toggle('is-invalid', !valido);
+            e.target.classList.toggle('is-valid', valido);
+
+            // Formatear con espacios cada 4 dígitos
+            if (valido) {
+                e.target.value = e.target.value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
+            }
+        });
+
+        document.getElementById('fechaExpiracion').addEventListener('input', function (e) {
+            // Auto-insertar barra después de 2 dígitos
+            if (e.target.value.length === 2 && !e.target.value.includes('/')) {
+                e.target.value += '/';
+            }
+
+            const valido = validarFechaExpiracion(e.target.value);
+            e.target.classList.toggle('is-invalid', !valido);
+            e.target.classList.toggle('is-valid', valido);
+        });
+
+        document.getElementById('cvv').addEventListener('input', function (e) {
+            const valido = validarCVV(e.target.value);
+            e.target.classList.toggle('is-invalid', !valido);
+            e.target.classList.toggle('is-valid', valido);
+        });
+    </script>
+}

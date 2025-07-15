@@ -16,7 +16,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return RedirectToAction("registro_usuarios", "Registro_Usuarios");
             }
 
-            using (var context = new BD_CREANDO_RECUERDOSEntities4())
+            using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
                 var horarios = context.tabla_horarios.ToList();
 
@@ -35,7 +35,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public ActionResult GuardarHorario(int id_usuario, string[] dias_semana, TimeSpan hora_entrada, TimeSpan hora_salida)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities4())
+            using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
                 foreach (var dia in dias_semana)
                 {
@@ -74,7 +74,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public ActionResult EliminarHorario(int id)
         {
-            using (var context = new BD_CREANDO_RECUERDOSEntities4())
+            using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
                 var horario = context.tabla_horarios.Find(id);
                 if (horario == null) return HttpNotFound();

@@ -1,0 +1,195 @@
+﻿@model List<Proyecto_CreandoRecuerdos.Models.PedidoClienteViewModel>
+@{
+    ViewData["Title"] = "Mis Pedidos";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4><i class="fas fa-history me-2"></i> Mis Pedidos</h4>
+                <button id="refreshPedidosBtn" class="btn btn-sm btn-light">
+                    <i class="fas fa-sync-alt me-1"></i> Actualizar
+                </button>
+            </div>
+        </div>
+
+        <div class="card-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center py-4">
+                    <i class="fas fa-info-circle fa-2x mb-3"></i>
+                    <h5>No tienes pedidos registrados</h5>
+                    <p class="mb-0">Realiza tu primer pedido en nuestro menú</p>
+                    <a href="@Url.Action("Pedidos")" class="btn btn-primary mt-3">
+                        <i class="fas fa-utensils me-2"></i> Ver Menú
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>N° Pedido</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Tiempo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var pedido in Model)
+                            {
+                                <tr>
+                                    <td>@pedido.NumeroPedido</td>
+                                    <td>@pedido.Fecha.ToString("g")</td>
+                                    <td>₡@pedido.Total.ToString("N2")</td>
+                                    <td>
+                                        <span class="badge @pedido.ClaseEstado">@pedido.Estado</span>
+                                        @if (!string.IsNullOrEmpty(pedido.Notificacion))
+                                        {
+                                            <div class="notification-badge" data-bs-toggle="tooltip" title="@pedido.Notificacion">
+                                                <i class="fas fa-bell"></i>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>@pedido.TiempoEstimado min</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="@Url.Action("DetallePedido", new { id = pedido.IdPedido })"
+                                               class="btn btn-sm btn-outline-primary"
+                                               data-bs-toggle="tooltip"
+                                               title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+
+                                            @if (pedido.Estado == "Entregado" && !pedido.Valorado)
+                                            {
+                                                <a href="@Url.Action("ValorarPedido", new { idPedido = pedido.IdPedido })"
+                                                   class="btn btn-sm btn-outline-warning"
+                                                   data-bs-toggle="tooltip"
+                                                   title="Valorar pedido">
+                                                    <i class="fas fa-star"></i>
+                                                </a>
+                                            }
+
+                                            @if (pedido.Estado == "Pendiente" || pedido.Estado == "En preparación")
+                                            {
+                                                <button class="btn btn-sm btn-outline-danger btn-cancelar"
+                                                        data-id="@pedido.IdPedido"
+                                                        data-pin="@pedido.Pin"
+                                                        data-bs-toggle="tooltip"
+                                                        title="Cancelar pedido">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // SCRIPTS HECHOS CON LA AYUDA DE IA
+        $(document).ready(function() {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+
+            // Botón de actualización
+            $('#refreshPedidosBtn').click(function() {
+                $(this).find('i').addClass('fa-spin');
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            });
+
+            // Verificar notificaciones cada 30 segundos
+            setInterval(function() {
+                $.get('@Url.Action("ObtenerPedidosConNotificaciones", "Pedidos")', function(data) {
+                    if (data.notificaciones && data.notificaciones.length > 0) {
+                        data.notificaciones.forEach(function(notif) {
+                            Swal.fire({
+                                title: 'Actualización de pedido',
+                                text: notif.mensaje,
+                                icon: 'info',
+                                timer: 10000,
+                                timerProgressBar: true,
+                                toast: true,
+                                position: 'top-end'
+                            });
+
+                            $(`tr:contains(${notif.numeroPedido})`).find('.badge').text(notif.estado);
+                        });
+                    }
+                });
+            }, 30000);
+        });
+
+        $(document).ready(function() {
+        // Manejar clic en botón de cancelar
+            $('.btn-cancelar').click(function() {
+                const idPedido = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Cancelar Pedido',
+                    text: '¿Estás seguro que deseas cancelar este pedido?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, cancelar',
+                    cancelButtonText: 'No, volver'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '@Url.Action("CancelarPedido", "Pedidos")',
+                            type: 'POST',
+                            data: { idPedido: idPedido },
+                            success: function(response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Pedido Cancelado',
+                                        text: response.message,
+                                        timer: 3000,
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: response.message
+                                    });
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Ocurrió un error al intentar cancelar el pedido'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

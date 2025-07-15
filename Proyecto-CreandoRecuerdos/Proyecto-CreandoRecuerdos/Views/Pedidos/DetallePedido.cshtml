@@ -1,0 +1,206 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.DetallePedidoModel
+@{
+    ViewData["Title"] = "Detalle del Pedido";
+}
+
+@{
+    var rol = Session["Rol"]?.ToString();
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4><i class="fas fa-info-circle me-2"></i> Detalle del Pedido @Model.NumeroPedido</h4>
+                <a href="@Url.Action("Gestionar")" class="btn btn-sm btn-light">
+                    <i class="fas fa-arrow-left me-1"></i> Volver
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>Información del Cliente</h5>
+                    <dl class="row">
+                        <dt class="col-sm-4">Nombre:</dt>
+                        <dd class="col-sm-8">@Model.NombreCliente</dd>
+
+                        <dt class="col-sm-4">Teléfono:</dt>
+                        <dd class="col-sm-8">@Model.TelefonoDisplay</dd>
+
+                        <dt class="col-sm-4">Método Pago:</dt>
+                        <dd class="col-sm-8">@Model.MetodoPago</dd>
+                    </dl>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Detalles del Pedido</h4>
+                        <dl class="row">
+                            <dt class="col-sm-4">Número de Pedido:</dt>
+                            <dd class="col-sm-8">@Model.NumeroPedido</dd>
+
+                            <dt class="col-sm-4">Estado:</dt>
+                            <dd class="col-sm-8"><span class="badge @Model.ClaseEstado">@Model.Estado</span></dd>
+
+                            <dt class="col-sm-4">Fecha:</dt>
+                            <dd class="col-sm-8">@Model.Fecha.ToString("g")</dd>
+
+                            <dt class="col-sm-4">Método de Pago:</dt>
+                            <dd class="col-sm-8">@Model.MetodoPago</dd>
+
+                            @if (Model.MostrarDetalleSinpe)
+                            {
+                                <dt class="col-sm-4">Confirmación SINPE:</dt>
+                                <dd class="col-sm-8">
+                                    El pago debe realizarse desde el número <strong>@Model.TelefonoSinpe</strong>
+                                </dd>
+                            }
+
+                            <dt class="col-sm-4">Para Llevar:</dt>
+                            <dd class="col-sm-8">@(Model.ParaLlevar ? "Sí" : "No")</dd>
+
+                            <dt class="col-sm-4">PIN:</dt>
+                            <dd class="col-sm-8"><strong>@Model.Pin</strong> <small class="text-muted">(Preséntalo al recoger tu pedido)</small></dd>
+                        </dl>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h4>Resumen Financiero</h4>
+                        <dl class="row">
+                            <dt class="col-sm-4">Subtotal:</dt>
+                            <dd class="col-sm-8">₡@Model.Subtotal.ToString("N2")</dd>
+
+                            <dt class="col-sm-4">Impuestos (13%):</dt>
+                            <dd class="col-sm-8">₡@Model.Impuestos.ToString("N2")</dd>
+
+                            <dt class="col-sm-4">Total:</dt>
+                            <dd class="col-sm-8"><strong>₡@Model.Total.ToString("N2")</strong></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="mb-3">Productos</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                            <th>Notas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var producto in Model.Productos)
+                        {
+                            <tr>
+                                <td>@producto.Nombre</td>
+                                <td>@producto.Cantidad</td>
+                                <td>₡@producto.PrecioUnitario.ToString("N2")</td>
+                                <td>₡@((producto.Cantidad * producto.PrecioUnitario).ToString("N2"))</td>
+                                <td>@(!string.IsNullOrEmpty(producto.Personalizacion) ? producto.Personalizacion : "Ninguna")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end">Subtotal:</th>
+                            <th colspan="2">₡@Model.Subtotal.ToString("N2")</th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">Impuestos (13%):</th>
+                            <th colspan="2">₡@Model.Impuestos.ToString("N2")</th>
+                        </tr>
+                        <tr class="table-active">
+                            <th colspan="3" class="text-end">Total:</th>
+                            <th colspan="2">₡@Model.Total.ToString("N2")</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            @using (Html.BeginForm("ActualizarEstado", "Pedidos", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                if (rol == "1" || rol == "2")
+                {
+                    <input type="hidden" name="idPedido" value="@Model.IdPedido" />
+
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-4">
+                            <select class="form-select" name="nuevoEstado">
+                                @foreach (var estado in Model.EstadosDisponibles)
+                                {
+                                    <option value="@estado" selected="@(estado == Model.Estado)">@estado</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Actualizar Estado
+                            </button>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // SCRIPTS HECHOS CON LA AYUDA DE IA
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btn-notificar')) {
+                const btn = e.target.closest('.btn-notificar');
+                const idPedido = btn.dataset.id;
+
+                Swal.fire({
+                    title: 'Notificar Cliente',
+                    input: 'textarea',
+                    inputLabel: 'Mensaje para el cliente',
+                    inputPlaceholder: 'Ej: ¡Tu pedido está listo para recoger!',
+                    showCancelButton: true,
+                    confirmButtonText: 'Enviar Notificación',
+                    cancelButtonText: 'Cancelar',
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return 'Debe ingresar un mensaje';
+                        }
+                        if (value.length > 500) {
+                            return 'El mensaje no puede exceder 500 caracteres';
+                        }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/Pedidos/NotificarCliente', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                idPedido: idPedido,
+                                mensaje: result.value
+                            })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire('Éxito', data.message, 'success');
+                                } else {
+                                    Swal.fire('Error', data.message, 'error');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire('Error', 'No se pudo enviar la notificación', 'error');
+                            });
+                    }
+                });
+            }
+        });
+    </script>
+}
