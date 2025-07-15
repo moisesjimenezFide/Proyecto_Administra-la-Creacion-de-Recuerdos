@@ -265,6 +265,7 @@ public class InsumosController : Controller
         if (errores.Any())
         {
             ViewBag.Errores = errores;
+            ViewBag.Editando = true;
             var lista = db.tabla_materias_primas.Select(mp => new MateriaPrima
             {
                 id = mp.id,

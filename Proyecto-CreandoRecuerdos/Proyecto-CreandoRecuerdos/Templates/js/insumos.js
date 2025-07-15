@@ -11,11 +11,11 @@ function calcularCamposMateriaPrima() {
     var costoTotalMasMerma = costo + costoMermaTotal;
     var costoPorGramoConMerma = (peso > 0) ? (costoTotalMasMerma / peso) : 0;
 
-    $('#costo_por_gramo').val(costoPorGramo.toFixed(4));
+    $('#costo_por_gramo').val(costoPorGramo.toFixed(2));
     $('#porcentaje_de_merma').val(porcentajeMerma.toFixed(2));
     $('#costo_de_merma_total').val(costoMermaTotal.toFixed(2));
     $('#costo_total_mas_merma_total').val(costoTotalMasMerma.toFixed(2));
-    $('#costo_por_gramo_con_merma').val(costoPorGramoConMerma.toFixed(4));
+    $('#costo_por_gramo_con_merma').val(costoPorGramoConMerma.toFixed(2));
 }
 
 // =====================
