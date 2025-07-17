@@ -75,7 +75,7 @@ public class InsumosController : Controller
         string marca = materia_prima.marca?.Trim().ToLower() ?? "";
         string presentacion = materia_prima.presentacion?.Trim().ToLower() ?? "";
         string proveedor = materia_prima.proveedor?.Trim().ToLower() ?? "";
-        decimal costo = materia_prima.costo;
+        decimal? costo = materia_prima.costo;
         int peso = materia_prima.peso;
 
         // 1. Duplicado exacto (todos los campos)
@@ -131,10 +131,10 @@ public class InsumosController : Controller
         }
 
         // Cálculos de campos derivados
-        decimal costoPorGramo = (materia_prima.peso > 0) ? (materia_prima.costo / materia_prima.peso) : 0;
+        decimal costoPorGramo = (materia_prima.peso > 0) ? (materia_prima.costo ?? 0 / materia_prima.peso) : 0;
         decimal porcentajeMerma = (materia_prima.peso > 0) ? ((decimal)materia_prima.merma_total_en_gramos / materia_prima.peso) * 100 : 0;
         decimal costoMermaTotal = costoPorGramo * materia_prima.merma_total_en_gramos;
-        decimal costoTotalMasMerma = materia_prima.costo + costoMermaTotal;
+        decimal costoTotalMasMerma = (materia_prima.costo ?? 0) + costoMermaTotal;
         decimal costoPorGramoConMerma = (materia_prima.peso > 0) ? (costoTotalMasMerma / materia_prima.peso) : 0;
 
         db.tabla_materias_primas.Add(new tabla_materias_primas
@@ -212,6 +212,18 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult EditarMateriaPrima(MateriaPrima materia_prima)
     {
+        // Si el valor llega como 0 o null, intenta recuperar el valor original del formulario
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            // Reemplaza la coma por punto para la conversión
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                materia_prima.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
         // Normalizar valores para comparación
@@ -219,7 +231,7 @@ public class InsumosController : Controller
         string marca = materia_prima.marca?.Trim().ToLower() ?? "";
         string presentacion = materia_prima.presentacion?.Trim().ToLower() ?? "";
         string proveedor = materia_prima.proveedor?.Trim().ToLower() ?? "";
-        decimal costo = materia_prima.costo;
+        decimal? costo = materia_prima.costo;
         int peso = materia_prima.peso;
 
         // 1. Duplicado exacto (todos los campos)
@@ -246,8 +258,18 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
 
 
-        if (materia_prima.costo <= 0m || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
+        if (materia_prima.costo == null || materia_prima.costo <= 0 || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
+        {
+            // Recarga el valor original si el costo es 0 o null
+            var original = db.tabla_materias_primas.Find(materia_prima.id);
+            if (original != null)
+            {
+                materia_prima.costo = original.costo ?? 0.01m;
+                materia_prima.peso = (int)(original.peso ?? 0);
+                materia_prima.merma_total_en_gramos = (int)(original.merma_total_en_gramos ?? 0);
+            }
             errores.Add("Los valores numéricos deben ser mayores a cero.");
+        }
 
         if (errores.Any())
         {
@@ -281,12 +303,12 @@ public class InsumosController : Controller
         if (m != null)
         {
             // Cálculos de campos derivados
-            decimal costoPorGramo = (materia_prima.peso > 0) ? (materia_prima.costo / materia_prima.peso) : 0;
+            decimal costoPorGramo = (materia_prima.peso > 0) ? ((materia_prima.costo ?? 0) / materia_prima.peso) : 0;
             decimal porcentajeMerma = (materia_prima.peso > 0) ? ((decimal)materia_prima.merma_total_en_gramos / materia_prima.peso) * 100 : 0;
             decimal costoMermaTotal = costoPorGramo * materia_prima.merma_total_en_gramos;
-            decimal costoTotalMasMerma = materia_prima.costo + costoMermaTotal;
+            decimal costoTotalMasMerma = (materia_prima.costo ?? 0) + costoMermaTotal;
             decimal costoPorGramoConMerma = (materia_prima.peso > 0) ? (costoTotalMasMerma / materia_prima.peso) : 0;
-
+           
             m.nombre = materia_prima.nombre;
             m.marca = materia_prima.marca;
             m.presentacion = materia_prima.presentacion;
