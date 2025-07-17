@@ -22,7 +22,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<decimal> costo_por_cantidad { get; set; }
         public Nullable<decimal> total_costo { get; set; }
     
-        public virtual tabla_costos_recetas tabla_costos_recetas { get; set; }
         public virtual tabla_productos_preparados tabla_productos_preparados { get; set; }
+        public virtual tabla_costos_recetas tabla_costos_recetas { get; set; }
     }
 }

@@ -68,6 +68,17 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult CrearMateriaPrima(MateriaPrima materia_prima)
     {
+        // --- PARSE CORRECTO DEL COSTO ---
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                materia_prima.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
         // Normalizar valores para comparación
@@ -113,7 +124,7 @@ public class InsumosController : Controller
                 marca = mp.marca,
                 presentacion = mp.presentacion,
                 proveedor = mp.proveedor,
-                costo = (decimal)mp.costo,
+                costo = (decimal)(mp.costo ?? 0),
                 peso = (int)mp.peso,
                 unidad_de_medida = mp.unidad_de_medida,
                 costo_por_gramo = (decimal)mp.costo_por_gramo,
@@ -131,7 +142,7 @@ public class InsumosController : Controller
         }
 
         // Cálculos de campos derivados
-        decimal costoPorGramo = (materia_prima.peso > 0) ? (materia_prima.costo ?? 0 / materia_prima.peso) : 0;
+        decimal costoPorGramo = (materia_prima.peso > 0) ? ((materia_prima.costo ?? 0) / materia_prima.peso) : 0;
         decimal porcentajeMerma = (materia_prima.peso > 0) ? ((decimal)materia_prima.merma_total_en_gramos / materia_prima.peso) * 100 : 0;
         decimal costoMermaTotal = costoPorGramo * materia_prima.merma_total_en_gramos;
         decimal costoTotalMasMerma = (materia_prima.costo ?? 0) + costoMermaTotal;
@@ -258,18 +269,8 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
 
 
-        if (materia_prima.costo == null || materia_prima.costo <= 0 || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
-        {
-            // Recarga el valor original si el costo es 0 o null
-            var original = db.tabla_materias_primas.Find(materia_prima.id);
-            if (original != null)
-            {
-                materia_prima.costo = original.costo ?? 0.01m;
-                materia_prima.peso = (int)(original.peso ?? 0);
-                materia_prima.merma_total_en_gramos = (int)(original.merma_total_en_gramos ?? 0);
-            }
+        if (materia_prima.costo <= 0m || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
             errores.Add("Los valores numéricos deben ser mayores a cero.");
-        }
 
         if (errores.Any())
         {
@@ -308,7 +309,7 @@ public class InsumosController : Controller
             decimal costoMermaTotal = costoPorGramo * materia_prima.merma_total_en_gramos;
             decimal costoTotalMasMerma = (materia_prima.costo ?? 0) + costoMermaTotal;
             decimal costoPorGramoConMerma = (materia_prima.peso > 0) ? (costoTotalMasMerma / materia_prima.peso) : 0;
-           
+
             m.nombre = materia_prima.nombre;
             m.marca = materia_prima.marca;
             m.presentacion = materia_prima.presentacion;
