@@ -15,11 +15,11 @@
       "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\views\\insumos\\materias_primas.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\proyecto-creandorecuerdos\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\dise\u00F1o y desarrollo\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\base_de_datos\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\proyecto-creandorecuerdos\\base_de_datos\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
       "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\base_de_datos\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
     },
     {
@@ -317,7 +317,7 @@
               "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Controllers\\InsumosController.cs",
               "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Controllers\\InsumosController.cs",
               "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Controllers\\InsumosController.cs",
-              "ViewState": "AgIAAO8AAAAAAAAAAAAAAPkAAABtAAAAAAAAAA==",
+              "ViewState": "AgIAAO8AAAAAAAAAAAAAAPkAAABLAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-16T00:48:03.635Z",
               "EditorCaption": ""
@@ -338,14 +338,13 @@
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Model1.edmx [Diagram1]",
+              "Title": "Model1.edmx",
               "DocumentMoniker": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx",
               "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx",
-              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx [Diagram1]",
-              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx [Diagram1]",
+              "ToolTip": "C:\\Dise\u00F1o y Desarrollo\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx",
+              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
-              "WhenOpened": "2025-07-17T02:28:57.39Z",
-              "EditorCaption": " [Diagram1]"
+              "WhenOpened": "2025-07-17T02:28:57.39Z"
             },
             {
               "$type": "Document",
