@@ -100,7 +100,7 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida))
                errores.Add("Todos los campos son obligatorios.");
 
-        if (materia_prima.costo <= 0 || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
+        if (materia_prima.costo <= 0m || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
             errores.Add("Los valores numéricos deben ser mayores a cero.");
 
         if (errores.Any())
@@ -170,7 +170,7 @@ public class InsumosController : Controller
             marca = m.marca,
             presentacion = m.presentacion,
             proveedor = m.proveedor,
-            costo = (decimal)(m.costo ?? 0),
+            costo = m.costo ?? 0,
             peso = (int)(m.peso ?? 0),
             unidad_de_medida = m.unidad_de_medida,
             costo_por_gramo = (decimal)(m.costo_por_gramo ?? 0),
@@ -246,13 +246,13 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
 
 
-        if (materia_prima.costo <= 0 || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
+        if (materia_prima.costo <= 0m || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
             errores.Add("Los valores numéricos deben ser mayores a cero.");
 
         if (errores.Any())
         {
             ViewBag.Errores = errores;
-
+            ViewBag.Editando = true;
             var lista = db.tabla_materias_primas.Select(mp => new MateriaPrima
             {
                 id = mp.id,
@@ -359,9 +359,9 @@ public class InsumosController : Controller
                 marca = p.marca,
                 cantidad = (int)p.cantidad,
                 proveedor = p.proveedor,
-                volumen_de_porcion = (int)p.volumen_de_porcion,
-                costo = (decimal)p.costo,
-                peso = (int)p.peso,
+                volumen_de_porcion = p.volumen_de_porcion ?? 0,
+                costo = p.costo ?? 0,
+                peso = p.peso ?? 0,
                 unidad_de_medida = p.unidad_de_medida,
                 costo_por_peso = (decimal)(p.costo_por_peso ?? 0),
                 costo_por_porcion_con_merma = (decimal)(p.costo_por_porcion_con_merma ?? 0)
@@ -410,26 +410,26 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (producto_preparado.costo <= 0 || producto_preparado.cantidad <= 0 || producto_preparado.volumen_de_porcion <= 0)
+        if (producto_preparado.costo <= 0m || producto_preparado.cantidad <= 0 || producto_preparado.volumen_de_porcion <= 0)
             errores.Add("Los valores numéricos deben ser mayores a cero.");
 
         if (errores.Any())
         {
             ViewBag.Errores = errores;
+            ViewBag.Editando = true;
             var lista = db.tabla_productos_preparados.Select(p => new ProductoPreparado
             {
                 id = p.id,
                 tipo = p.tipo,
                 nombre = p.nombre,
                 marca = p.marca,
-                cantidad = (int)p.cantidad,
+                cantidad = p.cantidad,
                 proveedor = p.proveedor,
-                volumen_de_porcion = (int)p.volumen_de_porcion,
+                volumen_de_porcion = p.volumen_de_porcion ?? 0,
+                peso = p.peso ?? 0,
                 costo = (decimal)p.costo,
-                peso = (int)p.peso,
-                unidad_de_medida = p.unidad_de_medida,
-                costo_por_peso = (decimal)p.costo_por_peso,
-                costo_por_porcion_con_merma = (decimal)p.costo_por_porcion_con_merma
+                costo_por_peso = p.costo_por_peso ?? 0m,
+                costo_por_porcion_con_merma = p.costo_por_porcion_con_merma ?? 0m
             }).ToList();
             return View("productos_preparados", new InsumosModel
             {
@@ -467,35 +467,37 @@ public class InsumosController : Controller
     {
         var p = db.tabla_productos_preparados.Find(id);
         if (p == null) return HttpNotFound();
+
         var producto_preparado = new ProductoPreparado
         {
             id = p.id,
             tipo = p.tipo,
             nombre = p.nombre,
             marca = p.marca,
-            cantidad = (int)p.cantidad,
+            cantidad = p.cantidad,
             proveedor = p.proveedor,
-            volumen_de_porcion = (int)p.volumen_de_porcion,
-            costo = (decimal)p.costo,
+            volumen_de_porcion = p.volumen_de_porcion ?? 0,
+            costo = p.costo ?? 0,
+            peso = p.peso ?? 0,
             unidad_de_medida = p.unidad_de_medida,
-            costo_por_peso = (decimal)p.costo_por_peso,
-            costo_por_porcion_con_merma = (decimal)p.costo_por_porcion_con_merma
+            costo_por_peso = p.costo_por_peso ?? 0m,
+            costo_por_porcion_con_merma = p.costo_por_porcion_con_merma ?? 0m
         };
 
-        //Obtén el listado de productos preparados
         var lista = db.tabla_productos_preparados.Select(prodprep => new ProductoPreparado
         {
             id = prodprep.id,
             tipo = prodprep.tipo,
             nombre = prodprep.nombre,
             marca = prodprep.marca,
-            cantidad = (int)prodprep.cantidad,
+            cantidad = prodprep.cantidad,
             proveedor = prodprep.proveedor,
-            volumen_de_porcion = (int)prodprep.volumen_de_porcion,
-            costo = (decimal)prodprep.costo,
+            volumen_de_porcion = prodprep.volumen_de_porcion ?? 0,
+            costo = (decimal)(prodprep.costo ?? 0),
+            peso = prodprep.peso ?? 0,
             unidad_de_medida = prodprep.unidad_de_medida,
-            costo_por_peso = (decimal)prodprep.costo_por_peso,
-            costo_por_porcion_con_merma = (decimal)prodprep.costo_por_porcion_con_merma
+            costo_por_peso = prodprep.costo_por_peso ?? 0m,
+            costo_por_porcion_con_merma = prodprep.costo_por_porcion_con_merma ?? 0m
         }).ToList();
 
         ViewBag.Editando = true;
@@ -525,12 +527,13 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (producto_preparado.costo <= 0 || producto_preparado.cantidad <= 0 || producto_preparado.volumen_de_porcion <= 0)
+        if (producto_preparado.costo <= 0m || producto_preparado.cantidad <= 0 || producto_preparado.volumen_de_porcion <= 0)
             errores.Add("Los valores numéricos deben ser mayores a cero.");
 
         if (errores.Any())
         {
             ViewBag.Errores = errores;
+            ViewBag.Editando = true;
             var lista = db.tabla_productos_preparados.Select(prodprep => new ProductoPreparado
             {
                 id = prodprep.id,
@@ -539,13 +542,14 @@ public class InsumosController : Controller
                 marca = prodprep.marca,
                 cantidad = prodprep.cantidad,
                 proveedor = prodprep.proveedor,
-                volumen_de_porcion = (int)prodprep.volumen_de_porcion,
-                costo = (decimal)prodprep.costo,
-                peso = (int)prodprep.peso,
-                unidad_de_medida = prodprep.unidad_de_medida,
-                costo_por_peso = (decimal)prodprep.costo_por_peso,
-                costo_por_porcion_con_merma = (decimal)prodprep.costo_por_porcion_con_merma
+                volumen_de_porcion = prodprep.volumen_de_porcion ?? 0,
+                peso = prodprep.peso ?? 0,
+                costo = (decimal)(prodprep.costo ?? 0),
+                costo_por_peso = prodprep.costo_por_peso ?? 0m,
+                costo_por_porcion_con_merma = prodprep.costo_por_porcion_con_merma ?? 0m,
+                unidad_de_medida = prodprep.unidad_de_medida
             }).ToList();
+
             return View("productos_preparados", new InsumosModel
             {
                 ProductoPreparadoEditado = producto_preparado,

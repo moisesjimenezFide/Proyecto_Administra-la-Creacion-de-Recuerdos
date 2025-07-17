@@ -131,7 +131,7 @@
           <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_estados_pedido">
           <Key>
@@ -164,7 +164,7 @@
           <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_materias_primas">
           <Key>
@@ -178,12 +178,12 @@
           <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
           <Property Name="peso" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_gramo" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_gramo" Type="decimal" Precision="18" Scale="2" />
           <Property Name="merma_total_en_gramos" Type="int" />
           <Property Name="porcentaje_de_merma" Type="decimal" Precision="5" Scale="2" />
           <Property Name="costo_de_merma_total" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo_total_mas_merma_total" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="costo_por_gramo_con_merma" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_gramo_con_merma" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_notificaciones_vistas">
           <Key>
@@ -246,8 +246,8 @@
           <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
           <Property Name="peso" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_peso" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="costo_por_porcion_con_merma" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_peso" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="costo_por_porcion_con_merma" Type="decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tabla_recomendaciones">
@@ -289,7 +289,7 @@
           <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="int" />
           <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_usuarios">
           <Key>
@@ -1124,7 +1124,7 @@
           <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="precios_empaques_decoraciones_utilizados" Relationship="Self.FK__precios_e__id_em__05D8E0BE" FromRole="tabla_empaques_decoraciones" ToRole="precios_empaques_decoraciones_utilizados" />
         </EntityType>
         <EntityType Name="tabla_horarios">
@@ -1151,7 +1151,7 @@
           <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_im__07C12930" FromRole="tabla_implementos" ToRole="precios_implementos_utilizados" />
         </EntityType>
         <EntityType Name="tabla_materias_primas">
@@ -1166,12 +1166,12 @@
           <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="peso" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_gramo" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_gramo" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="merma_total_en_gramos" Type="Int32" />
           <Property Name="porcentaje_de_merma" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="costo_de_merma_total" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="costo_total_mas_merma_total" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_por_gramo_con_merma" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_gramo_con_merma" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Self.FK__costos_re__id_ma__02084FDA" FromRole="tabla_materias_primas" ToRole="costos_receta_materias_primas_utilizadas" />
         </EntityType>
         <EntityType Name="tabla_precios_finales_sugeridos">
@@ -1262,7 +1262,7 @@
           <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="precios_suministros_utilizados" Relationship="Self.FK__precios_s__id_su__0A9D95DB" FromRole="tabla_suministros" ToRole="precios_suministros_utilizados" />
         </EntityType>
         <EntityType Name="tabla_usuarios">
@@ -2053,8 +2053,8 @@
           <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="peso" Type="Int32" />
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_peso" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="costo_por_porcion_con_merma" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="costo_por_peso" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_por_porcion_con_merma" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="Int32" Nullable="false" />
           <NavigationProperty Name="costos_receta_productos_preparados_utilizados" Relationship="BD_CREANDO_RECUERDOSModel.FK__costos_re__id_pr__03F0984C" FromRole="tabla_productos_preparados" ToRole="costos_receta_productos_preparados_utilizados" />
         </EntityType>

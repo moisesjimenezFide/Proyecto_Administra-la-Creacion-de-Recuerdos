@@ -26,11 +26,11 @@ function calcularCamposProductoPreparado() {
     var cantidad = parseInt($('#cantidad').val()) || 1;
     var porcion = parseFloat($('#volumen_de_porcion').val()) || 1;
     var peso = cantidad * porcion;
-    $('#peso').val(peso); // Si quieres mostrarlo en un campo solo lectura, o actualizar en la tabla
+    $('#peso').val(peso);
     var costoPorPeso = (peso > 0) ? (costo / peso) : 0;
     var costoPorPorcion = (porcion > 0) ? (costo / porcion) : 0;
-    $('#costo_por_peso').text(costoPorPeso.toFixed(4));
-    $('#costo_por_porcion_con_merma').text(costoPorPorcion.toFixed(4));
+    $('#costo_por_peso').text(costoPorPeso.toFixed(2));
+    $('#costo_por_porcion_con_merma').text(costoPorPorcion.toFixed(2));
 }
 
 // =====================
