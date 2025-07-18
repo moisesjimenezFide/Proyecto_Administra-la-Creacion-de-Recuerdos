@@ -16,7 +16,7 @@
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
-        <i class="fas fa-calculator me-2"></i>Gestión de Productos Preparados
+        <i class="fas fa-calculator me-2"></i>Gestión de Costos de Productos Preparados
     </h2>
 </div>
 
@@ -87,7 +87,7 @@
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? productoPreparadoEditado.costo.ToString("0.##") : "")" step="0.01" min="0" />
+            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? (productoPreparadoEditado.costo.HasValue ? productoPreparadoEditado.costo.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "") : "")" step="0.01" lang="en" />
         </div>
 
         <div class="mb-3 text-start">
@@ -136,7 +136,7 @@
                         <th>Volumen de Porción</th>
                         <th>Costo (₡)</th>
                         <th>Peso</th>
-                        <th>Unidad</th>
+                        <th>Unidad de medida</th>
                         <th>Costo por Peso (₡)</th>
                         <th>Costo por Porción con Merma (₡)</th>
                         <th>Acciones</th>
@@ -152,11 +152,12 @@
                             <td>@producto_preparado.cantidad</td>
                             <td>@producto_preparado.proveedor</td>
                             <td>@producto_preparado.volumen_de_porcion</td>
-                            <td>@producto_preparado.costo</td>
-                            <td>@(producto_preparado.cantidad * producto_preparado.volumen_de_porcion)</td>
+                            <td>
+                                @(producto_preparado.costo.HasValue ? "₡" + producto_preparado.costo.Value.ToString("N2") : "")
+                            </td><td>@(producto_preparado.cantidad * producto_preparado.volumen_de_porcion)</td>
                             <td>@producto_preparado.unidad_de_medida</td>
-                            <td>@producto_preparado.costo_por_peso</td>
-                            <td>@producto_preparado.costo_por_porcion_con_merma</td>
+                            <td>₡@producto_preparado.costo_por_peso</td>
+                            <td>₡@producto_preparado.costo_por_porcion_con_merma</td>
                             <td>
                                 <a href="@Url.Action("EditarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
                                 <a href="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })"></a>

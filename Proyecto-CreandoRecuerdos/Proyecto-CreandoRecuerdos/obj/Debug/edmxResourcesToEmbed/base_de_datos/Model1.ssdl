@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="costos_receta_materias_primas_utilizadas">
     <Key>
       <PropertyRef Name="id" />
@@ -865,7 +865,7 @@
     <Parameter Name="calificacion" Type="int" Mode="In" />
     <Parameter Name="comentarios" Type="nvarchar" Mode="In" />
   </Function>
-  <EntityContainer Name="BD_CREANDO_RECUERDOSModelStoreContainer">
+  <EntityContainer Name="Model1StoreContainer">
     <EntitySet Name="costos_receta_materias_primas_utilizadas" EntityType="Self.costos_receta_materias_primas_utilizadas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="costos_receta_productos_preparados_utilizados" EntityType="Self.costos_receta_productos_preparados_utilizados" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="precios_empaques_decoraciones_utilizados" EntityType="Self.precios_empaques_decoraciones_utilizados" Schema="dbo" store:Type="Tables" />

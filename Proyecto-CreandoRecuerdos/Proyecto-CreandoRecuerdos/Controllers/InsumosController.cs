@@ -111,8 +111,14 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida))
                errores.Add("Todos los campos son obligatorios.");
 
-        if (materia_prima.costo <= 0m || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
-            errores.Add("Los valores numéricos deben ser mayores a cero.");
+        if (materia_prima.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a 0.99.");
+
+        if (materia_prima.peso <= 0)
+            errores.Add("El peso debe ser mayor a 0.");
+
+        if (materia_prima.merma_total_en_gramos < 0)
+            errores.Add("La merma total en gramos no puede ser negativa.");
 
         if (errores.Any())
         {
@@ -124,15 +130,15 @@ public class InsumosController : Controller
                 marca = mp.marca,
                 presentacion = mp.presentacion,
                 proveedor = mp.proveedor,
-                costo = (decimal)(mp.costo ?? 0),
+                costo = (decimal?)(mp.costo ?? 0m),
                 peso = (int)mp.peso,
                 unidad_de_medida = mp.unidad_de_medida,
-                costo_por_gramo = (decimal)mp.costo_por_gramo,
+                costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0m),
                 merma_total_en_gramos = (int)mp.merma_total_en_gramos,
-                porcentaje_de_merma = (decimal)mp.porcentaje_de_merma,
-                costo_de_merma_total = (decimal)mp.costo_de_merma_total,
-                costo_total_mas_merma_total = (decimal)mp.costo_total_mas_merma_total,
-                costo_por_gramo_con_merma = (decimal)mp.costo_por_gramo_con_merma
+                porcentaje_de_merma = mp.porcentaje_de_merma ?? 0m,
+                costo_de_merma_total = mp.costo_de_merma_total ?? 0m,
+                costo_total_mas_merma_total = mp.costo_total_mas_merma_total ?? 0m,
+                costo_por_gramo_con_merma = mp.costo_por_gramo_con_merma ?? 0m
             }).ToList();
             return View("materias_primas", new InsumosModel
             {
@@ -192,7 +198,7 @@ public class InsumosController : Controller
             costo_por_gramo_con_merma = (decimal)(m.costo_por_gramo_con_merma ?? 0)
         };
 
-        //Obtén el listado de materias primas
+        //Obtener el listado de materias primas
         var lista = db.tabla_materias_primas.Select(mp => new MateriaPrima
         {
             id = mp.id,
@@ -203,12 +209,12 @@ public class InsumosController : Controller
             costo = (decimal)(mp.costo ?? 0),
             peso = (int)(mp.peso ?? 0),
             unidad_de_medida = mp.unidad_de_medida,
-            costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0),
-            merma_total_en_gramos = (int)(mp.merma_total_en_gramos ?? 0),
-            porcentaje_de_merma = (decimal)(mp.porcentaje_de_merma ?? 0),
-            costo_de_merma_total = (decimal)(mp.costo_de_merma_total ?? 0),
-            costo_total_mas_merma_total = (decimal)(mp.costo_total_mas_merma_total ?? 0),
-            costo_por_gramo_con_merma = (decimal)(mp.costo_por_gramo_con_merma ?? 0)
+            costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0m),
+            merma_total_en_gramos = (int)mp.merma_total_en_gramos,
+            porcentaje_de_merma = mp.porcentaje_de_merma ?? 0m,
+            costo_de_merma_total = mp.costo_de_merma_total ?? 0m,
+            costo_total_mas_merma_total = mp.costo_total_mas_merma_total ?? 0m,
+            costo_por_gramo_con_merma = mp.costo_por_gramo_con_merma ?? 0m
         }).ToList();
 
         ViewBag.Editando = true;
@@ -223,7 +229,7 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult EditarMateriaPrima(MateriaPrima materia_prima)
     {
-        // Si el valor llega como 0 o null, intenta recuperar el valor original del formulario
+        // --- PARSE CORRECTO DEL COSTO ---
         string costoStr = Request.Form["costo"];
         if (!string.IsNullOrWhiteSpace(costoStr))
         {
@@ -269,8 +275,14 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
 
 
-        if (materia_prima.costo <= 0m || materia_prima.peso <= 0 || materia_prima.merma_total_en_gramos < 0)
-            errores.Add("Los valores numéricos deben ser mayores a cero.");
+        if (materia_prima.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a 0.99.");
+
+        if (materia_prima.peso <= 0)
+            errores.Add("El peso debe ser mayor a 0.");
+
+        if (materia_prima.merma_total_en_gramos < 0)
+            errores.Add("La merma total en gramos no puede ser negativa.");
 
         if (errores.Any())
         {
@@ -286,12 +298,12 @@ public class InsumosController : Controller
                 costo = (decimal)(mp.costo ?? 0),
                 peso = (int)(mp.peso ?? 0),
                 unidad_de_medida = mp.unidad_de_medida,
-                costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0),
-                merma_total_en_gramos = (int)(mp.merma_total_en_gramos ?? 0),
-                porcentaje_de_merma = (decimal)(mp.porcentaje_de_merma ?? 0),
-                costo_de_merma_total = (decimal)(mp.costo_de_merma_total ?? 0),
-                costo_total_mas_merma_total = (decimal)(mp.costo_total_mas_merma_total ?? 0),
-                costo_por_gramo_con_merma = (decimal)(mp.costo_por_gramo_con_merma ?? 0)
+                costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0m),
+                merma_total_en_gramos = (int)mp.merma_total_en_gramos,
+                porcentaje_de_merma = mp.porcentaje_de_merma ?? 0m,
+                costo_de_merma_total = mp.costo_de_merma_total ?? 0m,
+                costo_total_mas_merma_total = mp.costo_total_mas_merma_total ?? 0m,
+                costo_por_gramo_con_merma = mp.costo_por_gramo_con_merma ?? 0m
             }).ToList();
             return View("materias_primas", new InsumosModel
             {
@@ -372,6 +384,7 @@ public class InsumosController : Controller
 
             );
         }
+
         var producto_preparado = new InsumosModel
         {
             ProductosPreparados = query.Select(p => new ProductoPreparado
@@ -383,7 +396,7 @@ public class InsumosController : Controller
                 cantidad = (int)p.cantidad,
                 proveedor = p.proveedor,
                 volumen_de_porcion = p.volumen_de_porcion ?? 0,
-                costo = p.costo ?? 0,
+                costo = (decimal)(p.costo ?? 0),
                 peso = p.peso ?? 0,
                 unidad_de_medida = p.unidad_de_medida,
                 costo_por_peso = (decimal)(p.costo_por_peso ?? 0),
@@ -399,6 +412,16 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult CrearProductoPreparado(ProductoPreparado producto_preparado)
     {
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                producto_preparado.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
         
         // Normalizar valores para comparación
@@ -407,7 +430,7 @@ public class InsumosController : Controller
         string marca = producto_preparado.marca?.Trim().ToLower() ?? "";
         int cantidad = producto_preparado.cantidad;
         string proveedor = producto_preparado.proveedor?.Trim().ToLower() ?? "";
-        decimal costo = producto_preparado.costo;
+        decimal? costo = producto_preparado.costo;
         int peso = producto_preparado.peso;
         
         // 1. Duplicado exacto (todos los campos)
@@ -433,13 +456,18 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (producto_preparado.costo <= 0m || producto_preparado.cantidad <= 0 || producto_preparado.volumen_de_porcion <= 0)
-            errores.Add("Los valores numéricos deben ser mayores a cero.");
+        if (producto_preparado.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a 0.99.");
+
+        if (producto_preparado.cantidad <= 0)
+            errores.Add("La cantidad debe ser mayor a cero.");
+
+        if (producto_preparado.volumen_de_porcion <= 0)
+            errores.Add("El volumen de porción debe ser mayor a cero.");
 
         if (errores.Any())
         {
             ViewBag.Errores = errores;
-            ViewBag.Editando = true;
             var lista = db.tabla_productos_preparados.Select(p => new ProductoPreparado
             {
                 id = p.id,
@@ -450,7 +478,7 @@ public class InsumosController : Controller
                 proveedor = p.proveedor,
                 volumen_de_porcion = p.volumen_de_porcion ?? 0,
                 peso = p.peso ?? 0,
-                costo = (decimal)p.costo,
+                costo = (decimal?)(p.costo ?? 0m),
                 costo_por_peso = p.costo_por_peso ?? 0m,
                 costo_por_porcion_con_merma = p.costo_por_porcion_con_merma ?? 0m
             }).ToList();
@@ -463,8 +491,8 @@ public class InsumosController : Controller
 
         // Calcula el peso automáticamente
         int pesoCalculado = producto_preparado.cantidad * producto_preparado.volumen_de_porcion;
-        decimal costoPorPeso = (pesoCalculado > 0) ? (producto_preparado.costo / pesoCalculado) : 0;
-        decimal costoPorPorcionConMerma = (producto_preparado.volumen_de_porcion > 0) ? (producto_preparado.costo / producto_preparado.volumen_de_porcion) : 0;
+        decimal? costoPorPeso = (pesoCalculado > 0) ? (producto_preparado.costo / pesoCalculado) : 0;
+        decimal? costoPorPorcionConMerma = (producto_preparado.volumen_de_porcion > 0) ? (producto_preparado.costo / producto_preparado.volumen_de_porcion) : 0;
 
         db.tabla_productos_preparados.Add(new tabla_productos_preparados
         {
@@ -507,6 +535,7 @@ public class InsumosController : Controller
             costo_por_porcion_con_merma = p.costo_por_porcion_con_merma ?? 0m
         };
 
+        // Obtener el listado de productos preparados
         var lista = db.tabla_productos_preparados.Select(prodprep => new ProductoPreparado
         {
             id = prodprep.id,
@@ -523,7 +552,6 @@ public class InsumosController : Controller
             costo_por_porcion_con_merma = prodprep.costo_por_porcion_con_merma ?? 0m
         }).ToList();
 
-        ViewBag.Editando = true;
         return View("productos_preparados", new InsumosModel
         {
             ProductoPreparadoEditado = producto_preparado,
@@ -535,6 +563,18 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult EditarProductoPreparado(ProductoPreparado producto_preparado)
     {
+        // --- PARSE CORRECTO DEL COSTO ---
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            // Reemplaza la coma por punto para la conversión
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                producto_preparado.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
         // Validar que no exista otro producto preparado con el mismo nombre
@@ -550,8 +590,14 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (producto_preparado.costo <= 0m || producto_preparado.cantidad <= 0 || producto_preparado.volumen_de_porcion <= 0)
-            errores.Add("Los valores numéricos deben ser mayores a cero.");
+        if (producto_preparado.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a 0.99.");
+
+        if (producto_preparado.cantidad <= 0)
+            errores.Add("La cantidad debe ser mayor a cero.");
+
+        if (producto_preparado.volumen_de_porcion <= 0)
+            errores.Add("El volumen de porción debe ser mayor a cero.");
 
         if (errores.Any())
         {
@@ -586,8 +632,8 @@ public class InsumosController : Controller
         var pp = db.tabla_productos_preparados.Find(producto_preparado.id);
         if (pp != null)
         {
-            decimal costoPorPeso = (producto_preparado.peso > 0) ? (producto_preparado.costo / producto_preparado.peso) : 0;
-            decimal costoPorPorcionConMerma = (producto_preparado.volumen_de_porcion > 0) ? (producto_preparado.costo / producto_preparado.volumen_de_porcion) : 0;
+            decimal? costoPorPeso = (producto_preparado.peso > 0) ? (producto_preparado.costo / producto_preparado.peso) : 0;
+            decimal? costoPorPorcionConMerma = (producto_preparado.volumen_de_porcion > 0) ? (producto_preparado.costo / producto_preparado.volumen_de_porcion) : 0;
 
             pp.tipo = producto_preparado.tipo;
             pp.nombre = producto_preparado.nombre;

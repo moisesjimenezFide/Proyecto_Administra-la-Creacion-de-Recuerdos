@@ -48,7 +48,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public int cantidad { get; set; }
         public string proveedor { get; set; }
         public int volumen_de_porcion { get; set; }
-        public decimal costo { get; set; }
+        public decimal? costo { get; set; }
         public int peso { get; set; }
         public string unidad_de_medida { get; set; }
         public decimal costo_por_peso { get; set; }

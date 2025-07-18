@@ -25,8 +25,6 @@ namespace Proyecto_CreandoRecuerdos.Models
         [Required(ErrorMessage = "La contraseña es requerida")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
         public string contrasenna { get; set; }
-        public string telefono { get; set; } // Nuevo campo
-
 
         [Phone(ErrorMessage = "Formato de teléfono inválido")]
         public string telefono { get; set; }

@@ -78,7 +78,7 @@
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? (materiaPrimaEditado.costo.HasValue ? materiaPrimaEditado.costo.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "") : "")" step="0.01" min="0.01" lang="en" />
+            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? (materiaPrimaEditado.costo.HasValue ? materiaPrimaEditado.costo.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "") : "")" step="0.01" lang="en" />
         </div>
 
         <div class="mb-3 text-start">
@@ -136,7 +136,7 @@
                         <th>Proveedor</th>
                         <th>Costo</th>
                         <th>Peso</th>
-                        <th>Unidad</th>
+                        <th>Unidad de medida</th>
                         <th>Merma Total (g)</th>
                         <th>Costo por gramo (₡/g)</th>
                         <th>Porcentaje de Merma (%)</th>
