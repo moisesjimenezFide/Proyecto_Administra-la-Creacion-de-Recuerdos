@@ -156,8 +156,8 @@
                                 @(producto_preparado.costo.HasValue ? "₡" + producto_preparado.costo.Value.ToString("N2") : "")
                             </td><td>@(producto_preparado.cantidad * producto_preparado.volumen_de_porcion)</td>
                             <td>@producto_preparado.unidad_de_medida</td>
-                            <td>₡@producto_preparado.costo_por_peso</td>
-                            <td>₡@producto_preparado.costo_por_porcion_con_merma</td>
+                            <td>₡@producto_preparado.costo_por_peso.ToString("N2")</td>
+                            <td>₡@producto_preparado.costo_por_porcion_con_merma.ToString("N2")</td>
                             <td>
                                 <a href="@Url.Action("EditarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
                                 <a href="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })"></a>

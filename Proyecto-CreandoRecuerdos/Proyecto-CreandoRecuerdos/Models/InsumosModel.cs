@@ -62,7 +62,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public string marca { get; set; }
         public string presentacion { get; set; }
         public string proveedor { get; set; }
-        public decimal costo { get; set; }
+        public decimal? costo { get; set; }
         public int cantidad { get; set; }
         public string unidad_de_medida { get; set; }
         public decimal costo_por_cantidad { get; set; }

@@ -175,7 +175,7 @@ public class InsumosController : Controller
         return RedirectToAction("materias_primas");
     }
 
-    // Editar una materia prima existente
+    // Editar una materia prima existente (GET id)
     public ActionResult EditarMateriaPrima(int id)
     {
         var m = db.tabla_materias_primas.Find(id);
@@ -225,6 +225,7 @@ public class InsumosController : Controller
         });
     }
 
+    // Editar una materia prima existente (POST)
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult EditarMateriaPrima(MateriaPrima materia_prima)
@@ -431,7 +432,7 @@ public class InsumosController : Controller
         int cantidad = producto_preparado.cantidad;
         string proveedor = producto_preparado.proveedor?.Trim().ToLower() ?? "";
         decimal? costo = producto_preparado.costo;
-        int peso = producto_preparado.peso;
+     
         
         // 1. Duplicado exacto (todos los campos)
         if (db.tabla_productos_preparados.Any(p =>
@@ -440,8 +441,7 @@ public class InsumosController : Controller
             p.marca.ToLower() == marca &&
             p.cantidad == cantidad &&
             p.proveedor.ToLower() == proveedor &&
-            p.costo == costo &&
-            p.peso == peso))
+            p.costo == costo))
 
         {
             errores.Add("Ya existe un producto preparado con los mismos datos.");
@@ -513,7 +513,7 @@ public class InsumosController : Controller
         return RedirectToAction("productos_preparados");
     }
 
-    // Editar un producto preparado existente
+    // Editar un producto preparado existente (GET id)
     public ActionResult EditarProductoPreparado(int id)
     {
         var p = db.tabla_productos_preparados.Find(id);
@@ -559,6 +559,7 @@ public class InsumosController : Controller
         });
     }
 
+    // Editar un producto preparado existente (POST)
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult EditarProductoPreparado(ProductoPreparado producto_preparado)
@@ -577,9 +578,28 @@ public class InsumosController : Controller
 
         var errores = new List<string>();
 
-        // Validar que no exista otro producto preparado con el mismo nombre
-        if (db.tabla_productos_preparados.Any(prodprep => prodprep.nombre.ToLower() == producto_preparado.nombre.ToLower() && prodprep.id != producto_preparado.id))
-            errores.Add("Ya existe un producto preparado con ese nombre.");
+        // Normalizar valores para comparación
+        string tipo = producto_preparado.tipo?.Trim().ToLower() ?? "";
+        string nombre = producto_preparado.nombre?.Trim().ToLower() ?? "";
+        string marca = producto_preparado.marca?.Trim().ToLower() ?? "";
+        int cantidad = producto_preparado.cantidad;
+        string proveedor = producto_preparado.proveedor?.Trim().ToLower() ?? "";
+        decimal? costo = producto_preparado.costo;
+
+        // 1. Duplicado exacto (todos los campos excepto ID)
+        bool existeExacto = db.tabla_productos_preparados.Any(p =>
+            p.id != producto_preparado.id &&
+            p.tipo.ToLower() == tipo &&
+            p.nombre.ToLower() == nombre &&
+            p.marca.ToLower() == marca &&
+            p.cantidad == cantidad &&
+            p.proveedor.ToLower() == proveedor &&
+            p.costo == costo
+        );
+        if (existeExacto)
+        {
+            errores.Add("Ya existe un producto preparado con los mismos datos.");
+        }
 
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(producto_preparado.tipo) ||
@@ -700,7 +720,7 @@ public class InsumosController : Controller
                 marca = ed.marca,
                 presentacion = ed.presentacion,
                 proveedor = ed.proveedor,
-                costo = (decimal)ed.costo,
+                costo = (decimal)(ed.costo ?? 0),
                 cantidad = (int)ed.cantidad,
                 unidad_de_medida = ed.unidad_de_medida,
                 costo_por_cantidad = (decimal)(ed.costo_por_cantidad ?? 0)
@@ -715,11 +735,38 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult CrearEmpaqueDecoracion(EmpaqueDecoracion empaque_decoracion)
     {
+        // --- PARSE CORRECTO DEL COSTO ---
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                empaque_decoracion.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
-        // Validar que no exista otro empaque/decoración con el mismo nombre
-        if (db.tabla_empaques_decoraciones.Any(ed => ed.nombre.ToLower() == empaque_decoracion.nombre.ToLower()))
-            errores.Add("Ya existe un empaque o decoración con ese nombre.");
+        // Normalizar valores para comparación
+        string nombre = empaque_decoracion.nombre?.Trim().ToLower() ?? "";
+        string marca = empaque_decoracion.marca?.Trim().ToLower() ?? "";
+        string presentacion = empaque_decoracion.presentacion?.Trim().ToLower() ?? "";
+        string proveedor = empaque_decoracion.proveedor?.Trim().ToLower() ?? "";
+        decimal? costo = empaque_decoracion.costo;
+        int cantidad = empaque_decoracion.cantidad;
+        
+        // 1. Duplicado exacto (todos los campos)
+        if (db.tabla_empaques_decoraciones.Any(ed =>
+            ed.nombre.ToLower() == nombre &&
+            ed.marca.ToLower() == marca &&
+            ed.presentacion.ToLower() == presentacion &&
+            ed.proveedor.ToLower() == proveedor &&
+            ed.costo == costo &&
+            ed.cantidad == cantidad))
+        {
+            errores.Add("Ya existe un empaque o decoración con los mismos datos.");
+        }
 
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(empaque_decoracion.nombre) ||
@@ -729,8 +776,11 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(empaque_decoracion.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (empaque_decoracion.costo <= 0 || empaque_decoracion.cantidad <= 0)
-            errores.Add("El costo y la cantidad deben ser mayores a cero.");
+        if (empaque_decoracion.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a 0.99.");
+
+        if (empaque_decoracion.cantidad <= 0)
+            errores.Add("La cantidad debe ser mayor a cero.");
 
         if (errores.Any())
         {
@@ -742,10 +792,10 @@ public class InsumosController : Controller
                 marca = ed.marca,
                 presentacion = ed.presentacion,
                 proveedor = ed.proveedor,
-                costo = (decimal)ed.costo,
+                costo = (decimal?)(ed.costo ?? 0m),
                 cantidad = (int)ed.cantidad,
                 unidad_de_medida = ed.unidad_de_medida,
-                costo_por_cantidad = (decimal)ed.costo_por_cantidad
+                costo_por_cantidad = ed.costo_por_cantidad ?? 0m
             }).ToList();
             return View("empaques_decoraciones", new InsumosModel
             {
@@ -755,7 +805,7 @@ public class InsumosController : Controller
         }
 
         // Calcular el campo derivado
-        decimal costoPorCantidad = (empaque_decoracion.cantidad > 0) ? (empaque_decoracion.costo / empaque_decoracion.cantidad) : 0;
+        decimal? costoPorCantidad = (empaque_decoracion.cantidad > 0) ? (empaque_decoracion.costo / empaque_decoracion.cantidad) : 0;
         db.tabla_empaques_decoraciones.Add(new tabla_empaques_decoraciones
         {
             nombre = empaque_decoracion.nombre,
@@ -784,10 +834,10 @@ public class InsumosController : Controller
             marca = ed.marca,
             presentacion = ed.presentacion,
             proveedor = ed.proveedor,
-            costo = (decimal)ed.costo,
+            costo = ed.costo ?? 0,
             cantidad = (int)ed.cantidad,
             unidad_de_medida = ed.unidad_de_medida,
-            costo_por_cantidad = (decimal)ed.costo_por_cantidad
+            costo_por_cantidad = ed.costo_por_cantidad ?? 0m
         };
 
         //Obtén el listado de empaques y decoraciones
@@ -798,10 +848,10 @@ public class InsumosController : Controller
             marca = empdec.marca,
             presentacion = empdec.presentacion,
             proveedor = empdec.proveedor,
-            costo = (decimal)empdec.costo,
+            costo = (decimal)(empdec.costo ?? 0),
             cantidad = (int)empdec.cantidad,
             unidad_de_medida = empdec.unidad_de_medida,
-            costo_por_cantidad = (decimal)empdec.costo_por_cantidad
+            costo_por_cantidad = empdec.costo_por_cantidad ?? 0m
         }).ToList();
 
         ViewBag.Editando = true;
@@ -817,11 +867,42 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult EditarEmpaqueDecoracion(EmpaqueDecoracion empaque_decoracion)
     {
+        // --- PARSE CORRECTO DEL COSTO ---
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            // Reemplaza la coma por punto para la conversión
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                empaque_decoracion.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
-        // Validar que no exista otro empaque/decoración con el mismo nombre
-        if (db.tabla_empaques_decoraciones.Any(empdec => empdec.nombre.ToLower() == empaque_decoracion.nombre.ToLower() && empdec.id != empaque_decoracion.id))
-            errores.Add("Ya existe un empaque/decoración con ese nombre.");
+        // Normalizar valores para comparación
+        string nombre = empaque_decoracion.nombre?.Trim().ToLower() ?? "";
+        string marca = empaque_decoracion.marca?.Trim().ToLower() ?? "";
+        string presentacion = empaque_decoracion.presentacion?.Trim().ToLower() ?? "";
+        string proveedor = empaque_decoracion.proveedor?.Trim().ToLower() ?? "";
+        decimal? costo = empaque_decoracion.costo;
+        int cantidad = empaque_decoracion.cantidad;
+
+        // 1. Duplicado exacto (todos los campos excepto ID)
+        bool existeExacto = db.tabla_empaques_decoraciones.Any(empdec =>
+            empdec.id != empaque_decoracion.id &&
+            empdec.nombre.ToLower() == nombre &&
+            empdec.marca.ToLower() == marca &&
+            empdec.presentacion.ToLower() == presentacion &&
+            empdec.proveedor.ToLower() == proveedor &&
+            empdec.costo == costo &&
+            empdec.cantidad == cantidad
+        );
+        if (existeExacto)
+        {
+            errores.Add("Ya existe un empaque o decoración con los mismos datos.");
+        }
 
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(empaque_decoracion.nombre) ||
@@ -831,12 +912,16 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(empaque_decoracion.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (empaque_decoracion.costo <= 0 || empaque_decoracion.cantidad <= 0)
-            errores.Add("Los valores numéricos deben ser mayores a cero.");
+        if (empaque_decoracion.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a 0.99.");
+
+        if (empaque_decoracion.cantidad <= 0)
+            errores.Add("La cantidad debe ser mayor a cero.");
 
         if (errores.Any())
         {
             ViewBag.Errores = errores;
+            ViewBag.Editando = true;
             var lista = db.tabla_empaques_decoraciones.Select(empdec => new EmpaqueDecoracion
             {
                 id = empdec.id,
@@ -844,10 +929,10 @@ public class InsumosController : Controller
                 marca = empdec.marca,
                 presentacion = empdec.presentacion,
                 proveedor = empdec.proveedor,
-                costo = (decimal)empdec.costo,
+                costo = (decimal)(empdec.costo ?? 0),
                 cantidad = (int)empdec.cantidad,
                 unidad_de_medida = empdec.unidad_de_medida,
-                costo_por_cantidad = (decimal)empdec.costo_por_cantidad
+                costo_por_cantidad = empdec.costo_por_cantidad ?? 0m
             }).ToList();
             return View("empaques_decoraciones", new InsumosModel
             {
@@ -857,7 +942,7 @@ public class InsumosController : Controller
         }
 
         // Calcular el campo derivado
-        decimal costoPorCantidad = (empaque_decoracion.cantidad > 0) ? (empaque_decoracion.costo / empaque_decoracion.cantidad) : 0;
+        decimal? costoPorCantidad = (empaque_decoracion.cantidad > 0) ? (empaque_decoracion.costo / empaque_decoracion.cantidad) : 0;
         var ed = db.tabla_empaques_decoraciones.Find(empaque_decoracion.id);
         if (ed != null)
         {
