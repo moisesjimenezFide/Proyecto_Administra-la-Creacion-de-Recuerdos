@@ -78,7 +78,7 @@
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? implementoEditado.costo.ToString("0.##") : "")" step="0.01" min="0"  />
+            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? (implementoEditado.costo.HasValue ? implementoEditado.costo.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "") : "")" step="0.01" lang="en" />
         </div>
 
         <div class="mb-3 text-start">
@@ -143,10 +143,12 @@
                             <td>@implemento.marca</td>
                             <td>@implemento.presentacion</td>
                             <td>@implemento.proveedor</td>
-                            <td>@implemento.costo</td>
+                            <td>
+                                @(implemento.costo.HasValue ? "₡" + implemento.costo.Value.ToString("N2") : "")
+                            </td>
                             <td>@implemento.cantidad</td>
                             <td>@implemento.unidad_de_medida</td>
-                            <td>@implemento.costo_por_cantidad</td>
+                            <td>₡@implemento.costo_por_cantidad.ToString("N2")</td>
                             <td>
                                 <a href="@Url.Action("EditarImplemento", "Insumos", new { id = implemento.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
                                 <a href="@Url.Action("EliminarImplemento", "Insumos", new { id = implemento.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarImplemento", "Insumos", new { id = implemento.id })"></a>

@@ -89,7 +89,7 @@ public class InsumosController : Controller
         decimal? costo = materia_prima.costo;
         int peso = materia_prima.peso;
 
-        // 1. Duplicado exacto (todos los campos)
+        // Duplicado exacto (todos los campos)
         bool existeExacto = db.tabla_materias_primas.Any(m =>
             m.nombre.ToLower() == nombre &&
             m.marca.ToLower() == marca &&
@@ -252,7 +252,7 @@ public class InsumosController : Controller
         decimal? costo = materia_prima.costo;
         int peso = materia_prima.peso;
 
-        // 1. Duplicado exacto (todos los campos)
+        // Duplicado exacto (todos los campos)
         bool existeExacto = db.tabla_materias_primas.Any(mp =>
             mp.id != materia_prima.id &&
             mp.nombre.ToLower() == nombre &&
@@ -434,7 +434,7 @@ public class InsumosController : Controller
         decimal? costo = producto_preparado.costo;
      
         
-        // 1. Duplicado exacto (todos los campos)
+        // Duplicado exacto (todos los campos)
         if (db.tabla_productos_preparados.Any(p =>
             p.tipo.ToLower() == tipo &&
             p.nombre.ToLower() == nombre &&
@@ -586,7 +586,7 @@ public class InsumosController : Controller
         string proveedor = producto_preparado.proveedor?.Trim().ToLower() ?? "";
         decimal? costo = producto_preparado.costo;
 
-        // 1. Duplicado exacto (todos los campos excepto ID)
+        // Duplicado exacto (todos los campos excepto ID)
         bool existeExacto = db.tabla_productos_preparados.Any(p =>
             p.id != producto_preparado.id &&
             p.tipo.ToLower() == tipo &&
@@ -756,7 +756,7 @@ public class InsumosController : Controller
         decimal? costo = empaque_decoracion.costo;
         int cantidad = empaque_decoracion.cantidad;
         
-        // 1. Duplicado exacto (todos los campos)
+        // Duplicado exacto (todos los campos)
         if (db.tabla_empaques_decoraciones.Any(ed =>
             ed.nombre.ToLower() == nombre &&
             ed.marca.ToLower() == marca &&
@@ -853,8 +853,6 @@ public class InsumosController : Controller
             unidad_de_medida = empdec.unidad_de_medida,
             costo_por_cantidad = empdec.costo_por_cantidad ?? 0m
         }).ToList();
-
-        ViewBag.Editando = true;
         return View("empaques_decoraciones", new InsumosModel
         {
             EmpaqueDecoracionEditado = empaque_decoracion,
@@ -889,7 +887,7 @@ public class InsumosController : Controller
         decimal? costo = empaque_decoracion.costo;
         int cantidad = empaque_decoracion.cantidad;
 
-        // 1. Duplicado exacto (todos los campos excepto ID)
+        // Duplicado exacto (todos los campos excepto ID)
         bool existeExacto = db.tabla_empaques_decoraciones.Any(empdec =>
             empdec.id != empaque_decoracion.id &&
             empdec.nombre.ToLower() == nombre &&
@@ -1008,7 +1006,7 @@ public class InsumosController : Controller
                 marca = i.marca,
                 presentacion = i.presentacion,
                 proveedor = i.proveedor,
-                costo = (decimal)i.costo,
+                costo = (decimal)(i.costo ?? 0),
                 cantidad = (int)i.cantidad,
                 unidad_de_medida = i.unidad_de_medida,
                 costo_por_cantidad = (decimal)(i.costo_por_cantidad ?? 0)
@@ -1023,12 +1021,39 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult CrearImplemento(Implemento implemento)
     {
+        // --- PARSE CORRECTO DEL COSTO ---
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                implemento.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
-        // Validar que no exista otro implemento con el mismo nombre
-        if (db.tabla_implementos.Any(i => i.nombre.ToLower() == implemento.nombre.ToLower()))
-            errores.Add("Ya existe un implemento con ese nombre.");
-
+        // Normalizar valores para comparación
+        string nombre = implemento.nombre?.Trim().ToLower() ?? "";
+        string marca = implemento.marca?.Trim().ToLower() ?? "";
+        string presentacion = implemento.presentacion?.Trim().ToLower() ?? "";
+        string proveedor = implemento.proveedor?.Trim().ToLower() ?? "";
+        decimal? costo = implemento.costo;
+        int cantidad = implemento.cantidad;
+        
+        // Duplicado exacto (todos los campos)
+        if (db.tabla_implementos.Any(i =>
+            i.nombre.ToLower() == nombre &&
+            i.marca.ToLower() == marca &&
+            i.presentacion.ToLower() == presentacion &&
+            i.proveedor.ToLower() == proveedor &&
+            i.costo == costo &&
+            i.cantidad == cantidad))
+        {
+            errores.Add("Ya existe un implemento con los mismos datos.");
+        }
+       
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(implemento.nombre) ||
                                       string.IsNullOrWhiteSpace(implemento.marca) ||
@@ -1037,8 +1062,11 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(implemento.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (implemento.costo <= 0 || implemento.cantidad <= 0)
-            errores.Add("Los valores numéricos deben ser mayores a cero.");
+        if (implemento.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a 0.99.");
+
+        if (implemento.cantidad <= 0)
+            errores.Add("La cantidad debe ser mayor a cero.");
 
         if (errores.Any())
         {
@@ -1050,10 +1078,10 @@ public class InsumosController : Controller
                 marca = i.marca,
                 presentacion = i.presentacion,
                 proveedor = i.proveedor,
-                costo = (decimal)i.costo,
+                costo = (decimal?)(i.costo ?? 0m),
                 cantidad = (int)i.cantidad,
                 unidad_de_medida = i.unidad_de_medida,
-                costo_por_cantidad = (decimal)i.costo_por_cantidad
+                costo_por_cantidad = i.costo_por_cantidad ?? 0m
             }).ToList();
             return View("implementos", new InsumosModel
             {
@@ -1063,7 +1091,7 @@ public class InsumosController : Controller
         }
 
         // Calcular el campo derivado
-        decimal costoPorCantidad = (implemento.cantidad > 0) ? (implemento.costo / implemento.cantidad) : 0;
+        decimal? costoPorCantidad = (implemento.cantidad > 0) ? (implemento.costo / implemento.cantidad) : 0;
 
         db.tabla_implementos.Add(new tabla_implementos
         {
@@ -1093,10 +1121,10 @@ public class InsumosController : Controller
             marca = i.marca,
             presentacion = i.presentacion,
             proveedor = i.proveedor,
-            costo = (decimal)i.costo,
+            costo = i.costo ?? 0,
             cantidad = (int)i.cantidad,
             unidad_de_medida = i.unidad_de_medida,
-            costo_por_cantidad = (decimal)i.costo_por_cantidad
+            costo_por_cantidad = i.costo_por_cantidad ?? 0m
         };
 
         //Obtén el listado de implementos
@@ -1110,7 +1138,7 @@ public class InsumosController : Controller
             costo = (decimal)impl.costo,
             cantidad = (int)impl.cantidad,
             unidad_de_medida = impl.unidad_de_medida,
-            costo_por_cantidad = (decimal)impl.costo_por_cantidad
+            costo_por_cantidad = impl.costo_por_cantidad ?? 0m
         }).ToList();
 
         ViewBag.Editando = true;
@@ -1126,12 +1154,42 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult EditarImplemento(Implemento implemento)
     {
+        // --- PARSE CORRECTO DEL COSTO ---
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            // Reemplaza la coma por punto para la conversión
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                implemento.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
-        // Validar que no exista otro implemento con el mismo nombre
-        if (db.tabla_implementos.Any(impl => impl.nombre.ToLower() == implemento.nombre.ToLower() && impl.id != implemento.id))
-            errores.Add("Ya existe un implemento con ese nombre.");
-
+        // Normalizar valores para comparación
+        string nombre = implemento.nombre?.Trim().ToLower() ?? "";
+        string marca = implemento.marca?.Trim().ToLower() ?? "";
+        string presentacion = implemento.presentacion?.Trim().ToLower() ?? "";
+        string proveedor = implemento.proveedor?.Trim().ToLower() ?? "";
+        decimal? costo = implemento.costo;
+        int cantidad = implemento.cantidad;
+        // Duplicado exacto (todos los campos excepto ID)
+        bool existeExacto = db.tabla_implementos.Any(impl =>
+            impl.id != implemento.id &&
+            impl.nombre.ToLower() == nombre &&
+            impl.marca.ToLower() == marca &&
+            impl.presentacion.ToLower() == presentacion &&
+            impl.proveedor.ToLower() == proveedor &&
+            impl.costo == costo &&
+            impl.cantidad == cantidad
+        );
+        if (existeExacto)
+        {
+            errores.Add("Ya existe un implemento con los mismos datos.");
+        }
+        
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(implemento.nombre) ||
                                       string.IsNullOrWhiteSpace(implemento.marca) ||
@@ -1146,6 +1204,7 @@ public class InsumosController : Controller
         if (errores.Any())
         {
             ViewBag.Errores = errores;
+            ViewBag.Editando = true;
             var lista = db.tabla_implementos.Select(impl => new Implemento
             {
                 id = impl.id,
@@ -1156,7 +1215,7 @@ public class InsumosController : Controller
                 costo = (decimal)impl.costo,
                 cantidad = (int)impl.cantidad,
                 unidad_de_medida = impl.unidad_de_medida,
-                costo_por_cantidad = (decimal)impl.costo_por_cantidad
+                costo_por_cantidad = impl.costo_por_cantidad ?? 0m
             }).ToList();
             return View("implementos", new InsumosModel
             {
@@ -1166,7 +1225,7 @@ public class InsumosController : Controller
         }
 
         // Calcular el campo derivado
-        decimal costoPorCantidad = (implemento.cantidad > 0) ? (implemento.costo / implemento.cantidad) : 0;
+        decimal? costoPorCantidad = (implemento.cantidad > 0) ? (implemento.costo / implemento.cantidad) : 0;
         var i = db.tabla_implementos.Find(implemento.id);
         if (i != null)
         {
@@ -1269,7 +1328,7 @@ public class InsumosController : Controller
         decimal? costo = suministro.costo;
         int cantidad = suministro.cantidad;
 
-        // 1. Duplicado exacto (todos los campos)
+        // Duplicado exacto (todos los campos)
         bool existeExacto = db.tabla_suministros.Any(s =>
             s.nombre.ToLower() == nombre &&
             s.marca.ToLower() == marca &&
@@ -1291,8 +1350,11 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(suministro.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (suministro.costo <= 0.99m || suministro.cantidad <= 0)
-            errores.Add("Los valores numéricos deben ser mayores a cero.");
+        if (suministro.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a 0.99.");
+
+        if (suministro.cantidad <= 0)
+            errores.Add("La cantidad debe ser mayor a cero.");
 
         if (errores.Any())
         {
@@ -1401,7 +1463,7 @@ public class InsumosController : Controller
         decimal? costo = suministro.costo;
         int cantidad = suministro.cantidad;
         
-        // 1. Duplicado exacto (todos los campos excepto ID)
+        // Duplicado exacto (todos los campos excepto ID)
         bool existeExacto = db.tabla_suministros.Any(sumn =>
             sumn.id != suministro.id &&
             sumn.nombre.ToLower() == nombre &&
@@ -1425,8 +1487,11 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
 
 
-        if (suministro.costo <= 0.99m || suministro.cantidad <= 0)
-            errores.Add("Los valores numéricos deben ser mayores a cero.");
+        if (suministro.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a 0.99.");
+
+        if (suministro.cantidad <= 0)
+            errores.Add("La cantidad debe ser mayor a cero.");
 
         if (errores.Any())
         {
