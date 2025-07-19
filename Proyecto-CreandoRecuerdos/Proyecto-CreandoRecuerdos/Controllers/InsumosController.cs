@@ -1232,7 +1232,7 @@ public class InsumosController : Controller
                 marca = s.marca,
                 presentacion = s.presentacion,
                 proveedor = s.proveedor,
-                costo = (decimal)s.costo,
+                costo = (decimal)(s.costo ?? 0),
                 cantidad = (int)s.cantidad,
                 unidad_de_medida = s.unidad_de_medida,
                 costo_por_cantidad = (decimal)(s.costo_por_cantidad ?? 0)
@@ -1247,12 +1247,42 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult CrearSuministro(Suministro suministro)
     {
+        // --- PARSE CORRECTO DEL COSTO ---
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            // Reemplaza la coma por punto para la conversión
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                suministro.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
-        // Validar que no exista otro suministro con el mismo nombre
-        if (db.tabla_suministros.Any(s => s.nombre.ToLower() == suministro.nombre.ToLower()))
-            errores.Add("Ya existe un suministro con ese nombre.");
+        // Normalizar valores para comparación
+        string nombre = suministro.nombre?.Trim().ToLower() ?? "";
+        string marca = suministro.marca?.Trim().ToLower() ?? "";
+        string presentacion = suministro.presentacion?.Trim().ToLower() ?? "";
+        string proveedor = suministro.proveedor?.Trim().ToLower() ?? "";
+        decimal? costo = suministro.costo;
+        int cantidad = suministro.cantidad;
 
+        // 1. Duplicado exacto (todos los campos)
+        bool existeExacto = db.tabla_suministros.Any(s =>
+            s.nombre.ToLower() == nombre &&
+            s.marca.ToLower() == marca &&
+            s.presentacion.ToLower() == presentacion &&
+            s.proveedor.ToLower() == proveedor &&
+            s.costo == costo &&
+            s.cantidad == cantidad
+        );
+        if (existeExacto)
+        {
+            errores.Add("Ya existe un suministro con los mismos datos.");
+        }
+        
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(suministro.nombre) ||
                                       string.IsNullOrWhiteSpace(suministro.marca) ||
@@ -1261,7 +1291,7 @@ public class InsumosController : Controller
                                       string.IsNullOrWhiteSpace(suministro.unidad_de_medida))
             errores.Add("Todos los campos son obligatorios.");
 
-        if (suministro.costo <= 0 || suministro.cantidad <= 0)
+        if (suministro.costo <= 0.99m || suministro.cantidad <= 0)
             errores.Add("Los valores numéricos deben ser mayores a cero.");
 
         if (errores.Any())
@@ -1274,10 +1304,10 @@ public class InsumosController : Controller
                 marca = s.marca,
                 presentacion = s.presentacion,
                 proveedor = s.proveedor,
-                costo = (decimal)s.costo,
+                costo = (decimal?)(s.costo ?? 0m),
                 cantidad = (int)s.cantidad,
                 unidad_de_medida = s.unidad_de_medida,
-                costo_por_cantidad = (decimal)s.costo_por_cantidad
+                costo_por_cantidad = s.costo_por_cantidad ?? 0m
             }).ToList();
             return View("suministros", new InsumosModel
             {
@@ -1287,7 +1317,7 @@ public class InsumosController : Controller
         }
 
         // Calcular el campo derivado
-        decimal costoPorCantidad = (suministro.cantidad > 0) ? (suministro.costo / suministro.cantidad) : 0;
+        decimal? costoPorCantidad = (suministro.cantidad > 0) ? (suministro.costo / suministro.cantidad) : 0;
 
         db.tabla_suministros.Add(new tabla_suministros
         {
@@ -1317,10 +1347,10 @@ public class InsumosController : Controller
             marca = s.marca,
             presentacion = s.presentacion,
             proveedor = s.proveedor,
-            costo = (decimal)s.costo,
+            costo = s.costo ?? 0,
             cantidad = (int)s.cantidad,
             unidad_de_medida = s.unidad_de_medida,
-            costo_por_cantidad = (decimal)s.costo_por_cantidad
+            costo_por_cantidad = s.costo_por_cantidad ?? 0m
         };
 
         // Obtén el listado de suministros
@@ -1331,13 +1361,12 @@ public class InsumosController : Controller
             marca = sumn.marca,
             presentacion = sumn.presentacion,
             proveedor = sumn.proveedor,
-            costo = (decimal)sumn.costo,
+            costo = (decimal)(sumn.costo ?? 0),
             cantidad = (int)sumn.cantidad,
             unidad_de_medida = sumn.unidad_de_medida,
-            costo_por_cantidad = (decimal)sumn.costo_por_cantidad
+            costo_por_cantidad = sumn.costo_por_cantidad ?? 0m
         }).ToList();
 
-        ViewBag.Editando = true;
         return View("suministros", new InsumosModel
         {
             SuministroEditado = suministro,
@@ -1350,13 +1379,43 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult EditarSuministro(Suministro suministro)
     {
+        // --- PARSE CORRECTO DEL COSTO ---
+        string costoStr = Request.Form["costo"];
+        if (!string.IsNullOrWhiteSpace(costoStr))
+        {
+            // Reemplaza la coma por punto para la conversión
+            costoStr = costoStr.Replace(',', '.');
+            if (decimal.TryParse(costoStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal costoDecimal))
+            {
+                suministro.costo = costoDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
-        // Validar que no exista otro suministro con el mismo nombre
-        if (db.tabla_suministros.Any(sumn => sumn.nombre.ToLower() == suministro.nombre.ToLower() && sumn.id != suministro.id))
-            errores.Add("Ya existe un suministro con ese nombre.");
-
-
+        // Normalizar valores para comparación
+        string nombre = suministro.nombre?.Trim().ToLower() ?? "";
+        string marca = suministro.marca?.Trim().ToLower() ?? "";
+        string presentacion = suministro.presentacion?.Trim().ToLower() ?? "";
+        string proveedor = suministro.proveedor?.Trim().ToLower() ?? "";
+        decimal? costo = suministro.costo;
+        int cantidad = suministro.cantidad;
+        
+        // 1. Duplicado exacto (todos los campos excepto ID)
+        bool existeExacto = db.tabla_suministros.Any(sumn =>
+            sumn.id != suministro.id &&
+            sumn.nombre.ToLower() == nombre &&
+            sumn.marca.ToLower() == marca &&
+            sumn.presentacion.ToLower() == presentacion &&
+            sumn.proveedor.ToLower() == proveedor &&
+            sumn.costo == costo &&
+            sumn.cantidad == cantidad
+        );
+        if (existeExacto)
+        {
+            errores.Add("Ya existe un suministro con los mismos datos.");
+        }
+        
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(suministro.nombre) ||
                                       string.IsNullOrWhiteSpace(suministro.marca) ||
@@ -1366,12 +1425,13 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
 
 
-        if (suministro.costo <= 0 || suministro.cantidad <= 0)
+        if (suministro.costo <= 0.99m || suministro.cantidad <= 0)
             errores.Add("Los valores numéricos deben ser mayores a cero.");
 
         if (errores.Any())
         {
             ViewBag.Errores = errores;
+            ViewBag.Editando = true;
             var lista = db.tabla_suministros.Select(sumn => new Suministro
             {
                 id = sumn.id,
@@ -1379,10 +1439,10 @@ public class InsumosController : Controller
                 marca = sumn.marca,
                 presentacion = sumn.presentacion,
                 proveedor = sumn.proveedor,
-                costo = (decimal)sumn.costo,
+                costo = (decimal)(sumn.costo ?? 0),
                 cantidad = (int)sumn.cantidad,
                 unidad_de_medida = sumn.unidad_de_medida,
-                costo_por_cantidad = (decimal)sumn.costo_por_cantidad
+                costo_por_cantidad = sumn.costo_por_cantidad ?? 0m
             }).ToList();
             return View("suministros", new InsumosModel
             {
@@ -1392,7 +1452,7 @@ public class InsumosController : Controller
         }
 
         // Calcular el campo derivado
-        decimal costoPorCantidad = (suministro.cantidad > 0) ? (suministro.costo / suministro.cantidad) : 0;
+        decimal? costoPorCantidad = (suministro.cantidad > 0) ? (suministro.costo / suministro.cantidad) : 0;
         var s = db.tabla_suministros.Find(suministro.id);
         if (s != null)
         {
