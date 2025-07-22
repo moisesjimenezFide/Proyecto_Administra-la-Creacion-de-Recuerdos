@@ -176,26 +176,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tabla_materias_primas">
-      <EntityTypeMapping TypeName="Model1.tabla_materias_primas">
-        <MappingFragment StoreEntitySet="tabla_materias_primas">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="marca" ColumnName="marca" />
-          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
-          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-          <ScalarProperty Name="costo" ColumnName="costo" />
-          <ScalarProperty Name="peso" ColumnName="peso" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_gramo" ColumnName="costo_por_gramo" />
-          <ScalarProperty Name="merma_total_en_gramos" ColumnName="merma_total_en_gramos" />
-          <ScalarProperty Name="porcentaje_de_merma" ColumnName="porcentaje_de_merma" />
-          <ScalarProperty Name="costo_de_merma_total" ColumnName="costo_de_merma_total" />
-          <ScalarProperty Name="costo_total_mas_merma_total" ColumnName="costo_total_mas_merma_total" />
-          <ScalarProperty Name="costo_por_gramo_con_merma" ColumnName="costo_por_gramo_con_merma" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tabla_notificaciones_vistas">
       <EntityTypeMapping TypeName="Model1.tabla_notificaciones_vistas">
         <MappingFragment StoreEntitySet="tabla_notificaciones_vistas">
@@ -244,24 +224,6 @@
           <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
           <ScalarProperty Name="precio_por_unidad" ColumnName="precio_por_unidad" />
           <ScalarProperty Name="img_url" ColumnName="img_url" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tabla_productos_preparados">
-      <EntityTypeMapping TypeName="Model1.tabla_productos_preparados">
-        <MappingFragment StoreEntitySet="tabla_productos_preparados">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="tipo" ColumnName="tipo" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="marca" ColumnName="marca" />
-          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-          <ScalarProperty Name="volumen_de_porcion" ColumnName="volumen_de_porcion" />
-          <ScalarProperty Name="costo" ColumnName="costo" />
-          <ScalarProperty Name="peso" ColumnName="peso" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_peso" ColumnName="costo_por_peso" />
-          <ScalarProperty Name="costo_por_porcion_con_merma" ColumnName="costo_por_porcion_con_merma" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -622,5 +584,52 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="tabla_materias_primas">
+      <EntityTypeMapping TypeName="Model1.tabla_materias_primas">
+        <MappingFragment StoreEntitySet="tabla_materias_primas">
+          <ScalarProperty Name="unidad_de_medida_volumen_de_porcion_convertido" ColumnName="unidad_de_medida_volumen_de_porcion_convertido" />
+          <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
+          <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
+          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+          <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="costo_por_gramo_con_merma" ColumnName="costo_por_gramo_con_merma" />
+          <ScalarProperty Name="costo_total_mas_merma_total" ColumnName="costo_total_mas_merma_total" />
+          <ScalarProperty Name="costo_de_merma_total" ColumnName="costo_de_merma_total" />
+          <ScalarProperty Name="porcentaje_de_merma" ColumnName="porcentaje_de_merma" />
+          <ScalarProperty Name="merma_total_en_gramos" ColumnName="merma_total_en_gramos" />
+          <ScalarProperty Name="costo_por_gramo" ColumnName="costo_por_gramo" />
+          <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
+          <ScalarProperty Name="peso" ColumnName="peso" />
+          <ScalarProperty Name="costo" ColumnName="costo" />
+          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tabla_productos_preparados">
+      <EntityTypeMapping TypeName="Model1.tabla_productos_preparados">
+        <MappingFragment StoreEntitySet="tabla_productos_preparados">
+          <ScalarProperty Name="unidad_de_medida_volumen_de_porcion_convertido" ColumnName="unidad_de_medida_volumen_de_porcion_convertido" />
+          <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
+          <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
+          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="costo_por_porcion_con_merma" ColumnName="costo_por_porcion_con_merma" />
+          <ScalarProperty Name="costo_por_peso" ColumnName="costo_por_peso" />
+          <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
+          <ScalarProperty Name="peso" ColumnName="peso" />
+          <ScalarProperty Name="costo" ColumnName="costo" />
+          <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
+          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="tipo" ColumnName="tipo" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="costos_receta_materias_primas_utilizadas">
           <Key>
             <PropertyRef Name="id" />
@@ -173,17 +173,22 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="marca" Type="nvarchar" MaxLength="100" />
-          <Property Name="presentacion" Type="nvarchar" MaxLength="100" />
           <Property Name="proveedor" Type="nvarchar" MaxLength="100" />
           <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="peso" Type="int" />
-          <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
+          <Property Name="peso" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="unidad_de_medida_del_peso" Type="nvarchar" MaxLength="50" />
           <Property Name="costo_por_gramo" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="merma_total_en_gramos" Type="int" />
+          <Property Name="merma_total_en_gramos" Type="decimal" Precision="18" Scale="2" />
           <Property Name="porcentaje_de_merma" Type="decimal" Precision="5" Scale="2" />
           <Property Name="costo_de_merma_total" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo_total_mas_merma_total" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo_por_gramo_con_merma" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="volumen_de_porcion_de_presentacion" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="presentacion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="50" />
+          <Property Name="volumen_de_porcion_convertido" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tabla_notificaciones_vistas">
           <Key>
@@ -242,13 +247,17 @@
           <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="marca" Type="nvarchar" MaxLength="100" />
           <Property Name="proveedor" Type="nvarchar" MaxLength="100" />
-          <Property Name="volumen_de_porcion" Type="int" />
+          <Property Name="volumen_de_porcion_de_presentacion" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="peso" Type="int" />
-          <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
+          <Property Name="peso" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="unidad_de_medida_del_peso" Type="nvarchar" MaxLength="50" />
           <Property Name="costo_por_peso" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo_por_porcion_con_merma" Type="decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="int" Nullable="false" />
+          <Property Name="presentacion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="50" />
+          <Property Name="volumen_de_porcion_convertido" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tabla_recomendaciones">
           <Key>
@@ -1012,8 +1021,7 @@
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1028,8 +1036,8 @@
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
-          <NavigationProperty Name="tabla_materias_primas" Relationship="Self.FK__costos_re__id_ma__02084FDA" FromRole="costos_receta_materias_primas_utilizadas" ToRole="tabla_materias_primas" />
           <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__costos_re__id_re__02FC7413" FromRole="costos_receta_materias_primas_utilizadas" ToRole="tabla_costos_recetas" />
+          <NavigationProperty Name="tabla_materias_primas" Relationship="Model1.FK__costos_re__id_ma__02084FDA" FromRole="costos_receta_materias_primas_utilizadas" ToRole="tabla_materias_primas" />
         </EntityType>
         <EntityType Name="costos_receta_productos_preparados_utilizados">
           <Key>
@@ -1042,8 +1050,8 @@
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
-          <NavigationProperty Name="tabla_productos_preparados" Relationship="Self.FK__costos_re__id_pr__03F0984C" FromRole="costos_receta_productos_preparados_utilizados" ToRole="tabla_productos_preparados" />
           <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__costos_re__id_re__04E4BC85" FromRole="costos_receta_productos_preparados_utilizados" ToRole="tabla_costos_recetas" />
+          <NavigationProperty Name="tabla_productos_preparados" Relationship="Model1.FK__costos_re__id_pr__03F0984C" FromRole="costos_receta_productos_preparados_utilizados" ToRole="tabla_productos_preparados" />
         </EntityType>
         <EntityType Name="precios_empaques_decoraciones_utilizados">
           <Key>
@@ -1202,26 +1210,6 @@
           <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_im__07C12930" FromRole="tabla_implementos" ToRole="precios_implementos_utilizados" />
         </EntityType>
-        <EntityType Name="tabla_materias_primas">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="marca" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="peso" Type="Int32" />
-          <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_gramo" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="merma_total_en_gramos" Type="Int32" />
-          <Property Name="porcentaje_de_merma" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="costo_de_merma_total" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_total_mas_merma_total" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_por_gramo_con_merma" Type="Decimal" Precision="18" Scale="2" />
-          <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Self.FK__costos_re__id_ma__02084FDA" FromRole="tabla_materias_primas" ToRole="costos_receta_materias_primas_utilizadas" />
-        </EntityType>
         <EntityType Name="tabla_notificaciones_vistas">
           <Key>
             <PropertyRef Name="id" />
@@ -1278,24 +1266,6 @@
           <NavigationProperty Name="tabla_categorias" Relationship="Self.FK__tabla_pro__id_ca__10566F31" FromRole="tabla_productos" ToRole="tabla_categorias" />
           <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_pr__0C85DE4D" FromRole="tabla_productos" ToRole="tabla_detalle_venta" />
           <NavigationProperty Name="tabla_recomendaciones" Relationship="Self.FK_tabla_recomendaciones_productos" FromRole="tabla_productos" ToRole="tabla_recomendaciones" />
-        </EntityType>
-        <EntityType Name="tabla_productos_preparados">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="tipo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="marca" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="volumen_de_porcion" Type="Int32" />
-          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="peso" Type="Int32" />
-          <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="costo_por_peso" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_por_porcion_con_merma" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="costos_receta_productos_preparados_utilizados" Relationship="Self.FK__costos_re__id_pr__03F0984C" FromRole="tabla_productos_preparados" ToRole="costos_receta_productos_preparados_utilizados" />
         </EntityType>
         <EntityType Name="tabla_recomendaciones">
           <Key>
@@ -1422,18 +1392,6 @@
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Vehiculos" Relationship="Self.FK_Vehiculos_Vendedores" FromRole="Vendedores" ToRole="Vehiculos" />
         </EntityType>
-        <Association Name="FK__costos_re__id_ma__02084FDA">
-          <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="0..1" />
-          <End Role="costos_receta_materias_primas_utilizadas" Type="Self.costos_receta_materias_primas_utilizadas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tabla_materias_primas">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="costos_receta_materias_primas_utilizadas">
-              <PropertyRef Name="id_materia_prima_utilizada" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__costos_re__id_re__02FC7413">
           <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="0..1" />
           <End Role="costos_receta_materias_primas_utilizadas" Type="Self.costos_receta_materias_primas_utilizadas" Multiplicity="*" />
@@ -1443,18 +1401,6 @@
             </Principal>
             <Dependent Role="costos_receta_materias_primas_utilizadas">
               <PropertyRef Name="id_receta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__costos_re__id_pr__03F0984C">
-          <End Role="tabla_productos_preparados" Type="Self.tabla_productos_preparados" Multiplicity="0..1" />
-          <End Role="costos_receta_productos_preparados_utilizados" Type="Self.costos_receta_productos_preparados_utilizados" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tabla_productos_preparados">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="costos_receta_productos_preparados_utilizados">
-              <PropertyRef Name="id_producto_preparado_utilizado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1773,11 +1719,9 @@
           <EntitySet Name="tabla_estados_pedido" EntityType="Self.tabla_estados_pedido" />
           <EntitySet Name="tabla_horarios" EntityType="Self.tabla_horarios" />
           <EntitySet Name="tabla_implementos" EntityType="Self.tabla_implementos" />
-          <EntitySet Name="tabla_materias_primas" EntityType="Self.tabla_materias_primas" />
           <EntitySet Name="tabla_notificaciones_vistas" EntityType="Self.tabla_notificaciones_vistas" />
           <EntitySet Name="tabla_precios_finales_sugeridos" EntityType="Self.tabla_precios_finales_sugeridos" />
           <EntitySet Name="tabla_productos" EntityType="Self.tabla_productos" />
-          <EntitySet Name="tabla_productos_preparados" EntityType="Self.tabla_productos_preparados" />
           <EntitySet Name="tabla_recomendaciones" EntityType="Self.tabla_recomendaciones" />
           <EntitySet Name="tabla_roles" EntityType="Self.tabla_roles" />
           <EntitySet Name="tabla_solicitudes_ausencias" EntityType="Self.tabla_solicitudes_ausencias" />
@@ -1787,17 +1731,9 @@
           <EntitySet Name="tabla_ventas" EntityType="Self.tabla_ventas" />
           <EntitySet Name="Vehiculos" EntityType="Self.Vehiculos" />
           <EntitySet Name="Vendedores" EntityType="Self.Vendedores" />
-          <AssociationSet Name="FK__costos_re__id_ma__02084FDA" Association="Self.FK__costos_re__id_ma__02084FDA">
-            <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
-            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
-          </AssociationSet>
           <AssociationSet Name="FK__costos_re__id_re__02FC7413" Association="Self.FK__costos_re__id_re__02FC7413">
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
             <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
-          </AssociationSet>
-          <AssociationSet Name="FK__costos_re__id_pr__03F0984C" Association="Self.FK__costos_re__id_pr__03F0984C">
-            <End Role="tabla_productos_preparados" EntitySet="tabla_productos_preparados" />
-            <End Role="costos_receta_productos_preparados_utilizados" EntitySet="costos_receta_productos_preparados_utilizados" />
           </AssociationSet>
           <AssociationSet Name="FK__costos_re__id_re__04E4BC85" Association="Self.FK__costos_re__id_re__04E4BC85">
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
@@ -1900,7 +1836,7 @@
             <End Role="Vehiculos" EntitySet="Vehiculos" />
           </AssociationSet>
           <FunctionImport Name="sp_activar_usuario">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_actualizar_empleado">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
@@ -1996,16 +1932,16 @@
             <Parameter Name="img_url" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_empleado">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_producto">
-            <Parameter Name="id_producto" Mode="In" Type="Int32" />
+          <Parameter Name="id_producto" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_recomendacion">
-            <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
+          <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_inactivar_usuario">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_insertar_recomendacion" ReturnType="Collection(Decimal)">
             <Parameter Name="id_producto" Mode="In" Type="Int32" />
@@ -2022,10 +1958,10 @@
             <Parameter Name="nuevo_estado" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_detalle_pedido" ReturnType="Collection(Model1.sp_obtener_detalle_pedido_Result)">
-            <Parameter Name="id_pedido" Mode="In" Type="Int32" />
+          <Parameter Name="id_pedido" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleado" ReturnType="Collection(Model1.sp_obtener_empleado_Result)">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleados" ReturnType="Collection(Model1.sp_obtener_empleados_Result)" />
           <FunctionImport Name="sp_obtener_historial_actividades" ReturnType="Collection(Model1.sp_obtener_historial_actividades_Result)">
@@ -2037,7 +1973,7 @@
             <Parameter Name="id_registro_afectado" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_notificaciones_pendientes" ReturnType="Collection(Model1.sp_obtener_notificaciones_pendientes_Result)">
-            <Parameter Name="id_cliente" Mode="In" Type="Int32" />
+          <Parameter Name="id_cliente" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_o_crear_cliente" ReturnType="Collection(Int32)">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
@@ -2051,10 +1987,10 @@
             <Parameter Name="metodo_pago" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_pedidos_con_notificaciones" ReturnType="Collection(Model1.sp_obtener_pedidos_con_notificaciones_Result)">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_productos_por_categoria" ReturnType="Collection(Model1.sp_obtener_productos_por_categoria_Result)">
-            <Parameter Name="idCategoria" Mode="In" Type="Int32" />
+          <Parameter Name="idCategoria" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_recomendaciones" ReturnType="Collection(Model1.sp_obtener_recomendaciones_Result)" />
           <FunctionImport Name="sp_obtener_roles" ReturnType="Collection(Model1.sp_obtener_roles_Result)" />
@@ -2079,6 +2015,16 @@
             <Parameter Name="calificacion" Mode="In" Type="Int32" />
             <Parameter Name="comentarios" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="tabla_materias_primas" EntityType="Model1.tabla_materias_primas" />
+          <EntitySet Name="tabla_productos_preparados" EntityType="Model1.tabla_productos_preparados" />
+          <AssociationSet Name="FK__costos_re__id_ma__02084FDA" Association="Model1.FK__costos_re__id_ma__02084FDA">
+            <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
+            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__costos_re__id_pr__03F0984C" Association="Model1.FK__costos_re__id_pr__03F0984C">
+            <End Role="tabla_productos_preparados" EntitySet="tabla_productos_preparados" />
+            <End Role="costos_receta_productos_preparados_utilizados" EntitySet="costos_receta_productos_preparados_utilizados" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_actualizar_estado_pedido_Result">
           <Property Type="Int32" Name="resultado" Nullable="false" />
@@ -2229,6 +2175,77 @@
           <Property Type="Int32" Name="id_pedido" Nullable="true" />
           <Property Type="Int32" Name="calificacion" Nullable="true" />
         </ComplexType>
+        <EntityType Name="tabla_materias_primas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="marca" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="peso" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="unidad_de_medida_del_peso" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="costo_por_gramo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="merma_total_en_gramos" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="porcentaje_de_merma" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="costo_de_merma_total" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_total_mas_merma_total" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_por_gramo_con_merma" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="volumen_de_porcion_de_presentacion" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="presentacion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="unidad_de_medida_de_presentacion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="volumen_de_porcion_convertido" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Model1.FK__costos_re__id_ma__02084FDA" FromRole="tabla_materias_primas" ToRole="costos_receta_materias_primas_utilizadas" />
+        </EntityType>
+        <EntityType Name="tabla_productos_preparados">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="marca" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="volumen_de_porcion_de_presentacion" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="peso" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="unidad_de_medida_del_peso" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="costo_por_peso" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_por_porcion_con_merma" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="presentacion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="unidad_de_medida_de_presentacion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="volumen_de_porcion_convertido" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="costos_receta_productos_preparados_utilizados" Relationship="Model1.FK__costos_re__id_pr__03F0984C" FromRole="tabla_productos_preparados" ToRole="costos_receta_productos_preparados_utilizados" />
+        </EntityType>
+        <Association Name="FK__costos_re__id_ma__02084FDA">
+          <End Type="Model1.tabla_materias_primas" Role="tabla_materias_primas" Multiplicity="0..1" />
+          <End Type="Model1.costos_receta_materias_primas_utilizadas" Role="costos_receta_materias_primas_utilizadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_materias_primas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="costos_receta_materias_primas_utilizadas">
+              <PropertyRef Name="id_materia_prima_utilizada" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__costos_re__id_pr__03F0984C">
+          <End Type="Model1.tabla_productos_preparados" Role="tabla_productos_preparados" Multiplicity="0..1" />
+          <End Type="Model1.costos_receta_productos_preparados_utilizados" Role="costos_receta_productos_preparados_utilizados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_productos_preparados">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="costos_receta_productos_preparados_utilizados">
+              <PropertyRef Name="id_producto_preparado_utilizado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2410,26 +2427,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tabla_materias_primas">
-            <EntityTypeMapping TypeName="Model1.tabla_materias_primas">
-              <MappingFragment StoreEntitySet="tabla_materias_primas">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="marca" ColumnName="marca" />
-                <ScalarProperty Name="presentacion" ColumnName="presentacion" />
-                <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-                <ScalarProperty Name="costo" ColumnName="costo" />
-                <ScalarProperty Name="peso" ColumnName="peso" />
-                <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-                <ScalarProperty Name="costo_por_gramo" ColumnName="costo_por_gramo" />
-                <ScalarProperty Name="merma_total_en_gramos" ColumnName="merma_total_en_gramos" />
-                <ScalarProperty Name="porcentaje_de_merma" ColumnName="porcentaje_de_merma" />
-                <ScalarProperty Name="costo_de_merma_total" ColumnName="costo_de_merma_total" />
-                <ScalarProperty Name="costo_total_mas_merma_total" ColumnName="costo_total_mas_merma_total" />
-                <ScalarProperty Name="costo_por_gramo_con_merma" ColumnName="costo_por_gramo_con_merma" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tabla_notificaciones_vistas">
             <EntityTypeMapping TypeName="Model1.tabla_notificaciones_vistas">
               <MappingFragment StoreEntitySet="tabla_notificaciones_vistas">
@@ -2478,24 +2475,6 @@
                 <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
                 <ScalarProperty Name="precio_por_unidad" ColumnName="precio_por_unidad" />
                 <ScalarProperty Name="img_url" ColumnName="img_url" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tabla_productos_preparados">
-            <EntityTypeMapping TypeName="Model1.tabla_productos_preparados">
-              <MappingFragment StoreEntitySet="tabla_productos_preparados">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="tipo" ColumnName="tipo" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="marca" ColumnName="marca" />
-                <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-                <ScalarProperty Name="volumen_de_porcion" ColumnName="volumen_de_porcion" />
-                <ScalarProperty Name="costo" ColumnName="costo" />
-                <ScalarProperty Name="peso" ColumnName="peso" />
-                <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-                <ScalarProperty Name="costo_por_peso" ColumnName="costo_por_peso" />
-                <ScalarProperty Name="costo_por_porcion_con_merma" ColumnName="costo_por_porcion_con_merma" />
-                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2856,6 +2835,53 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="tabla_materias_primas">
+            <EntityTypeMapping TypeName="Model1.tabla_materias_primas">
+              <MappingFragment StoreEntitySet="tabla_materias_primas">
+                <ScalarProperty Name="unidad_de_medida_volumen_de_porcion_convertido" ColumnName="unidad_de_medida_volumen_de_porcion_convertido" />
+                <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
+                <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
+                <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+                <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="costo_por_gramo_con_merma" ColumnName="costo_por_gramo_con_merma" />
+                <ScalarProperty Name="costo_total_mas_merma_total" ColumnName="costo_total_mas_merma_total" />
+                <ScalarProperty Name="costo_de_merma_total" ColumnName="costo_de_merma_total" />
+                <ScalarProperty Name="porcentaje_de_merma" ColumnName="porcentaje_de_merma" />
+                <ScalarProperty Name="merma_total_en_gramos" ColumnName="merma_total_en_gramos" />
+                <ScalarProperty Name="costo_por_gramo" ColumnName="costo_por_gramo" />
+                <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="costo" ColumnName="costo" />
+                <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tabla_productos_preparados">
+            <EntityTypeMapping TypeName="Model1.tabla_productos_preparados">
+              <MappingFragment StoreEntitySet="tabla_productos_preparados">
+                <ScalarProperty Name="unidad_de_medida_volumen_de_porcion_convertido" ColumnName="unidad_de_medida_volumen_de_porcion_convertido" />
+                <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
+                <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
+                <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="costo_por_porcion_con_merma" ColumnName="costo_por_porcion_con_merma" />
+                <ScalarProperty Name="costo_por_peso" ColumnName="costo_por_peso" />
+                <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="costo" ColumnName="costo" />
+                <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
+                <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

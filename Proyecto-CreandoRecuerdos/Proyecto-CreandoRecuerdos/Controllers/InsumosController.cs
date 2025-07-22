@@ -27,10 +27,15 @@ public class InsumosController : Controller
                 m.nombre.Contains(search) ||
                 m.marca.Contains(search) ||
                 m.presentacion.Contains(search) ||
+                m.cantidad.ToString().Contains(search) ||
+                m.volumen_de_porcion_de_presentacion.ToString().Contains(search) ||
+                m.unidad_de_medida_de_presentacion.Contains(search) ||
+                m.volumen_de_porcion_convertido.ToString().Contains(search) ||
+                m.unidad_de_medida_volumen_de_porcion_convertido.Contains(search) ||
                 m.proveedor.Contains(search) ||
-                m.unidad_de_medida.Contains(search) ||
                 m.costo.ToString().Contains(search) ||
                 m.peso.ToString().Contains(search) ||
+                m.unidad_de_medida_del_peso.Contains(search) ||
                 m.costo_por_gramo.ToString().Contains(search) ||
                 m.merma_total_en_gramos.ToString().Contains(search) ||
                 m.porcentaje_de_merma.ToString().Contains(search) ||
@@ -47,12 +52,17 @@ public class InsumosController : Controller
                 nombre = m.nombre,
                 marca = m.marca,
                 presentacion = m.presentacion,
+                cantidad = (int)m.cantidad,
+                volumen_de_porcion_de_presentacion = (decimal)(m.volumen_de_porcion_de_presentacion ?? 0),
+                unidad_de_medida_de_presentacion = m.unidad_de_medida_de_presentacion,
+                volumen_de_porcion_convertido = (decimal)(m.volumen_de_porcion_convertido ?? 0),
+                unidad_de_medida_volumen_de_porcion_convertido = m.unidad_de_medida_volumen_de_porcion_convertido,
                 proveedor = m.proveedor,
                 costo = (decimal)(m.costo ?? 0),
-                peso = (int)(m.peso ?? 0),
-                unidad_de_medida = m.unidad_de_medida,
+                peso = (decimal)(m.peso ?? 0),
+                unidad_de_medida_del_peso = m.unidad_de_medida_del_peso,
                 costo_por_gramo = (decimal)(m.costo_por_gramo ?? 0),
-                merma_total_en_gramos = (int)(m.merma_total_en_gramos ?? 0),
+                merma_total_en_gramos = (decimal)(m.merma_total_en_gramos ?? 0),
                 porcentaje_de_merma = (decimal)(m.porcentaje_de_merma ?? 0),
                 costo_de_merma_total = (decimal)(m.costo_de_merma_total ?? 0),
                 costo_total_mas_merma_total = (decimal)(m.costo_total_mas_merma_total ?? 0),
@@ -79,45 +89,79 @@ public class InsumosController : Controller
             }
         }
 
+        // PARSE CORRECTO DEL VOLUMEN DE PORCION DE PRESENTACION
+        string volumenDePorcionStr = Request.Form["volumen_de_porcion_de_presentacion"];
+        if (!string.IsNullOrWhiteSpace(volumenDePorcionStr))
+        {
+            volumenDePorcionStr = volumenDePorcionStr.Replace(',', '.');
+            if (decimal.TryParse(volumenDePorcionStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal volumenDePorcionDecimal))
+            {
+                materia_prima.volumen_de_porcion_de_presentacion = volumenDePorcionDecimal;
+            }
+        }
+
+        // PASE CORRECTO DE LA MERMA TOTAL EN GRAMOS
+        string mermaTotalStr = Request.Form["merma_total_en_gramos"];
+        if (!string.IsNullOrWhiteSpace(mermaTotalStr))
+        {
+            mermaTotalStr = mermaTotalStr.Replace(',', '.');
+            if (decimal.TryParse(mermaTotalStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal mermaTotalDecimal))
+            {
+                materia_prima.merma_total_en_gramos = mermaTotalDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
         // Normalizar valores para comparación
         string nombre = materia_prima.nombre?.Trim().ToLower() ?? "";
         string marca = materia_prima.marca?.Trim().ToLower() ?? "";
         string presentacion = materia_prima.presentacion?.Trim().ToLower() ?? "";
+        int cantidad = materia_prima.cantidad;
+        decimal? volumenDePorciondePresentacion = materia_prima.volumen_de_porcion_de_presentacion;
+        string unidadDeMedidaDePresentacion = materia_prima.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
         string proveedor = materia_prima.proveedor?.Trim().ToLower() ?? "";
         decimal? costo = materia_prima.costo;
-        int peso = materia_prima.peso;
+        string unidadDeMedidaDelPeso = materia_prima.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
 
         // Duplicado exacto (todos los campos)
         bool existeExacto = db.tabla_materias_primas.Any(m =>
             m.nombre.ToLower() == nombre &&
             m.marca.ToLower() == marca &&
             m.presentacion.ToLower() == presentacion &&
+            m.cantidad == cantidad &&
+            m.volumen_de_porcion_de_presentacion == volumenDePorciondePresentacion &&
+            m.unidad_de_medida_de_presentacion.ToLower() == unidadDeMedidaDePresentacion.ToLower() &&
             m.proveedor.ToLower() == proveedor &&
             m.costo == costo &&
-            m.peso == peso
+            m.unidad_de_medida_del_peso.ToLower() == unidadDeMedidaDelPeso
         );
         if (existeExacto)
         {
-            errores.Add("Ya existe una materia prima con el mismo nombre, marca, presentación, proveedor, costo y peso.");
+            errores.Add("Ya existe una materia prima con los mismos datos");
         }
 
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(materia_prima.nombre) ||
                                       string.IsNullOrWhiteSpace(materia_prima.marca) ||
                                       string.IsNullOrWhiteSpace(materia_prima.presentacion) ||
+                                      materia_prima.cantidad <= 0 ||
+                                      string.IsNullOrWhiteSpace(materia_prima.volumen_de_porcion_de_presentacion.ToString()) ||
+                                      string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_de_presentacion) ||
                                       string.IsNullOrWhiteSpace(materia_prima.proveedor) ||
-                                      string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida))
+                                      string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_del_peso))
                errores.Add("Todos los campos son obligatorios.");
 
         if (materia_prima.costo <= 0.99m)
             errores.Add("El costo debe ser mayor a 0.99.");
 
-        if (materia_prima.peso <= 0)
-            errores.Add("El peso debe ser mayor a 0.");
+        if (materia_prima.cantidad <= 0)
+            errores.Add("La cantidad debe ser mayor a 0.");
 
-        if (materia_prima.merma_total_en_gramos < 0)
+        if (materia_prima.volumen_de_porcion_de_presentacion <= 0m)
+            errores.Add("El volumen de porción debe ser mayor a 0.00");
+
+        if (materia_prima.merma_total_en_gramos < 0m)
             errores.Add("La merma total en gramos no puede ser negativa.");
 
         if (errores.Any())
@@ -129,12 +173,17 @@ public class InsumosController : Controller
                 nombre = mp.nombre,
                 marca = mp.marca,
                 presentacion = mp.presentacion,
+                cantidad = mp.cantidad,
+                volumen_de_porcion_de_presentacion = (decimal)(mp.volumen_de_porcion_de_presentacion ?? 0),
+                unidad_de_medida_de_presentacion = mp.unidad_de_medida_de_presentacion,
+                volumen_de_porcion_convertido = (decimal)(mp.volumen_de_porcion_convertido ?? 0),
+                unidad_de_medida_volumen_de_porcion_convertido = mp.unidad_de_medida_volumen_de_porcion_convertido,
                 proveedor = mp.proveedor,
                 costo = (decimal?)(mp.costo ?? 0m),
-                peso = (int)mp.peso,
-                unidad_de_medida = mp.unidad_de_medida,
+                peso = (decimal)(mp.peso ?? 0),
+                unidad_de_medida_del_peso = mp.unidad_de_medida_del_peso,
                 costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0m),
-                merma_total_en_gramos = (int)mp.merma_total_en_gramos,
+                merma_total_en_gramos = (decimal)(mp.merma_total_en_gramos ?? 0),
                 porcentaje_de_merma = mp.porcentaje_de_merma ?? 0m,
                 costo_de_merma_total = mp.costo_de_merma_total ?? 0m,
                 costo_total_mas_merma_total = mp.costo_total_mas_merma_total ?? 0m,
@@ -147,10 +196,30 @@ public class InsumosController : Controller
             });
         }
 
+        // Conversión de volumen_de_porcion
+        decimal? volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion;
+        string unidadPresentacion = materia_prima.unidad_de_medida_de_presentacion?.ToLower();
+        string unidadPeso = materia_prima.unidad_de_medida_del_peso?.ToLower();
+
+        if (unidadPresentacion == "kg" && unidadPeso == "gramos")
+            volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion * 1000;
+        else if (unidadPresentacion == "g" && unidadPeso == "gramos")
+            volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion;
+        else if (unidadPresentacion == "l" && unidadPeso == "mililitros")
+            volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion * 1000;
+        else if (unidadPresentacion == "ml" && unidadPeso == "mililitros")
+            volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion;
+
+        materia_prima.volumen_de_porcion_convertido = volumenConvertido ?? 0;
+        materia_prima.unidad_de_medida_volumen_de_porcion_convertido = unidadPeso;
+
+        // Calcula el peso automáticamente
+        materia_prima.peso = materia_prima.cantidad * volumenConvertido ?? 0;
+
         // Cálculos de campos derivados
         decimal costoPorGramo = (materia_prima.peso > 0) ? ((materia_prima.costo ?? 0) / materia_prima.peso) : 0;
         decimal porcentajeMerma = (materia_prima.peso > 0) ? ((decimal)materia_prima.merma_total_en_gramos / materia_prima.peso) * 100 : 0;
-        decimal costoMermaTotal = costoPorGramo * materia_prima.merma_total_en_gramos;
+        decimal costoMermaTotal = costoPorGramo * (materia_prima.merma_total_en_gramos ?? 0);
         decimal costoTotalMasMerma = (materia_prima.costo ?? 0) + costoMermaTotal;
         decimal costoPorGramoConMerma = (materia_prima.peso > 0) ? (costoTotalMasMerma / materia_prima.peso) : 0;
 
@@ -159,10 +228,15 @@ public class InsumosController : Controller
             nombre = materia_prima.nombre,
             marca = materia_prima.marca,
             presentacion = materia_prima.presentacion,
+            cantidad = materia_prima.cantidad,
+            volumen_de_porcion_de_presentacion = materia_prima.volumen_de_porcion_de_presentacion,
+            unidad_de_medida_de_presentacion = materia_prima.unidad_de_medida_de_presentacion,
+            volumen_de_porcion_convertido = materia_prima.volumen_de_porcion_convertido,
+            unidad_de_medida_volumen_de_porcion_convertido = materia_prima.unidad_de_medida_volumen_de_porcion_convertido,
             proveedor = materia_prima.proveedor,
             costo = materia_prima.costo,
             peso = materia_prima.peso,
-            unidad_de_medida = materia_prima.unidad_de_medida,
+            unidad_de_medida_del_peso = materia_prima.unidad_de_medida_del_peso,
             costo_por_gramo = costoPorGramo,
             merma_total_en_gramos = materia_prima.merma_total_en_gramos,
             porcentaje_de_merma = porcentajeMerma,
@@ -186,12 +260,17 @@ public class InsumosController : Controller
             nombre = m.nombre,
             marca = m.marca,
             presentacion = m.presentacion,
+            cantidad = m.cantidad,
+            volumen_de_porcion_de_presentacion = (decimal)(m.volumen_de_porcion_de_presentacion ?? 0),
+            unidad_de_medida_de_presentacion = m.unidad_de_medida_de_presentacion,
+            volumen_de_porcion_convertido = (decimal)(m.volumen_de_porcion_convertido ?? 0),
+            unidad_de_medida_volumen_de_porcion_convertido = m.unidad_de_medida_volumen_de_porcion_convertido,
             proveedor = m.proveedor,
             costo = m.costo ?? 0,
-            peso = (int)(m.peso ?? 0),
-            unidad_de_medida = m.unidad_de_medida,
+            peso = (decimal)(m.peso ?? 0),
+            unidad_de_medida_del_peso = m.unidad_de_medida_del_peso,
             costo_por_gramo = (decimal)(m.costo_por_gramo ?? 0),
-            merma_total_en_gramos = (int)(m.merma_total_en_gramos ?? 0),
+            merma_total_en_gramos = (decimal)(m.merma_total_en_gramos ?? 0),
             porcentaje_de_merma = (decimal)(m.porcentaje_de_merma ?? 0),
             costo_de_merma_total = (decimal)(m.costo_de_merma_total ?? 0),
             costo_total_mas_merma_total = (decimal)(m.costo_total_mas_merma_total ?? 0),
@@ -205,10 +284,15 @@ public class InsumosController : Controller
             nombre = mp.nombre,
             marca = mp.marca,
             presentacion = mp.presentacion,
+            cantidad = mp.cantidad,
+            volumen_de_porcion_de_presentacion = (int)(mp.volumen_de_porcion_de_presentacion ?? 0),
+            unidad_de_medida_de_presentacion = mp.unidad_de_medida_de_presentacion,
+            volumen_de_porcion_convertido = (decimal)(mp.volumen_de_porcion_convertido ?? 0),
+            unidad_de_medida_volumen_de_porcion_convertido = mp.unidad_de_medida_volumen_de_porcion_convertido,
             proveedor = mp.proveedor,
             costo = (decimal)(mp.costo ?? 0),
             peso = (int)(mp.peso ?? 0),
-            unidad_de_medida = mp.unidad_de_medida,
+            unidad_de_medida_del_peso = mp.unidad_de_medida_del_peso,
             costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0m),
             merma_total_en_gramos = (int)mp.merma_total_en_gramos,
             porcentaje_de_merma = mp.porcentaje_de_merma ?? 0m,
@@ -242,15 +326,40 @@ public class InsumosController : Controller
             }
         }
 
+        // PARSE CORRECTO DEL VOLUMEN DE PORCION DE PRESENTACION
+        string volumenDePorcionStr = Request.Form["volumen_de_porcion_de_presentacion"];
+        if (!string.IsNullOrWhiteSpace(volumenDePorcionStr))
+        {
+            volumenDePorcionStr = volumenDePorcionStr.Replace(',', '.');
+            if (decimal.TryParse(volumenDePorcionStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal volumenDePorcionDecimal))
+            {
+                materia_prima.volumen_de_porcion_de_presentacion = volumenDePorcionDecimal;
+            }
+        }
+
+        // PASE CORRECTO DE LA MERMA TOTAL EN GRAMOS
+        string mermaTotalStr = Request.Form["merma_total_en_gramos"];
+        if (!string.IsNullOrWhiteSpace(mermaTotalStr))
+        {
+            mermaTotalStr = mermaTotalStr.Replace(',', '.');
+            if (decimal.TryParse(mermaTotalStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal mermaTotalDecimal))
+            {
+                materia_prima.merma_total_en_gramos = mermaTotalDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
         // Normalizar valores para comparación
         string nombre = materia_prima.nombre?.Trim().ToLower() ?? "";
         string marca = materia_prima.marca?.Trim().ToLower() ?? "";
         string presentacion = materia_prima.presentacion?.Trim().ToLower() ?? "";
+        int cantidad = materia_prima.cantidad;
+        decimal? volumenDePorciondePresentacion = materia_prima.volumen_de_porcion_de_presentacion;
+        string unidadDeMedidaDePresentacion = materia_prima.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
         string proveedor = materia_prima.proveedor?.Trim().ToLower() ?? "";
         decimal? costo = materia_prima.costo;
-        int peso = materia_prima.peso;
+        string unidadDeMedidaDelPeso = materia_prima.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
 
         // Duplicado exacto (todos los campos)
         bool existeExacto = db.tabla_materias_primas.Any(mp =>
@@ -258,29 +367,35 @@ public class InsumosController : Controller
             mp.nombre.ToLower() == nombre &&
             mp.marca.ToLower() == marca &&
             mp.presentacion.ToLower() == presentacion &&
+            mp.cantidad == cantidad &&
+            mp.volumen_de_porcion_de_presentacion == volumenDePorciondePresentacion &&
+            mp.unidad_de_medida_de_presentacion.ToLower() == unidadDeMedidaDePresentacion &&
             mp.proveedor.ToLower() == proveedor &&
             mp.costo == costo &&
-            mp.peso == peso
+            mp.unidad_de_medida_del_peso.ToLower() == unidadDeMedidaDelPeso
         );
         if (existeExacto)
         {
-            errores.Add("Ya existe una materia prima con el mismo nombre, marca, presentación, proveedor, costo y peso.");
+            errores.Add("Ya existe una materia prima con los mismos datos");
         }
 
         // Validar campos obligatorios y valores numéricos
         if (string.IsNullOrWhiteSpace(materia_prima.nombre) ||
                                       string.IsNullOrWhiteSpace(materia_prima.marca) ||
                                       string.IsNullOrWhiteSpace(materia_prima.presentacion) ||
+                                      materia_prima.cantidad <= 0 ||
+                                      string.IsNullOrWhiteSpace(materia_prima.volumen_de_porcion_de_presentacion.ToString()) ||
+                                      string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_de_presentacion) ||
                                       string.IsNullOrWhiteSpace(materia_prima.proveedor) ||
-                                      string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida))
+                                      string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_del_peso)
+                                      )
             errores.Add("Todos los campos son obligatorios.");
-
 
         if (materia_prima.costo <= 0.99m)
             errores.Add("El costo debe ser mayor a 0.99.");
 
-        if (materia_prima.peso <= 0)
-            errores.Add("El peso debe ser mayor a 0.");
+        if (materia_prima.cantidad <= 0)
+            errores.Add("La cantidad debe ser mayor a 0.");
 
         if (materia_prima.merma_total_en_gramos < 0)
             errores.Add("La merma total en gramos no puede ser negativa.");
@@ -295,10 +410,15 @@ public class InsumosController : Controller
                 nombre = mp.nombre,
                 marca = mp.marca,
                 presentacion = mp.presentacion,
+                cantidad = mp.cantidad,
+                volumen_de_porcion_de_presentacion = mp.volumen_de_porcion_de_presentacion ?? 0,
+                unidad_de_medida_de_presentacion = mp.unidad_de_medida_de_presentacion,
+                volumen_de_porcion_convertido = (decimal)(mp.volumen_de_porcion_convertido ?? 0),
+                unidad_de_medida_volumen_de_porcion_convertido = mp.unidad_de_medida_volumen_de_porcion_convertido,
                 proveedor = mp.proveedor,
                 costo = (decimal)(mp.costo ?? 0),
                 peso = (int)(mp.peso ?? 0),
-                unidad_de_medida = mp.unidad_de_medida,
+                unidad_de_medida_del_peso = mp.unidad_de_medida_del_peso,
                 costo_por_gramo = (decimal)(mp.costo_por_gramo ?? 0m),
                 merma_total_en_gramos = (int)mp.merma_total_en_gramos,
                 porcentaje_de_merma = mp.porcentaje_de_merma ?? 0m,
@@ -313,23 +433,48 @@ public class InsumosController : Controller
             });
         }
 
+        // Conversión de volumen_de_porcion
+        decimal? volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion;
+        string unidadPresentacion = materia_prima.unidad_de_medida_de_presentacion?.ToLower();
+        string unidadPeso = materia_prima.unidad_de_medida_del_peso?.ToLower();
+
+        if (unidadPresentacion == "kg" && unidadPeso == "gramos")
+            volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion * 1000;
+        else if (unidadPresentacion == "g" && unidadPeso == "gramos")
+            volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion;
+        else if (unidadPresentacion == "l" && unidadPeso == "mililitros")
+            volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion * 1000;
+        else if (unidadPresentacion == "ml" && unidadPeso == "mililitros")
+            volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion;
+
+        materia_prima.volumen_de_porcion_convertido = volumenConvertido ?? 0;
+        materia_prima.unidad_de_medida_volumen_de_porcion_convertido = unidadPeso;
+
+        // Calcula el peso automáticamente
+        materia_prima.peso = materia_prima.cantidad * volumenConvertido ?? 0;
+
         var m = db.tabla_materias_primas.Find(materia_prima.id);
         if (m != null)
         {
             // Cálculos de campos derivados
             decimal costoPorGramo = (materia_prima.peso > 0) ? ((materia_prima.costo ?? 0) / materia_prima.peso) : 0;
-            decimal porcentajeMerma = (materia_prima.peso > 0) ? ((decimal)materia_prima.merma_total_en_gramos / materia_prima.peso) * 100 : 0;
-            decimal costoMermaTotal = costoPorGramo * materia_prima.merma_total_en_gramos;
+            decimal porcentajeMerma = (materia_prima.peso > 0) ? ((decimal)(materia_prima.merma_total_en_gramos ?? 0) / materia_prima.peso) * 100 : 0;
+            decimal costoMermaTotal = costoPorGramo * (materia_prima.merma_total_en_gramos ?? 0);
             decimal costoTotalMasMerma = (materia_prima.costo ?? 0) + costoMermaTotal;
             decimal costoPorGramoConMerma = (materia_prima.peso > 0) ? (costoTotalMasMerma / materia_prima.peso) : 0;
 
             m.nombre = materia_prima.nombre;
             m.marca = materia_prima.marca;
             m.presentacion = materia_prima.presentacion;
+            m.cantidad = materia_prima.cantidad;
+            m.volumen_de_porcion_de_presentacion = materia_prima.volumen_de_porcion_de_presentacion;
+            m.unidad_de_medida_de_presentacion = materia_prima.unidad_de_medida_de_presentacion;
+            m.volumen_de_porcion_convertido = materia_prima.volumen_de_porcion_convertido;
+            m.unidad_de_medida_volumen_de_porcion_convertido = materia_prima.unidad_de_medida_volumen_de_porcion_convertido;
             m.proveedor = materia_prima.proveedor;
             m.costo = materia_prima.costo;
             m.peso = materia_prima.peso;
-            m.unidad_de_medida = materia_prima.unidad_de_medida;
+            m.unidad_de_medida_del_peso = materia_prima.unidad_de_medida_del_peso;
             m.merma_total_en_gramos = materia_prima.merma_total_en_gramos;
             m.costo_por_gramo = costoPorGramo;
             m.porcentaje_de_merma = porcentajeMerma;
@@ -374,12 +519,16 @@ public class InsumosController : Controller
                 p.tipo.Contains(search) ||
                 p.nombre.Contains(search) ||
                 p.marca.Contains(search) ||
+                p.presentacion.Contains(search) ||
                 p.cantidad.ToString().Contains(search) ||
+                p.volumen_de_porcion_de_presentacion.ToString().Contains(search) ||
+                p.unidad_de_medida_de_presentacion.Contains(search) ||
+                p.volumen_de_porcion_convertido.ToString().Contains(search) ||
+                p.unidad_de_medida_volumen_de_porcion_convertido.Contains(search) ||
                 p.proveedor.Contains(search) ||
-                p.volumen_de_porcion.ToString().Contains(search) ||
-                p.unidad_de_medida.Contains(search) ||
                 p.costo.ToString().Contains(search) ||
                 p.peso.ToString().Contains(search) ||
+                p.unidad_de_medida_del_peso.Contains(search) ||
                 p.costo_por_peso.ToString().Contains(search) ||
                 p.costo_por_porcion_con_merma.ToString().Contains(search)
 
@@ -394,12 +543,16 @@ public class InsumosController : Controller
                 tipo = p.tipo,
                 nombre = p.nombre,
                 marca = p.marca,
+                presentacion = p.presentacion,
                 cantidad = (int)p.cantidad,
+                volumen_de_porcion_de_presentacion = (decimal)(p.volumen_de_porcion_de_presentacion ?? 0),
+                unidad_de_medida_de_presentacion = p.unidad_de_medida_de_presentacion,
+                volumen_de_porcion_convertido = (decimal)(p.volumen_de_porcion_convertido ?? 0),
+                unidad_de_medida_volumen_de_porcion_convertido = p.unidad_de_medida_volumen_de_porcion_convertido,
                 proveedor = p.proveedor,
-                volumen_de_porcion = p.volumen_de_porcion ?? 0,
                 costo = (decimal)(p.costo ?? 0),
                 peso = p.peso ?? 0,
-                unidad_de_medida = p.unidad_de_medida,
+                unidad_de_medida_del_peso = p.unidad_de_medida_del_peso,
                 costo_por_peso = (decimal)(p.costo_por_peso ?? 0),
                 costo_por_porcion_con_merma = (decimal)(p.costo_por_porcion_con_merma ?? 0)
             }).ToList()
@@ -413,6 +566,7 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult CrearProductoPreparado(ProductoPreparado producto_preparado)
     {
+        // --- PARSE CORRECTO DEL COSTO ---
         string costoStr = Request.Form["costo"];
         if (!string.IsNullOrWhiteSpace(costoStr))
         {
@@ -423,26 +577,43 @@ public class InsumosController : Controller
             }
         }
 
+        // PARSE CORRECTO DEL VOLUMEN DE PORCION DE PRESENTACION
+        string volumenDePorcionStr = Request.Form["volumen_de_porcion_de_presentacion"];
+        if (!string.IsNullOrWhiteSpace(volumenDePorcionStr))
+        {
+            volumenDePorcionStr = volumenDePorcionStr.Replace(',', '.');
+            if (decimal.TryParse(volumenDePorcionStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal volumenDePorcionDecimal))
+            {
+                producto_preparado.volumen_de_porcion_de_presentacion = volumenDePorcionDecimal;
+            }
+        }
+
         var errores = new List<string>();
         
         // Normalizar valores para comparación
         string tipo = producto_preparado.tipo?.Trim().ToLower() ?? "";
         string nombre = producto_preparado.nombre?.Trim().ToLower() ?? "";
         string marca = producto_preparado.marca?.Trim().ToLower() ?? "";
+        string presentacion = producto_preparado.presentacion?.Trim().ToLower() ?? "";
         int cantidad = producto_preparado.cantidad;
+        decimal? volumenDePorciondePresentacion = producto_preparado.volumen_de_porcion_de_presentacion;
+        string unidadDeMedidaDePresentacion = producto_preparado.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
         string proveedor = producto_preparado.proveedor?.Trim().ToLower() ?? "";
         decimal? costo = producto_preparado.costo;
-     
-        
+        string unidadDeMedidaDelPeso = producto_preparado.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
+
         // Duplicado exacto (todos los campos)
         if (db.tabla_productos_preparados.Any(p =>
             p.tipo.ToLower() == tipo &&
             p.nombre.ToLower() == nombre &&
             p.marca.ToLower() == marca &&
+            p.presentacion.ToLower() == presentacion &&
             p.cantidad == cantidad &&
+            p.volumen_de_porcion_de_presentacion == volumenDePorciondePresentacion &&
+            p.unidad_de_medida_de_presentacion.ToLower() == unidadDeMedidaDePresentacion &&
             p.proveedor.ToLower() == proveedor &&
-            p.costo == costo))
-
+            p.costo == costo &&
+            p.unidad_de_medida_del_peso.ToLower() == unidadDeMedidaDelPeso))
         {
             errores.Add("Ya existe un producto preparado con los mismos datos.");
         }
@@ -451,9 +622,12 @@ public class InsumosController : Controller
         if (string.IsNullOrWhiteSpace(producto_preparado.tipo) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.nombre) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.marca) ||
+                                      string.IsNullOrWhiteSpace(producto_preparado.presentacion) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.cantidad.ToString()) ||
+                                      string.IsNullOrWhiteSpace(producto_preparado.volumen_de_porcion_de_presentacion.ToString()) ||
+                                      string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_de_presentacion) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.proveedor) ||
-                                      string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida))
+                                      string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_del_peso))
             errores.Add("Todos los campos son obligatorios.");
 
         if (producto_preparado.costo <= 0.99m)
@@ -462,8 +636,8 @@ public class InsumosController : Controller
         if (producto_preparado.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
 
-        if (producto_preparado.volumen_de_porcion <= 0)
-            errores.Add("El volumen de porción debe ser mayor a cero.");
+        if (producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
+            errores.Add("El volumen de porción debe ser mayor a 0.00.");
 
         if (errores.Any())
         {
@@ -474,9 +648,13 @@ public class InsumosController : Controller
                 tipo = p.tipo,
                 nombre = p.nombre,
                 marca = p.marca,
+                presentacion = p.presentacion,
                 cantidad = p.cantidad,
+                volumen_de_porcion_de_presentacion = (decimal)(p.volumen_de_porcion_de_presentacion ?? 0),
+                unidad_de_medida_de_presentacion = p.unidad_de_medida_de_presentacion,
+                volumen_de_porcion_convertido = (decimal)(p.volumen_de_porcion_convertido ?? 0),
+                unidad_de_medida_volumen_de_porcion_convertido = p.unidad_de_medida_volumen_de_porcion_convertido,
                 proveedor = p.proveedor,
-                volumen_de_porcion = p.volumen_de_porcion ?? 0,
                 peso = p.peso ?? 0,
                 costo = (decimal?)(p.costo ?? 0m),
                 costo_por_peso = p.costo_por_peso ?? 0m,
@@ -489,22 +667,43 @@ public class InsumosController : Controller
             });
         }
 
+        // Conversión de volumen_de_porcion
+        decimal? volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion;
+        string unidadPresentacion = producto_preparado.unidad_de_medida_de_presentacion?.ToLower();
+        string unidadPeso = producto_preparado.unidad_de_medida_del_peso?.ToLower();
+
+        if (unidadPresentacion == "kg" && unidadPeso == "gramos")
+            volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion * 1000;
+        else if (unidadPresentacion == "g" && unidadPeso == "gramos")
+            volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion;
+        else if (unidadPresentacion == "l" && unidadPeso == "mililitros")
+            volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion * 1000;
+        else if (unidadPresentacion == "ml" && unidadPeso == "mililitros")
+            volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion;
+
+        producto_preparado.volumen_de_porcion_convertido = volumenConvertido ?? 0;
+        producto_preparado.unidad_de_medida_volumen_de_porcion_convertido = unidadPeso;
+
         // Calcula el peso automáticamente
-        int pesoCalculado = producto_preparado.cantidad * producto_preparado.volumen_de_porcion;
-        decimal? costoPorPeso = (pesoCalculado > 0) ? (producto_preparado.costo / pesoCalculado) : 0;
-        decimal? costoPorPorcionConMerma = (producto_preparado.volumen_de_porcion > 0) ? (producto_preparado.costo / producto_preparado.volumen_de_porcion) : 0;
+        producto_preparado.peso = producto_preparado.cantidad * volumenConvertido ?? 0;
+        decimal? costoPorPeso = (producto_preparado.peso > 0) ? (producto_preparado.costo / producto_preparado.peso) : 0;
+        decimal? costoPorPorcionConMerma = (producto_preparado.volumen_de_porcion_convertido > 0) ? (producto_preparado.costo / producto_preparado.volumen_de_porcion_convertido) : 0;
 
         db.tabla_productos_preparados.Add(new tabla_productos_preparados
         {
             tipo = producto_preparado.tipo,
             nombre = producto_preparado.nombre,
             marca = producto_preparado.marca,
+            presentacion = producto_preparado.presentacion,
             cantidad = producto_preparado.cantidad,
+            volumen_de_porcion_de_presentacion = producto_preparado.volumen_de_porcion_de_presentacion,
+            unidad_de_medida_de_presentacion = producto_preparado.unidad_de_medida_de_presentacion,
+            volumen_de_porcion_convertido = producto_preparado.volumen_de_porcion_convertido,
+            unidad_de_medida_volumen_de_porcion_convertido = producto_preparado.unidad_de_medida_volumen_de_porcion_convertido,
             proveedor = producto_preparado.proveedor,
-            volumen_de_porcion = producto_preparado.volumen_de_porcion,
             costo = producto_preparado.costo,
             peso = producto_preparado.peso,
-            unidad_de_medida = producto_preparado.unidad_de_medida,
+            unidad_de_medida_del_peso = producto_preparado.unidad_de_medida_del_peso,
             costo_por_peso = costoPorPeso,
             costo_por_porcion_con_merma = costoPorPorcionConMerma
         });
@@ -525,12 +724,16 @@ public class InsumosController : Controller
             tipo = p.tipo,
             nombre = p.nombre,
             marca = p.marca,
+            presentacion = p.presentacion,
             cantidad = p.cantidad,
+            volumen_de_porcion_de_presentacion = (decimal)(p.volumen_de_porcion_de_presentacion ?? 0),
+            unidad_de_medida_de_presentacion = p.unidad_de_medida_de_presentacion,
+            volumen_de_porcion_convertido = (decimal)(p.volumen_de_porcion_convertido ?? 0),
+            unidad_de_medida_volumen_de_porcion_convertido = p.unidad_de_medida_volumen_de_porcion_convertido,
             proveedor = p.proveedor,
-            volumen_de_porcion = p.volumen_de_porcion ?? 0,
             costo = p.costo ?? 0,
             peso = p.peso ?? 0,
-            unidad_de_medida = p.unidad_de_medida,
+            unidad_de_medida_del_peso = p.unidad_de_medida_del_peso,
             costo_por_peso = p.costo_por_peso ?? 0m,
             costo_por_porcion_con_merma = p.costo_por_porcion_con_merma ?? 0m
         };
@@ -542,16 +745,21 @@ public class InsumosController : Controller
             tipo = prodprep.tipo,
             nombre = prodprep.nombre,
             marca = prodprep.marca,
+            presentacion = prodprep.presentacion,
             cantidad = prodprep.cantidad,
+            volumen_de_porcion_de_presentacion = (decimal)(prodprep.volumen_de_porcion_de_presentacion ?? 0),
+            unidad_de_medida_de_presentacion = prodprep.unidad_de_medida_de_presentacion,
+            volumen_de_porcion_convertido = (decimal)(prodprep.volumen_de_porcion_convertido ?? 0),
+            unidad_de_medida_volumen_de_porcion_convertido = prodprep.unidad_de_medida_volumen_de_porcion_convertido,
             proveedor = prodprep.proveedor,
-            volumen_de_porcion = prodprep.volumen_de_porcion ?? 0,
             costo = (decimal)(prodprep.costo ?? 0),
             peso = prodprep.peso ?? 0,
-            unidad_de_medida = prodprep.unidad_de_medida,
+            unidad_de_medida_del_peso = prodprep.unidad_de_medida_del_peso,
             costo_por_peso = prodprep.costo_por_peso ?? 0m,
             costo_por_porcion_con_merma = prodprep.costo_por_porcion_con_merma ?? 0m
         }).ToList();
 
+        ViewBag.Editando = true;
         return View("productos_preparados", new InsumosModel
         {
             ProductoPreparadoEditado = producto_preparado,
@@ -576,15 +784,30 @@ public class InsumosController : Controller
             }
         }
 
+        // PARSE CORRECTO DEL VOLUMEN DE PORCION DE PRESENTACION
+        string volumenDePorcionStr = Request.Form["volumen_de_porcion_de_presentacion"];
+        if (!string.IsNullOrWhiteSpace(volumenDePorcionStr))
+        {
+            volumenDePorcionStr = volumenDePorcionStr.Replace(',', '.');
+            if (decimal.TryParse(volumenDePorcionStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal volumenDePorcionDecimal))
+            {
+                producto_preparado.volumen_de_porcion_de_presentacion = volumenDePorcionDecimal;
+            }
+        }
+
         var errores = new List<string>();
 
         // Normalizar valores para comparación
         string tipo = producto_preparado.tipo?.Trim().ToLower() ?? "";
         string nombre = producto_preparado.nombre?.Trim().ToLower() ?? "";
         string marca = producto_preparado.marca?.Trim().ToLower() ?? "";
+        string presentacion = producto_preparado.presentacion?.Trim().ToLower() ?? "";
         int cantidad = producto_preparado.cantidad;
+        decimal? volumenDePorciondePresentacion = producto_preparado.volumen_de_porcion_de_presentacion;
+        string unidadDeMedidaDePresentacion = producto_preparado.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
         string proveedor = producto_preparado.proveedor?.Trim().ToLower() ?? "";
         decimal? costo = producto_preparado.costo;
+        string unidadDeMedidaDelPeso = producto_preparado.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
 
         // Duplicado exacto (todos los campos excepto ID)
         bool existeExacto = db.tabla_productos_preparados.Any(p =>
@@ -592,9 +815,13 @@ public class InsumosController : Controller
             p.tipo.ToLower() == tipo &&
             p.nombre.ToLower() == nombre &&
             p.marca.ToLower() == marca &&
+            p.presentacion.ToLower() == presentacion &&
             p.cantidad == cantidad &&
+            p.volumen_de_porcion_de_presentacion == volumenDePorciondePresentacion &&
+            p.unidad_de_medida_de_presentacion.ToLower() == unidadDeMedidaDePresentacion &&
             p.proveedor.ToLower() == proveedor &&
-            p.costo == costo
+            p.costo == costo && 
+            p.unidad_de_medida_del_peso.ToLower() == unidadDeMedidaDelPeso
         );
         if (existeExacto)
         {
@@ -605,9 +832,12 @@ public class InsumosController : Controller
         if (string.IsNullOrWhiteSpace(producto_preparado.tipo) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.nombre) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.marca) ||
+                                      string.IsNullOrWhiteSpace(producto_preparado.presentacion) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.cantidad.ToString()) ||
+                                        string.IsNullOrWhiteSpace(producto_preparado.volumen_de_porcion_de_presentacion.ToString()) ||
+                                        string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_de_presentacion) ||
                                       string.IsNullOrWhiteSpace(producto_preparado.proveedor) ||
-                                      string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida))
+                                      string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_del_peso))
             errores.Add("Todos los campos son obligatorios.");
 
         if (producto_preparado.costo <= 0.99m)
@@ -616,8 +846,8 @@ public class InsumosController : Controller
         if (producto_preparado.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
 
-        if (producto_preparado.volumen_de_porcion <= 0)
-            errores.Add("El volumen de porción debe ser mayor a cero.");
+        if (producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
+            errores.Add("El volumen de porción debe ser mayor a 0m.");
 
         if (errores.Any())
         {
@@ -629,14 +859,18 @@ public class InsumosController : Controller
                 tipo = prodprep.tipo,
                 nombre = prodprep.nombre,
                 marca = prodprep.marca,
+                presentacion = prodprep.presentacion,
                 cantidad = prodprep.cantidad,
+                volumen_de_porcion_de_presentacion = (decimal)(prodprep.volumen_de_porcion_de_presentacion ?? 0),
+                unidad_de_medida_de_presentacion = prodprep.unidad_de_medida_de_presentacion,
+                volumen_de_porcion_convertido = (decimal)(prodprep.volumen_de_porcion_convertido ?? 0),
+                unidad_de_medida_volumen_de_porcion_convertido = prodprep.unidad_de_medida_volumen_de_porcion_convertido,
                 proveedor = prodprep.proveedor,
-                volumen_de_porcion = prodprep.volumen_de_porcion ?? 0,
                 peso = prodprep.peso ?? 0,
+                unidad_de_medida_del_peso = prodprep.unidad_de_medida_del_peso,
                 costo = (decimal)(prodprep.costo ?? 0),
                 costo_por_peso = prodprep.costo_por_peso ?? 0m,
                 costo_por_porcion_con_merma = prodprep.costo_por_porcion_con_merma ?? 0m,
-                unidad_de_medida = prodprep.unidad_de_medida
             }).ToList();
 
             return View("productos_preparados", new InsumosModel
@@ -646,24 +880,45 @@ public class InsumosController : Controller
             });
         }
 
+        // Conversión de volumen_de_porcion
+        decimal? volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion;
+        string unidadPresentacion = producto_preparado.unidad_de_medida_de_presentacion?.ToLower();
+        string unidadPeso = producto_preparado.unidad_de_medida_del_peso?.ToLower();
+
+        if (unidadPresentacion == "kg" && unidadPeso == "gramos")
+            volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion * 1000;
+        else if (unidadPresentacion == "g" && unidadPeso == "gramos")
+            volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion;
+        else if (unidadPresentacion == "l" && unidadPeso == "mililitros")
+            volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion * 1000;
+        else if (unidadPresentacion == "ml" && unidadPeso == "mililitros")
+            volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion;
+
+        producto_preparado.volumen_de_porcion_convertido = volumenConvertido ?? 0;
+        producto_preparado.unidad_de_medida_volumen_de_porcion_convertido = unidadPeso;
+
         // Calcula el peso automáticamente
-        producto_preparado.peso = producto_preparado.cantidad * producto_preparado.volumen_de_porcion;
+        producto_preparado.peso = producto_preparado.cantidad * volumenConvertido ?? 0;
 
         var pp = db.tabla_productos_preparados.Find(producto_preparado.id);
         if (pp != null)
         {
             decimal? costoPorPeso = (producto_preparado.peso > 0) ? (producto_preparado.costo / producto_preparado.peso) : 0;
-            decimal? costoPorPorcionConMerma = (producto_preparado.volumen_de_porcion > 0) ? (producto_preparado.costo / producto_preparado.volumen_de_porcion) : 0;
+            decimal? costoPorPorcionConMerma = (producto_preparado.volumen_de_porcion_convertido > 0) ? (producto_preparado.costo / producto_preparado.volumen_de_porcion_convertido) : 0;
 
             pp.tipo = producto_preparado.tipo;
             pp.nombre = producto_preparado.nombre;
             pp.marca = producto_preparado.marca;
+            pp.presentacion = producto_preparado.presentacion;
             pp.cantidad = producto_preparado.cantidad;
+            pp.volumen_de_porcion_de_presentacion = producto_preparado.volumen_de_porcion_de_presentacion;
+            pp.unidad_de_medida_de_presentacion = producto_preparado.unidad_de_medida_de_presentacion;
+            pp.volumen_de_porcion_convertido = producto_preparado.volumen_de_porcion_convertido;
+            pp.unidad_de_medida_volumen_de_porcion_convertido = producto_preparado.unidad_de_medida_volumen_de_porcion_convertido;
             pp.proveedor = producto_preparado.proveedor;
-            pp.volumen_de_porcion = producto_preparado.volumen_de_porcion;
             pp.costo = producto_preparado.costo;
             pp.peso = producto_preparado.peso;
-            pp.unidad_de_medida = producto_preparado.unidad_de_medida;
+            pp.unidad_de_medida_del_peso = producto_preparado.unidad_de_medida_del_peso;
             pp.costo_por_peso = costoPorPeso;
             pp.costo_por_porcion_con_merma = costoPorPorcionConMerma;
         }
@@ -853,6 +1108,8 @@ public class InsumosController : Controller
             unidad_de_medida = empdec.unidad_de_medida,
             costo_por_cantidad = empdec.costo_por_cantidad ?? 0m
         }).ToList();
+
+        ViewBag.Editando = true;
         return View("empaques_decoraciones", new InsumosModel
         {
             EmpaqueDecoracionEditado = empaque_decoracion,
@@ -1429,6 +1686,7 @@ public class InsumosController : Controller
             costo_por_cantidad = sumn.costo_por_cantidad ?? 0m
         }).ToList();
 
+        ViewBag.Editando = true;
         return View("suministros", new InsumosModel
         {
             SuministroEditado = suministro,
@@ -2020,16 +2278,6 @@ public class InsumosController : Controller
                 if (mp.cantidad <= 0)
                     errores.Add($"Fila {i + 1} de Materias Primas: La cantidad debe ser mayor a cero.");
 
-                if (string.IsNullOrWhiteSpace(mp.unidad_de_medida) ||
-                    (mp.unidad_de_medida.ToLower() != "unidad" && mp.unidad_de_medida.ToLower() != "unidades"))
-                    errores.Add($"Fila {i + 1} de Materias Primas: La unidad de medida debe ser 'unidad' o 'unidades'.");
-
-                if (mp.cantidad == 1 && mp.unidad_de_medida.ToLower() != "unidad")
-                    errores.Add($"Fila {i + 1} de Materias Primas: Si la cantidad es 1, debe ser 'unidad'.");
-
-                if (mp.cantidad > 1 && mp.unidad_de_medida.ToLower() != "unidades")
-                    errores.Add($"Fila {i + 1} de Materias Primas: Si la cantidad es mayor a 1, debe ser 'unidades'.");
-
                 if (!string.IsNullOrWhiteSpace(nombre))
                 {
                     if (!nombresMP.Add(nombre))
@@ -2073,16 +2321,6 @@ public class InsumosController : Controller
 
                 if (pp.cantidad <= 0)
                     errores.Add($"Fila {i + 1} de Productos Preparados: La cantidad debe ser mayor a cero.");
-
-                if (string.IsNullOrWhiteSpace(pp.unidad_de_medida) ||
-                    (pp.unidad_de_medida.ToLower() != "unidad" && pp.unidad_de_medida.ToLower() != "unidades"))
-                    errores.Add($"Fila {i + 1} de Productos Preparados: La unidad debe ser 'unidad' o 'unidades'.");
-
-                if (pp.cantidad == 1 && pp.unidad_de_medida.ToLower() != "unidad")
-                    errores.Add($"Fila {i + 1} de Productos Preparados: Si la cantidad es 1, debe ser 'unidad'.");
-
-                if (pp.cantidad > 1 && pp.unidad_de_medida.ToLower() != "unidades")
-                    errores.Add($"Fila {i + 1} de Productos Preparados: Si la cantidad es mayor a 1, debe ser 'unidades'.");
 
                 if (!string.IsNullOrWhiteSpace(nombre))
                 {

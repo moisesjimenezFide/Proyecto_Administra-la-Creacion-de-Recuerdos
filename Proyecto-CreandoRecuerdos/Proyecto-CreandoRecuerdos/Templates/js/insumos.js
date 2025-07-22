@@ -3,7 +3,10 @@
 // =====================
 function calcularCamposMateriaPrima() {
     var costo = parseFloat($('#costo').val()) || 0;
-    var peso = parseFloat($('#peso').val()) || 1;
+    var cantidad = parseFloat($('#cantidad').val()) || 1;
+    var volumen_de_porcion = parseFloat($('#volumen_de_porcion').val()) || 1;
+    var peso = cantidad * volumen_de_porcion;
+    $('#peso').val(peso.toFixed(2));
     var merma = parseFloat($('#merma_total_en_gramos').val()) || 0;
     var costoPorGramo = (peso > 0) ? (costo / peso) : 0;
     var porcentajeMerma = (peso > 0) ? (merma / peso) * 100 : 0;
@@ -26,7 +29,7 @@ function calcularCamposProductoPreparado() {
     var cantidad = parseInt($('#cantidad').val()) || 1;
     var porcion = parseFloat($('#volumen_de_porcion').val()) || 1;
     var peso = cantidad * porcion;
-    $('#peso').val(peso);
+    $('#peso').val(peso.toFixed(2));
     var costoPorPeso = (peso > 0) ? (costo / peso) : 0;
     var costoPorPorcion = (porcion > 0) ? (costo / porcion) : 0;
     $('#costo_por_peso').text(costoPorPeso.toFixed(2));
