@@ -138,6 +138,7 @@
             <table class="table table-bordered table-striped table-sm text-center">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Tipo</th>
                         <th>Nombre</th>
                         <th>Marca</th>
@@ -160,6 +161,7 @@
                     @foreach (var producto_preparado in Model.ProductosPreparados)
                     {
                         <tr>
+                            <td>@producto_preparado.id</td>
                             <td>@producto_preparado.tipo</td>
                             <td>@producto_preparado.nombre</td>
                             <td>@producto_preparado.marca</td>
@@ -168,7 +170,7 @@
                             <td>@producto_preparado.volumen_de_porcion_de_presentacion.Value.ToString("N2")</td>
                             <td>@producto_preparado.unidad_de_medida_de_presentacion</td>
                             <td>@producto_preparado.volumen_de_porcion_convertido.ToString("N2")</td>
-                            <td>@producto_preparado.unidad_de_medida_volumen_de_porcion_convertido</td>
+                            <td>@producto_preparado.unidad_de_medida_convertida</td>
                             <td>@producto_preparado.proveedor</td>
                             <td>
                                 @(producto_preparado.costo.HasValue ? "₡" + producto_preparado.costo.Value.ToString("N2") : "")

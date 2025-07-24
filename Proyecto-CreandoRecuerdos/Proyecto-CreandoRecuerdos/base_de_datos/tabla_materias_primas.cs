@@ -38,7 +38,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public string presentacion { get; set; }
         public string unidad_de_medida_de_presentacion { get; set; }
         public Nullable<decimal> volumen_de_porcion_convertido { get; set; }
-        public string unidad_de_medida_volumen_de_porcion_convertido { get; set; }
+        public string unidad_de_medida_convertida { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<costos_receta_materias_primas_utilizadas> costos_receta_materias_primas_utilizadas { get; set; }

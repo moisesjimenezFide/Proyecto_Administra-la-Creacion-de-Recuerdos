@@ -37,6 +37,32 @@ function calcularCamposProductoPreparado() {
 }
 
 // =====================
+// Conversión de Volumen de Porción
+// =====================
+function convertirVolumenDePorcion() {
+    var volumen = parseFloat($('#volumen_de_porcion').val()) || 0;
+    var unidadPresentacion = ($('#unidad_de_medida_de_presentacion').val() || '').toLowerCase();
+    var unidadPeso = ($('#unidad_medida_del_peso').val() || '').toLowerCase();
+    var volumenConvertido = volumen;
+
+    if (unidadPresentacion === "kg" && unidadPeso === "gramos") volumenConvertido = volumen * 1000;
+    else if (unidadPresentacion === "g" && unidadPeso === "gramos") volumenConvertido = volumen;
+    else if (unidadPresentacion === "l" && unidadPeso === "mililitros") volumenConvertido = volumen * 1000;
+    else if (unidadPresentacion === "ml" && unidadPeso === "mililitros") volumenConvertido = volumen;
+
+    $('#volumen_de_porcion_convertido').val(volumenConvertido.toFixed(2));
+    $('#unidad_de_medida_convertida').val(unidadPeso);
+
+    // Calcula el peso
+    var cantidad = parseFloat($('#cantidad').val()) || 1;
+    var peso = cantidad * volumenConvertido;
+    $('#peso').text(peso.toFixed(2));
+}
+
+// Llama a la función en los eventos de cambio
+$('#volumen_de_porcion, #unidad_de_medida_de_presentacion, #unidad_medida_del_peso, #cantidad').on('input', convertirVolumenDePorcion);
+
+// =====================
 // Empaques y Decoraciones
 // =====================
 function mostrarCostoPorCantidadEmpaque() {

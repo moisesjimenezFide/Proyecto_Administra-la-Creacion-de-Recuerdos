@@ -12,6 +12,16 @@
 
 @section Styles {
     <link href="~/Templates/css/insumos.css" rel="stylesheet" />
+    <style>
+        .select-scroll-horizontal-vertical {
+            overflow-x: auto;
+            overflow-y: auto;
+            white-space: nowrap;
+            display: block;
+            min-width: 100%;
+            max-width: 100%;
+        }
+    </style>
 }
 
 <div class="container my-5 text-center">
@@ -79,10 +89,15 @@
                         <div class="col-md-4">
                             <label>Nombre</label>
                             @Html.DropDownList(
-                                $"MateriasPrimasUtilizadas[{i}].nombre",
-                                new SelectList(ViewBag.MateriasPrimas as SelectList, "Value", "Text", materia_prima.nombre),
+                                $"MateriasPrimasUtilizadas[{i}].id_materia_prima_utilizada",
+                                new SelectList(
+                                    ViewBag.MateriasPrimas as SelectList,
+                                    "Value",
+                                    "Text",
+                                    materia_prima.id_materia_prima_utilizada
+                                ),
                                 "Seleccione una materia prima",
-                                new { @class = "form-control" }
+                                new { @class = "form-control select-scroll-horizontal-vertical" }
                             )
                         </div>
                         <div class="col-md-3">
@@ -104,10 +119,10 @@
                 <div class="col-md-4">
                     <label>Nombre</label>
                     @Html.DropDownList(
-                        "MateriasPrimasUtilizadas[__index__].nombre",
+                        "MateriasPrimasUtilizadas[__index__].id_materia_prima_utilizada",
                         ViewBag.MateriasPrimas as SelectList,
                         "Seleccione una materia prima",
-                        new { @class = "form-control" }
+                        new { @class = "form-control select-scroll-horizontal-vertical" }
                     )
                 </div>
                 <div class="col-md-3">
@@ -139,10 +154,15 @@
                         <div class="col-md-4">
                             <label>Nombre</label>
                             @Html.DropDownList(
-                                $"ProductosPreparadosUtilizados[{i}].nombre",
-                                new SelectList(ViewBag.ProductosPreparados as SelectList, "Value", "Text", producto_preparado.nombre),
+                                $"ProductosPreparadosUtilizados[{i}].id_producto_preparado_utilizado",
+                                new SelectList(
+                                    ViewBag.ProductosPreparados as SelectList,
+                                    "Value",
+                                    "Text",
+                                    producto_preparado.id_producto_preparado_utilizado
+                                ),
                                 "Seleccione un producto preparado",
-                                new { @class = "form-control" }
+                                new { @class = "form-control select-scroll-horizontal-vertical" }
                             )
                         </div>
                         <div class="col-md-3">
@@ -164,10 +184,10 @@
                 <div class="col-md-4">
                     <label>Nombre</label>
                     @Html.DropDownList(
-                        "ProductosPreparadosUtilizados[__index__].nombre",
+                        "ProductosPreparadosUtilizados[__index__].id_producto_preparado_utilizado",
                         ViewBag.ProductosPreparados as SelectList,
                         "Seleccione un producto preparado",
-                        new { @class = "form-control" }
+                        new { @class = "form-control select-scroll-horizontal-vertical" }
                     )
                 </div>
                 <div class="col-md-3">
@@ -219,6 +239,7 @@
             <table class="table table-bordered table-striped table-sm text-center">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Porción</th>
                         <th>Materias Primas Utilizadas</th>
@@ -234,6 +255,7 @@
                     @foreach (var receta in Model.CostosRecetas)
                     {
                         <tr>
+                            <td>@receta.id</td>
                             <td>@receta.nombre</td>
 
                             <td>@receta.porcion</td>
@@ -300,7 +322,7 @@
                                     foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
                                     {
                                         var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_cantidad;
-                                        <div>Total Costo Producto Preparado: ₡@totalcostoProductopreparado.ToString("₡")</div>
+                                        <div>Total Costo Producto Preparado: ₡@totalcostoProductopreparado.ToString("N2")</div>
                                     }
                                 }
                             </td>

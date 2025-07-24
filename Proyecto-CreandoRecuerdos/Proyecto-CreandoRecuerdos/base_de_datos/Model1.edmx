@@ -186,9 +186,9 @@
           <Property Name="cantidad" Type="int" Nullable="false" />
           <Property Name="volumen_de_porcion_de_presentacion" Type="decimal" Precision="18" Scale="2" />
           <Property Name="presentacion" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="50" />
+          <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="100" />
           <Property Name="volumen_de_porcion_convertido" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="nvarchar" MaxLength="100" />
+          <Property Name="unidad_de_medida_convertida" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tabla_notificaciones_vistas">
           <Key>
@@ -220,11 +220,8 @@
           <Property Name="precio_final_sugerido" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo_de_impresion_de_factura_por_insumo" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo_total_de_impresion_de_factura" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="factura" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="costo_empaque_decoracion_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="costo_implemento_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="costo_suministro_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="costo_total_empaque_decoracion_implemento_suministro" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="factura_total" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
           <Property Name="factura_por_insumo" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_productos">
@@ -255,9 +252,9 @@
           <Property Name="costo_por_porcion_con_merma" Type="decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="int" Nullable="false" />
           <Property Name="presentacion" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="50" />
+          <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="100" />
           <Property Name="volumen_de_porcion_convertido" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="nvarchar" MaxLength="100" />
+          <Property Name="unidad_de_medida_convertida" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tabla_recomendaciones">
           <Key>
@@ -1065,7 +1062,7 @@
           <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="tabla_empaques_decoraciones" Relationship="Self.FK__precios_e__id_em__05D8E0BE" FromRole="precios_empaques_decoraciones_utilizados" ToRole="tabla_empaques_decoraciones" />
-          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__precios_e__id_pr__06CD04F7" FromRole="precios_empaques_decoraciones_utilizados" ToRole="tabla_precios_finales_sugeridos" />
+          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Model1.FK__precios_e__id_pr__06CD04F7" FromRole="precios_empaques_decoraciones_utilizados" ToRole="tabla_precios_finales_sugeridos" />
         </EntityType>
         <EntityType Name="precios_implementos_utilizados">
           <Key>
@@ -1079,7 +1076,7 @@
           <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="tabla_implementos" Relationship="Self.FK__precios_i__id_im__07C12930" FromRole="precios_implementos_utilizados" ToRole="tabla_implementos" />
-          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__precios_i__id_pr__08B54D69" FromRole="precios_implementos_utilizados" ToRole="tabla_precios_finales_sugeridos" />
+          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Model1.FK__precios_i__id_pr__08B54D69" FromRole="precios_implementos_utilizados" ToRole="tabla_precios_finales_sugeridos" />
         </EntityType>
         <EntityType Name="precios_suministros_utilizados">
           <Key>
@@ -1092,8 +1089,8 @@
           <Property Name="unidad_de_medida" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" />
-          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__precios_s__id_pr__09A971A2" FromRole="precios_suministros_utilizados" ToRole="tabla_precios_finales_sugeridos" />
           <NavigationProperty Name="tabla_suministros" Relationship="Self.FK__precios_s__id_su__0A9D95DB" FromRole="precios_suministros_utilizados" ToRole="tabla_suministros" />
+          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Model1.FK__precios_s__id_pr__09A971A2" FromRole="precios_suministros_utilizados" ToRole="tabla_precios_finales_sugeridos" />
         </EntityType>
         <EntityType Name="tabla_actividades">
           <Key>
@@ -1143,7 +1140,7 @@
           <Property Name="costo_por_porcion" Type="Decimal" Precision="18" Scale="4" />
           <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Self.FK__costos_re__id_re__02FC7413" FromRole="tabla_costos_recetas" ToRole="costos_receta_materias_primas_utilizadas" />
           <NavigationProperty Name="costos_receta_productos_preparados_utilizados" Relationship="Self.FK__costos_re__id_re__04E4BC85" FromRole="tabla_costos_recetas" ToRole="costos_receta_productos_preparados_utilizados" />
-          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Self.FK__tabla_pre__id_re__0F624AF8" FromRole="tabla_costos_recetas" ToRole="tabla_precios_finales_sugeridos" />
+          <NavigationProperty Name="tabla_precios_finales_sugeridos" Relationship="Model1.FK__tabla_pre__id_re__0F624AF8" FromRole="tabla_costos_recetas" ToRole="tabla_precios_finales_sugeridos" />
         </EntityType>
         <EntityType Name="tabla_detalle_venta">
           <Key>
@@ -1220,38 +1217,6 @@
           <Property Name="fecha_vista" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="tabla_ventas" Relationship="Self.FK_notificaciones_vistas_pedidos" FromRole="tabla_notificaciones_vistas" ToRole="tabla_ventas" />
           <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK_notificaciones_vistas_usuarios" FromRole="tabla_notificaciones_vistas" ToRole="tabla_usuarios" />
-        </EntityType>
-        <EntityType Name="tabla_precios_finales_sugeridos">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="id_receta" Type="Int32" />
-          <Property Name="nombre_receta" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="costo_total_receta" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="margen_de_utilidad" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="costo_sin_margen_de_utilidad" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_con_margen_de_utilidad" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_empaque_decoracion_utilizado" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_implemento_utilizado" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_suministro_utilizado" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="iva" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="impuesto_de_servicio" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="envio" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="plataforma_de_envio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="precio_final_sugerido" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_de_impresion_de_factura_por_insumo" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_total_de_impresion_de_factura" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="factura" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_empaque_decoracion_por_porcentaje_de_ganancia" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_implemento_por_porcentaje_de_ganancia" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_suministro_por_porcentaje_de_ganancia" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="costo_total_empaque_decoracion_implemento_suministro" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="factura_por_insumo" Type="Decimal" Precision="18" Scale="2" />
-          <NavigationProperty Name="precios_empaques_decoraciones_utilizados" Relationship="Self.FK__precios_e__id_pr__06CD04F7" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_empaques_decoraciones_utilizados" />
-          <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_pr__08B54D69" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_implementos_utilizados" />
-          <NavigationProperty Name="precios_suministros_utilizados" Relationship="Self.FK__precios_s__id_pr__09A971A2" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_suministros_utilizados" />
-          <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__tabla_pre__id_re__0F624AF8" FromRole="tabla_precios_finales_sugeridos" ToRole="tabla_costos_recetas" />
         </EntityType>
         <EntityType Name="tabla_productos">
           <Key>
@@ -1428,18 +1393,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__precios_e__id_pr__06CD04F7">
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
-          <End Role="precios_empaques_decoraciones_utilizados" Type="Self.precios_empaques_decoraciones_utilizados" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tabla_precios_finales_sugeridos">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="precios_empaques_decoraciones_utilizados">
-              <PropertyRef Name="id_precio_final_sugerido" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__precios_i__id_im__07C12930">
           <End Role="tabla_implementos" Type="Self.tabla_implementos" Multiplicity="0..1" />
           <End Role="precios_implementos_utilizados" Type="Self.precios_implementos_utilizados" Multiplicity="*" />
@@ -1449,30 +1402,6 @@
             </Principal>
             <Dependent Role="precios_implementos_utilizados">
               <PropertyRef Name="id_implemento_utilizado" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__precios_i__id_pr__08B54D69">
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
-          <End Role="precios_implementos_utilizados" Type="Self.precios_implementos_utilizados" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tabla_precios_finales_sugeridos">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="precios_implementos_utilizados">
-              <PropertyRef Name="id_precio_final_sugerido" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__precios_s__id_pr__09A971A2">
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="0..1" />
-          <End Role="precios_suministros_utilizados" Type="Self.precios_suministros_utilizados" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tabla_precios_finales_sugeridos">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="precios_suministros_utilizados">
-              <PropertyRef Name="id_precio_final_sugerido" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1545,18 +1474,6 @@
             </Principal>
             <Dependent Role="tabla_clientes">
               <PropertyRef Name="id_usuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__tabla_pre__id_re__0F624AF8">
-          <End Role="tabla_costos_recetas" Type="Self.tabla_costos_recetas" Multiplicity="0..1" />
-          <End Role="tabla_precios_finales_sugeridos" Type="Self.tabla_precios_finales_sugeridos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tabla_costos_recetas">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="tabla_precios_finales_sugeridos">
-              <PropertyRef Name="id_receta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1720,7 +1637,6 @@
           <EntitySet Name="tabla_horarios" EntityType="Self.tabla_horarios" />
           <EntitySet Name="tabla_implementos" EntityType="Self.tabla_implementos" />
           <EntitySet Name="tabla_notificaciones_vistas" EntityType="Self.tabla_notificaciones_vistas" />
-          <EntitySet Name="tabla_precios_finales_sugeridos" EntityType="Self.tabla_precios_finales_sugeridos" />
           <EntitySet Name="tabla_productos" EntityType="Self.tabla_productos" />
           <EntitySet Name="tabla_recomendaciones" EntityType="Self.tabla_recomendaciones" />
           <EntitySet Name="tabla_roles" EntityType="Self.tabla_roles" />
@@ -1743,21 +1659,9 @@
             <End Role="tabla_empaques_decoraciones" EntitySet="tabla_empaques_decoraciones" />
             <End Role="precios_empaques_decoraciones_utilizados" EntitySet="precios_empaques_decoraciones_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__precios_e__id_pr__06CD04F7" Association="Self.FK__precios_e__id_pr__06CD04F7">
-            <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
-            <End Role="precios_empaques_decoraciones_utilizados" EntitySet="precios_empaques_decoraciones_utilizados" />
-          </AssociationSet>
           <AssociationSet Name="FK__precios_i__id_im__07C12930" Association="Self.FK__precios_i__id_im__07C12930">
             <End Role="tabla_implementos" EntitySet="tabla_implementos" />
             <End Role="precios_implementos_utilizados" EntitySet="precios_implementos_utilizados" />
-          </AssociationSet>
-          <AssociationSet Name="FK__precios_i__id_pr__08B54D69" Association="Self.FK__precios_i__id_pr__08B54D69">
-            <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
-            <End Role="precios_implementos_utilizados" EntitySet="precios_implementos_utilizados" />
-          </AssociationSet>
-          <AssociationSet Name="FK__precios_s__id_pr__09A971A2" Association="Self.FK__precios_s__id_pr__09A971A2">
-            <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
-            <End Role="precios_suministros_utilizados" EntitySet="precios_suministros_utilizados" />
           </AssociationSet>
           <AssociationSet Name="FK__precios_s__id_su__0A9D95DB" Association="Self.FK__precios_s__id_su__0A9D95DB">
             <End Role="tabla_suministros" EntitySet="tabla_suministros" />
@@ -1782,10 +1686,6 @@
           <AssociationSet Name="FK_clientes_usuarios" Association="Self.FK_clientes_usuarios">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_clientes" EntitySet="tabla_clientes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__tabla_pre__id_re__0F624AF8" Association="Self.FK__tabla_pre__id_re__0F624AF8">
-            <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
-            <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
           </AssociationSet>
           <AssociationSet Name="FK__tabla_det__id_pr__0C85DE4D" Association="Self.FK__tabla_det__id_pr__0C85DE4D">
             <End Role="tabla_productos" EntitySet="tabla_productos" />
@@ -2025,7 +1925,24 @@
             <End Role="tabla_productos_preparados" EntitySet="tabla_productos_preparados" />
             <End Role="costos_receta_productos_preparados_utilizados" EntitySet="costos_receta_productos_preparados_utilizados" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="tabla_precios_finales_sugeridos" EntityType="Model1.tabla_precios_finales_sugeridos" />
+          <AssociationSet Name="FK__precios_e__id_pr__06CD04F7" Association="Model1.FK__precios_e__id_pr__06CD04F7">
+            <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
+            <End Role="precios_empaques_decoraciones_utilizados" EntitySet="precios_empaques_decoraciones_utilizados" />
+          </AssociationSet>
+          <AssociationSet Name="FK__precios_i__id_pr__08B54D69" Association="Model1.FK__precios_i__id_pr__08B54D69">
+            <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
+            <End Role="precios_implementos_utilizados" EntitySet="precios_implementos_utilizados" />
+          </AssociationSet>
+          <AssociationSet Name="FK__precios_s__id_pr__09A971A2" Association="Model1.FK__precios_s__id_pr__09A971A2">
+            <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
+            <End Role="precios_suministros_utilizados" EntitySet="precios_suministros_utilizados" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tabla_pre__id_re__0F624AF8" Association="Model1.FK__tabla_pre__id_re__0F624AF8">
+            <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
+            <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
+          </AssociationSet>
+          </EntityContainer>
         <ComplexType Name="sp_actualizar_estado_pedido_Result">
           <Property Type="Int32" Name="resultado" Nullable="false" />
           <Property Type="String" Name="mensaje" Nullable="false" MaxLength="32" />
@@ -2195,9 +2112,9 @@
           <Property Name="cantidad" Type="Int32" Nullable="false" />
           <Property Name="volumen_de_porcion_de_presentacion" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="presentacion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="unidad_de_medida_de_presentacion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="unidad_de_medida_de_presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="volumen_de_porcion_convertido" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="unidad_de_medida_convertida" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Model1.FK__costos_re__id_ma__02084FDA" FromRole="tabla_materias_primas" ToRole="costos_receta_materias_primas_utilizadas" />
         </EntityType>
         <EntityType Name="tabla_productos_preparados">
@@ -2217,9 +2134,9 @@
           <Property Name="costo_por_porcion_con_merma" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="cantidad" Type="Int32" Nullable="false" />
           <Property Name="presentacion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="unidad_de_medida_de_presentacion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="unidad_de_medida_de_presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="volumen_de_porcion_convertido" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="unidad_de_medida_convertida" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="costos_receta_productos_preparados_utilizados" Relationship="Model1.FK__costos_re__id_pr__03F0984C" FromRole="tabla_productos_preparados" ToRole="costos_receta_productos_preparados_utilizados" />
         </EntityType>
         <Association Name="FK__costos_re__id_ma__02084FDA">
@@ -2246,7 +2163,84 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="tabla_precios_finales_sugeridos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_receta" Type="Int32" />
+          <Property Name="nombre_receta" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="costo_total_receta" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="margen_de_utilidad" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="costo_sin_margen_de_utilidad" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_con_margen_de_utilidad" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_empaque_decoracion_utilizado" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_implemento_utilizado" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_suministro_utilizado" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="iva" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="impuesto_de_servicio" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="envio" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="plataforma_de_envio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="precio_final_sugerido" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_de_impresion_de_factura_por_insumo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_total_de_impresion_de_factura" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="factura_total" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="factura_por_insumo" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="precios_empaques_decoraciones_utilizados" Relationship="Model1.FK__precios_e__id_pr__06CD04F7" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_empaques_decoraciones_utilizados" />
+          <NavigationProperty Name="precios_implementos_utilizados" Relationship="Model1.FK__precios_i__id_pr__08B54D69" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_implementos_utilizados" />
+          <NavigationProperty Name="precios_suministros_utilizados" Relationship="Model1.FK__precios_s__id_pr__09A971A2" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_suministros_utilizados" />
+          <NavigationProperty Name="tabla_costos_recetas" Relationship="Model1.FK__tabla_pre__id_re__0F624AF8" FromRole="tabla_precios_finales_sugeridos" ToRole="tabla_costos_recetas" />
+        </EntityType>
+        <Association Name="FK__precios_e__id_pr__06CD04F7">
+          <End Type="Model1.tabla_precios_finales_sugeridos" Role="tabla_precios_finales_sugeridos" Multiplicity="0..1" />
+          <End Type="Model1.precios_empaques_decoraciones_utilizados" Role="precios_empaques_decoraciones_utilizados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_precios_finales_sugeridos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="precios_empaques_decoraciones_utilizados">
+              <PropertyRef Name="id_precio_final_sugerido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__precios_i__id_pr__08B54D69">
+          <End Type="Model1.tabla_precios_finales_sugeridos" Role="tabla_precios_finales_sugeridos" Multiplicity="0..1" />
+          <End Type="Model1.precios_implementos_utilizados" Role="precios_implementos_utilizados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_precios_finales_sugeridos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="precios_implementos_utilizados">
+              <PropertyRef Name="id_precio_final_sugerido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__precios_s__id_pr__09A971A2">
+          <End Type="Model1.tabla_precios_finales_sugeridos" Role="tabla_precios_finales_sugeridos" Multiplicity="0..1" />
+          <End Type="Model1.precios_suministros_utilizados" Role="precios_suministros_utilizados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_precios_finales_sugeridos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="precios_suministros_utilizados">
+              <PropertyRef Name="id_precio_final_sugerido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tabla_pre__id_re__0F624AF8">
+          <End Type="Model1.tabla_costos_recetas" Role="tabla_costos_recetas" Multiplicity="0..1" />
+          <End Type="Model1.tabla_precios_finales_sugeridos" Role="tabla_precios_finales_sugeridos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_costos_recetas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tabla_precios_finales_sugeridos">
+              <PropertyRef Name="id_receta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2434,35 +2428,6 @@
                 <ScalarProperty Name="id_pedido" ColumnName="id_pedido" />
                 <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
                 <ScalarProperty Name="fecha_vista" ColumnName="fecha_vista" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tabla_precios_finales_sugeridos">
-            <EntityTypeMapping TypeName="Model1.tabla_precios_finales_sugeridos">
-              <MappingFragment StoreEntitySet="tabla_precios_finales_sugeridos">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="id_receta" ColumnName="id_receta" />
-                <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
-                <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
-                <ScalarProperty Name="margen_de_utilidad" ColumnName="margen_de_utilidad" />
-                <ScalarProperty Name="costo_sin_margen_de_utilidad" ColumnName="costo_sin_margen_de_utilidad" />
-                <ScalarProperty Name="costo_con_margen_de_utilidad" ColumnName="costo_con_margen_de_utilidad" />
-                <ScalarProperty Name="costo_empaque_decoracion_utilizado" ColumnName="costo_empaque_decoracion_utilizado" />
-                <ScalarProperty Name="costo_implemento_utilizado" ColumnName="costo_implemento_utilizado" />
-                <ScalarProperty Name="costo_suministro_utilizado" ColumnName="costo_suministro_utilizado" />
-                <ScalarProperty Name="iva" ColumnName="iva" />
-                <ScalarProperty Name="impuesto_de_servicio" ColumnName="impuesto_de_servicio" />
-                <ScalarProperty Name="envio" ColumnName="envio" />
-                <ScalarProperty Name="plataforma_de_envio" ColumnName="plataforma_de_envio" />
-                <ScalarProperty Name="precio_final_sugerido" ColumnName="precio_final_sugerido" />
-                <ScalarProperty Name="costo_de_impresion_de_factura_por_insumo" ColumnName="costo_de_impresion_de_factura_por_insumo" />
-                <ScalarProperty Name="costo_total_de_impresion_de_factura" ColumnName="costo_total_de_impresion_de_factura" />
-                <ScalarProperty Name="factura" ColumnName="factura" />
-                <ScalarProperty Name="costo_empaque_decoracion_por_porcentaje_de_ganancia" ColumnName="costo_empaque_decoracion_por_porcentaje_de_ganancia" />
-                <ScalarProperty Name="costo_implemento_por_porcentaje_de_ganancia" ColumnName="costo_implemento_por_porcentaje_de_ganancia" />
-                <ScalarProperty Name="costo_suministro_por_porcentaje_de_ganancia" ColumnName="costo_suministro_por_porcentaje_de_ganancia" />
-                <ScalarProperty Name="costo_total_empaque_decoracion_implemento_suministro" ColumnName="costo_total_empaque_decoracion_implemento_suministro" />
-                <ScalarProperty Name="factura_por_insumo" ColumnName="factura_por_insumo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2838,7 +2803,7 @@
           <EntitySetMapping Name="tabla_materias_primas">
             <EntityTypeMapping TypeName="Model1.tabla_materias_primas">
               <MappingFragment StoreEntitySet="tabla_materias_primas">
-                <ScalarProperty Name="unidad_de_medida_volumen_de_porcion_convertido" ColumnName="unidad_de_medida_volumen_de_porcion_convertido" />
+                <ScalarProperty Name="unidad_de_medida_convertida" ColumnName="unidad_de_medida_convertida" />
                 <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
                 <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
                 <ScalarProperty Name="presentacion" ColumnName="presentacion" />
@@ -2863,7 +2828,7 @@
           <EntitySetMapping Name="tabla_productos_preparados">
             <EntityTypeMapping TypeName="Model1.tabla_productos_preparados">
               <MappingFragment StoreEntitySet="tabla_productos_preparados">
-                <ScalarProperty Name="unidad_de_medida_volumen_de_porcion_convertido" ColumnName="unidad_de_medida_volumen_de_porcion_convertido" />
+                <ScalarProperty Name="unidad_de_medida_convertida" ColumnName="unidad_de_medida_convertida" />
                 <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
                 <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
                 <ScalarProperty Name="presentacion" ColumnName="presentacion" />
@@ -2878,6 +2843,32 @@
                 <ScalarProperty Name="marca" ColumnName="marca" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tabla_precios_finales_sugeridos">
+            <EntityTypeMapping TypeName="Model1.tabla_precios_finales_sugeridos">
+              <MappingFragment StoreEntitySet="tabla_precios_finales_sugeridos">
+                <ScalarProperty Name="factura_por_insumo" ColumnName="factura_por_insumo" />
+                <ScalarProperty Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" ColumnName="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" />
+                <ScalarProperty Name="factura_total" ColumnName="factura_total" />
+                <ScalarProperty Name="costo_total_de_impresion_de_factura" ColumnName="costo_total_de_impresion_de_factura" />
+                <ScalarProperty Name="costo_de_impresion_de_factura_por_insumo" ColumnName="costo_de_impresion_de_factura_por_insumo" />
+                <ScalarProperty Name="precio_final_sugerido" ColumnName="precio_final_sugerido" />
+                <ScalarProperty Name="plataforma_de_envio" ColumnName="plataforma_de_envio" />
+                <ScalarProperty Name="envio" ColumnName="envio" />
+                <ScalarProperty Name="impuesto_de_servicio" ColumnName="impuesto_de_servicio" />
+                <ScalarProperty Name="iva" ColumnName="iva" />
+                <ScalarProperty Name="costo_suministro_utilizado" ColumnName="costo_suministro_utilizado" />
+                <ScalarProperty Name="costo_implemento_utilizado" ColumnName="costo_implemento_utilizado" />
+                <ScalarProperty Name="costo_empaque_decoracion_utilizado" ColumnName="costo_empaque_decoracion_utilizado" />
+                <ScalarProperty Name="costo_con_margen_de_utilidad" ColumnName="costo_con_margen_de_utilidad" />
+                <ScalarProperty Name="costo_sin_margen_de_utilidad" ColumnName="costo_sin_margen_de_utilidad" />
+                <ScalarProperty Name="margen_de_utilidad" ColumnName="margen_de_utilidad" />
+                <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
+                <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
+                <ScalarProperty Name="id_receta" ColumnName="id_receta" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -39,11 +39,8 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<decimal> precio_final_sugerido { get; set; }
         public Nullable<decimal> costo_de_impresion_de_factura_por_insumo { get; set; }
         public Nullable<decimal> costo_total_de_impresion_de_factura { get; set; }
-        public Nullable<decimal> factura { get; set; }
-        public Nullable<decimal> costo_empaque_decoracion_por_porcentaje_de_ganancia { get; set; }
-        public Nullable<decimal> costo_implemento_por_porcentaje_de_ganancia { get; set; }
-        public Nullable<decimal> costo_suministro_por_porcentaje_de_ganancia { get; set; }
-        public Nullable<decimal> costo_total_empaque_decoracion_implemento_suministro { get; set; }
+        public Nullable<decimal> factura_total { get; set; }
+        public Nullable<decimal> costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia { get; set; }
         public Nullable<decimal> factura_por_insumo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

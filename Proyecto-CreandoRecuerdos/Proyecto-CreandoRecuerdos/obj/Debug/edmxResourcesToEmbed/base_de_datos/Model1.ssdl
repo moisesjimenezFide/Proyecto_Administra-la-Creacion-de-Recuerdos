@@ -181,9 +181,9 @@
     <Property Name="cantidad" Type="int" Nullable="false" />
     <Property Name="volumen_de_porcion_de_presentacion" Type="decimal" Precision="18" Scale="2" />
     <Property Name="presentacion" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="50" />
+    <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="100" />
     <Property Name="volumen_de_porcion_convertido" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="nvarchar" MaxLength="100" />
+    <Property Name="unidad_de_medida_convertida" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="tabla_notificaciones_vistas">
     <Key>
@@ -215,11 +215,8 @@
     <Property Name="precio_final_sugerido" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_de_impresion_de_factura_por_insumo" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_total_de_impresion_de_factura" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="factura" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="costo_empaque_decoracion_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="costo_implemento_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="costo_suministro_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="costo_total_empaque_decoracion_implemento_suministro" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="factura_total" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
     <Property Name="factura_por_insumo" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="tabla_productos">
@@ -250,9 +247,9 @@
     <Property Name="costo_por_porcion_con_merma" Type="decimal" Precision="18" Scale="2" />
     <Property Name="cantidad" Type="int" Nullable="false" />
     <Property Name="presentacion" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="50" />
+    <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="100" />
     <Property Name="volumen_de_porcion_convertido" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="unidad_de_medida_volumen_de_porcion_convertido" Type="nvarchar" MaxLength="100" />
+    <Property Name="unidad_de_medida_convertida" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="tabla_recomendaciones">
     <Key>

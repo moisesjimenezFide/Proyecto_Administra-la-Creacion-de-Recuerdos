@@ -124,6 +124,7 @@
             <table class="table table-bordered table-striped table-sm text-center">
                 <thead>
                     <tr>
+                        <td>ID</td>
                         <th>Nombre</th>
                         <th>Marca</th>
                         <th>Presentación</th>
@@ -139,6 +140,7 @@
                     @foreach (var implemento in Model.Implementos)
                     {
                         <tr>
+                            <td>@implemento.id</td>
                             <td>@implemento.nombre</td>
                             <td>@implemento.marca</td>
                             <td>@implemento.presentacion</td>

@@ -23,6 +23,15 @@
                 margin-left: 50px;
                 top: 58%;
             }
+
+        .select-scroll-horizontal-vertical {
+            overflow-x: auto;
+            overflow-y: auto;
+            white-space: nowrap;
+            display: block;
+            min-width: 100%;
+            max-width: 100%;
+        }
     </style>
 }
 
@@ -114,10 +123,10 @@
                         <div class="col-md-4">
                             <label>Nombre</label>
                             @Html.DropDownList(
-                                $"EmpaquesDecoracionesUtilizados[{i}].nombre",
-                                new SelectList(ViewBag.EmpaquesDecoraciones as SelectList, "Value", "Text", item.nombre),
+                                $"EmpaquesDecoracionesUtilizados[{i}].id_empaque_decoracion_utilizado",
+                                new SelectList(ViewBag.EmpaquesDecoraciones as SelectList, "Value", "Text", item.id_empaque_decoracion_utilizado),
                                 "Seleccione un empaque o decoración",
-                                new { @class = "form-control" }
+                                new { @class = "form-control select-scroll-horizontal-vertical" }
                             )
                         </div>
 
@@ -132,7 +141,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                         </div>
 
                     </div>
@@ -142,10 +151,10 @@
             <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
                 <div class="col-md-4">
                     <label>Nombre</label>
-                    @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].nombre",
+                    @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].id_empaque_decoracion_utilizado",
                     ViewBag.EmpaquesDecoraciones as SelectList,
                     "Seleccione un empaque o decoración",
-                    new { @class = "form-control" })
+                    new { @class = "form-control select-scroll-horizontal-vertical" })
                 </div>
 
                 <div class="col-md-3">
@@ -181,10 +190,10 @@
                         <div class="col-md-4">
                             <label>Nombre</label>
                             @Html.DropDownList(
-                            $"ImplementosUtilizados[{i}].nombre",
-                            new SelectList(ViewBag.Implementos as SelectList, "Value", "Text", item.nombre),
+                            $"ImplementosUtilizados[{i}].id_implemento_utilizado",
+                            new SelectList(ViewBag.Implementos as SelectList, "Value", "Text", item.id_implemento_utilizado),
                             "Seleccione un implemento",
-                            new { @class = "form-control" }
+                            new { @class = "form-control select-scroll-horizontal-vertical" }
                         )
                         </div>
 
@@ -199,7 +208,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                         </div>
                     </div>
                 }
@@ -208,10 +217,10 @@
             <div class="row fila-insumo template-implemento" style="display: none;">
                 <div class="col-md-4">
                     <label>Nombre</label>
-                    @Html.DropDownList("ImplementosUtilizados[__index__].nombre",
+                    @Html.DropDownList("ImplementosUtilizados[__index__].id_implemento_utilizado",
                     ViewBag.Implementos as SelectList,
                     "Seleccione un implemento",
-                    new { @class = "form-control" })
+                    new { @class = "form-control select-scroll-horizontal-vertical" })
                 </div>
 
                 <div class="col-md-3">
@@ -247,10 +256,10 @@
                         <div class="col-md-4">
                             <label>Nombre</label>
                             @Html.DropDownList(
-                            $"SuministrosUtilizados[{i}].nombre",
-                            new SelectList(ViewBag.Suministros as SelectList, "Value", "Text", item.nombre),
+                            $"SuministrosUtilizados[{i}].id_suministro_utilizado",
+                            new SelectList(ViewBag.Suministros as SelectList, "Value", "Text", item.id_suministro_utilizado),
                             "Seleccione un suministro",
-                            new { @class = "form-control" }
+                            new { @class = "form-control select-scroll-horizontal-vertical" }
                         )
                         </div>
 
@@ -265,7 +274,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">Eliminar</button>
+                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                         </div>
 
                     </div>
@@ -275,10 +284,10 @@
             <div class="row fila-insumo template-suministro" style="display: none;">
                 <div class="col-md-4">
                     <label>Nombre</label>
-                    @Html.DropDownList("SuministrosUtilizados[__index__].nombre",
+                    @Html.DropDownList("SuministrosUtilizados[__index__].id_suministro_utilizado",
                     ViewBag.Suministros as SelectList,
                     "Seleccione un suministro",
-                    new { @class = "form-control" })
+                    new { @class = "form-control select-scroll-horizontal-vertical" })
                 </div>
 
                 <div class="col-md-3">
@@ -299,6 +308,16 @@
             <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('suministros-container', 'template-suministro')">+ Agregar Suministro</button>
         </div>
         <br />
+
+        <div class="mb-3 text-start">
+            <label for="iva_porcentaje" class="form-label">IVA (%)</label>
+            <input type="number" name="iva_porcentaje" id="iva_porcentaje" class="form-control" value="@(editando ? productoFinalEditado.iva.ToString("0.##") : "13")" min="0" max="100" step="0.01" />
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="servicio_porcentaje" class="form-label">Impuesto de Servicio (%)</label>
+            <input type="number" name="servicio_porcentaje" id="servicio_porcentaje" class="form-control" value="@(editando ? productoFinalEditado.impuesto_de_servicio.ToString("0.##") : "10")" min="0" max="100" step="0.01" />
+        </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
             @if (editando)
@@ -336,27 +355,28 @@
             <table class="table table-bordered table-striped table-sm text-start">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Nombre de Receta</th>
                         <th>Costo Total de Receta (₡)</th>
-                        <th>Margen de margen_de_utilidad (%)</th>
-                        <th>Costo sin Margen de margen_de_utilidad (%)</th>
-                        <th>Costo con Margen de margen_de_utilidad (₡)</th>
+                        <th>Margen de Utilidad (%)</th>
+                        <th>Costo sin Margen de Utilidad (%)</th>
+                        <th>Costo con Margen de Utilidad (₡)</th>
                         <th>Empaques y/o Decoraciones Utilizados(as)</th>
+                        <th>Costo por cantidad (₡)</th>
                         <th>Costo Empaques y/o Decoraciones (₡)</th>
                         <th>Implementos utilizados</th>
+                        <th>Costo por cantidad (₡)</th>
                         <th>Costo Implementos (₡)</th>
-                        <th>Suministros de Limpieza e Higiene Utilizados</th>
+                        <th>Suministros Utilizados</th>
+                        <th>Costo por cantidad (₡)</th>
                         <th>Costo suministros (₡)</th>
-                        <th>Costo Impresión Factura/Ins.</th>
-                        <th>Costo Total Impresión Factura</th>
-                        <th>Factura</th>
-                        <th>Empaque o Decoración por Ganancia</th>
-                        <th>Implemento por Ganancia</th>
-                        <th>Suministro por Ganancia</th>
-                        <th>Total Empaque_Decoracion/Impl./Sum.</th>
-                        <th>Factura por Insumo</th>
-                        <th>IVA (%)</th>
-                        <th>Servicio (%)</th>
+                        <th>Costo de Impresión Factura por Insumo (₡)</th>
+                        <th>Costo Total de Impresión de Factura (₡)</th>
+                        <th>Total Insumos por Porcentaje de Ganancia (₡)</th>
+                        <th>Factura por Insumo (₡)</th>
+                        <th>Factura (₡)</th>
+                        <th>IVA (₡)</th>
+                        <th>Servicio (₡)</th>
                         <th>Plataforma de Envío</th>
                         <th>Envío (₡)</th>
                         <th>Precio Final (₡)</th>
@@ -367,6 +387,8 @@
                     @foreach (var productofinal in Model.ProductosFinales)
                     {
                         <tr>
+                            <td>@productofinal.id</td>
+
                             <td>
                                 @{
                                     var receta = Model.CostosRecetas?.FirstOrDefault(r => r.nombre == productofinal.nombre_receta);
@@ -381,38 +403,102 @@
                             <td>@productofinal.margen_de_utilidad%</td>
                             <td>@(100 - productofinal.margen_de_utilidad)%</td>
                             <td>₡@productofinal.costo_con_margen_de_utilidad.ToString("N2")</td>
+                            
+                            <!-- Empaques y/o Decoraciones -->
                             <td>
-                                @foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
+                                @if (productofinal.EmpaquesDecoracionesUtilizados != null && productofinal.EmpaquesDecoracionesUtilizados.Any())
                                 {
-                                    <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                                    foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
+                                    {
+                                        <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div><em>Ninguno</em></div>
                                 }
                             </td>
-                            <td>₡@productofinal.costo_empaque_decoracion_utilizado.ToString("N2")</td>
+                            <td>
+                                @if (productofinal.EmpaquesDecoracionesUtilizados != null && productofinal.EmpaquesDecoracionesUtilizados.Any())
+                                {
+                                    foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
+                                    {
+                                        <div>₡@item.costo_por_cantidad.ToString("N2")</div>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                ₡@productofinal.costo_empaque_decoracion_utilizado.ToString("N2")
+                            </td>
+
+                            <!-- Implementos -->
+                            <td>
+                                @if (productofinal.ImplementosUtilizados != null && productofinal.ImplementosUtilizados.Any())
+                                {
+                                    foreach (var item in productofinal.ImplementosUtilizados)
+                                    {
+                                        <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div><em>Ninguno</em></div>
+                                }
+                            </td>
+                            <td>
+                                @if (productofinal.ImplementosUtilizados != null && productofinal.ImplementosUtilizados.Any())
+                                {
+                                    foreach (var item in productofinal.ImplementosUtilizados)
+                                    {
+                                        <div>₡@item.costo_por_cantidad.ToString("N2")</div>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                ₡@productofinal.costo_implemento_utilizado.ToString("N2")
+                            </td>
+
+                            <!-- Suministros -->
+                            <td>
+                                @if (productofinal.SuministrosUtilizados != null && productofinal.SuministrosUtilizados.Any())
+                                {
+                                    foreach (var item in productofinal.SuministrosUtilizados)
+                                    {
+                                        <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div><em>Ninguno</em></div>
+                                }
+                            </td>
+                            <td>
+                                @if (productofinal.SuministrosUtilizados != null && productofinal.SuministrosUtilizados.Any())
+                                {
+                                    foreach (var item in productofinal.SuministrosUtilizados)
+                                    {
+                                        <div>₡@item.costo_por_cantidad.ToString("N2")</div>
+                                    }
+                                }
+                            </td>
 
                             <td>
-                                @foreach (var item in productofinal.ImplementosUtilizados)
+                                @if (productofinal.SuministrosUtilizados != null && productofinal.SuministrosUtilizados.Count > 1)
                                 {
-                                    <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                                    var total = productofinal.SuministrosUtilizados.Skip(1).Sum(x => x.total_costo);
+                                    @total.ToString("N2")
+                                }
+                                else
+                                {
+                                    @("0,00")
                                 }
                             </td>
-                            <td>₡@productofinal.costo_implemento_utilizado.ToString("N2")</td>
-
-                            <td>
-                                @foreach (var item in productofinal.SuministrosUtilizados)
-                                {
-                                    <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
-                                }
-                            </td>
-                            <td>₡@productofinal.costo_suministro_utilizado.ToString("N2")</td>
 
                             <td>₡@productofinal.costo_de_impresion_de_factura_por_insumo.ToString("N2")</td>
                             <td>₡@productofinal.costo_total_de_impresion_de_factura.ToString("N2")</td>
-                            <td>₡@productofinal.factura.ToString("N2")</td>
-                            <td>₡@productofinal.costo_empaque_decoracion_por_porcentaje_de_ganancia.ToString("N2")</td>
-                            <td>₡@productofinal.costo_implemento_por_porcentaje_de_ganancia.ToString("N2")</td>
-                            <td>₡@productofinal.costo_suministro_por_porcentaje_de_ganancia.ToString("N2")</td>
-                            <td>₡@productofinal.costo_total_empaque_decoracion_implemento_suministro.ToString("N2")</td>
+                            <td>₡@productofinal.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia.ToString("N2")</td>
                             <td>₡@productofinal.factura_por_insumo.ToString("N2")</td>
+                            <td>₡@productofinal.factura_total.ToString("N2")</td>
                             <td>₡@productofinal.iva.ToString("N2")</td>
                             <td>₡@productofinal.impuesto_de_servicio.ToString("N2")</td>
                             <td>@productofinal.plataforma_de_envio</td>

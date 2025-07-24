@@ -125,6 +125,7 @@
             <table class="table table-bordered table-striped table-sm text-center">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Marca</th>
                         <th>Presentación</th>
@@ -140,13 +141,15 @@
                     @foreach (var suministro in Model.Suministros)
                     {
                         <tr>
+                            <td>@suministro.id</td>
                             <td>@suministro.nombre</td>
                             <td>@suministro.marca</td>
                             <td>@suministro.presentacion</td>
                             <td>@suministro.proveedor</td>
                             <td>
                                 @(suministro.costo.HasValue ? "₡" + suministro.costo.Value.ToString("N2") : "")
-                            </td><td>@suministro.cantidad</td>
+                            </td>
+                            <td>@suministro.cantidad</td>
                             <td>@suministro.unidad_de_medida</td>
                             <td>@suministro.costo_por_cantidad.ToString("N2")</td>
                             <td>

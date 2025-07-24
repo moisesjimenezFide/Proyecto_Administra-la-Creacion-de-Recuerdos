@@ -42,7 +42,6 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public virtual DbSet<tabla_horarios> tabla_horarios { get; set; }
         public virtual DbSet<tabla_implementos> tabla_implementos { get; set; }
         public virtual DbSet<tabla_notificaciones_vistas> tabla_notificaciones_vistas { get; set; }
-        public virtual DbSet<tabla_precios_finales_sugeridos> tabla_precios_finales_sugeridos { get; set; }
         public virtual DbSet<tabla_productos> tabla_productos { get; set; }
         public virtual DbSet<tabla_recomendaciones> tabla_recomendaciones { get; set; }
         public virtual DbSet<tabla_roles> tabla_roles { get; set; }
@@ -55,6 +54,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public virtual DbSet<Vendedores> Vendedores { get; set; }
         public virtual DbSet<tabla_materias_primas> tabla_materias_primas { get; set; }
         public virtual DbSet<tabla_productos_preparados> tabla_productos_preparados { get; set; }
+        public virtual DbSet<tabla_precios_finales_sugeridos> tabla_precios_finales_sugeridos { get; set; }
     
         public virtual int sp_activar_usuario(Nullable<int> id)
         {
