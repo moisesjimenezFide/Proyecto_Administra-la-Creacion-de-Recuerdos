@@ -2680,7 +2680,7 @@ public class InsumosController : Controller
             "Value", "Text"
         );
 
-        ViewBag.suministros = new SelectList(
+        ViewBag.Suministros = new SelectList(
             db.tabla_suministros.ToList()
                 .Select(s => new {
                     Value = s.id,
@@ -2860,7 +2860,7 @@ public class InsumosController : Controller
                 "Value", "Text"
             );
 
-            ViewBag.suministros = new SelectList(
+            ViewBag.Suministros = new SelectList(
                 db.tabla_suministros.ToList()
                     .Select(s => new {
                         Value = s.id,
@@ -3208,7 +3208,7 @@ public class InsumosController : Controller
             "Value", "Text"
         );
 
-        ViewBag.suministros = new SelectList(
+        ViewBag.Suministros = new SelectList(
             db.tabla_suministros.ToList()
                 .Select(s => new {
                     Value = s.id,
@@ -3382,7 +3382,7 @@ public class InsumosController : Controller
                 "Value", "Text"
             );
 
-            ViewBag.suministros = new SelectList(
+            ViewBag.Suministros = new SelectList(
                 db.tabla_suministros.ToList()
                     .Select(s => new {
                         Value = s.id,
