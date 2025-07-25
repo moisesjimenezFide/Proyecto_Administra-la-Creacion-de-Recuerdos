@@ -50,7 +50,6 @@
         <EntityTypeShape EntityType="Model1.costos_receta_productos_preparados_utilizados" Width="1.5" PointX="22.5" PointY="18.375" />
         <EntityTypeShape EntityType="Model1.precios_empaques_decoraciones_utilizados" Width="1.5" PointX="16.25" PointY="29.875" />
         <EntityTypeShape EntityType="Model1.precios_implementos_utilizados" Width="1.5" PointX="19.25" PointY="30.875" />
-        <EntityTypeShape EntityType="Model1.precios_suministros_utilizados" Width="1.5" PointX="19.25" PointY="34.75" />
         <AssociationConnector Association="Model1.FK__costos_re__id_ma__02084FDA" />
         <AssociationConnector Association="Model1.FK__costos_re__id_re__02FC7413" />
         <AssociationConnector Association="Model1.FK__costos_re__id_pr__03F0984C" />
@@ -59,6 +58,7 @@
         <AssociationConnector Association="Model1.FK__precios_e__id_pr__06CD04F7" />
         <AssociationConnector Association="Model1.FK__precios_i__id_im__07C12930" />
         <AssociationConnector Association="Model1.FK__precios_i__id_pr__08B54D69" />
+        <EntityTypeShape EntityType="Model1.precios_suministros_utilizados" Width="1.5" PointX="19.25" PointY="34.75" />
         <AssociationConnector Association="Model1.FK__precios_s__id_pr__09A971A2" />
         <AssociationConnector Association="Model1.FK__precios_s__id_su__0A9D95DB" />
         </Diagram>

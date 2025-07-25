@@ -420,7 +420,7 @@
                         <th>Costo Implementos (₡)</th>
                         <th>Suministros Utilizados</th>
                         <th>Costo por cantidad (₡)</th>
-                        <th>Costo suministros (₡)</th>
+                        <th>Costo Suministros (₡)</th>
                         <th>Costo de Impresión Factura por Insumo (₡)</th>
                         <th>Costo Total de Impresión de Factura (₡)</th>
                         <th>Total Insumos por Porcentaje de Ganancia (₡)</th>
@@ -452,9 +452,9 @@
                             </td>
 
                             <td>@productofinal.margen_de_utilidad%</td>
-                            <td>@(productofinal.costo_sin_margen_de_utilidad)%</td>
+                            <td>@(100 - productofinal.margen_de_utilidad)%</td>
                             <td>₡@productofinal.costo_con_margen_de_utilidad.ToString("N2")</td>
-                            
+
                             <!-- Empaques y/o Decoraciones -->
                             <td>
                                 @if (productofinal.EmpaquesDecoracionesUtilizados != null && productofinal.EmpaquesDecoracionesUtilizados.Any())
@@ -474,7 +474,7 @@
                                 {
                                     foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
                                     {
-                                        <div>₡@item.costo_por_cantidad.ToString("N2")</div>
+                                        <div>₡@(item.costo_por_cantidad * item.cantidad).ToString("N2")</div>
                                     }
                                 }
                             </td>
@@ -501,7 +501,7 @@
                                 {
                                     foreach (var item in productofinal.ImplementosUtilizados)
                                     {
-                                        <div>₡@item.costo_por_cantidad.ToString("N2")</div>
+                                        <div>₡@(item.costo_por_cantidad * item.cantidad).ToString("N2")</div>
                                     }
                                 }
                             </td>
@@ -515,7 +515,13 @@
                                 {
                                     foreach (var item in productofinal.SuministrosUtilizados)
                                     {
-                                        <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                                        <div>
+                                            @item.nombre (@item.cantidad @item.unidad_de_medida)
+                                            @if (item.es_impresion_de_facturas)
+                                            {
+                                                <span>(Sí es un suministro de impresión de facturas)</span>
+                                            }
+                                        </div>
                                     }
                                 }
                                 else
@@ -528,21 +534,12 @@
                                 {
                                     foreach (var item in productofinal.SuministrosUtilizados)
                                     {
-                                        <div>₡@item.costo_por_cantidad.ToString("N2")</div>
+                                        <div>₡@(item.costo_por_cantidad * item.cantidad).ToString("N2")</div>
                                     }
                                 }
                             </td>
-
                             <td>
-                                @if (productofinal.SuministrosUtilizados != null && productofinal.SuministrosUtilizados.Count > 1)
-                                {
-                                    var total = productofinal.SuministrosUtilizados.Skip(1).Sum(x => x.total_costo);
-                                    @total.ToString("N2")
-                                }
-                                else
-                                {
-                                    @("0,00")
-                                }
+                                ₡@productofinal.costo_suministro_utilizado.ToString("N2")
                             </td>
 
                             <td>₡@productofinal.costo_de_impresion_de_factura_por_insumo.ToString("N2")</td>

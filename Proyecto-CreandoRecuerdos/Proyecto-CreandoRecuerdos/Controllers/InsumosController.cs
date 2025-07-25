@@ -2234,7 +2234,6 @@ public class InsumosController : Controller
                 }).ToList()
         }).ToList();
 
-        ViewBag.Editando = true;
         ViewBag.MateriasPrimas = new SelectList(
                 db.tabla_materias_primas.ToList()
                 .Select(mp => new {
@@ -2253,6 +2252,7 @@ public class InsumosController : Controller
             "Value", "Text"
         );
 
+        ViewBag.Editando = true;
         return View("costos_recetas", new InsumosModel
             {
                 RecetaEditada = receta,
@@ -2696,6 +2696,16 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult CrearProductoFinal(ProductoFinal producto_final)
     {
+        // Asignar el valor del checkbox manualmente para cada suministro
+        if (producto_final.SuministrosUtilizados != null)
+        {
+            for (int i = 0; i < producto_final.SuministrosUtilizados.Count; i++)
+            {
+                var key = $"SuministrosUtilizados[{i}].es_impresion_de_facturas";
+                producto_final.SuministrosUtilizados[i].es_impresion_de_facturas = Request.Form[key] == "on";
+            }
+        }
+
         var errores = new List<string>();
 
         // Validar que no exista un producto final con el mismo nombre de receta
@@ -2897,13 +2907,11 @@ public class InsumosController : Controller
             });
         }
 
-        // Totales de insumos
-        decimal totalEmpaques = producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.total_costo) ?? 0;
-        decimal totalImplementos = producto_final.ImplementosUtilizados?.Sum(i => i.total_costo) ?? 0;
-
-        // Buscar el suministro de impresión por el campo booleano
-        var suministroImpresion = producto_final.SuministrosUtilizados?
-            .FirstOrDefault(s => s.es_impresion_de_facturas);
+        // Calcula el costo de la receta desde la base de datos
+        decimal costoReceta = receta?.costo_total_receta ?? 0;
+        decimal margenUtilidad = producto_final.margen_de_utilidad;
+        decimal costoSinUtilidad = 100m - margenUtilidad;
+        decimal costoConUtilidad = costoReceta / (costoSinUtilidad / 100m);
 
         // Suministros normales (excluyendo el de impresión)
         var suministrosNormales = producto_final.SuministrosUtilizados?
@@ -2912,10 +2920,13 @@ public class InsumosController : Controller
 
         decimal totalSuministros = suministrosNormales.Sum(s => s.total_costo);
 
-        // Cálculo de impresión
+        // Buscar el suministro de impresión por el campo booleano
+        var suministroImpresion = producto_final.SuministrosUtilizados?
+            .FirstOrDefault(s => s.es_impresion_de_facturas);
+
         decimal costoImpresionFacturaPorInsumo = 0;
         decimal costoTotalImpresionFactura = 0;
-        decimal porcion = receta?.porcion ?? 0;
+        decimal porcion = receta?.porcion ?? 1;
 
         if (suministroImpresion != null)
         {
@@ -2923,19 +2934,18 @@ public class InsumosController : Controller
             costoTotalImpresionFactura = porcion * costoImpresionFacturaPorInsumo;
         }
 
-        // Calcula el costo de la receta desde la base de datos
-        decimal costoReceta = receta?.costo_total_receta ?? 0;
-        decimal margenUtilidad = producto_final.margen_de_utilidad;
-        decimal costoSinUtilidad = 100 - margenUtilidad;
-        decimal costoConUtilidad = costoReceta / (costoSinUtilidad / 100m);
+        // Suma de costos por cantidad (multiplicando por la cantidad)
+        decimal sumaEmpaquesPorCantidad = producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.costo_por_cantidad * e.cantidad) ?? 0;
+        decimal sumaImplementosPorCantidad = producto_final.ImplementosUtilizados?.Sum(i => i.costo_por_cantidad * i.cantidad) ?? 0;
+        decimal sumaSuministrosPorCantidad = suministrosNormales.Sum(s => s.costo_por_cantidad * s.cantidad);
 
-        // Cálculo de la factura por insumo
-        decimal facturaPorInsumo = (costoReceta + totalEmpaques + totalImplementos + totalSuministros + costoTotalImpresionFactura) / porcion;
+        // Factura por insumo: suma de todos los costos individuales + impresión por insumo
+        decimal facturaPorInsumo = sumaEmpaquesPorCantidad + sumaImplementosPorCantidad + sumaSuministrosPorCantidad + costoImpresionFacturaPorInsumo;
 
-        // Factura (suma de totales de insumos + impresión)
-        decimal facturaTotal = totalEmpaques + totalImplementos + totalSuministros + costoTotalImpresionFactura;
+        // Factura total: suma de todos los totales + impresión total
+        decimal facturaTotal = sumaEmpaquesPorCantidad + sumaImplementosPorCantidad + sumaSuministrosPorCantidad + costoTotalImpresionFactura;
 
-        // Costo Total Empaque/Decoración, Implemento, Suministro con Porcentaje de Ganancia
+        // Total insumos con porcentaje de ganancia
         decimal totalInsumosConGanancia = facturaTotal * 1.10m;
 
         // IVA y Servicio
@@ -2979,8 +2989,8 @@ public class InsumosController : Controller
             margen_de_utilidad = margenUtilidad,
             costo_sin_margen_de_utilidad = costoReceta,
             costo_con_margen_de_utilidad = costoConUtilidad,
-            costo_empaque_decoracion_utilizado = totalEmpaques,
-            costo_implemento_utilizado = totalImplementos,
+            costo_empaque_decoracion_utilizado = sumaEmpaquesPorCantidad,
+            costo_implemento_utilizado = sumaImplementosPorCantidad,
             costo_suministro_utilizado = totalSuministros,
             costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorInsumo,
             costo_total_de_impresion_de_factura = costoTotalImpresionFactura,
@@ -3182,7 +3192,6 @@ public class InsumosController : Controller
                 }).ToList()
         }).ToList();
 
-        ViewBag.Editando = true;
         ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre", "nombre", producto_final.nombre_receta);
         ViewBag.EmpaquesDecoraciones = new SelectList(
             db.tabla_empaques_decoraciones.ToList()
@@ -3209,8 +3218,9 @@ public class InsumosController : Controller
                     Text = $"ID: {s.id} | Nombre: {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad}"
                 }),
             "Value", "Text"
-        ); 
-        
+        );
+
+        ViewBag.Editando = true;
         return View("precio_final", new InsumosModel
         {
             ProductoFinalEditado = producto_final,
@@ -3223,6 +3233,16 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult EditarProductoFinal(ProductoFinal producto_final)
     {
+        // Asignar el valor del checkbox manualmente para cada suministro
+        if (producto_final.SuministrosUtilizados != null)
+        {
+            for (int i = 0; i < producto_final.SuministrosUtilizados.Count; i++)
+            {
+                var key = $"SuministrosUtilizados[{i}].es_impresion_de_facturas";
+                producto_final.SuministrosUtilizados[i].es_impresion_de_facturas = Request.Form[key] == "on";
+            }
+        }
+
         var errores = new List<string>();
 
         if (db.tabla_precios_finales_sugeridos.Any(pf => pf.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && pf.id != producto_final.id))
@@ -3357,6 +3377,7 @@ public class InsumosController : Controller
         if (errores.Any())
         {
             ViewBag.Errores = errores;
+            ViewBag.Editando = true;
             ViewBag.Recetas = new SelectList(db.tabla_costos_recetas.ToList(), "nombre", "nombre");
             ViewBag.EmpaquesDecoraciones = new SelectList(
                 db.tabla_empaques_decoraciones.ToList()
@@ -3413,13 +3434,11 @@ public class InsumosController : Controller
             });
         }
 
-        // Totales de insumos
-        decimal totalEmpaques = producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.total_costo) ?? 0;
-        decimal totalImplementos = producto_final.ImplementosUtilizados?.Sum(i => i.total_costo) ?? 0;
-
-        // Buscar el suministro de impresión por el campo booleano
-        var suministroImpresion = producto_final.SuministrosUtilizados?
-            .FirstOrDefault(s => s.es_impresion_de_facturas);
+        // Calcula el costo de la receta desde la base de datos
+        decimal costoReceta = receta?.costo_total_receta ?? 0;
+        decimal margenUtilidad = producto_final.margen_de_utilidad;
+        decimal costoSinUtilidad = 100m - margenUtilidad;
+        decimal costoConUtilidad = costoReceta / (costoSinUtilidad / 100m);
 
         // Suministros normales (excluyendo el de impresión)
         var suministrosNormales = producto_final.SuministrosUtilizados?
@@ -3428,7 +3447,10 @@ public class InsumosController : Controller
 
         decimal totalSuministros = suministrosNormales.Sum(s => s.total_costo);
 
-        // Cálculo de impresión
+        // Buscar el suministro de impresión por el campo booleano
+        var suministroImpresion = producto_final.SuministrosUtilizados?
+            .FirstOrDefault(s => s.es_impresion_de_facturas);
+
         decimal costoImpresionFacturaPorInsumo = 0;
         decimal costoTotalImpresionFactura = 0;
         decimal porcion = receta?.porcion ?? 0;
@@ -3439,19 +3461,18 @@ public class InsumosController : Controller
             costoTotalImpresionFactura = porcion * costoImpresionFacturaPorInsumo;
         }
 
-        // Calcula el costo de la receta desde la base de datos
-        decimal costoReceta = receta?.costo_total_receta ?? 0;
-        decimal margenUtilidad = producto_final.margen_de_utilidad;
-        decimal costoSinUtilidad = 100 - margenUtilidad;
-        decimal costoConUtilidad = costoReceta / (costoSinUtilidad / 100m);
+        // Suma de costos por cantidad (multiplicando por la cantidad)
+        decimal sumaEmpaquesPorCantidad = producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.costo_por_cantidad * e.cantidad) ?? 0;
+        decimal sumaImplementosPorCantidad = producto_final.ImplementosUtilizados?.Sum(i => i.costo_por_cantidad * i.cantidad) ?? 0;
+        decimal sumaSuministrosPorCantidad = suministrosNormales.Sum(s => s.costo_por_cantidad * s.cantidad);
 
-        // Cálculo de la factura por insumo
-        decimal facturaPorInsumo = (costoReceta + totalEmpaques + totalImplementos + totalSuministros + costoTotalImpresionFactura) / porcion;
+        // Factura por insumo: suma de todos los costos individuales + impresión por insumo
+        decimal facturaPorInsumo = sumaEmpaquesPorCantidad + sumaImplementosPorCantidad + sumaSuministrosPorCantidad + costoImpresionFacturaPorInsumo;
 
-        // Factura (suma de totales de insumos + impresión)
-        decimal facturaTotal = totalEmpaques + totalImplementos + totalSuministros + costoTotalImpresionFactura;
+        // Factura total: suma de todos los totales + impresión total
+        decimal facturaTotal = sumaEmpaquesPorCantidad + sumaImplementosPorCantidad + sumaSuministrosPorCantidad + costoTotalImpresionFactura;
 
-        // Costo Total Empaque/Decoración, Implemento, Suministro con Porcentaje de Ganancia
+        // Total insumos con porcentaje de ganancia
         decimal totalInsumosConGanancia = facturaTotal * 1.10m;
 
         // IVA y Servicio
@@ -3494,8 +3515,8 @@ public class InsumosController : Controller
         p.margen_de_utilidad = margenUtilidad;
         p.costo_sin_margen_de_utilidad = costoReceta;
         p.costo_con_margen_de_utilidad = costoConUtilidad;
-        p.costo_empaque_decoracion_utilizado = totalEmpaques;
-        p.costo_implemento_utilizado = totalImplementos;
+        p.costo_empaque_decoracion_utilizado = sumaEmpaquesPorCantidad;
+        p.costo_implemento_utilizado = sumaImplementosPorCantidad;
         p.costo_suministro_utilizado = totalSuministros;
         p.costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorInsumo;
         p.costo_total_de_impresion_de_factura = costoTotalImpresionFactura;
