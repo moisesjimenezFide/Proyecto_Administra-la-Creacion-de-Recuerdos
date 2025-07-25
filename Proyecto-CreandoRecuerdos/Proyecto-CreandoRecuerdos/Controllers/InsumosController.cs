@@ -2913,14 +2913,14 @@ public class InsumosController : Controller
         decimal totalSuministros = suministrosNormales.Sum(s => s.total_costo);
 
         // Cálculo de impresión
-        decimal costoImpresionFacturaPorinsumo = 0;
+        decimal costoImpresionFacturaPorInsumo = 0;
         decimal costoTotalImpresionFactura = 0;
         decimal porcion = receta?.porcion ?? 0;
 
         if (suministroImpresion != null)
         {
-            costoImpresionFacturaPorinsumo = suministroImpresion.costo_por_cantidad / 20m;
-            costoTotalImpresionFactura = porcion * costoImpresionFacturaPorinsumo;
+            costoImpresionFacturaPorInsumo = suministroImpresion.costo_por_cantidad / 20m;
+            costoTotalImpresionFactura = porcion * costoImpresionFacturaPorInsumo;
         }
 
         // Calcula el costo de la receta desde la base de datos
@@ -2929,14 +2929,8 @@ public class InsumosController : Controller
         decimal costoSinUtilidad = 100 - margenUtilidad;
         decimal costoConUtilidad = costoReceta / (costoSinUtilidad / 100m);
 
-        // Factura por insumo (suma de costos por cantidad de todos los insumos + impresión)
-        decimal facturaPorinsumo = 0;
-        facturaPorinsumo += producto_final.ImplementosUtilizados?.Sum(i => i.costo_por_cantidad) ?? 0;
-        facturaPorinsumo += producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.costo_por_cantidad) ?? 0;
-        if (producto_final.SuministrosUtilizados != null && producto_final.SuministrosUtilizados.Count > 1)
-            facturaPorinsumo += producto_final.SuministrosUtilizados.Skip(1).Sum(s => s.costo_por_cantidad);
-        // Sumar el costo de impresión de factura por insumo (solo una vez)
-        facturaPorinsumo += costoImpresionFacturaPorinsumo;
+        // Cálculo de la factura por insumo
+        decimal facturaPorInsumo = (costoReceta + totalEmpaques + totalImplementos + totalSuministros + costoTotalImpresionFactura) / porcion;
 
         // Factura (suma de totales de insumos + impresión)
         decimal facturaTotal = totalEmpaques + totalImplementos + totalSuministros + costoTotalImpresionFactura;
@@ -2988,10 +2982,10 @@ public class InsumosController : Controller
             costo_empaque_decoracion_utilizado = totalEmpaques,
             costo_implemento_utilizado = totalImplementos,
             costo_suministro_utilizado = totalSuministros,
-            costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorinsumo,
+            costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorInsumo,
             costo_total_de_impresion_de_factura = costoTotalImpresionFactura,
             costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia = totalInsumosConGanancia,
-            factura_por_insumo = facturaPorinsumo,
+            factura_por_insumo = facturaPorInsumo,
             factura_total = facturaTotal,
             iva = iva,
             impuesto_de_servicio = servicio,
@@ -3435,14 +3429,14 @@ public class InsumosController : Controller
         decimal totalSuministros = suministrosNormales.Sum(s => s.total_costo);
 
         // Cálculo de impresión
-        decimal costoImpresionFacturaPorinsumo = 0;
+        decimal costoImpresionFacturaPorInsumo = 0;
         decimal costoTotalImpresionFactura = 0;
         decimal porcion = receta?.porcion ?? 0;
 
         if (suministroImpresion != null)
         {
-            costoImpresionFacturaPorinsumo = suministroImpresion.costo_por_cantidad / 20m;
-            costoTotalImpresionFactura = porcion * costoImpresionFacturaPorinsumo;
+            costoImpresionFacturaPorInsumo = suministroImpresion.costo_por_cantidad / 20m;
+            costoTotalImpresionFactura = porcion * costoImpresionFacturaPorInsumo;
         }
 
         // Calcula el costo de la receta desde la base de datos
@@ -3451,14 +3445,8 @@ public class InsumosController : Controller
         decimal costoSinUtilidad = 100 - margenUtilidad;
         decimal costoConUtilidad = costoReceta / (costoSinUtilidad / 100m);
 
-        // Factura por insumo (suma de costos por cantidad de todos los insumos + impresión)
-        decimal facturaPorinsumo = 0;
-        facturaPorinsumo += producto_final.ImplementosUtilizados?.Sum(i => i.costo_por_cantidad) ?? 0;
-        facturaPorinsumo += producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.costo_por_cantidad) ?? 0;
-        if (producto_final.SuministrosUtilizados != null && producto_final.SuministrosUtilizados.Count > 1)
-            facturaPorinsumo += producto_final.SuministrosUtilizados.Skip(1).Sum(s => s.costo_por_cantidad);
-        // Sumar el costo de impresión de factura por insumo (solo una vez)
-        facturaPorinsumo += costoImpresionFacturaPorinsumo;
+        // Cálculo de la factura por insumo
+        decimal facturaPorInsumo = (costoReceta + totalEmpaques + totalImplementos + totalSuministros + costoTotalImpresionFactura) / porcion;
 
         // Factura (suma de totales de insumos + impresión)
         decimal facturaTotal = totalEmpaques + totalImplementos + totalSuministros + costoTotalImpresionFactura;
@@ -3509,10 +3497,10 @@ public class InsumosController : Controller
         p.costo_empaque_decoracion_utilizado = totalEmpaques;
         p.costo_implemento_utilizado = totalImplementos;
         p.costo_suministro_utilizado = totalSuministros;
-        p.costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorinsumo;
+        p.costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorInsumo;
         p.costo_total_de_impresion_de_factura = costoTotalImpresionFactura;
         p.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia = totalInsumosConGanancia;
-        p.factura_por_insumo = facturaPorinsumo;
+        p.factura_por_insumo = facturaPorInsumo;
         p.factura_total = facturaTotal;
         p.iva = iva;
         p.impuesto_de_servicio = servicio;
