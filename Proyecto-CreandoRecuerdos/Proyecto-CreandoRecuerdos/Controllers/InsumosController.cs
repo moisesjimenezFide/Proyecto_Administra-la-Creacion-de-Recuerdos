@@ -196,7 +196,7 @@ public class InsumosController : Controller
             });
         }
 
-        // Conversión de volumen_de_porcion
+        // Conversión de volumen de porción
         decimal? volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion;
         string unidadPresentacion = materia_prima.unidad_de_medida_de_presentacion?.ToLower();
         string unidadPeso = materia_prima.unidad_de_medida_del_peso?.ToLower();
@@ -433,7 +433,7 @@ public class InsumosController : Controller
             });
         }
 
-        // Conversión de volumen_de_porcion
+        // Conversión de volumen de porción
         decimal? volumenConvertido = materia_prima.volumen_de_porcion_de_presentacion;
         string unidadPresentacion = materia_prima.unidad_de_medida_de_presentacion?.ToLower();
         string unidadPeso = materia_prima.unidad_de_medida_del_peso?.ToLower();
@@ -667,7 +667,7 @@ public class InsumosController : Controller
             });
         }
 
-        // Conversión de volumen_de_porcion
+        // Conversión de volumen de porción
         decimal? volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion;
         string unidadPresentacion = producto_preparado.unidad_de_medida_de_presentacion?.ToLower();
         string unidadPeso = producto_preparado.unidad_de_medida_del_peso?.ToLower();
@@ -880,7 +880,7 @@ public class InsumosController : Controller
             });
         }
 
-        // Conversión de volumen_de_porcion
+        // Conversión de volumen de porción
         decimal? volumenConvertido = producto_preparado.volumen_de_porcion_de_presentacion;
         string unidadPresentacion = producto_preparado.unidad_de_medida_de_presentacion?.ToLower();
         string unidadPeso = producto_preparado.unidad_de_medida_del_peso?.ToLower();
@@ -1561,7 +1561,7 @@ public class InsumosController : Controller
     // Crear un nuevo suministro
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Crearsuministro(Suministro suministro)
+    public ActionResult CrearSuministro(Suministro suministro)
     {
         // --- PARSE CORRECTO DEL COSTO ---
         string costoStr = Request.Form["costo"];
@@ -1655,7 +1655,7 @@ public class InsumosController : Controller
     }
 
     // Editar un suministro existente (GET id)
-    public ActionResult Editarsuministro(int id)
+    public ActionResult EditarSuministro(int id)
     {
         var s = db.tabla_suministros.Find(id);
         if (s == null) return HttpNotFound();
@@ -1697,7 +1697,7 @@ public class InsumosController : Controller
     // Editar un suministro existente (POST)
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Editarsuministro(Suministro suministro)
+    public ActionResult EditarSuministro(Suministro suministro)
     {
         // --- PARSE CORRECTO DEL COSTO ---
         string costoStr = Request.Form["costo"];
@@ -1794,7 +1794,7 @@ public class InsumosController : Controller
     }
 
     // Eliminar un suministro existente
-    public ActionResult Eliminarsuministro(int id)
+    public ActionResult EliminarSuministro(int id)
     {
         var s = db.tabla_suministros.Find(id);
         if (s != null)
@@ -2655,7 +2655,8 @@ public class InsumosController : Controller
                         cantidad = s.cantidad ?? 0,
                         unidad_de_medida = s.unidad_de_medida,
                         costo_por_cantidad = s.costo_por_cantidad ?? 0,
-                        total_costo = s.total_costo ?? 0
+                        total_costo = s.total_costo ?? 0,
+                        es_impresion_de_facturas = s.es_impresion_de_facturas ?? false
                     }).ToList()
             }).ToList()
         };
@@ -2900,22 +2901,26 @@ public class InsumosController : Controller
         decimal totalEmpaques = producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.total_costo) ?? 0;
         decimal totalImplementos = producto_final.ImplementosUtilizados?.Sum(i => i.total_costo) ?? 0;
 
-        // Suministros: el primero es impresión, el resto son suministros normales
-        decimal totalSuministros = 0;
+        // Buscar el suministro de impresión por el campo booleano
+        var suministroImpresion = producto_final.SuministrosUtilizados?
+            .FirstOrDefault(s => s.es_impresion_de_facturas);
+
+        // Suministros normales (excluyendo el de impresión)
+        var suministrosNormales = producto_final.SuministrosUtilizados?
+            .Where(s => !s.es_impresion_de_facturas)
+            .ToList() ?? new List<SuministroUtilizado>();
+
+        decimal totalSuministros = suministrosNormales.Sum(s => s.total_costo);
+
+        // Cálculo de impresión
         decimal costoImpresionFacturaPorinsumo = 0;
         decimal costoTotalImpresionFactura = 0;
         decimal porcion = receta?.porcion ?? 0;
 
-        if (producto_final.SuministrosUtilizados != null && producto_final.SuministrosUtilizados.Count > 0)
+        if (suministroImpresion != null)
         {
-            // Primer suministro es impresión
-            var primersuministro = producto_final.SuministrosUtilizados[0];
-            costoImpresionFacturaPorinsumo = primersuministro.costo_por_cantidad / 20m;
+            costoImpresionFacturaPorinsumo = suministroImpresion.costo_por_cantidad / 20m;
             costoTotalImpresionFactura = porcion * costoImpresionFacturaPorinsumo;
-
-            // El resto son suministros normales
-            if (producto_final.SuministrosUtilizados.Count > 1)
-                totalSuministros = producto_final.SuministrosUtilizados.Skip(1).Sum(s => s.total_costo);
         }
 
         // Calcula el costo de la receta desde la base de datos
@@ -3041,7 +3046,8 @@ public class InsumosController : Controller
                     cantidad = s.cantidad,
                     unidad_de_medida = s.unidad_de_medida,
                     costo_por_cantidad = s.costo_por_cantidad,
-                    total_costo = s.total_costo
+                    total_costo = s.total_costo,
+                    es_impresion_de_facturas = s.es_impresion_de_facturas
                 });
             }
         }
@@ -3114,7 +3120,8 @@ public class InsumosController : Controller
                     cantidad = s.cantidad ?? 0,
                     unidad_de_medida = s.unidad_de_medida,
                     costo_por_cantidad = s.costo_por_cantidad ?? 0,
-                    total_costo = s.total_costo ?? 0
+                    total_costo = s.total_costo ?? 0,
+                    es_impresion_de_facturas = s.es_impresion_de_facturas ?? false
                 }).ToList()
         };
 
@@ -3176,7 +3183,8 @@ public class InsumosController : Controller
                     cantidad = s.cantidad ?? 0,
                     unidad_de_medida = s.unidad_de_medida,
                     costo_por_cantidad = s.costo_por_cantidad ?? 0,
-                    total_costo = s.total_costo ?? 0
+                    total_costo = s.total_costo ?? 0,
+                    es_impresion_de_facturas = s.es_impresion_de_facturas ?? false
                 }).ToList()
         }).ToList();
 
@@ -3415,22 +3423,26 @@ public class InsumosController : Controller
         decimal totalEmpaques = producto_final.EmpaquesDecoracionesUtilizados?.Sum(e => e.total_costo) ?? 0;
         decimal totalImplementos = producto_final.ImplementosUtilizados?.Sum(i => i.total_costo) ?? 0;
 
-        // Suministros: el primero es impresión, el resto son suministros normales
-        decimal totalSuministros = 0;
+        // Buscar el suministro de impresión por el campo booleano
+        var suministroImpresion = producto_final.SuministrosUtilizados?
+            .FirstOrDefault(s => s.es_impresion_de_facturas);
+
+        // Suministros normales (excluyendo el de impresión)
+        var suministrosNormales = producto_final.SuministrosUtilizados?
+            .Where(s => !s.es_impresion_de_facturas)
+            .ToList() ?? new List<SuministroUtilizado>();
+
+        decimal totalSuministros = suministrosNormales.Sum(s => s.total_costo);
+
+        // Cálculo de impresión
         decimal costoImpresionFacturaPorinsumo = 0;
         decimal costoTotalImpresionFactura = 0;
         decimal porcion = receta?.porcion ?? 0;
 
-        if (producto_final.SuministrosUtilizados != null && producto_final.SuministrosUtilizados.Count > 0)
+        if (suministroImpresion != null)
         {
-            // Primer suministro es impresión
-            var primersuministro = producto_final.SuministrosUtilizados[0];
-            costoImpresionFacturaPorinsumo = primersuministro.costo_por_cantidad / 20m;
+            costoImpresionFacturaPorinsumo = suministroImpresion.costo_por_cantidad / 20m;
             costoTotalImpresionFactura = porcion * costoImpresionFacturaPorinsumo;
-
-            // El resto son suministros normales
-            if (producto_final.SuministrosUtilizados.Count > 1)
-                totalSuministros = producto_final.SuministrosUtilizados.Skip(1).Sum(s => s.total_costo);
         }
 
         // Calcula el costo de la receta desde la base de datos
@@ -3560,7 +3572,8 @@ public class InsumosController : Controller
                     cantidad = s.cantidad,
                     unidad_de_medida = s.unidad_de_medida,
                     costo_por_cantidad = s.costo_por_cantidad,
-                    total_costo = s.total_costo
+                    total_costo = s.total_costo,
+                    es_impresion_de_facturas = s.es_impresion_de_facturas
                 });
             }
         }

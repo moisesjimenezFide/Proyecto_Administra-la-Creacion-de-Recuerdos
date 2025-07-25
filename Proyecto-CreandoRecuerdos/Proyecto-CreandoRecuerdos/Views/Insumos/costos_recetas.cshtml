@@ -87,6 +87,7 @@
 
                     <div class="row fila-insumo template-materia_prima">
                         <div class="col-md-4">
+                            <br>
                             <label>Nombre</label>
                             @Html.DropDownList(
                                 $"MateriasPrimasUtilizadas[{i}].id_materia_prima_utilizada",
@@ -100,15 +101,22 @@
                                 new { @class = "form-control select-scroll-horizontal-vertical" }
                             )
                         </div>
+
                         <div class="col-md-3">
+                            <br>
                             <label>Cantidad</label>
                             <input type="number" name="MateriasPrimasUtilizadas[@i].cantidad" class="form-control" value="@materia_prima.cantidad" />
                         </div>
+
                         <div class="col-md-3">
+                            <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="MateriasPrimasUtilizadas[@i].unidad_de_medida" class="form-control" value="@materia_prima.unidad_de_medida" />
                         </div>
+
                         <div class="col-md-2">
+                            <br>
+                            <br>
                             <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                         </div>
                     </div>
@@ -117,6 +125,7 @@
 
             <div class="row fila-insumo template-materia_prima" style="display: none;">
                 <div class="col-md-4">
+                    <br>
                     <label>Nombre</label>
                     @Html.DropDownList(
                         "MateriasPrimasUtilizadas[__index__].id_materia_prima_utilizada",
@@ -125,15 +134,22 @@
                         new { @class = "form-control select-scroll-horizontal-vertical" }
                     )
                 </div>
+
                 <div class="col-md-3">
+                    <br>
                     <label>Cantidad</label>
                     <input type="number" name="MateriasPrimasUtilizadas[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
+
                 <div class="col-md-3">
+                    <br>
                     <label>Unidad de medida</label>
                     <input type="text" name="MateriasPrimasUtilizadas[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
+
                 <div class="col-md-2">
+                    <br>
+                    <br>
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                 </div>
             </div>
@@ -152,6 +168,7 @@
 
                     <div class="row fila-insumo template-producto_preparado">
                         <div class="col-md-4">
+                            <br>
                             <label>Nombre</label>
                             @Html.DropDownList(
                                 $"ProductosPreparadosUtilizados[{i}].id_producto_preparado_utilizado",
@@ -165,15 +182,22 @@
                                 new { @class = "form-control select-scroll-horizontal-vertical" }
                             )
                         </div>
+
                         <div class="col-md-3">
+                            <br>
                             <label>Cantidad</label>
                             <input type="number" name="ProductosPreparadosUtilizados[@i].cantidad" class="form-control" value="@producto_preparado.cantidad" />
                         </div>
+
                         <div class="col-md-3">
+                            <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="ProductosPreparadosUtilizados[@i].unidad_de_medida" class="form-control" value="@producto_preparado.unidad_de_medida" />
                         </div>
+
                         <div class="col-md-2">
+                            <br>
+                            <br>
                             <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                         </div>
                     </div>
@@ -182,6 +206,7 @@
 
             <div class="row fila-insumo template-producto_preparado" style="display: none;">
                 <div class="col-md-4">
+                    <br>
                     <label>Nombre</label>
                     @Html.DropDownList(
                         "ProductosPreparadosUtilizados[__index__].id_producto_preparado_utilizado",
@@ -190,15 +215,22 @@
                         new { @class = "form-control select-scroll-horizontal-vertical" }
                     )
                 </div>
+
                 <div class="col-md-3">
+                    <br>
                     <label>Cantidad</label>
                     <input type="number" name="ProductosPreparadosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
+
                 <div class="col-md-3">
+                    <br>
                     <label>Unidad de medida</label>
                     <input type="text" name="ProductosPreparadosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
+
                 <div class="col-md-2">
+                    <br>
+                    <br>
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                 </div>
             </div>

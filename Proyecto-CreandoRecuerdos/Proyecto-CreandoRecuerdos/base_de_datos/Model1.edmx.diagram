@@ -5,11 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="fdb76d9d50cc4d4db36520e4b0f47f0c" Name="Diagram1" ZoomLevel="133">
-        <EntityTypeShape EntityType="Model1.costos_receta_materias_primas_utilizadas" Width="1.5" PointX="14" PointY="21.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model1.costos_receta_productos_preparados_utilizados" Width="1.5" PointX="17" PointY="21.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model1.precios_empaques_decoraciones_utilizados" Width="1.5" PointX="16.25" PointY="28.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model1.precios_implementos_utilizados" Width="1.5" PointX="19.25" PointY="28.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model1.precios_suministros_utilizados" Width="1.5" PointX="16.25" PointY="32.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Model1.tabla_actividades" Width="1.5" PointX="5.625" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="Model1.tabla_categorias" Width="1.5" PointX="5.25" PointY="19.25" IsExpanded="true" />
         <EntityTypeShape EntityType="Model1.tabla_clientes" Width="1.5" PointX="5.625" PointY="14.25" IsExpanded="true" />
@@ -30,11 +25,6 @@
         <EntityTypeShape EntityType="Model1.tabla_ventas" Width="1.5" PointX="7.875" PointY="11.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Model1.Vehiculos" Width="1.5" PointX="15" PointY="14" IsExpanded="true" />
         <EntityTypeShape EntityType="Model1.Vendedores" Width="1.5" PointX="12.75" PointY="14" IsExpanded="true" />
-        <AssociationConnector Association="Model1.FK__costos_re__id_re__02FC7413" ManuallyRouted="false" />
-        <AssociationConnector Association="Model1.FK__costos_re__id_re__04E4BC85" ManuallyRouted="false" />
-        <AssociationConnector Association="Model1.FK__precios_e__id_em__05D8E0BE" ManuallyRouted="false" />
-        <AssociationConnector Association="Model1.FK__precios_i__id_im__07C12930" ManuallyRouted="false" />
-        <AssociationConnector Association="Model1.FK__precios_s__id_su__0A9D95DB" ManuallyRouted="false" />
         <AssociationConnector Association="Model1.FK__tabla_act__id_us__0B91BA14" ManuallyRouted="false" />
         <AssociationConnector Association="Model1.FK_tabla_actividades_usuarios" ManuallyRouted="false" />
         <AssociationConnector Association="Model1.FK__tabla_pro__id_ca__10566F31" ManuallyRouted="false" />
@@ -54,13 +44,23 @@
         <AssociationConnector Association="Model1.FK_Vehiculos_Vendedores" ManuallyRouted="false" />
         <EntityTypeShape EntityType="Model1.tabla_materias_primas" Width="1.5" PointX="18" PointY="15.25" />
         <EntityTypeShape EntityType="Model1.tabla_productos_preparados" Width="1.5" PointX="20.25" PointY="15.25" />
-        <AssociationConnector Association="Model1.FK__costos_re__id_ma__02084FDA" />
-        <AssociationConnector Association="Model1.FK__costos_re__id_pr__03F0984C" />
         <EntityTypeShape EntityType="Model1.tabla_precios_finales_sugeridos" Width="1.5" PointX="14" PointY="25.125" />
+        <AssociationConnector Association="Model1.FK__tabla_pre__id_re__0F624AF8" />
+        <EntityTypeShape EntityType="Model1.costos_receta_materias_primas_utilizadas" Width="1.5" PointX="20.25" PointY="20.375" />
+        <EntityTypeShape EntityType="Model1.costos_receta_productos_preparados_utilizados" Width="1.5" PointX="22.5" PointY="18.375" />
+        <EntityTypeShape EntityType="Model1.precios_empaques_decoraciones_utilizados" Width="1.5" PointX="16.25" PointY="29.875" />
+        <EntityTypeShape EntityType="Model1.precios_implementos_utilizados" Width="1.5" PointX="19.25" PointY="30.875" />
+        <EntityTypeShape EntityType="Model1.precios_suministros_utilizados" Width="1.5" PointX="19.25" PointY="34.75" />
+        <AssociationConnector Association="Model1.FK__costos_re__id_ma__02084FDA" />
+        <AssociationConnector Association="Model1.FK__costos_re__id_re__02FC7413" />
+        <AssociationConnector Association="Model1.FK__costos_re__id_pr__03F0984C" />
+        <AssociationConnector Association="Model1.FK__costos_re__id_re__04E4BC85" />
+        <AssociationConnector Association="Model1.FK__precios_e__id_em__05D8E0BE" />
         <AssociationConnector Association="Model1.FK__precios_e__id_pr__06CD04F7" />
+        <AssociationConnector Association="Model1.FK__precios_i__id_im__07C12930" />
         <AssociationConnector Association="Model1.FK__precios_i__id_pr__08B54D69" />
         <AssociationConnector Association="Model1.FK__precios_s__id_pr__09A971A2" />
-        <AssociationConnector Association="Model1.FK__tabla_pre__id_re__0F624AF8" />
+        <AssociationConnector Association="Model1.FK__precios_s__id_su__0A9D95DB" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -121,6 +121,7 @@
 
                     <div class="row fila-insumo template-empaque_decoracion">
                         <div class="col-md-4">
+                            <br>
                             <label>Nombre</label>
                             @Html.DropDownList(
                                 $"EmpaquesDecoracionesUtilizados[{i}].id_empaque_decoracion_utilizado",
@@ -131,16 +132,20 @@
                         </div>
 
                         <div class="col-md-3">
+                            <br>
                             <label>Cantidad</label>
                             <input type="number" name="EmpaquesDecoracionesUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
                         </div>
 
                         <div class="col-md-3">
+                            <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="EmpaquesDecoracionesUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
                         </div>
 
                         <div class="col-md-2">
+                            <br>
+                            <br>
                             <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                         </div>
 
@@ -150,6 +155,7 @@
 
             <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
                 <div class="col-md-4">
+                    <br>
                     <label>Nombre</label>
                     @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].id_empaque_decoracion_utilizado",
                     ViewBag.EmpaquesDecoraciones as SelectList,
@@ -158,16 +164,20 @@
                 </div>
 
                 <div class="col-md-3">
+                    <br>
                     <label>Cantidad</label>
                     <input type="number" name="EmpaquesDecoracionesUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
 
                 <div class="col-md-3">
+                    <br>
                     <label>Unidad de medida</label>
                     <input type="text" name="EmpaquesDecoracionesUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
 
                 <div class="col-md-2">
+                    <br>
+                    <br>
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                 </div>
 
@@ -187,7 +197,8 @@
                     var item = productoFinalEditado.ImplementosUtilizados[i];
 
                     <div class="row fila-insumo template-implemento">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <br>
                             <label>Nombre</label>
                             @Html.DropDownList(
                             $"ImplementosUtilizados[{i}].id_implemento_utilizado",
@@ -198,16 +209,20 @@
                         </div>
 
                         <div class="col-md-3">
+                            <br>
                             <label>Cantidad</label>
                             <input type="number" name="ImplementosUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
                         </div>
 
                         <div class="col-md-3">
+                            <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="ImplementosUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
                         </div>
 
                         <div class="col-md-2">
+                            <br>
+                            <br>
                             <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                         </div>
                     </div>
@@ -215,7 +230,8 @@
             }
 
             <div class="row fila-insumo template-implemento" style="display: none;">
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <br>
                     <label>Nombre</label>
                     @Html.DropDownList("ImplementosUtilizados[__index__].id_implemento_utilizado",
                     ViewBag.Implementos as SelectList,
@@ -224,16 +240,20 @@
                 </div>
 
                 <div class="col-md-3">
+                    <br>
                     <label>Cantidad</label>
                     <input type="number" name="ImplementosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
                 </div>
 
                 <div class="col-md-3">
+                    <br>
                     <label>Unidad de medida</label>
                     <input type="text" name="ImplementosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
                 </div>
 
                 <div class="col-md-2">
+                    <br>
+                    <br>
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                 </div>
 
@@ -253,7 +273,8 @@
                     var item = productoFinalEditado.SuministrosUtilizados[i];
 
                     <div class="row fila-insumo template-suministro">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <br>
                             <label>Nombre</label>
                             @Html.DropDownList(
                             $"SuministrosUtilizados[{i}].id_suministro_utilizado",
@@ -263,60 +284,90 @@
                         )
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <br>
                             <label>Cantidad</label>
                             <input type="number" name="SuministrosUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="SuministrosUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
                         </div>
 
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
-                        </div>
+                        <div class="col-md-5 d-flex align-items-start">
+                            <div class="w-100">
+                                <br>
+                                <label>¿Es un suministro de impresión?</label>
+                                <div class="d-flex justify-content-center">
+                                    <input type="checkbox" name="SuministrosUtilizados[@i].es_impresion_de_facturas" class="form-check-input mt-2" @(item.es_impresion_de_facturas ? "checked" : "") />
+                                </div>
+                            </div>
 
+                            <div class="col-md-3">
+                                <br>
+                                <br>
+                                <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
+                            </div>
+                        </div>
                     </div>
                 }
             }
 
-            <div class="row fila-insumo template-suministro" style="display: none;">
-                <div class="col-md-4">
-                    <label>Nombre</label>
-                    @Html.DropDownList("SuministrosUtilizados[__index__].id_suministro_utilizado",
-                    ViewBag.Suministros as SelectList,
-                    "Seleccione un suministro",
-                    new { @class = "form-control select-scroll-horizontal-vertical" })
+        <div class="row fila-insumo template-suministro" style="display: none;">
+            <div class="col-md-3">
+                <br>
+                <label>Nombre</label>
+                @Html.DropDownList("SuministrosUtilizados[__index__].id_suministro_utilizado",
+                ViewBag.Suministros as SelectList,
+                "Seleccione un suministro",
+                new { @class = "form-control select-scroll-horizontal-vertical" })
+            </div>
+
+            <div class="col-md-2">
+                <br>
+                <label>Cantidad</label>
+                <input type="number" name="SuministrosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <br>
+                <label>Unidad de medida</label>
+                <input type="text" name="SuministrosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
+            </div>
+
+            <div class="col-md-5 d-flex align-items-start">
+                <div class="w-100">
+                    <br>
+                    <label>¿Es un suministro de impresión?</label>
+                    <div class="d-flex justify-content-center">
+                        <input type="checkbox" name="SuministrosUtilizados[__index__].es_impresion_de_facturas" class="form-check-input mt-2" />
+                    </div>
                 </div>
 
                 <div class="col-md-3">
-                    <label>Cantidad</label>
-                    <input type="number" name="SuministrosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
-                </div>
-
-                <div class="col-md-3">
-                    <label>Unidad de medida</label>
-                    <input type="text" name="SuministrosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
-                </div>
-
-                <div class="col-md-2">
+                    <br>
+                    <br>
                     <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
                 </div>
-
             </div>
+
+        </div>
             <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('suministros-container', 'template-suministro')">+ Agregar Suministro</button>
         </div>
         <br />
 
-        <div class="mb-3 text-start">
+        <div class="mb-3 text-start input-percent">
             <label for="iva_porcentaje" class="form-label">IVA (%)</label>
-            <input type="number" name="iva_porcentaje" id="iva_porcentaje" class="form-control" value="@(editando ? productoFinalEditado.iva.ToString("0.##") : "13")" min="0" max="100" step="0.01" />
+            <input type="number" name="iva_porcentaje" id="iva_porcentaje" class="form-control" value="@(editando ? productoFinalEditado.iva.ToString("0.##") : "")" min="0" max="100" step="0.01" />
+            <span class="percent-sign">%</span>
         </div>
 
-        <div class="mb-3 text-start">
+        <div class="mb-3 text-start input-percent">
             <label for="servicio_porcentaje" class="form-label">Impuesto de Servicio (%)</label>
-            <input type="number" name="servicio_porcentaje" id="servicio_porcentaje" class="form-control" value="@(editando ? productoFinalEditado.impuesto_de_servicio.ToString("0.##") : "10")" min="0" max="100" step="0.01" />
+            <input type="number" name="servicio_porcentaje" id="servicio_porcentaje" class="form-control" value="@(editando ? productoFinalEditado.impuesto_de_servicio.ToString("0.##") : "")" min="0" max="100" step="0.01" />
+            <span class="percent-sign">%</span>
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
@@ -401,7 +452,7 @@
                             </td>
 
                             <td>@productofinal.margen_de_utilidad%</td>
-                            <td>@(100 - productofinal.margen_de_utilidad)%</td>
+                            <td>@(productofinal.costo_sin_margen_de_utilidad)%</td>
                             <td>₡@productofinal.costo_con_margen_de_utilidad.ToString("N2")</td>
                             
                             <!-- Empaques y/o Decoraciones -->

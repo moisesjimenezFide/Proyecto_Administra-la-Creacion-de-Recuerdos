@@ -9,7 +9,7 @@
     <Property Name="id_materia_prima_utilizada" Type="int" />
     <Property Name="cantidad" Type="int" />
     <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" />
     <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="costos_receta_productos_preparados_utilizados">
@@ -21,7 +21,7 @@
     <Property Name="id_producto_preparado_utilizado" Type="int" />
     <Property Name="cantidad" Type="int" />
     <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" />
     <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="precios_empaques_decoraciones_utilizados">
@@ -33,7 +33,7 @@
     <Property Name="id_empaque_decoracion_utilizado" Type="int" />
     <Property Name="cantidad" Type="int" />
     <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" />
     <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="precios_implementos_utilizados">
@@ -45,7 +45,7 @@
     <Property Name="id_implemento_utilizado" Type="int" />
     <Property Name="cantidad" Type="int" />
     <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" />
     <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="precios_suministros_utilizados">
@@ -57,8 +57,9 @@
     <Property Name="id_suministro_utilizado" Type="int" />
     <Property Name="cantidad" Type="int" />
     <Property Name="unidad_de_medida" Type="nvarchar" MaxLength="50" />
-    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="costo_por_cantidad" Type="decimal" Precision="18" Scale="2" />
     <Property Name="total_costo" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="es_impresion_de_facturas" Type="bit" />
   </EntityType>
   <EntityType Name="tabla_actividades">
     <Key>
@@ -100,7 +101,7 @@
     <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="costo_total_receta" Type="decimal" Precision="18" Scale="2" />
     <Property Name="porcion" Type="int" />
-    <Property Name="costo_por_porcion" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="costo_por_porcion" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="tabla_detalle_venta">
     <Key>

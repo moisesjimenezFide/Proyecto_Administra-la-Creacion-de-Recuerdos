@@ -27,11 +27,6 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<costos_receta_materias_primas_utilizadas> costos_receta_materias_primas_utilizadas { get; set; }
-        public virtual DbSet<costos_receta_productos_preparados_utilizados> costos_receta_productos_preparados_utilizados { get; set; }
-        public virtual DbSet<precios_empaques_decoraciones_utilizados> precios_empaques_decoraciones_utilizados { get; set; }
-        public virtual DbSet<precios_implementos_utilizados> precios_implementos_utilizados { get; set; }
-        public virtual DbSet<precios_suministros_utilizados> precios_suministros_utilizados { get; set; }
         public virtual DbSet<tabla_actividades> tabla_actividades { get; set; }
         public virtual DbSet<tabla_categorias> tabla_categorias { get; set; }
         public virtual DbSet<tabla_clientes> tabla_clientes { get; set; }
@@ -55,6 +50,11 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public virtual DbSet<tabla_materias_primas> tabla_materias_primas { get; set; }
         public virtual DbSet<tabla_productos_preparados> tabla_productos_preparados { get; set; }
         public virtual DbSet<tabla_precios_finales_sugeridos> tabla_precios_finales_sugeridos { get; set; }
+        public virtual DbSet<costos_receta_materias_primas_utilizadas> costos_receta_materias_primas_utilizadas { get; set; }
+        public virtual DbSet<costos_receta_productos_preparados_utilizados> costos_receta_productos_preparados_utilizados { get; set; }
+        public virtual DbSet<precios_empaques_decoraciones_utilizados> precios_empaques_decoraciones_utilizados { get; set; }
+        public virtual DbSet<precios_implementos_utilizados> precios_implementos_utilizados { get; set; }
+        public virtual DbSet<precios_suministros_utilizados> precios_suministros_utilizados { get; set; }
     
         public virtual int sp_activar_usuario(Nullable<int> id)
         {

@@ -200,5 +200,6 @@ namespace Proyecto_CreandoRecuerdos.Models
         public string unidad_de_medida { get; set; }
         public decimal costo_por_cantidad { get; set; }
         public decimal total_costo { get; set; }
+        public bool es_impresion_de_facturas { get; set; }
     }
 }
