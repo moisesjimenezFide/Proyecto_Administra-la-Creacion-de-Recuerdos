@@ -27,16 +27,28 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
-                var result = context.sp_crear_cuenta(model.nombre, model.correo, model.contrasenna, model.telefono);
+                // Ejecutamos el stored procedure (versión que solo retorna valores numéricos)
+                var resultado = context.sp_crear_cuenta(
+                    model.nombre,
+                    model.correo,
+                    model.contrasenna
+                );
 
-                if (result > 0)
+                // Manejamos los diferentes códigos de retorno
+                switch (resultado)
                 {
-                    return RedirectToAction("registro_usuarios", "Registro_Usuarios");
-                }
+                    case 1: // Éxito
+                        TempData["SuccessMessage"] = "¡Cuenta creada exitosamente!";
+                        return RedirectToAction("inicio", "Inicio");
 
-                // Si llega aquí es porque hubo un error
-                TempData["ErrorMessage"] = "No se pudo completar el registro. Por favor intente nuevamente";
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                    case 0: // Correo ya existe
+                        TempData["ErrorMessage"] = "El correo electrónico ya está registrado";
+                        return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+
+                    default: // Otros errores
+                        TempData["ErrorMessage"] = "Error al crear la cuenta. Por favor intente nuevamente";
+                        return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                }
             }
         }
 
@@ -59,20 +71,20 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                     if (info.Resultado == 0)
                     {
-                        ViewBag.Mensaje = "Credenciales incorrectas. Por favor verifique sus datos.";
-                        return View(model);
+                        TempData["ErrorMessage"] = "Credenciales incorrectas. Por favor verifique sus datos.";
+                        return RedirectToAction("registro_usuarios", "Registro_Usuarios");
                     }
 
                     if (info.Resultado == -1)
                     {
-                        ViewBag.Mensaje = "Usuario inactivo.";
-                        return View(model);
+                        TempData["ErrorMessage"] = "Usuario inactivo.";
+                        return RedirectToAction("registro_usuarios", "Registro_Usuarios");
                     }
                 }
 
                 // Si info es null
-                ViewBag.Mensaje = "No se pudo validar el usuario. Intente de nuevo.";
-                return View(model);
+                TempData["ErrorMessage"] = "No se pudo validar el usuario. Intente de nuevo.";
+                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
             }
         }
 

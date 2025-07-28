@@ -17,9 +17,9 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tabla_costos_recetas()
         {
-            this.tabla_precios_finales_sugeridos = new HashSet<tabla_precios_finales_sugeridos>();
             this.costos_receta_materias_primas_utilizadas = new HashSet<costos_receta_materias_primas_utilizadas>();
             this.costos_receta_productos_preparados_utilizados = new HashSet<costos_receta_productos_preparados_utilizados>();
+            this.tabla_precios_finales_sugeridos = new HashSet<tabla_precios_finales_sugeridos>();
         }
     
         public int id { get; set; }
@@ -29,10 +29,10 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<decimal> costo_por_porcion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tabla_precios_finales_sugeridos> tabla_precios_finales_sugeridos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<costos_receta_materias_primas_utilizadas> costos_receta_materias_primas_utilizadas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<costos_receta_productos_preparados_utilizados> costos_receta_productos_preparados_utilizados { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tabla_precios_finales_sugeridos> tabla_precios_finales_sugeridos { get; set; }
     }
 }

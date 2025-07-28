@@ -27,6 +27,11 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<costos_receta_materias_primas_utilizadas> costos_receta_materias_primas_utilizadas { get; set; }
+        public virtual DbSet<costos_receta_productos_preparados_utilizados> costos_receta_productos_preparados_utilizados { get; set; }
+        public virtual DbSet<precios_empaques_decoraciones_utilizados> precios_empaques_decoraciones_utilizados { get; set; }
+        public virtual DbSet<precios_implementos_utilizados> precios_implementos_utilizados { get; set; }
+        public virtual DbSet<precios_suministros_utilizados> precios_suministros_utilizados { get; set; }
         public virtual DbSet<tabla_actividades> tabla_actividades { get; set; }
         public virtual DbSet<tabla_categorias> tabla_categorias { get; set; }
         public virtual DbSet<tabla_clientes> tabla_clientes { get; set; }
@@ -36,8 +41,11 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public virtual DbSet<tabla_estados_pedido> tabla_estados_pedido { get; set; }
         public virtual DbSet<tabla_horarios> tabla_horarios { get; set; }
         public virtual DbSet<tabla_implementos> tabla_implementos { get; set; }
+        public virtual DbSet<tabla_materias_primas> tabla_materias_primas { get; set; }
         public virtual DbSet<tabla_notificaciones_vistas> tabla_notificaciones_vistas { get; set; }
+        public virtual DbSet<tabla_precios_finales_sugeridos> tabla_precios_finales_sugeridos { get; set; }
         public virtual DbSet<tabla_productos> tabla_productos { get; set; }
+        public virtual DbSet<tabla_productos_preparados> tabla_productos_preparados { get; set; }
         public virtual DbSet<tabla_recomendaciones> tabla_recomendaciones { get; set; }
         public virtual DbSet<tabla_roles> tabla_roles { get; set; }
         public virtual DbSet<tabla_solicitudes_ausencias> tabla_solicitudes_ausencias { get; set; }
@@ -47,14 +55,6 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public virtual DbSet<tabla_ventas> tabla_ventas { get; set; }
         public virtual DbSet<Vehiculos> Vehiculos { get; set; }
         public virtual DbSet<Vendedores> Vendedores { get; set; }
-        public virtual DbSet<tabla_materias_primas> tabla_materias_primas { get; set; }
-        public virtual DbSet<tabla_productos_preparados> tabla_productos_preparados { get; set; }
-        public virtual DbSet<tabla_precios_finales_sugeridos> tabla_precios_finales_sugeridos { get; set; }
-        public virtual DbSet<costos_receta_materias_primas_utilizadas> costos_receta_materias_primas_utilizadas { get; set; }
-        public virtual DbSet<costos_receta_productos_preparados_utilizados> costos_receta_productos_preparados_utilizados { get; set; }
-        public virtual DbSet<precios_empaques_decoraciones_utilizados> precios_empaques_decoraciones_utilizados { get; set; }
-        public virtual DbSet<precios_implementos_utilizados> precios_implementos_utilizados { get; set; }
-        public virtual DbSet<precios_suministros_utilizados> precios_suministros_utilizados { get; set; }
     
         public virtual int sp_activar_usuario(Nullable<int> id)
         {
@@ -251,7 +251,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_consultar_productos_Result>("sp_consultar_productos");
         }
     
-        public virtual int sp_crear_cuenta(string nombre, string correo, string contrasenna, string telefono)
+        public virtual int sp_crear_cuenta(string nombre, string correo, string contrasenna)
         {
             var nombreParameter = nombre != null ?
                 new ObjectParameter("nombre", nombre) :
@@ -265,11 +265,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
                 new ObjectParameter("contrasenna", contrasenna) :
                 new ObjectParameter("contrasenna", typeof(string));
     
-            var telefonoParameter = telefono != null ?
-                new ObjectParameter("telefono", telefono) :
-                new ObjectParameter("telefono", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_crear_cuenta", nombreParameter, correoParameter, contrasennaParameter, telefonoParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_crear_cuenta", nombreParameter, correoParameter, contrasennaParameter);
         }
     
         public virtual int sp_crear_empleado(string nombre, Nullable<int> id_rol, string correo, string contrasenna, Nullable<bool> activo)

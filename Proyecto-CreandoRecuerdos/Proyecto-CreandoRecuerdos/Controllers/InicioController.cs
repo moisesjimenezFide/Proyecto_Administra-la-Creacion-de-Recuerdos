@@ -10,5 +10,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             return View();
         }
 
+        // GET: Home
+        public ActionResult pago()
+        {
+            return View();
+        }
+
     }
 }

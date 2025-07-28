@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "pago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pagar con Stripe</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h2>Pagar con Stripe</h2>
+
+    <form id="payment-form">
+        <label for="amount-input">Monto a pagar (USD): </label>
+        <input type="number" id="amount-input" name="amount" min="1" step="0.01" value="10" required />
+        <div id="payment-element"></div>
+        <button type="submit">Pagar ahora</button>
+        <div id="message"></div>
+    </form>
+    <script>
+    // Esperar a que cargue todo el DOM
+    document.addEventListener("DOMContentLoaded", async () => {
+        const stripe = Stripe("pk_test_51RpDQn4CTUg5t4LexkgOiA14kubN5ehQJUdw1XVuaB8VBMkZWyY5LoKhGbjDUiLCe4vx8QPiDntWXNdeyD5NfQEk00aXbarLQh");
+        let elements;
+        let paymentElement;
+
+        const inputAmount = document.querySelector("#amount-input");
+        const form = document.querySelector("#payment-form");
+        const messageDiv = document.querySelector("#message");
+
+        // Función para inicializar el pago
+        async function initialize(amountInCents) {
+            const response = await fetch("/api/payment/create-intent", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ amount: amountInCents })
+            });
+
+            const data = await response.json();
+            const clientSecret = data.clientSecret;
+
+            if (!clientSecret) {
+                messageDiv.textContent = "No se pudo obtener el client secret.";
+                return;
+            }
+
+            if (elements) elements.destroy(); // limpiar si ya había elementos
+
+            elements = stripe.elements({ clientSecret });
+            paymentElement = elements.create("payment");
+            paymentElement.mount("#payment-element");
+        }
+
+        // Inicializa con el valor inicial del input
+        const initialAmount = parseFloat(inputAmount.value);
+        if (!isNaN(initialAmount) && initialAmount > 0) {
+            await initialize(Math.round(initialAmount * 100));
+        }
+
+        // Cambiar monto recarga elementos
+        inputAmount.addEventListener("change", async (e) => {
+            const val = parseFloat(e.target.value);
+            if (!isNaN(val) && val > 0) {
+                await initialize(Math.round(val * 100));
+            }
+        });
+
+        // Submit del formulario
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const { error } = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    return_url: window.location.href
+                }
+            });
+
+            if (error) {
+                messageDiv.textContent = error.message;
+            }
+        });
+    });
+    </script>
+
+</body>
+</html>

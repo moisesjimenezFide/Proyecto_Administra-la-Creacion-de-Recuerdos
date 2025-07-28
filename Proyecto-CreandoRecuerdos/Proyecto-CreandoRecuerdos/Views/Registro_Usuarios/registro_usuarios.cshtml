@@ -1,13 +1,11 @@
 ﻿@model Proyecto_CreandoRecuerdos.Models.UsuarioModel
 
-
 @{
     ViewData["Title"] = "Registro de Usuarios";
     var errorMessage = TempData["ErrorMessage"] as string;
     var successMessage = TempData["SuccessMessage"] as string;
-
 }
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
     .form-container {
         display: none;
@@ -116,6 +114,32 @@
             background: linear-gradient(to right, #ffd6e6, #E27AB0);
             border-radius: 10px;
         }
+    .alert {
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .alert-danger {
+        background-color: #ffebee;
+        border-left: 4px solid #f44336;
+        color: #d32f2f;
+    }
+
+    .alert-success {
+        background-color: #e8f5e9;
+        border-left: 4px solid #4caf50;
+        color: #2e7d32;
+    }
+
+    .btn-close {
+        margin-left: auto;
+        cursor: pointer;
+    }
 </style>
 
 <div class="container mt-5">
@@ -123,6 +147,26 @@
         <div class="col-md-8 col-lg-6">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
+
+                    <!-- Agrega este div para mostrar mensajes -->
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1000; max-width: 400px;">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            @errorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1000; max-width: 400px;">
+                            <i class="fas fa-check-circle me-2"></i>
+                            @successMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
 
                     <!-- Switch -->
                     <div class="d-flex justify-content-center mb-4">
