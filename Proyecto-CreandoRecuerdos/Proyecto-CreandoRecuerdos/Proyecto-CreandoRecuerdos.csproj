@@ -448,6 +448,8 @@
     <Content Include="Templates\css\menu.css" />
     <Content Include="Templates\css\pedidos.css" />
     <Content Include="Templates\css\insumos.css" />
+    <Content Include="Templates\img\favicon.ico" />
+    <Content Include="Templates\img\favicon.png" />
     <Content Include="Templates\img\logo.png" />
     <Content Include="Templates\img\menu\1.jpg" />
     <Content Include="Templates\img\menu\10.jpg" />
@@ -492,8 +494,6 @@
     <Content Include="Templates\img\menu\7.jpg" />
     <Content Include="Templates\img\menu\8.jpg" />
     <Content Include="Templates\img\menu\9.jpg" />
-    <Content Include="Templates\img\favicon.ico" />
-    <Content Include="Templates\img\favicon.png" />
     <Content Include="Templates\img\Recuerdos.png" />
     <Content Include="Templates\js\empleados.js" />
     <Content Include="Templates\js\historialactividades.js" />
