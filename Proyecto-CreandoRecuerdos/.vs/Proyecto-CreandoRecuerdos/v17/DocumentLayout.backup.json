@@ -3,32 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\controllers\\registro_usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\controllers\\registro_usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\base_de_datos\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
-      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\base_de_datos\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\controllers\\iniciocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\controllers\\iniciocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\views\\registro_usuarios\\registro_usuarios.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\views\\registro_usuarios\\registro_usuarios.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\proyecto-creandorecuerdos\\controllers\\stripecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\controllers\\stripecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\views\\inicio\\pago.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\views\\inicio\\pago.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\controllers\\registro_usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\controllers\\registro_usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\views\\registro_usuarios\\registro_usuarios.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\views\\registro_usuarios\\registro_usuarios.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\controllers\\iniciocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\controllers\\iniciocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\base_de_datos\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
+      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\base_de_datos\\model1.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|c:\\users\\pc\\documents\\github\\proyecto_administra-la-creacion-de-recuerdos\\proyecto-creandorecuerdos\\proyecto-creandorecuerdos\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{13170A2D-7329-42FB-8057-4737DE66145B}|Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos.csproj|solutionrelative:proyecto-creandorecuerdos\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,17 +38,17 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "Web.config",
               "DocumentMoniker": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Web.config",
               "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Web.config",
               "ToolTip": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Web.config",
               "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Web.config",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGsAAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAG4AAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
               "WhenOpened": "2025-07-28T00:39:17.674Z",
               "IsPinned": true,
@@ -56,19 +56,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "Model1.edmx [Diagram1]",
               "DocumentMoniker": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx",
               "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx",
               "ToolTip": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx [Diagram1]",
               "RelativeToolTip": "Proyecto-CreandoRecuerdos\\base_de_datos\\Model1.edmx [Diagram1]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
-              "WhenOpened": "2025-07-28T00:51:41.599Z",
+              "WhenOpened": "2025-07-28T01:09:04.761Z",
               "EditorCaption": " [Diagram1]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "InicioController.cs",
               "DocumentMoniker": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Controllers\\InicioController.cs",
               "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Controllers\\InicioController.cs",
@@ -81,7 +81,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "registro_usuarios.cshtml",
               "DocumentMoniker": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Views\\Registro_Usuarios\\registro_usuarios.cshtml",
               "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Views\\Registro_Usuarios\\registro_usuarios.cshtml",
@@ -94,12 +94,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Registro_UsuariosController.cs",
               "DocumentMoniker": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Controllers\\Registro_UsuariosController.cs",
               "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Controllers\\Registro_UsuariosController.cs",
-              "ToolTip": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Controllers\\Registro_UsuariosController.cs*",
-              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Controllers\\Registro_UsuariosController.cs*",
+              "ToolTip": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Controllers\\Registro_UsuariosController.cs",
+              "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Controllers\\Registro_UsuariosController.cs",
               "ViewState": "AgIAAAwAAAAAAAAAAAAhwCEAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-27T23:55:20.048Z",
@@ -107,7 +107,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "pago.cshtml",
               "DocumentMoniker": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Views\\Inicio\\pago.cshtml",
               "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Views\\Inicio\\pago.cshtml",
@@ -120,13 +120,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "StripeController.cs",
               "DocumentMoniker": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Controllers\\StripeController.cs",
               "RelativeDocumentMoniker": "Proyecto-CreandoRecuerdos\\Controllers\\StripeController.cs",
               "ToolTip": "C:\\Users\\PC\\Documents\\GitHub\\Proyecto_Administra-la-Creacion-de-Recuerdos\\Proyecto-CreandoRecuerdos\\Proyecto-CreandoRecuerdos\\Controllers\\StripeController.cs",
               "RelativeToolTip": "Proyecto-CreandoRecuerdos\\Controllers\\StripeController.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAiwBcAAAASAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAiwB4AAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-26T20:03:46.643Z",
               "EditorCaption": ""

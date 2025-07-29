@@ -677,5 +677,50 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_registrar_valoracion_Result>("sp_registrar_valoracion", id_pedidoParameter, calificacionParameter, comentariosParameter);
         }
+    
+        public virtual int sp_calculos_empaque_decoracion(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_empaque_decoracion", idParameter);
+        }
+    
+        public virtual int sp_calculos_implemento(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_implemento", idParameter);
+        }
+    
+        public virtual int sp_calculos_materiaprima(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_materiaprima", idParameter);
+        }
+    
+        public virtual int sp_calculos_productopreparado(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_productopreparado", idParameter);
+        }
+    
+        public virtual int sp_calculos_suministro(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_suministro", idParameter);
+        }
     }
 }
