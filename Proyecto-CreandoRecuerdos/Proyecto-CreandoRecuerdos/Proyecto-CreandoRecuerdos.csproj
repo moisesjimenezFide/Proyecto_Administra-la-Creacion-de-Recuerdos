@@ -205,12 +205,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="base_de_datos\costos_receta_materias_primas_utilizadas.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\costos_receta_productos_preparados_utilizados.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="base_de_datos\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -225,15 +219,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\precios_empaques_decoraciones_utilizados.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\precios_implementos_utilizados.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\precios_suministros_utilizados.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\sp_actualizar_estado_pedido_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -301,13 +286,7 @@
     <Compile Include="base_de_datos\tabla_clientes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\tabla_costos_recetas.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="base_de_datos\tabla_detalle_venta.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\tabla_empaques_decoraciones.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_estados_pedido.cs">
@@ -316,22 +295,10 @@
     <Compile Include="base_de_datos\tabla_horarios.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\tabla_implementos.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\tabla_materias_primas.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="base_de_datos\tabla_notificaciones_vistas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="base_de_datos\tabla_precios_finales_sugeridos.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="base_de_datos\tabla_productos.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\tabla_productos_preparados.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_recomendaciones.cs">
@@ -341,9 +308,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_solicitudes_ausencias.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="base_de_datos\tabla_suministros.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="base_de_datos\tabla_usuarios.cs">

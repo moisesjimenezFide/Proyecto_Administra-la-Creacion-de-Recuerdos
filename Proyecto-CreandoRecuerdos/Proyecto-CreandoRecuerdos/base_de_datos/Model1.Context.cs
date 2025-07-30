@@ -27,29 +27,17 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<costos_receta_materias_primas_utilizadas> costos_receta_materias_primas_utilizadas { get; set; }
-        public virtual DbSet<costos_receta_productos_preparados_utilizados> costos_receta_productos_preparados_utilizados { get; set; }
-        public virtual DbSet<precios_empaques_decoraciones_utilizados> precios_empaques_decoraciones_utilizados { get; set; }
-        public virtual DbSet<precios_implementos_utilizados> precios_implementos_utilizados { get; set; }
-        public virtual DbSet<precios_suministros_utilizados> precios_suministros_utilizados { get; set; }
         public virtual DbSet<tabla_actividades> tabla_actividades { get; set; }
         public virtual DbSet<tabla_categorias> tabla_categorias { get; set; }
         public virtual DbSet<tabla_clientes> tabla_clientes { get; set; }
-        public virtual DbSet<tabla_costos_recetas> tabla_costos_recetas { get; set; }
         public virtual DbSet<tabla_detalle_venta> tabla_detalle_venta { get; set; }
-        public virtual DbSet<tabla_empaques_decoraciones> tabla_empaques_decoraciones { get; set; }
         public virtual DbSet<tabla_estados_pedido> tabla_estados_pedido { get; set; }
         public virtual DbSet<tabla_horarios> tabla_horarios { get; set; }
-        public virtual DbSet<tabla_implementos> tabla_implementos { get; set; }
-        public virtual DbSet<tabla_materias_primas> tabla_materias_primas { get; set; }
         public virtual DbSet<tabla_notificaciones_vistas> tabla_notificaciones_vistas { get; set; }
-        public virtual DbSet<tabla_precios_finales_sugeridos> tabla_precios_finales_sugeridos { get; set; }
         public virtual DbSet<tabla_productos> tabla_productos { get; set; }
-        public virtual DbSet<tabla_productos_preparados> tabla_productos_preparados { get; set; }
         public virtual DbSet<tabla_recomendaciones> tabla_recomendaciones { get; set; }
         public virtual DbSet<tabla_roles> tabla_roles { get; set; }
         public virtual DbSet<tabla_solicitudes_ausencias> tabla_solicitudes_ausencias { get; set; }
-        public virtual DbSet<tabla_suministros> tabla_suministros { get; set; }
         public virtual DbSet<tabla_usuarios> tabla_usuarios { get; set; }
         public virtual DbSet<tabla_valoraciones> tabla_valoraciones { get; set; }
         public virtual DbSet<tabla_ventas> tabla_ventas { get; set; }
