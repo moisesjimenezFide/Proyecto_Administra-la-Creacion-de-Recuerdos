@@ -589,6 +589,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CostosRecetas_MateriaPrima">
+          <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="1" />
+          <End Role="costos_receta_materias_primas_utilizadas" Type="Self.costos_receta_materias_primas_utilizadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_materias_primas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="costos_receta_materias_primas_utilizadas">
+              <PropertyRef Name="id_materia_prima_utilizada" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_notificaciones_vistas_pedidos">
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="1" />
           <End Role="tabla_notificaciones_vistas" Type="Self.tabla_notificaciones_vistas" Multiplicity="*" />
@@ -984,6 +996,10 @@
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_clientes" EntitySet="tabla_clientes" />
           </AssociationSet>
+          <AssociationSet Name="FK_CostosRecetas_MateriaPrima" Association="Self.FK_CostosRecetas_MateriaPrima">
+            <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
+            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
+          </AssociationSet>
           <AssociationSet Name="FK_notificaciones_vistas_pedidos" Association="Self.FK_notificaciones_vistas_pedidos">
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
             <End Role="tabla_notificaciones_vistas" EntitySet="tabla_notificaciones_vistas" />
@@ -1022,7 +1038,10 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BD_CREANDO_RECUERDOSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="costos_receta_materias_primas_utilizadas" BaseType="BD_CREANDO_RECUERDOSModel.tabla_materias_primas">
+        <EntityType Name="costos_receta_materias_primas_utilizadas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_receta" Type="Int32" Nullable="false" />
           <Property Name="id_materia_prima_utilizada" Type="Int32" Nullable="false" />
@@ -1031,6 +1050,7 @@
           <Property Name="costo_por_cantidad" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="total_costo" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <NavigationProperty Name="tabla_costos_recetas" Relationship="Self.FK__costos_re__id_re__02FC7413" FromRole="costos_receta_materias_primas_utilizadas" ToRole="tabla_costos_recetas" />
+          <NavigationProperty Name="tabla_materias_primas" Relationship="Self.FK_CostosRecetas_MateriaPrima" FromRole="costos_receta_materias_primas_utilizadas" ToRole="tabla_materias_primas" />
         </EntityType>
         <EntityType Name="costos_receta_productos_preparados_utilizados">
           <Key>
@@ -1227,6 +1247,7 @@
           <Property Name="unidad_de_medida_de_presentacion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="volumen_de_porcion_convertido" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="unidad_de_medida_convertida" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="costos_receta_materias_primas_utilizadas" Relationship="Self.FK_CostosRecetas_MateriaPrima" FromRole="tabla_materias_primas" ToRole="costos_receta_materias_primas_utilizadas" />
         </EntityType>
         <EntityType Name="tabla_notificaciones_vistas">
           <Key>
@@ -1438,6 +1459,18 @@
             </Principal>
             <Dependent Role="costos_receta_materias_primas_utilizadas">
               <PropertyRef Name="id_receta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CostosRecetas_MateriaPrima">
+          <End Role="tabla_materias_primas" Type="Self.tabla_materias_primas" Multiplicity="1" />
+          <End Role="costos_receta_materias_primas_utilizadas" Type="Self.costos_receta_materias_primas_utilizadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tabla_materias_primas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="costos_receta_materias_primas_utilizadas">
+              <PropertyRef Name="id_materia_prima_utilizada" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1754,6 +1787,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="BD_CREANDO_RECUERDOSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="costos_receta_materias_primas_utilizadas" EntityType="Self.costos_receta_materias_primas_utilizadas" />
           <EntitySet Name="costos_receta_productos_preparados_utilizados" EntityType="Self.costos_receta_productos_preparados_utilizados" />
           <EntitySet Name="precios_empaques_decoraciones_utilizados" EntityType="Self.precios_empaques_decoraciones_utilizados" />
           <EntitySet Name="precios_implementos_utilizados" EntityType="Self.precios_implementos_utilizados" />
@@ -1783,7 +1817,11 @@
           <EntitySet Name="Vendedores" EntityType="Self.Vendedores" />
           <AssociationSet Name="FK__costos_re__id_re__02FC7413" Association="Self.FK__costos_re__id_re__02FC7413">
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
-            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="tabla_materias_primas" />
+            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CostosRecetas_MateriaPrima" Association="Self.FK_CostosRecetas_MateriaPrima">
+            <End Role="tabla_materias_primas" EntitySet="tabla_materias_primas" />
+            <End Role="costos_receta_materias_primas_utilizadas" EntitySet="costos_receta_materias_primas_utilizadas" />
           </AssociationSet>
           <AssociationSet Name="FK__costos_re__id_pr__03F0984C" Association="Self.FK__costos_re__id_pr__03F0984C">
             <End Role="tabla_productos_preparados" EntitySet="tabla_productos_preparados" />
@@ -2239,6 +2277,19 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="BD_CREANDO_RECUERDOSModelStoreContainer" CdmEntityContainer="BD_CREANDO_RECUERDOSEntities">
+          <EntitySetMapping Name="costos_receta_materias_primas_utilizadas">
+            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_materias_primas_utilizadas">
+              <MappingFragment StoreEntitySet="costos_receta_materias_primas_utilizadas">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_receta" ColumnName="id_receta" />
+                <ScalarProperty Name="id_materia_prima_utilizada" ColumnName="id_materia_prima_utilizada" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
+                <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
+                <ScalarProperty Name="total_costo" ColumnName="total_costo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="costos_receta_productos_preparados_utilizados">
             <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_productos_preparados_utilizados">
               <MappingFragment StoreEntitySet="costos_receta_productos_preparados_utilizados">
@@ -2403,38 +2454,27 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tabla_materias_primas">
-            <EntityTypeMapping TypeName="IsTypeOf(BD_CREANDO_RECUERDOSModel.tabla_materias_primas)">
+            <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_materias_primas">
               <MappingFragment StoreEntitySet="tabla_materias_primas">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="unidad_de_medida_convertida" ColumnName="unidad_de_medida_convertida" />
-                <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
-                <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
-                <ScalarProperty Name="presentacion" ColumnName="presentacion" />
-                <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
-                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-                <ScalarProperty Name="costo_por_gramo_con_merma" ColumnName="costo_por_gramo_con_merma" />
-                <ScalarProperty Name="costo_total_mas_merma_total" ColumnName="costo_total_mas_merma_total" />
-                <ScalarProperty Name="costo_de_merma_total" ColumnName="costo_de_merma_total" />
-                <ScalarProperty Name="porcentaje_de_merma" ColumnName="porcentaje_de_merma" />
-                <ScalarProperty Name="merma_total_en_gramos" ColumnName="merma_total_en_gramos" />
-                <ScalarProperty Name="costo_por_gramo" ColumnName="costo_por_gramo" />
-                <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
-                <ScalarProperty Name="peso" ColumnName="peso" />
-                <ScalarProperty Name="costo" ColumnName="costo" />
-                <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-                <ScalarProperty Name="marca" ColumnName="marca" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(BD_CREANDO_RECUERDOSModel.costos_receta_materias_primas_utilizadas)">
-              <MappingFragment StoreEntitySet="costos_receta_materias_primas_utilizadas">
-                <ScalarProperty Name="total_costo" ColumnName="total_costo" />
-                <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
-                <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-                
-                <ScalarProperty Name="id_materia_prima_utilizada" ColumnName="id_materia_prima_utilizada" />
-                <ScalarProperty Name="id_receta" ColumnName="id_receta" />
-                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+                <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+                <ScalarProperty Name="costo" ColumnName="costo" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
+                <ScalarProperty Name="costo_por_gramo" ColumnName="costo_por_gramo" />
+                <ScalarProperty Name="merma_total_en_gramos" ColumnName="merma_total_en_gramos" />
+                <ScalarProperty Name="porcentaje_de_merma" ColumnName="porcentaje_de_merma" />
+                <ScalarProperty Name="costo_de_merma_total" ColumnName="costo_de_merma_total" />
+                <ScalarProperty Name="costo_total_mas_merma_total" ColumnName="costo_total_mas_merma_total" />
+                <ScalarProperty Name="costo_por_gramo_con_merma" ColumnName="costo_por_gramo_con_merma" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
+                <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+                <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
+                <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
+                <ScalarProperty Name="unidad_de_medida_convertida" ColumnName="unidad_de_medida_convertida" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

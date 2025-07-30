@@ -1460,7 +1460,7 @@ public class InsumosController : Controller
                 costo = s.costo,
                 cantidad = (int)s.cantidad,
                 unidad_de_medida = s.unidad_de_medida,
-                costo_por_cantidad = s.costo_por_cantidad ?? 0m
+                costo_por_cantidad = s.costo_por_cantidad
             }).ToList()
         };
         ViewBag.Search = search;
@@ -1538,7 +1538,7 @@ public class InsumosController : Controller
                 costo = s.costo,
                 cantidad = (int)s.cantidad,
                 unidad_de_medida = s.unidad_de_medida,
-                costo_por_cantidad = s.costo_por_cantidad ?? 0m
+                costo_por_cantidad = s.costo_por_cantidad
             }).ToList();
             return View("suministros", new InsumosModel
             {
@@ -1578,7 +1578,7 @@ public class InsumosController : Controller
             costo = s.costo,
             cantidad = (int)s.cantidad,
             unidad_de_medida = s.unidad_de_medida,
-            costo_por_cantidad = s.costo_por_cantidad ?? 0m
+            costo_por_cantidad = s.costo_por_cantidad
         };
 
         // Obtén el listado de suministros
@@ -1592,7 +1592,7 @@ public class InsumosController : Controller
             costo = sumn.costo,
             cantidad = (int)sumn.cantidad,
             unidad_de_medida = sumn.unidad_de_medida,
-            costo_por_cantidad = sumn.costo_por_cantidad ?? 0m
+            costo_por_cantidad = sumn.costo_por_cantidad
         }).ToList();
 
         ViewBag.Editando = true;
@@ -1676,7 +1676,7 @@ public class InsumosController : Controller
                 costo = sumn.costo,
                 cantidad = (int)sumn.cantidad,
                 unidad_de_medida = sumn.unidad_de_medida,
-                costo_por_cantidad = sumn.costo_por_cantidad ?? 0m
+                costo_por_cantidad = sumn.costo_por_cantidad
             }).ToList();
             return View("suministros", new InsumosModel
             {
@@ -1692,7 +1692,7 @@ public class InsumosController : Controller
             s.marca = suministro.marca;
             s.presentacion = suministro.presentacion;
             s.proveedor = suministro.proveedor;
-            s.costo = suministro.costo;
+            s.costo = suministro.costo ?? 0;
             s.cantidad = suministro.cantidad;
             s.unidad_de_medida = suministro.unidad_de_medida;
         }
@@ -2751,7 +2751,7 @@ public class InsumosController : Controller
                         continue;
                     }
                     sumn.nombre = suministro.nombre;
-                    sumn.costo_por_cantidad = suministro.costo_por_cantidad ?? 0;
+                    sumn.costo_por_cantidad = suministro.costo_por_cantidad;
                     sumn.total_costo = sumn.cantidad * sumn.costo_por_cantidad;
                 }
             }
@@ -3266,7 +3266,7 @@ public class InsumosController : Controller
                         continue;
                     }
                     sumn.nombre = suministro.nombre;
-                    sumn.costo_por_cantidad = suministro.costo_por_cantidad ?? 0;
+                    sumn.costo_por_cantidad = suministro.costo_por_cantidad;
                     sumn.total_costo = sumn.cantidad * sumn.costo_por_cantidad;
                 }
             }
