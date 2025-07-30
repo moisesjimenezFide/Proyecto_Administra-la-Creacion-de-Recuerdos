@@ -167,7 +167,10 @@
                             <td>@producto_preparado.marca</td>
                             <td>@producto_preparado.presentacion</td>
                             <td>@producto_preparado.cantidad</td>
-                            <td>@producto_preparado.volumen_de_porcion_de_presentacion.Value.ToString("N2")</td>
+                            <td>
+                                @(producto_preparado.volumen_de_porcion_de_presentacion.HasValue
+                                ? producto_preparado.volumen_de_porcion_de_presentacion.Value.ToString("N2"): "")
+                            </td>
                             <td>@producto_preparado.unidad_de_medida_de_presentacion</td>
                             <td>@producto_preparado.volumen_de_porcion_convertido.ToString("N2")</td>
                             <td>@producto_preparado.unidad_de_medida_convertida</td>
@@ -177,8 +180,14 @@
                             </td>
                             <td>@(producto_preparado.cantidad * producto_preparado.volumen_de_porcion_convertido)</td>
                             <td>@producto_preparado.unidad_de_medida_del_peso</td>
-                            <td>₡@producto_preparado.costo_por_peso.ToString("N2")</td>
-                            <td>₡@producto_preparado.costo_por_porcion_con_merma.ToString("N2")</td>
+                            <td>
+                                @(producto_preparado.costo_por_peso.HasValue
+                                ? "₡" + producto_preparado.costo_por_peso.Value.ToString("N2"): "")
+                            </td>
+                            <td>
+                                @(producto_preparado.costo_por_porcion_con_merma.HasValue
+                                ? "₡" + producto_preparado.costo_por_porcion_con_merma.Value.ToString("N2"): "")
+                            </td>
                             <td>
                                 <a href="@Url.Action("EditarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
                                 <a href="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })"></a>

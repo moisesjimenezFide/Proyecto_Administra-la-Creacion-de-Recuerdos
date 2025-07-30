@@ -36,12 +36,12 @@ namespace Proyecto_CreandoRecuerdos.Models
         public string proveedor { get; set; }
         public decimal? costo { get; set; }
         public decimal peso { get; set; }
-        public decimal costo_por_gramo { get; set; }
+        public decimal? costo_por_gramo { get; set; }
         public decimal? merma_total_en_gramos { get; set; }
-        public decimal porcentaje_de_merma { get; set; }
-        public decimal costo_de_merma_total { get; set; }
-        public decimal costo_total_mas_merma_total { get; set; }
-        public decimal costo_por_gramo_con_merma { get; set; }
+        public decimal? porcentaje_de_merma { get; set; }
+        public decimal? costo_de_merma_total { get; set; }
+        public decimal? costo_total_mas_merma_total { get; set; }
+        public decimal? costo_por_gramo_con_merma { get; set; }
     }
 
     public class ProductoPreparado
@@ -56,12 +56,12 @@ namespace Proyecto_CreandoRecuerdos.Models
         public decimal? volumen_de_porcion_de_presentacion { get; set; }
         public string unidad_de_medida_del_peso { get; set; }
         public string unidad_de_medida_de_presentacion { get; set; }
-        public decimal volumen_de_porcion_convertido { get; set; }
+        public decimal? volumen_de_porcion_convertido { get; set; }
         public string unidad_de_medida_convertida { get; set; }
         public decimal? costo { get; set; }
-        public decimal peso { get; set; }
-        public decimal costo_por_peso { get; set; }
-        public decimal costo_por_porcion_con_merma { get; set; }
+        public decimal? peso { get; set; }
+        public decimal? costo_por_peso { get; set; }
+        public decimal? costo_por_porcion_con_merma { get; set; }
     }
 
     public class EmpaqueDecoracion
@@ -74,7 +74,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public decimal? costo { get; set; }
         public int cantidad { get; set; }
         public string unidad_de_medida { get; set; }
-        public decimal costo_por_cantidad { get; set; }
+        public decimal? costo_por_cantidad { get; set; }
     }
 
     public class Implemento
@@ -87,7 +87,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public decimal? costo { get; set; }
         public int cantidad { get; set; }
         public string unidad_de_medida { get; set; }
-        public decimal costo_por_cantidad { get; set; }
+        public decimal? costo_por_cantidad { get; set; }
     }
 
     public class Suministro

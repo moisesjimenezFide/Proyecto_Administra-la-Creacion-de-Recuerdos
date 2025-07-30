@@ -171,7 +171,10 @@
                             <td>@materia_prima.marca</td>
                             <td>@materia_prima.presentacion</td>
                             <td>@materia_prima.cantidad</td>
-                            <td>@materia_prima.volumen_de_porcion_de_presentacion.Value.ToString("N2")</td>
+                            <td>
+                                @(materia_prima.volumen_de_porcion_de_presentacion.HasValue
+                                ? materia_prima.volumen_de_porcion_de_presentacion.Value.ToString("N2"): "")
+                            </td>
                             <td>@materia_prima.unidad_de_medida_de_presentacion</td>
                             <td>@materia_prima.volumen_de_porcion_convertido.ToString("N2")</td>
                             <td>@materia_prima.unidad_de_medida_convertida</td>
@@ -181,12 +184,27 @@
                             </td>
                             <td>@(materia_prima.cantidad * materia_prima.volumen_de_porcion_convertido)</td>
                             <td>@materia_prima.unidad_de_medida_del_peso</td>
-                            <td>@materia_prima.merma_total_en_gramos</td>
-                            <td>₡@materia_prima.costo_por_gramo.ToString("N2")</td>
-                            <td>@materia_prima.porcentaje_de_merma.ToString("N2")%</td>
-                            <td>₡@materia_prima.costo_de_merma_total.ToString("N2")</td>
-                            <td>₡@materia_prima.costo_total_mas_merma_total.ToString("N2")</td>
-                            <td>₡@materia_prima.costo_por_gramo_con_merma.ToString("N2")</td>
+                            <td>
+                                @(materia_prima.merma_total_en_gramos.HasValue
+                                ? materia_prima.merma_total_en_gramos.Value.ToString("N2"): "")
+                            </td>
+                            <td>@(materia_prima.costo_por_gramo.HasValue ? "₡" + materia_prima.costo_por_gramo.Value.ToString("N2") : "")</td>
+                            <td>
+                                @(materia_prima.porcentaje_de_merma.HasValue
+                                ? materia_prima.porcentaje_de_merma.Value.ToString("N2") + "%": "")
+                            </td>
+                            <td>
+                                @(materia_prima.costo_de_merma_total.HasValue
+                                ? "₡" + materia_prima.costo_de_merma_total.Value.ToString("N2"): "")
+                            </td>
+                            <td>
+                                @(materia_prima.costo_total_mas_merma_total.HasValue
+                                ? "₡" + materia_prima.costo_total_mas_merma_total.Value.ToString("N2"): "")
+                            </td>
+                            <td>
+                                @(materia_prima.costo_por_gramo_con_merma.HasValue
+                                ? "₡" + materia_prima.costo_por_gramo_con_merma.Value.ToString("N2"): "")
+                            </td>
                             <td>
                                 <a href="@Url.Action("EditarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
                                 <a href="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })"></a>

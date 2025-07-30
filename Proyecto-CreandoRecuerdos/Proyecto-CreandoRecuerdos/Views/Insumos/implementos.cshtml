@@ -150,7 +150,10 @@
                             </td>
                             <td>@implemento.cantidad</td>
                             <td>@implemento.unidad_de_medida</td>
-                            <td>₡@implemento.costo_por_cantidad.ToString("N2")</td>
+                            <td>
+                                @(implemento.costo_por_cantidad.HasValue
+                                ? "₡" + implemento.costo_por_cantidad.Value.ToString("N2"): "")
+                            </td>
                             <td>
                                 <a href="@Url.Action("EditarImplemento", "Insumos", new { id = implemento.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
                                 <a href="@Url.Action("EliminarImplemento", "Insumos", new { id = implemento.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarImplemento", "Insumos", new { id = implemento.id })"></a>
