@@ -171,20 +171,20 @@
     <Property Name="marca" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="proveedor" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="costo" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="peso" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="peso" Type="decimal" Precision="18" Scale="4" />
     <Property Name="unidad_de_medida_del_peso" Type="nvarchar" MaxLength="50" />
-    <Property Name="costo_por_gramo" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="costo_por_gramo" Type="decimal" Precision="18" Scale="4" />
     <Property Name="merma_total_en_gramos" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-    <Property Name="porcentaje_de_merma" Type="decimal" Precision="5" Scale="2" />
-    <Property Name="costo_de_merma_total" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="costo_total_mas_merma_total" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="costo_por_gramo_con_merma" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="porcentaje_de_merma" Type="decimal" Precision="6" Scale="2" />
+    <Property Name="costo_de_merma_total" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="costo_total_mas_merma_total" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="costo_por_gramo_con_merma" Type="decimal" Precision="18" Scale="4" />
     <Property Name="cantidad" Type="int" />
     <Property Name="volumen_de_porcion_de_presentacion" Type="decimal" Precision="18" Scale="2" />
     <Property Name="presentacion" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="100" />
     <Property Name="volumen_de_porcion_convertido" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="unidad_de_medida_convertida" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="unidad_de_medida_convertida" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="tabla_notificaciones_vistas">
     <Key>
@@ -250,7 +250,7 @@
     <Property Name="presentacion" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="unidad_de_medida_de_presentacion" Type="nvarchar" MaxLength="100" />
     <Property Name="volumen_de_porcion_convertido" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="unidad_de_medida_convertida" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="unidad_de_medida_convertida" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="tabla_recomendaciones">
     <Key>
