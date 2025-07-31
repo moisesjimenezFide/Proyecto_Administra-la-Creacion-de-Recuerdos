@@ -22,6 +22,8 @@
 
     @{
         var rol = Session["Rol"]?.ToString();
+        var nombre = Session["NombreUsuario"]?.ToString();
+        var id = Session["IdUsuario"]?.ToString();
     }
 
     <div id="container-wrap2">
@@ -131,8 +133,24 @@
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-uppercase" href="@Url.Action("cerrar_sesion", "Registro_Usuarios")">Cerrar Sesion</a>
+                            <li class="nav-item dropdown position-relative">
+                                <a class="nav-link dropdown-toggle text-uppercase" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Perfil: @nombre
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="userDropdown" style="min-width: 200px;">
+                                    <li>
+                                        <a class="dropdown-item disabled">ID: @id</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Perfil", "Registro_Usuarios")">Perfil</a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="@Url.Action("cerrar_sesion", "Registro_Usuarios")">Cerrar Sesión</a>
+                                    </li>
+                                </ul>
                             </li>
                         }
 
