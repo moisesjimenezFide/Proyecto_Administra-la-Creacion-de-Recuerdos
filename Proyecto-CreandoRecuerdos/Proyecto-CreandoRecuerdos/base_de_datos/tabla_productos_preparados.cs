@@ -25,16 +25,16 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public string nombre { get; set; }
         public string marca { get; set; }
         public string proveedor { get; set; }
-        public decimal volumen_de_porcion_de_presentacion { get; set; }
-        public decimal costo { get; set; }
-        public decimal peso { get; set; }
+        public Nullable<decimal> volumen_de_porcion_de_presentacion { get; set; }
+        public Nullable<decimal> costo { get; set; }
+        public Nullable<decimal> peso { get; set; }
         public string unidad_de_medida_del_peso { get; set; }
-        public decimal costo_por_peso { get; set; }
-        public decimal costo_por_porcion_con_merma { get; set; }
-        public int cantidad { get; set; }
+        public Nullable<decimal> costo_por_peso { get; set; }
+        public Nullable<decimal> costo_por_porcion_con_merma { get; set; }
+        public Nullable<int> cantidad { get; set; }
         public string presentacion { get; set; }
         public string unidad_de_medida_de_presentacion { get; set; }
-        public decimal volumen_de_porcion_convertido { get; set; }
+        public Nullable<decimal> volumen_de_porcion_convertido { get; set; }
         public string unidad_de_medida_convertida { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

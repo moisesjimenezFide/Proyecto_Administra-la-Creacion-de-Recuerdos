@@ -176,8 +176,7 @@
                                 ? materia_prima.volumen_de_porcion_de_presentacion.Value.ToString("N2"): "")
                             </td>
                             <td>@materia_prima.unidad_de_medida_de_presentacion</td>
-                            <td>@materia_prima.volumen_de_porcion_convertido.ToString("N2")</td>
-                            <td>@materia_prima.unidad_de_medida_convertida</td>
+                            <td>@(materia_prima.volumen_de_porcion_convertido.HasValue ? materia_prima.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td><td>@materia_prima.unidad_de_medida_convertida</td>
                             <td>@materia_prima.proveedor</td>
                             <td>
                                 @(materia_prima.costo.HasValue ? "₡" + materia_prima.costo.Value.ToString("N2") : "")

@@ -54,13 +54,13 @@ public class InsumosController : Controller
                 marca = m.marca,
                 presentacion = m.presentacion,
                 cantidad = (int)m.cantidad,
-                volumen_de_porcion_de_presentacion = m.volumen_de_porcion_de_presentacion,
+                volumen_de_porcion_de_presentacion = m.volumen_de_porcion_de_presentacion ?? 0m,
                 unidad_de_medida_de_presentacion = m.unidad_de_medida_de_presentacion,
                 volumen_de_porcion_convertido = m.volumen_de_porcion_convertido,
                 unidad_de_medida_convertida = m.unidad_de_medida_convertida,
                 proveedor = m.proveedor,
                 costo = m.costo,
-                peso = m.peso,
+                peso = m.peso ?? 0m,
                 unidad_de_medida_del_peso = m.unidad_de_medida_del_peso,
                 costo_por_gramo = m.costo_por_gramo,
                 merma_total_en_gramos = m.merma_total_en_gramos,
@@ -155,13 +155,13 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!materia_prima.costo.HasValue || materia_prima.costo.Value <= 0.99m)
-            errores.Add("El costo debe ser mayor a 0.99.");
+        if (materia_prima.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (materia_prima.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a 0.");
 
-        if (!materia_prima.volumen_de_porcion_de_presentacion.HasValue || materia_prima.volumen_de_porcion_de_presentacion.Value <= 0m)
+        if (materia_prima.volumen_de_porcion_de_presentacion <= 0m)
             errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
 
         if (materia_prima.merma_total_en_gramos < 0m)
@@ -176,14 +176,14 @@ public class InsumosController : Controller
                 nombre = mp.nombre,
                 marca = mp.marca,
                 presentacion = mp.presentacion,
-                cantidad = mp.cantidad,
-                volumen_de_porcion_de_presentacion = mp.volumen_de_porcion_de_presentacion,
+                cantidad = mp.cantidad ?? 0,
+                volumen_de_porcion_de_presentacion = mp.volumen_de_porcion_de_presentacion ?? 0m,
                 unidad_de_medida_de_presentacion = mp.unidad_de_medida_de_presentacion,
                 volumen_de_porcion_convertido = mp.volumen_de_porcion_convertido,
                 unidad_de_medida_convertida = mp.unidad_de_medida_convertida,
                 proveedor = mp.proveedor,
                 costo = mp.costo,
-                peso = mp.peso,
+                peso = mp.peso ?? 0m,
                 unidad_de_medida_del_peso = mp.unidad_de_medida_del_peso,
                 costo_por_gramo = mp.costo_por_gramo,
                 merma_total_en_gramos = mp.merma_total_en_gramos,
@@ -205,12 +205,12 @@ public class InsumosController : Controller
             marca = materia_prima.marca,
             presentacion = materia_prima.presentacion,
             cantidad = materia_prima.cantidad,
-            volumen_de_porcion_de_presentacion = materia_prima.volumen_de_porcion_de_presentacion ?? 0m,
+            volumen_de_porcion_de_presentacion = materia_prima.volumen_de_porcion_de_presentacion,
             unidad_de_medida_de_presentacion = materia_prima.unidad_de_medida_de_presentacion,
             volumen_de_porcion_convertido = materia_prima.volumen_de_porcion_convertido,
             unidad_de_medida_convertida = materia_prima.unidad_de_medida_convertida,
             proveedor = materia_prima.proveedor,
-            costo = materia_prima.costo ?? 0m,
+            costo = materia_prima.costo,
             peso = materia_prima.peso,
             unidad_de_medida_del_peso = materia_prima.unidad_de_medida_del_peso,
             merma_total_en_gramos = materia_prima.merma_total_en_gramos ?? 0m,
@@ -232,14 +232,14 @@ public class InsumosController : Controller
             nombre = m.nombre,
             marca = m.marca,
             presentacion = m.presentacion,
-            cantidad = m.cantidad,
-            volumen_de_porcion_de_presentacion = m.volumen_de_porcion_de_presentacion,
+            cantidad = m.cantidad ?? 0,
+            volumen_de_porcion_de_presentacion = m.volumen_de_porcion_de_presentacion ?? 0m,
             unidad_de_medida_de_presentacion = m.unidad_de_medida_de_presentacion,
             volumen_de_porcion_convertido = m.volumen_de_porcion_convertido,
             unidad_de_medida_convertida = m.unidad_de_medida_convertida,
             proveedor = m.proveedor,
             costo = m.costo,
-            peso = m.peso,
+            peso = m.peso ?? 0m,
             unidad_de_medida_del_peso = m.unidad_de_medida_del_peso,
             costo_por_gramo = m.costo_por_gramo,
             merma_total_en_gramos = m.merma_total_en_gramos,
@@ -256,14 +256,14 @@ public class InsumosController : Controller
             nombre = mp.nombre,
             marca = mp.marca,
             presentacion = mp.presentacion,
-            cantidad = mp.cantidad,
-            volumen_de_porcion_de_presentacion = mp.volumen_de_porcion_de_presentacion,
+            cantidad = mp.cantidad ?? 0,
+            volumen_de_porcion_de_presentacion = mp.volumen_de_porcion_de_presentacion ?? 0m,
             unidad_de_medida_de_presentacion = mp.unidad_de_medida_de_presentacion,
             volumen_de_porcion_convertido = mp.volumen_de_porcion_convertido,
             unidad_de_medida_convertida = mp.unidad_de_medida_convertida,
             proveedor = mp.proveedor,
-            costo = mp.costo,
-            peso = mp.peso,
+            costo = mp.costo ?? 0m,
+            peso = mp.peso ?? 0m,
             unidad_de_medida_del_peso = mp.unidad_de_medida_del_peso,
             costo_por_gramo = mp.costo_por_gramo,
             merma_total_en_gramos = mp.merma_total_en_gramos,
@@ -364,13 +364,13 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!materia_prima.costo.HasValue || materia_prima.costo.Value <= 0.99m)
-            errores.Add("El costo debe ser mayor a 0.99.");
+        if (materia_prima.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (materia_prima.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a 0.");
 
-        if (!materia_prima.volumen_de_porcion_de_presentacion.HasValue || materia_prima.volumen_de_porcion_de_presentacion.Value <= 0m)
+        if (materia_prima.volumen_de_porcion_de_presentacion <= 0m)
             errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
 
         if (materia_prima.merma_total_en_gramos < 0)
@@ -386,14 +386,14 @@ public class InsumosController : Controller
                 nombre = mp.nombre,
                 marca = mp.marca,
                 presentacion = mp.presentacion,
-                cantidad = mp.cantidad,
-                volumen_de_porcion_de_presentacion = mp.volumen_de_porcion_de_presentacion,
+                cantidad = mp.cantidad ?? 0,
+                volumen_de_porcion_de_presentacion = mp.volumen_de_porcion_de_presentacion ?? 0m,
                 unidad_de_medida_de_presentacion = mp.unidad_de_medida_de_presentacion,
-                volumen_de_porcion_convertido = mp.volumen_de_porcion_convertido,
+                volumen_de_porcion_convertido = mp.volumen_de_porcion_convertido ?? 0m,
                 unidad_de_medida_convertida = mp.unidad_de_medida_convertida,
                 proveedor = mp.proveedor,
                 costo = mp.costo,
-                peso = mp.peso,
+                peso = mp.peso ?? 0m,
                 unidad_de_medida_del_peso = mp.unidad_de_medida_del_peso,
                 costo_por_gramo = mp.costo_por_gramo,
                 merma_total_en_gramos = mp.merma_total_en_gramos,
@@ -416,12 +416,12 @@ public class InsumosController : Controller
             m.marca = materia_prima.marca;
             m.presentacion = materia_prima.presentacion;
             m.cantidad = materia_prima.cantidad;
-            m.volumen_de_porcion_de_presentacion = materia_prima.volumen_de_porcion_de_presentacion ?? 0m;
+            m.volumen_de_porcion_de_presentacion = materia_prima.volumen_de_porcion_de_presentacion ;
             m.unidad_de_medida_de_presentacion = materia_prima.unidad_de_medida_de_presentacion;
             m.volumen_de_porcion_convertido = materia_prima.volumen_de_porcion_convertido;
             m.unidad_de_medida_convertida = materia_prima.unidad_de_medida_convertida;
             m.proveedor = materia_prima.proveedor;
-            m.costo = materia_prima.costo ?? 0m;
+            m.costo = materia_prima.costo;
             m.peso = materia_prima.peso;
             m.unidad_de_medida_del_peso = materia_prima.unidad_de_medida_del_peso;
             m.merma_total_en_gramos = materia_prima.merma_total_en_gramos ?? 0m;
@@ -490,13 +490,13 @@ public class InsumosController : Controller
                 marca = p.marca,
                 presentacion = p.presentacion,
                 cantidad = (int)p.cantidad,
-                volumen_de_porcion_de_presentacion = p.volumen_de_porcion_de_presentacion,
+                volumen_de_porcion_de_presentacion = p.volumen_de_porcion_de_presentacion ?? 0m,
                 unidad_de_medida_de_presentacion = p.unidad_de_medida_de_presentacion,
                 volumen_de_porcion_convertido = p.volumen_de_porcion_convertido,
                 unidad_de_medida_convertida = p.unidad_de_medida_convertida,
                 proveedor = p.proveedor,
                 costo = p.costo,
-                peso = p.peso,
+                peso = p.peso ?? 0m,
                 unidad_de_medida_del_peso = p.unidad_de_medida_del_peso,
                 costo_por_peso = p.costo_por_peso,
                 costo_por_porcion_con_merma = p.costo_por_porcion_con_merma
@@ -577,14 +577,14 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!producto_preparado.volumen_de_porcion_de_presentacion.HasValue || producto_preparado.volumen_de_porcion_de_presentacion.Value <= 0.99m)
-            errores.Add("El costo debe ser mayor a 0.99.");
+        if (producto_preparado.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (producto_preparado.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
 
-        if (!producto_preparado.volumen_de_porcion_de_presentacion.HasValue || producto_preparado.volumen_de_porcion_de_presentacion.Value <= 0m)
-            errores.Add("El volumen de porción debe ser mayor a 0.00.");
+        if (producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
+            errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
 
         if (errores.Any())
         {
@@ -596,14 +596,14 @@ public class InsumosController : Controller
                 nombre = p.nombre,
                 marca = p.marca,
                 presentacion = p.presentacion,
-                cantidad = p.cantidad,
-                volumen_de_porcion_de_presentacion = p.volumen_de_porcion_de_presentacion,
+                cantidad = p.cantidad ?? 0 ,
+                volumen_de_porcion_de_presentacion = p.volumen_de_porcion_de_presentacion ?? 0m,
                 unidad_de_medida_de_presentacion = p.unidad_de_medida_de_presentacion,
                 volumen_de_porcion_convertido = p.volumen_de_porcion_convertido,
                 unidad_de_medida_convertida = p.unidad_de_medida_convertida,
                 proveedor = p.proveedor,
                 costo = p.costo,
-                peso = p.peso,
+                peso = p.peso ?? 0m,
                 unidad_de_medida_del_peso = p.unidad_de_medida_del_peso,
                 costo_por_peso = p.costo_por_peso,
                 costo_por_porcion_con_merma = p.costo_por_porcion_con_merma
@@ -622,13 +622,13 @@ public class InsumosController : Controller
             marca = producto_preparado.marca,
             presentacion = producto_preparado.presentacion,
             cantidad = producto_preparado.cantidad,
-            volumen_de_porcion_de_presentacion = producto_preparado.volumen_de_porcion_de_presentacion ?? 0m,
+            volumen_de_porcion_de_presentacion = producto_preparado.volumen_de_porcion_de_presentacion,
             unidad_de_medida_de_presentacion = producto_preparado.unidad_de_medida_de_presentacion,
-            volumen_de_porcion_convertido = producto_preparado.volumen_de_porcion_convertido ?? 0m,
+            volumen_de_porcion_convertido = producto_preparado.volumen_de_porcion_convertido,
             unidad_de_medida_convertida = producto_preparado.unidad_de_medida_convertida,
             proveedor = producto_preparado.proveedor,
-            costo = producto_preparado.costo ?? 0m,
-            peso = producto_preparado.peso ?? 0m,
+            costo = producto_preparado.costo,
+            peso = producto_preparado.peso,
             unidad_de_medida_del_peso = producto_preparado.unidad_de_medida_del_peso,
         });
         db.SaveChanges();
@@ -650,17 +650,17 @@ public class InsumosController : Controller
             nombre = p.nombre,
             marca = p.marca,
             presentacion = p.presentacion,
-            cantidad = p.cantidad,
-            volumen_de_porcion_de_presentacion = p.volumen_de_porcion_de_presentacion,
+            cantidad = p.cantidad ?? 0,
+            volumen_de_porcion_de_presentacion = p.volumen_de_porcion_de_presentacion ?? 0m,
             unidad_de_medida_de_presentacion = p.unidad_de_medida_de_presentacion,
             volumen_de_porcion_convertido = p.volumen_de_porcion_convertido,
             unidad_de_medida_convertida = p.unidad_de_medida_convertida,
             proveedor = p.proveedor,
             costo = p.costo,
-            peso = p.peso,
+            peso = p.peso ?? 0m,
             unidad_de_medida_del_peso = p.unidad_de_medida_del_peso,
             costo_por_peso = p.costo_por_peso,
-            costo_por_porcion_con_merma = p.costo_por_porcion_con_merma
+            costo_por_porcion_con_merma = p.costo_por_porcion_con_merma,
         };
 
         // Obtener el listado de productos preparados
@@ -671,14 +671,14 @@ public class InsumosController : Controller
             nombre = prodprep.nombre,
             marca = prodprep.marca,
             presentacion = prodprep.presentacion,
-            cantidad = prodprep.cantidad,
-            volumen_de_porcion_de_presentacion = prodprep.volumen_de_porcion_de_presentacion,
+            cantidad = prodprep.cantidad ?? 0,
+            volumen_de_porcion_de_presentacion = prodprep.volumen_de_porcion_de_presentacion ?? 0m,
             unidad_de_medida_de_presentacion = prodprep.unidad_de_medida_de_presentacion,
             volumen_de_porcion_convertido = prodprep.volumen_de_porcion_convertido,
             unidad_de_medida_convertida = prodprep.unidad_de_medida_convertida,
             proveedor = prodprep.proveedor,
             costo = prodprep.costo,
-            peso = prodprep.peso,
+            peso = prodprep.peso ?? 0m,
             unidad_de_medida_del_peso = prodprep.unidad_de_medida_del_peso,
             costo_por_peso = prodprep.costo_por_peso,
             costo_por_porcion_con_merma = prodprep.costo_por_porcion_con_merma
@@ -767,14 +767,14 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!producto_preparado.costo.HasValue || producto_preparado.costo.Value <= 0.99m)
-            errores.Add("El costo debe ser mayor a 0.99.");
+        if (producto_preparado.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (producto_preparado.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
 
-        if (!producto_preparado.volumen_de_porcion_de_presentacion.HasValue || producto_preparado.volumen_de_porcion_de_presentacion.Value <= 0m)
-            errores.Add("El volumen de porción debe ser mayor a 0.00.");
+        if (producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
+            errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
 
         if (errores.Any())
         {
@@ -787,10 +787,10 @@ public class InsumosController : Controller
                 nombre = prodprep.nombre,
                 marca = prodprep.marca,
                 presentacion = prodprep.presentacion,
-                cantidad = prodprep.cantidad,
-                volumen_de_porcion_de_presentacion = prodprep.volumen_de_porcion_de_presentacion,
+                cantidad = prodprep.cantidad ?? 0,
+                volumen_de_porcion_de_presentacion = prodprep.volumen_de_porcion_de_presentacion ?? 0m,
                 unidad_de_medida_de_presentacion = prodprep.unidad_de_medida_de_presentacion,
-                volumen_de_porcion_convertido = prodprep.volumen_de_porcion_convertido,
+                volumen_de_porcion_convertido = prodprep.volumen_de_porcion_convertido ?? 0m,
                 unidad_de_medida_convertida = prodprep.unidad_de_medida_convertida,
                 proveedor = prodprep.proveedor,
                 costo = prodprep.costo,
@@ -815,12 +815,12 @@ public class InsumosController : Controller
             pp.marca = producto_preparado.marca;
             pp.presentacion = producto_preparado.presentacion;
             pp.cantidad = producto_preparado.cantidad;
-            pp.volumen_de_porcion_de_presentacion = producto_preparado.volumen_de_porcion_de_presentacion ?? 0m;
+            pp.volumen_de_porcion_de_presentacion = producto_preparado.volumen_de_porcion_de_presentacion;
             pp.unidad_de_medida_de_presentacion = producto_preparado.unidad_de_medida_de_presentacion;
-            pp.volumen_de_porcion_convertido = producto_preparado.volumen_de_porcion_convertido ?? 0m;
+            pp.volumen_de_porcion_convertido = producto_preparado.volumen_de_porcion_convertido;
             pp.unidad_de_medida_convertida = producto_preparado.unidad_de_medida_convertida;
             pp.proveedor = producto_preparado.proveedor;
-            pp.costo = producto_preparado.costo ?? 0m;
+            pp.costo = producto_preparado.costo;
             pp.peso = producto_preparado.peso ?? 0m;
             pp.unidad_de_medida_del_peso = producto_preparado.unidad_de_medida_del_peso;
         }
@@ -937,8 +937,8 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!empaque_decoracion.costo.HasValue || empaque_decoracion.costo.Value <= 0.99m)
-            errores.Add("El costo debe ser mayor a 0.99.");
+        if (empaque_decoracion.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (empaque_decoracion.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
@@ -971,7 +971,7 @@ public class InsumosController : Controller
             marca = empaque_decoracion.marca,
             presentacion = empaque_decoracion.presentacion,
             proveedor = empaque_decoracion.proveedor,
-            costo = empaque_decoracion.costo ?? 0m,
+            costo = empaque_decoracion.costo,
             cantidad = empaque_decoracion.cantidad,
             unidad_de_medida = empaque_decoracion.unidad_de_medida,
         });
@@ -1007,7 +1007,7 @@ public class InsumosController : Controller
             marca = empdec.marca,
             presentacion = empdec.presentacion,
             proveedor = empdec.proveedor,
-            costo = empdec.costo,
+            costo = empdec.costo ?? 0m,
             cantidad = (int)empdec.cantidad,
             unidad_de_medida = empdec.unidad_de_medida,
             costo_por_cantidad = empdec.costo_por_cantidad
@@ -1074,8 +1074,8 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!empaque_decoracion.costo.HasValue || empaque_decoracion.costo.Value <= 0)
-            errores.Add("El costo debe ser mayor a 0.");
+        if (empaque_decoracion.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (empaque_decoracion.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
@@ -1110,7 +1110,7 @@ public class InsumosController : Controller
             ed.marca = empaque_decoracion.marca;
             ed.presentacion = empaque_decoracion.presentacion;
             ed.proveedor = empaque_decoracion.proveedor;
-            ed.costo = empaque_decoracion.costo ?? 0m;
+            ed.costo = empaque_decoracion.costo;
             ed.cantidad = empaque_decoracion.cantidad;
             ed.unidad_de_medida = empaque_decoracion.unidad_de_medida;
         }
@@ -1227,8 +1227,8 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!implemento.costo.HasValue || implemento.costo.Value <= 0.99m)
-            errores.Add("El costo debe ser mayor a 0.99.");
+        if (implemento.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (implemento.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
@@ -1261,7 +1261,7 @@ public class InsumosController : Controller
             marca = implemento.marca,
             presentacion = implemento.presentacion,
             proveedor = implemento.proveedor,
-            costo = implemento.costo ?? 0m,
+            costo = implemento.costo,
             cantidad = implemento.cantidad,
             unidad_de_medida = implemento.unidad_de_medida,
         });
@@ -1297,7 +1297,7 @@ public class InsumosController : Controller
             marca = impl.marca,
             presentacion = impl.presentacion,
             proveedor = impl.proveedor,
-            costo = impl.costo,
+            costo = impl.costo ?? 0m,
             cantidad = (int)impl.cantidad,
             unidad_de_medida = impl.unidad_de_medida,
             costo_por_cantidad = impl.costo_por_cantidad
@@ -1363,8 +1363,8 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!implemento.costo.HasValue || implemento.costo.Value <= 0.99m)
-            errores.Add("El costo debe ser mayor a 0.99.");
+        if (implemento.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (implemento.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
@@ -1399,7 +1399,7 @@ public class InsumosController : Controller
             i.marca = implemento.marca;
             i.presentacion = implemento.presentacion;
             i.proveedor = implemento.proveedor;
-            i.costo = implemento.costo ?? 0m;
+            i.costo = implemento.costo;
             i.cantidad = implemento.cantidad;
             i.unidad_de_medida = implemento.unidad_de_medida;
         }
@@ -1422,7 +1422,7 @@ public class InsumosController : Controller
         return RedirectToAction("implementos");
     }
 
-    // ----------- suministros -----------
+    // ----------- Suministros -----------
 
     // Listar y buscar suministros
     public ActionResult suministros(string search)
@@ -1457,7 +1457,7 @@ public class InsumosController : Controller
                 marca = s.marca,
                 presentacion = s.presentacion,
                 proveedor = s.proveedor,
-                costo = s.costo,
+                costo = s.costo ?? 0m,
                 cantidad = (int)s.cantidad,
                 unidad_de_medida = s.unidad_de_medida,
                 costo_por_cantidad = s.costo_por_cantidad
@@ -1519,8 +1519,8 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!suministro.costo.HasValue || suministro.costo.Value <= 0.99m)
-            errores.Add("El costo debe ser mayor a 0.99.");
+        if (suministro.costo <= 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (suministro.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
@@ -1553,7 +1553,7 @@ public class InsumosController : Controller
             marca = suministro.marca,
             presentacion = suministro.presentacion,
             proveedor = suministro.proveedor,
-            costo = suministro.costo ?? 0m,
+            costo = suministro.costo,
             cantidad = suministro.cantidad,
             unidad_de_medida = suministro.unidad_de_medida,
         });
@@ -1575,7 +1575,7 @@ public class InsumosController : Controller
             marca = s.marca,
             presentacion = s.presentacion,
             proveedor = s.proveedor,
-            costo = s.costo,
+            costo = s.costo ?? 0m,
             cantidad = (int)s.cantidad,
             unidad_de_medida = s.unidad_de_medida,
             costo_por_cantidad = s.costo_por_cantidad
@@ -1656,8 +1656,8 @@ public class InsumosController : Controller
             errores.Add("Todos los campos son obligatorios.");
         }
 
-        if (!suministro.costo.HasValue || suministro.costo.Value <= 0)
-            errores.Add("El costo debe ser mayor a 0.99.");
+        if (suministro.costo > 0.99m)
+            errores.Add("El costo debe ser mayor a ₡0.99.");
 
         if (suministro.cantidad <= 0)
             errores.Add("La cantidad debe ser mayor a cero.");
@@ -1692,7 +1692,7 @@ public class InsumosController : Controller
             s.marca = suministro.marca;
             s.presentacion = suministro.presentacion;
             s.proveedor = suministro.proveedor;
-            s.costo = suministro.costo ?? 0;
+            s.costo = suministro.costo;
             s.cantidad = suministro.cantidad;
             s.unidad_de_medida = suministro.unidad_de_medida;
         }
@@ -1775,12 +1775,12 @@ public class InsumosController : Controller
                     .Select(mp => new MateriaPrimaUtilizada
                     {
                         id = mp.id,
-                        id_materia_prima_utilizada = mp.id_materia_prima_utilizada,
+                        id_materia_prima_utilizada = mp.id_materia_prima_utilizada ?? 0,
                         nombre = mp.tabla_materias_primas.nombre,
-                        cantidad = mp.cantidad,
+                        cantidad = mp.cantidad ?? 0,
                         unidad_de_medida = mp.unidad_de_medida,
-                        costo_por_cantidad = mp.costo_por_cantidad,
-                        total_costo = mp.total_costo
+                        costo_por_cantidad = mp.costo_por_cantidad ?? 0m,
+                        total_costo = mp.total_costo ?? 0m
                     }).ToList(),
 
                 ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
@@ -1788,12 +1788,12 @@ public class InsumosController : Controller
                     .Select(pp => new ProductoPreparadoUtilizado
                     {
                         id = pp.id,
-                        id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado,
+                        id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0,
                         nombre = pp.tabla_productos_preparados.nombre,
-                        cantidad = pp.cantidad,
+                        cantidad = pp.cantidad ?? 0,
                         unidad_de_medida = pp.unidad_de_medida,
-                        costo_por_cantidad = pp.costo_por_cantidad,
-                        total_costo = pp.total_costo
+                        costo_por_cantidad = pp.costo_por_cantidad ?? 0m,
+                        total_costo = pp.total_costo ?? 0m
                     }).ToList()
             }).ToList()
         };
@@ -1874,7 +1874,7 @@ public class InsumosController : Controller
 
                     // Si existe, asignar valores para cálculos
                     mp.nombre = materia_prima.nombre;
-                    mp.costo_por_cantidad = materia_prima.costo_por_gramo_con_merma;
+                    mp.costo_por_cantidad = materia_prima.costo_por_gramo_con_merma ?? 0m;
                     mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
                 }
             }
@@ -1915,7 +1915,7 @@ public class InsumosController : Controller
 
                     // Si existe, asignar valores para cálculos
                     pp.nombre = producto_preparado.nombre;
-                    pp.costo_por_cantidad = producto_preparado.costo_por_peso;
+                    pp.costo_por_cantidad = producto_preparado.costo_por_peso ?? 0m;
                     pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
                 }
             }
@@ -1955,12 +1955,12 @@ public class InsumosController : Controller
                 .Select(mp => new MateriaPrimaUtilizada
                 {
                     id = mp.id,
-                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada,
+                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada ?? 0,
                     nombre = mp.tabla_materias_primas.nombre,
-                    cantidad = mp.cantidad,
+                    cantidad = mp.cantidad ?? 0,
                     unidad_de_medida = mp.unidad_de_medida,
-                    costo_por_cantidad = mp.costo_por_cantidad,
-                    total_costo = mp.total_costo
+                    costo_por_cantidad = mp.costo_por_cantidad ?? 0m,
+                    total_costo = mp.total_costo ?? 0m
                 }).ToList(),
 
                 ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
@@ -1968,12 +1968,12 @@ public class InsumosController : Controller
                 .Select(pp => new ProductoPreparadoUtilizado
                 {
                     id = pp.id,
-                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado,
+                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0 ,
                     nombre = pp.tabla_productos_preparados.nombre,
-                    cantidad = pp.cantidad,
+                    cantidad = pp.cantidad ?? 0,
                     unidad_de_medida = pp.unidad_de_medida,
-                    costo_por_cantidad = pp.costo_por_cantidad,
-                    total_costo = pp.total_costo
+                    costo_por_cantidad = pp.costo_por_cantidad ?? 0m,
+                    total_costo = pp.total_costo ?? 0m
                 }).ToList()
 
             }).ToList();
@@ -1994,7 +1994,7 @@ public class InsumosController : Controller
                 if (materiaPrima != null)
                 {
                     mp.id_materia_prima_utilizada = materiaPrima.id;
-                    mp.costo_por_cantidad = materiaPrima.costo_por_gramo_con_merma;
+                    mp.costo_por_cantidad = materiaPrima.costo_por_gramo_con_merma ?? 0m;
                     mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
                     costoTotalReceta += mp.total_costo;
                 }
@@ -2009,7 +2009,7 @@ public class InsumosController : Controller
                 if (productoPreparado != null)
                 {
                     pp.id_producto_preparado_utilizado = productoPreparado.id;
-                    pp.costo_por_cantidad = productoPreparado.costo_por_peso;
+                    pp.costo_por_cantidad = productoPreparado.costo_por_peso ?? 0m;
                     pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
                     costoTotalReceta += pp.total_costo;
                 }
@@ -2085,12 +2085,12 @@ public class InsumosController : Controller
                 .Select(mp => new MateriaPrimaUtilizada
                 {
                     id = mp.id,
-                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada,
+                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada ?? 0,
                     nombre = mp.tabla_materias_primas.nombre,
-                    cantidad = mp.cantidad,
+                    cantidad = mp.cantidad ?? 0,
                     unidad_de_medida = mp.unidad_de_medida,
-                    costo_por_cantidad = mp.costo_por_cantidad,
-                    total_costo = mp.total_costo
+                    costo_por_cantidad = mp.costo_por_cantidad ?? 0m,
+                    total_costo = mp.total_costo ?? 0m
                 }).ToList(),
 
             ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
@@ -2098,12 +2098,12 @@ public class InsumosController : Controller
                 .Select(pp => new ProductoPreparadoUtilizado
                 {
                     id = pp.id,
-                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado,
+                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0,
                     nombre = pp.tabla_productos_preparados.nombre,
-                    cantidad = pp.cantidad,
+                    cantidad = pp.cantidad ?? 0,
                     unidad_de_medida = pp.unidad_de_medida,
-                    costo_por_cantidad = pp.costo_por_cantidad,
-                    total_costo = pp.total_costo
+                    costo_por_cantidad = pp.costo_por_cantidad ?? 0m,
+                    total_costo = pp.total_costo ?? 0m
                 }).ToList()
         };
 
@@ -2121,12 +2121,12 @@ public class InsumosController : Controller
                 .Select(mp => new MateriaPrimaUtilizada
                 {
                     id = mp.id,
-                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada,
+                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada ?? 0,
                     nombre = mp.tabla_materias_primas.nombre,
-                    cantidad = mp.cantidad,
+                    cantidad = mp.cantidad ?? 0,
                     unidad_de_medida = mp.unidad_de_medida,
-                    costo_por_cantidad = mp.costo_por_cantidad,
-                    total_costo = mp.total_costo
+                    costo_por_cantidad = mp.costo_por_cantidad ?? 0m,
+                    total_costo = mp.total_costo ?? 0m
                 }).ToList(),
 
             ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
@@ -2134,12 +2134,12 @@ public class InsumosController : Controller
                 .Select(pp => new ProductoPreparadoUtilizado
                 {
                     id = pp.id,
-                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado,
+                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0,
                     nombre = pp.tabla_productos_preparados.nombre,
-                    cantidad = pp.cantidad,
+                    cantidad = pp.cantidad ?? 0,
                     unidad_de_medida = pp.unidad_de_medida,
-                    costo_por_cantidad = pp.costo_por_cantidad,
-                    total_costo = pp.total_costo
+                    costo_por_cantidad = pp.costo_por_cantidad ?? 0m,
+                    total_costo = pp.total_costo ?? 0m
                 }).ToList()
         }).ToList();
 
@@ -2222,7 +2222,7 @@ public class InsumosController : Controller
 
                     // Si existe, asignar valores para cálculos
                     mp.nombre = materia_prima.nombre;
-                    mp.costo_por_cantidad = materia_prima.costo_por_gramo_con_merma;
+                    mp.costo_por_cantidad = materia_prima.costo_por_gramo_con_merma ?? 0m;
                     mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
                 }
             }
@@ -2263,7 +2263,7 @@ public class InsumosController : Controller
 
                     // Si existe, asignar valores para cálculos
                     pp.nombre = producto_preparado.nombre;
-                    pp.costo_por_cantidad = producto_preparado.costo_por_peso;
+                    pp.costo_por_cantidad = producto_preparado.costo_por_peso ?? 0m;
                     pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
                 }
             }
@@ -2304,12 +2304,12 @@ public class InsumosController : Controller
                 .Select(mp => new MateriaPrimaUtilizada
                 {
                     id = mp.id,
-                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada,
+                    id_materia_prima_utilizada = mp.id_materia_prima_utilizada ?? 0,
                     nombre = mp.tabla_materias_primas.nombre,
-                    cantidad = mp.cantidad,
+                    cantidad = mp.cantidad ?? 0,
                     unidad_de_medida = mp.unidad_de_medida,
-                    costo_por_cantidad = mp.costo_por_cantidad,
-                    total_costo = mp.total_costo
+                    costo_por_cantidad = mp.costo_por_cantidad ?? 0m,
+                    total_costo = mp.total_costo ?? 0m
                 }).ToList(),
 
                 ProductosPreparadosUtilizados = db.costos_receta_productos_preparados_utilizados
@@ -2317,12 +2317,12 @@ public class InsumosController : Controller
                 .Select(pp => new ProductoPreparadoUtilizado
                 {
                     id = pp.id,
-                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado,
+                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0,
                     nombre = pp.tabla_productos_preparados.nombre,
-                    cantidad = pp.cantidad,
+                    cantidad = pp.cantidad ?? 0,
                     unidad_de_medida = pp.unidad_de_medida,
-                    costo_por_cantidad = pp.costo_por_cantidad,
-                    total_costo = pp.total_costo
+                    costo_por_cantidad = pp.costo_por_cantidad ?? 0m,
+                    total_costo = pp.total_costo ?? 0m
                 }).ToList()
             }).ToList();
 
@@ -2341,7 +2341,7 @@ public class InsumosController : Controller
                 if (materiaPrima != null)
                 {
                     mp.id_materia_prima_utilizada = materiaPrima.id;
-                    mp.costo_por_cantidad = materiaPrima.costo_por_gramo_con_merma;
+                    mp.costo_por_cantidad = materiaPrima.costo_por_gramo_con_merma ?? 0m;
                     mp.total_costo = mp.cantidad * mp.costo_por_cantidad;
                     costoTotalReceta += mp.total_costo;
                 }
@@ -2356,7 +2356,7 @@ public class InsumosController : Controller
                 if (productoPreparado != null)
                 {
                     pp.id_producto_preparado_utilizado = productoPreparado.id;
-                    pp.costo_por_cantidad = productoPreparado.costo_por_peso;
+                    pp.costo_por_cantidad = productoPreparado.costo_por_peso ?? 0m;
                     pp.total_costo = pp.cantidad * pp.costo_por_cantidad;
                     costoTotalReceta += pp.total_costo;
                 }
@@ -2508,37 +2508,36 @@ public class InsumosController : Controller
             ProductosFinales = query.Select(pf => new ProductoFinal
             {
                 id = pf.id,
-                id_receta = pf.id_receta,
+                id_receta = pf.id_receta ?? 0,
                 nombre_receta = pf.nombre_receta,
-                costo_total_receta = pf.costo_total_receta,
+                costo_total_receta = pf.costo_total_receta ?? 0m,
                 margen_de_utilidad = pf.margen_de_utilidad,
-                costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad,
-                costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad,
-                costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado,
-                costo_implemento_utilizado = pf.costo_implemento_utilizado,
-                costo_suministro_utilizado = pf.costo_suministro_utilizado,
-                costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo,
-                costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura,
-                factura_total = pf.factura_total,
-                costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia = pf.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia,
-                factura_por_insumo = pf.factura_por_insumo,
-                iva = pf.iva,
-                impuesto_de_servicio = pf.impuesto_de_servicio,
-                envio = pf.envio,
+                costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad ?? 0,
+                costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad ?? 0m,
+                costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado ?? 0m,
+                costo_implemento_utilizado = pf.costo_implemento_utilizado ?? 0m,
+                costo_suministro_utilizado = pf.costo_suministro_utilizado ?? 0m,
+                costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo ?? 0m,
+                costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0m,
+                factura_total = pf.factura_total ?? 0m,
+                factura_por_insumo = pf.factura_por_insumo ?? 0m,
+                iva = pf.iva ?? 0m,
+                impuesto_de_servicio = pf.impuesto_de_servicio ?? 0m,
+                envio = pf.envio ?? 0m,
                 plataforma_de_envio = pf.plataforma_de_envio,
-                precio_final_sugerido = pf.precio_final_sugerido,
+                precio_final_sugerido = pf.precio_final_sugerido ?? 0m,
 
                 EmpaquesDecoracionesUtilizados = db.precios_empaques_decoraciones_utilizados
                     .Where(ed => ed.id_precio_final_sugerido == pf.id)
                     .Select(ed => new EmpaqueDecoracionUtilizado
                     {
                         id = ed.id,
-                        id_empaque_decoracion_utilizado = ed.id_empaque_decoracion_utilizado,
+                        id_empaque_decoracion_utilizado = ed.id_empaque_decoracion_utilizado ?? 0,
                         nombre = ed.tabla_empaques_decoraciones.nombre,
-                        cantidad = ed.cantidad,
+                        cantidad = ed.cantidad ?? 0,
                         unidad_de_medida = ed.unidad_de_medida,
-                        costo_por_cantidad = ed.costo_por_cantidad,
-                        total_costo = ed.total_costo
+                        costo_por_cantidad = ed.costo_por_cantidad ?? 0m,
+                        total_costo = ed.total_costo ?? 0m
                     }).ToList(),
 
                 ImplementosUtilizados = db.precios_implementos_utilizados
@@ -2546,12 +2545,12 @@ public class InsumosController : Controller
                     .Select(i => new ImplementoUtilizado
                     {
                         id = i.id,
-                        id_implemento_utilizado = i.id_implemento_utilizado,
+                        id_implemento_utilizado = i.id_implemento_utilizado ?? 0,
                         nombre = i.tabla_implementos.nombre,
-                        cantidad = i.cantidad,
+                        cantidad = i.cantidad ?? 0,
                         unidad_de_medida = i.unidad_de_medida,
-                        costo_por_cantidad = i.costo_por_cantidad,
-                        total_costo = i.total_costo
+                        costo_por_cantidad = i.costo_por_cantidad ?? 0m,
+                        total_costo = i.total_costo ?? 0m
                     }).ToList(),
 
                 SuministrosUtilizados = db.precios_suministros_utilizados
@@ -2559,13 +2558,13 @@ public class InsumosController : Controller
                     .Select(s => new SuministroUtilizado
                     {
                         id = s.id,
-                        id_suministro_utilizado = s.id_suministro_utilizado,
+                        id_suministro_utilizado = s.id_suministro_utilizado ?? 0,
                         nombre = s.tabla_suministros.nombre,
-                        cantidad = s.cantidad,
+                        cantidad = s.cantidad ?? 0,
                         unidad_de_medida = s.unidad_de_medida,
-                        costo_por_cantidad = s.costo_por_cantidad,
-                        total_costo = s.total_costo,
-                        es_impresion_de_facturas = s.es_impresion_de_facturas
+                        costo_por_cantidad = s.costo_por_cantidad ?? 0m,
+                        total_costo = s.total_costo ?? 0m,
+                        es_impresion_de_facturas = s.es_impresion_de_facturas ?? false
                     }).ToList()
             }).ToList()
         };
@@ -2677,7 +2676,7 @@ public class InsumosController : Controller
                         continue;
                     }
                     ed.nombre = empaque.nombre;
-                    ed.costo_por_cantidad = empaque.costo_por_cantidad;
+                    ed.costo_por_cantidad = empaque.costo_por_cantidad ?? 0m;
                     ed.total_costo = ed.cantidad * ed.costo_por_cantidad;
                 }
             }
@@ -2714,7 +2713,7 @@ public class InsumosController : Controller
                         continue;
                     }
                     impl.nombre = implemento.nombre;
-                    impl.costo_por_cantidad = implemento.costo_por_cantidad;
+                    impl.costo_por_cantidad = implemento.costo_por_cantidad ?? 0m;
                     impl.total_costo = impl.cantidad * impl.costo_por_cantidad;
                 }
             }
@@ -2751,7 +2750,7 @@ public class InsumosController : Controller
                         continue;
                     }
                     sumn.nombre = suministro.nombre;
-                    sumn.costo_por_cantidad = suministro.costo_por_cantidad;
+                    sumn.costo_por_cantidad = suministro.costo_por_cantidad ?? 0m;
                     sumn.total_costo = sumn.cantidad * sumn.costo_por_cantidad;
                 }
             }
@@ -2792,21 +2791,21 @@ public class InsumosController : Controller
             {
                 id = pf.id,
                 nombre_receta = pf.nombre_receta,
-                costo_total_receta = pf.costo_total_receta,
+                costo_total_receta = pf.costo_total_receta ?? 0m,
                 margen_de_utilidad = pf.margen_de_utilidad,
-                costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad,
-                costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad,
-                costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado,
-                costo_implemento_utilizado = pf.costo_implemento_utilizado,
-                costo_suministro_utilizado = pf.costo_suministro_utilizado,
-                factura_total = pf.factura_total,
-                factura_por_insumo = pf.factura_por_insumo,
-                costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura,
-                iva = pf.iva,
-                impuesto_de_servicio = pf.impuesto_de_servicio,
-                envio = pf.envio,
+                costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad ?? 0,
+                costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad ?? 0m,
+                costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado ?? 0m,
+                costo_implemento_utilizado = pf.costo_implemento_utilizado ?? 0m,
+                costo_suministro_utilizado = pf.costo_suministro_utilizado ?? 0m,
+                factura_total = pf.factura_total ?? 0m,
+                factura_por_insumo = pf.factura_por_insumo ?? 0m,
+                costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0m,
+                iva = pf.iva ?? 0m,
+                impuesto_de_servicio = pf.impuesto_de_servicio ?? 0m,
+                envio = pf.envio ?? 0m,
                 plataforma_de_envio = pf.plataforma_de_envio,
-                precio_final_sugerido = pf.precio_final_sugerido,
+                precio_final_sugerido = pf.precio_final_sugerido ?? 0m,
             }).ToList();
             return View("precio_final", new InsumosModel
             {
@@ -2978,34 +2977,34 @@ public class InsumosController : Controller
         {
             id = pf.id,
             nombre_receta = pf.nombre_receta,
-            costo_total_receta = pf.costo_total_receta,
+            costo_total_receta = pf.costo_total_receta ?? 0m,
             margen_de_utilidad = pf.margen_de_utilidad,
-            costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad,
-            costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad,
-            costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado,
-            costo_implemento_utilizado = pf.costo_implemento_utilizado,
-            costo_suministro_utilizado = pf.costo_suministro_utilizado,
-            costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo,
-            costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura,
-            factura_total = pf.factura_total,
-            factura_por_insumo = pf.factura_por_insumo,
-            iva = pf.iva,
-            impuesto_de_servicio = pf.impuesto_de_servicio,
-            envio = pf.envio,
+            costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad ?? 0,
+            costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad ?? 0m,
+            costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado ?? 0m,
+            costo_implemento_utilizado = pf.costo_implemento_utilizado ?? 0m,
+            costo_suministro_utilizado = pf.costo_suministro_utilizado ?? 0m,
+            costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo ?? 0m,
+            costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0m,
+            factura_total = pf.factura_total ?? 0m,
+            factura_por_insumo = pf.factura_por_insumo ?? 0m,
+            iva = pf.iva ?? 0m,
+            impuesto_de_servicio = pf.impuesto_de_servicio ?? 0m,
+            envio = pf.envio ?? 0m,
             plataforma_de_envio = pf.plataforma_de_envio,
-            precio_final_sugerido = pf.precio_final_sugerido,
+            precio_final_sugerido = pf.precio_final_sugerido ?? 0m,
 
             EmpaquesDecoracionesUtilizados = db.precios_empaques_decoraciones_utilizados
                 .Where(ed => ed.id_precio_final_sugerido == pf.id)
                 .Select(ed => new EmpaqueDecoracionUtilizado
                 {
                     id = ed.id,
-                    id_empaque_decoracion_utilizado = ed.id_empaque_decoracion_utilizado,
+                    id_empaque_decoracion_utilizado = ed.id_empaque_decoracion_utilizado ?? 0,
                     nombre = ed.tabla_empaques_decoraciones.nombre,
-                    cantidad = ed.cantidad,
+                    cantidad = ed.cantidad ?? 0,
                     unidad_de_medida = ed.unidad_de_medida,
-                    costo_por_cantidad = ed.costo_por_cantidad,
-                    total_costo = ed.total_costo
+                    costo_por_cantidad = ed.costo_por_cantidad ?? 0m,
+                    total_costo = ed.total_costo ?? 0m
                 }).ToList(),
 
             ImplementosUtilizados = db.precios_implementos_utilizados
@@ -3013,12 +3012,12 @@ public class InsumosController : Controller
                 .Select(i => new ImplementoUtilizado
                 {
                     id = i.id,
-                    id_implemento_utilizado = i.id_implemento_utilizado,
+                    id_implemento_utilizado = i.id_implemento_utilizado ?? 0,
                     nombre = i.tabla_implementos.nombre,
-                    cantidad = i.cantidad,
+                    cantidad = i.cantidad ?? 0,
                     unidad_de_medida = i.unidad_de_medida,
-                    costo_por_cantidad = i.costo_por_cantidad,
-                    total_costo = i.total_costo
+                    costo_por_cantidad = i.costo_por_cantidad ?? 0m,
+                    total_costo = i.total_costo ?? 0m
                 }).ToList(),
 
             SuministrosUtilizados = db.precios_suministros_utilizados
@@ -3026,13 +3025,13 @@ public class InsumosController : Controller
                 .Select(s => new SuministroUtilizado
                 {
                     id = s.id,
-                    id_suministro_utilizado = s.id_suministro_utilizado,
+                    id_suministro_utilizado = s.id_suministro_utilizado ?? 0,
                     nombre = s.tabla_suministros.nombre,
-                    cantidad = s.cantidad,
+                    cantidad = s.cantidad ?? 0,
                     unidad_de_medida = s.unidad_de_medida,
-                    costo_por_cantidad = s.costo_por_cantidad,
-                    total_costo = s.total_costo,
-                    es_impresion_de_facturas = s.es_impresion_de_facturas
+                    costo_por_cantidad = s.costo_por_cantidad ?? 0m,
+                    total_costo = s.total_costo ?? 0m,
+                    es_impresion_de_facturas = s.es_impresion_de_facturas ?? false
                 }).ToList()
         };
 
@@ -3040,34 +3039,34 @@ public class InsumosController : Controller
         {
             id = prodfinal.id,
             nombre_receta = prodfinal.nombre_receta,
-            costo_total_receta = prodfinal.costo_total_receta,
+            costo_total_receta = prodfinal.costo_total_receta ?? 0m,
             margen_de_utilidad = prodfinal.margen_de_utilidad,
-            costo_sin_margen_de_utilidad = prodfinal.costo_sin_margen_de_utilidad,
-            costo_con_margen_de_utilidad = prodfinal.costo_con_margen_de_utilidad,
-            costo_empaque_decoracion_utilizado = prodfinal.costo_empaque_decoracion_utilizado,
-            costo_implemento_utilizado = prodfinal.costo_implemento_utilizado,
-            costo_suministro_utilizado = prodfinal.costo_suministro_utilizado,
-            costo_de_impresion_de_factura_por_insumo = prodfinal.costo_de_impresion_de_factura_por_insumo,
-            costo_total_de_impresion_de_factura = prodfinal.costo_total_de_impresion_de_factura,
-            factura_total = prodfinal.factura_total,
-            factura_por_insumo = prodfinal.factura_por_insumo,
-            iva = prodfinal.iva,
-            impuesto_de_servicio = prodfinal.impuesto_de_servicio,
-            envio = prodfinal.envio,
+            costo_sin_margen_de_utilidad = prodfinal.costo_sin_margen_de_utilidad ?? 0,
+            costo_con_margen_de_utilidad = prodfinal.costo_con_margen_de_utilidad ?? 0m,
+            costo_empaque_decoracion_utilizado = prodfinal.costo_empaque_decoracion_utilizado ?? 0m,
+            costo_implemento_utilizado = prodfinal.costo_implemento_utilizado ?? 0m,
+            costo_suministro_utilizado = prodfinal.costo_suministro_utilizado ?? 0m,
+            costo_de_impresion_de_factura_por_insumo = prodfinal.costo_de_impresion_de_factura_por_insumo ?? 0m,
+            costo_total_de_impresion_de_factura = prodfinal.costo_total_de_impresion_de_factura ?? 0m,
+            factura_total = prodfinal.factura_total ?? 0m,
+            factura_por_insumo = prodfinal.factura_por_insumo ?? 0m,
+            iva = prodfinal.iva ?? 0m,
+            impuesto_de_servicio = prodfinal.impuesto_de_servicio ?? 0m,
+            envio = prodfinal.envio ?? 0m,
             plataforma_de_envio = prodfinal.plataforma_de_envio,
-            precio_final_sugerido = prodfinal.precio_final_sugerido,
+            precio_final_sugerido = prodfinal.precio_final_sugerido ?? 0m,
 
             EmpaquesDecoracionesUtilizados = db.precios_empaques_decoraciones_utilizados
                 .Where(ed => ed.id_precio_final_sugerido == prodfinal.id)
                 .Select(ed => new EmpaqueDecoracionUtilizado
                 {
                     id = ed.id,
-                    id_empaque_decoracion_utilizado = ed.id_empaque_decoracion_utilizado,
+                    id_empaque_decoracion_utilizado = ed.id_empaque_decoracion_utilizado ?? 0,
                     nombre = ed.tabla_empaques_decoraciones.nombre,
-                    cantidad = ed.cantidad,
+                    cantidad = ed.cantidad ?? 0,
                     unidad_de_medida = ed.unidad_de_medida,
-                    costo_por_cantidad = ed.costo_por_cantidad,
-                    total_costo = ed.total_costo
+                    costo_por_cantidad = ed.costo_por_cantidad ?? 0m,
+                    total_costo = ed.total_costo ?? 0m
                 }).ToList(),
             
             ImplementosUtilizados = db.precios_implementos_utilizados
@@ -3075,12 +3074,12 @@ public class InsumosController : Controller
                 .Select(i => new ImplementoUtilizado
                 {
                     id = i.id,
-                    id_implemento_utilizado = i.id_implemento_utilizado,
+                    id_implemento_utilizado = i.id_implemento_utilizado ?? 0,
                     nombre = i.tabla_implementos.nombre,
-                    cantidad = i.cantidad,
+                    cantidad = i.cantidad ?? 0,
                     unidad_de_medida = i.unidad_de_medida,
-                    costo_por_cantidad = i.costo_por_cantidad,
-                    total_costo = i.total_costo
+                    costo_por_cantidad = i.costo_por_cantidad ?? 0m,
+                    total_costo = i.total_costo ?? 0m
                 }).ToList(),
             
             SuministrosUtilizados = db.precios_suministros_utilizados
@@ -3088,13 +3087,13 @@ public class InsumosController : Controller
                 .Select(s => new SuministroUtilizado
                 {
                     id = s.id,
-                    id_suministro_utilizado = s.id_suministro_utilizado,
+                    id_suministro_utilizado = s.id_suministro_utilizado ?? 0,
                     nombre = s.tabla_suministros.nombre,
-                    cantidad = s.cantidad,
+                    cantidad = s.cantidad ?? 0,
                     unidad_de_medida = s.unidad_de_medida,
-                    costo_por_cantidad = s.costo_por_cantidad,
-                    total_costo = s.total_costo,
-                    es_impresion_de_facturas = s.es_impresion_de_facturas
+                    costo_por_cantidad = s.costo_por_cantidad ?? 0m,
+                    total_costo = s.total_costo ?? 0m,
+                    es_impresion_de_facturas = s.es_impresion_de_facturas ?? false
                 }).ToList()
         }).ToList();
 
@@ -3192,7 +3191,7 @@ public class InsumosController : Controller
                         continue;
                     }
                     ed.nombre = empaque.nombre;
-                    ed.costo_por_cantidad = empaque.costo_por_cantidad;
+                    ed.costo_por_cantidad = empaque.costo_por_cantidad ?? 0m;
                     ed.total_costo = ed.cantidad * ed.costo_por_cantidad;
                 }
             }
@@ -3229,7 +3228,7 @@ public class InsumosController : Controller
                         continue;
                     }
                     impl.nombre = implemento.nombre;
-                    impl.costo_por_cantidad = implemento.costo_por_cantidad;
+                    impl.costo_por_cantidad = implemento.costo_por_cantidad ?? 0m;
                     impl.total_costo = impl.cantidad * impl.costo_por_cantidad;
                 }
             }
@@ -3266,7 +3265,7 @@ public class InsumosController : Controller
                         continue;
                     }
                     sumn.nombre = suministro.nombre;
-                    sumn.costo_por_cantidad = suministro.costo_por_cantidad;
+                    sumn.costo_por_cantidad = suministro.costo_por_cantidad ?? 0m;
                     sumn.total_costo = sumn.cantidad * sumn.costo_por_cantidad;
                 }
             }
@@ -3316,20 +3315,20 @@ public class InsumosController : Controller
             {
                 id = pf.id,
                 nombre_receta = pf.nombre_receta,
-                costo_total_receta = pf.costo_total_receta,
+                costo_total_receta = pf.costo_total_receta ?? 0m,
                 margen_de_utilidad = pf.margen_de_utilidad,
-                costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad,
-                costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad,
-                costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado,
-                costo_implemento_utilizado = pf.costo_implemento_utilizado,
-                costo_suministro_utilizado = pf.costo_suministro_utilizado,
-                costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo,
-                costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura,
-                factura_total = pf.factura_total,
-                factura_por_insumo = pf.factura_por_insumo,
-                iva = pf.iva,
-                impuesto_de_servicio = pf.impuesto_de_servicio,
-                envio = pf.envio,
+                costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad ?? 0,
+                costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad ?? 0m,
+                costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado ?? 0m,
+                costo_implemento_utilizado = pf.costo_implemento_utilizado ?? 0m,
+                costo_suministro_utilizado = pf.costo_suministro_utilizado ?? 0m,
+                costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo ?? 0m,
+                costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0m,
+                factura_total = pf.factura_total ?? 0m,
+                factura_por_insumo = pf.factura_por_insumo ?? 0m,
+                iva = pf.iva ?? 0m,
+                impuesto_de_servicio = pf.impuesto_de_servicio ?? 0m,
+                envio = pf.envio ?? 0m,
                 plataforma_de_envio = pf.plataforma_de_envio,
             }).ToList();
             return View("precio_final", new InsumosModel

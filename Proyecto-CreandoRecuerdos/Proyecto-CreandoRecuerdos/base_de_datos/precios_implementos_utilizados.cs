@@ -15,12 +15,12 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     public partial class precios_implementos_utilizados
     {
         public int id { get; set; }
-        public int id_precio_final_sugerido { get; set; }
-        public int id_implemento_utilizado { get; set; }
-        public int cantidad { get; set; }
+        public Nullable<int> id_precio_final_sugerido { get; set; }
+        public Nullable<int> id_implemento_utilizado { get; set; }
+        public Nullable<int> cantidad { get; set; }
         public string unidad_de_medida { get; set; }
-        public decimal costo_por_cantidad { get; set; }
-        public decimal total_costo { get; set; }
+        public Nullable<decimal> costo_por_cantidad { get; set; }
+        public Nullable<decimal> total_costo { get; set; }
     
         public virtual tabla_implementos tabla_implementos { get; set; }
         public virtual tabla_precios_finales_sugeridos tabla_precios_finales_sugeridos { get; set; }

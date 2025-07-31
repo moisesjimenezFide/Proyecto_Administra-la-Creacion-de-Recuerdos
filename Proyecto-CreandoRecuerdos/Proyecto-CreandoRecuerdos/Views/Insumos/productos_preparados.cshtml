@@ -172,8 +172,7 @@
                                 ? producto_preparado.volumen_de_porcion_de_presentacion.Value.ToString("N2"): "")
                             </td>
                             <td>@producto_preparado.unidad_de_medida_de_presentacion</td>
-                            <td>@producto_preparado.volumen_de_porcion_convertido.ToString("N2")</td>
-                            <td>@producto_preparado.unidad_de_medida_convertida</td>
+                            <td>@(producto_preparado.volumen_de_porcion_convertido.HasValue ? producto_preparado.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td><td>@producto_preparado.unidad_de_medida_convertida</td>
                             <td>@producto_preparado.proveedor</td>
                             <td>
                                 @(producto_preparado.costo.HasValue ? "₡" + producto_preparado.costo.Value.ToString("N2") : "")

@@ -15,12 +15,12 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     public partial class costos_receta_materias_primas_utilizadas
     {
         public int id { get; set; }
-        public int id_receta { get; set; }
-        public int id_materia_prima_utilizada { get; set; }
-        public int cantidad { get; set; }
+        public Nullable<int> id_receta { get; set; }
+        public Nullable<int> id_materia_prima_utilizada { get; set; }
+        public Nullable<int> cantidad { get; set; }
         public string unidad_de_medida { get; set; }
-        public decimal costo_por_cantidad { get; set; }
-        public decimal total_costo { get; set; }
+        public Nullable<decimal> costo_por_cantidad { get; set; }
+        public Nullable<decimal> total_costo { get; set; }
     
         public virtual tabla_costos_recetas tabla_costos_recetas { get; set; }
         public virtual tabla_materias_primas tabla_materias_primas { get; set; }

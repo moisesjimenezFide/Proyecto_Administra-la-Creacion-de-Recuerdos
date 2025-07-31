@@ -25,10 +25,10 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public string marca { get; set; }
         public string presentacion { get; set; }
         public string proveedor { get; set; }
-        public decimal costo { get; set; }
-        public int cantidad { get; set; }
+        public Nullable<decimal> costo { get; set; }
+        public Nullable<int> cantidad { get; set; }
         public string unidad_de_medida { get; set; }
-        public decimal costo_por_cantidad { get; set; }
+        public Nullable<decimal> costo_por_cantidad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<precios_empaques_decoraciones_utilizados> precios_empaques_decoraciones_utilizados { get; set; }

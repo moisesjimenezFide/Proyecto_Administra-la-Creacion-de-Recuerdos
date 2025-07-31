@@ -23,25 +23,25 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         }
     
         public int id { get; set; }
-        public int id_receta { get; set; }
+        public Nullable<int> id_receta { get; set; }
         public string nombre_receta { get; set; }
-        public decimal costo_total_receta { get; set; }
+        public Nullable<decimal> costo_total_receta { get; set; }
         public decimal margen_de_utilidad { get; set; }
-        public decimal costo_sin_margen_de_utilidad { get; set; }
-        public decimal costo_con_margen_de_utilidad { get; set; }
-        public decimal costo_empaque_decoracion_utilizado { get; set; }
-        public decimal costo_implemento_utilizado { get; set; }
-        public decimal costo_suministro_utilizado { get; set; }
-        public decimal iva { get; set; }
-        public decimal impuesto_de_servicio { get; set; }
-        public decimal envio { get; set; }
+        public Nullable<decimal> costo_sin_margen_de_utilidad { get; set; }
+        public Nullable<decimal> costo_con_margen_de_utilidad { get; set; }
+        public Nullable<decimal> costo_empaque_decoracion_utilizado { get; set; }
+        public Nullable<decimal> costo_implemento_utilizado { get; set; }
+        public Nullable<decimal> costo_suministro_utilizado { get; set; }
+        public Nullable<decimal> iva { get; set; }
+        public Nullable<decimal> impuesto_de_servicio { get; set; }
+        public Nullable<decimal> envio { get; set; }
         public string plataforma_de_envio { get; set; }
-        public decimal precio_final_sugerido { get; set; }
-        public decimal costo_de_impresion_de_factura_por_insumo { get; set; }
-        public decimal costo_total_de_impresion_de_factura { get; set; }
-        public decimal factura_total { get; set; }
-        public decimal costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia { get; set; }
-        public decimal factura_por_insumo { get; set; }
+        public Nullable<decimal> precio_final_sugerido { get; set; }
+        public Nullable<decimal> costo_de_impresion_de_factura_por_insumo { get; set; }
+        public Nullable<decimal> costo_total_de_impresion_de_factura { get; set; }
+        public Nullable<decimal> factura_total { get; set; }
+        public Nullable<decimal> costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia { get; set; }
+        public Nullable<decimal> factura_por_insumo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<precios_empaques_decoraciones_utilizados> precios_empaques_decoraciones_utilizados { get; set; }

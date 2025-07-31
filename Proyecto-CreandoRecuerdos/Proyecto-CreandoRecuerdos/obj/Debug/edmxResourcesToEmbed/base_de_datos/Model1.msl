@@ -1,72 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="BD_CREANDO_RECUERDOSModelStoreContainer" CdmEntityContainer="BD_CREANDO_RECUERDOSEntities">
-    <EntitySetMapping Name="costos_receta_materias_primas_utilizadas">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_materias_primas_utilizadas">
-        <MappingFragment StoreEntitySet="costos_receta_materias_primas_utilizadas">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="id_receta" ColumnName="id_receta" />
-          <ScalarProperty Name="id_materia_prima_utilizada" ColumnName="id_materia_prima_utilizada" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
-          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="costos_receta_productos_preparados_utilizados">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_productos_preparados_utilizados">
-        <MappingFragment StoreEntitySet="costos_receta_productos_preparados_utilizados">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="id_receta" ColumnName="id_receta" />
-          <ScalarProperty Name="id_producto_preparado_utilizado" ColumnName="id_producto_preparado_utilizado" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
-          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="precios_empaques_decoraciones_utilizados">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_empaques_decoraciones_utilizados">
-        <MappingFragment StoreEntitySet="precios_empaques_decoraciones_utilizados">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="id_precio_final_sugerido" ColumnName="id_precio_final_sugerido" />
-          <ScalarProperty Name="id_empaque_decoracion_utilizado" ColumnName="id_empaque_decoracion_utilizado" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
-          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="precios_implementos_utilizados">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_implementos_utilizados">
-        <MappingFragment StoreEntitySet="precios_implementos_utilizados">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="id_precio_final_sugerido" ColumnName="id_precio_final_sugerido" />
-          <ScalarProperty Name="id_implemento_utilizado" ColumnName="id_implemento_utilizado" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
-          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="precios_suministros_utilizados">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_suministros_utilizados">
-        <MappingFragment StoreEntitySet="precios_suministros_utilizados">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="id_precio_final_sugerido" ColumnName="id_precio_final_sugerido" />
-          <ScalarProperty Name="id_suministro_utilizado" ColumnName="id_suministro_utilizado" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
-          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
-          <ScalarProperty Name="es_impresion_de_facturas" ColumnName="es_impresion_de_facturas" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tabla_actividades">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_actividades">
         <MappingFragment StoreEntitySet="tabla_actividades">
@@ -102,17 +36,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tabla_costos_recetas">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_costos_recetas">
-        <MappingFragment StoreEntitySet="tabla_costos_recetas">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
-          <ScalarProperty Name="porcion" ColumnName="porcion" />
-          <ScalarProperty Name="costo_por_porcion" ColumnName="costo_por_porcion" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tabla_detalle_venta">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_detalle_venta">
         <MappingFragment StoreEntitySet="tabla_detalle_venta">
@@ -123,21 +46,6 @@
           <ScalarProperty Name="precio_unitario" ColumnName="precio_unitario" />
           <ScalarProperty Name="subtotal" ColumnName="subtotal" />
           <ScalarProperty Name="personalizacion" ColumnName="personalizacion" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tabla_empaques_decoraciones">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_empaques_decoraciones">
-        <MappingFragment StoreEntitySet="tabla_empaques_decoraciones">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="marca" ColumnName="marca" />
-          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
-          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-          <ScalarProperty Name="costo" ColumnName="costo" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -162,46 +70,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tabla_implementos">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_implementos">
-        <MappingFragment StoreEntitySet="tabla_implementos">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="marca" ColumnName="marca" />
-          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
-          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-          <ScalarProperty Name="costo" ColumnName="costo" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tabla_materias_primas">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_materias_primas">
-        <MappingFragment StoreEntitySet="tabla_materias_primas">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="marca" ColumnName="marca" />
-          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-          <ScalarProperty Name="costo" ColumnName="costo" />
-          <ScalarProperty Name="peso" ColumnName="peso" />
-          <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
-          <ScalarProperty Name="costo_por_gramo" ColumnName="costo_por_gramo" />
-          <ScalarProperty Name="merma_total_en_gramos" ColumnName="merma_total_en_gramos" />
-          <ScalarProperty Name="porcentaje_de_merma" ColumnName="porcentaje_de_merma" />
-          <ScalarProperty Name="costo_de_merma_total" ColumnName="costo_de_merma_total" />
-          <ScalarProperty Name="costo_total_mas_merma_total" ColumnName="costo_total_mas_merma_total" />
-          <ScalarProperty Name="costo_por_gramo_con_merma" ColumnName="costo_por_gramo_con_merma" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
-          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
-          <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
-          <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
-          <ScalarProperty Name="unidad_de_medida_convertida" ColumnName="unidad_de_medida_convertida" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tabla_notificaciones_vistas">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_notificaciones_vistas">
         <MappingFragment StoreEntitySet="tabla_notificaciones_vistas">
@@ -209,32 +77,6 @@
           <ScalarProperty Name="id_pedido" ColumnName="id_pedido" />
           <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
           <ScalarProperty Name="fecha_vista" ColumnName="fecha_vista" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tabla_precios_finales_sugeridos">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_precios_finales_sugeridos">
-        <MappingFragment StoreEntitySet="tabla_precios_finales_sugeridos">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="id_receta" ColumnName="id_receta" />
-          <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
-          <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
-          <ScalarProperty Name="margen_de_utilidad" ColumnName="margen_de_utilidad" />
-          <ScalarProperty Name="costo_sin_margen_de_utilidad" ColumnName="costo_sin_margen_de_utilidad" />
-          <ScalarProperty Name="costo_con_margen_de_utilidad" ColumnName="costo_con_margen_de_utilidad" />
-          <ScalarProperty Name="costo_empaque_decoracion_utilizado" ColumnName="costo_empaque_decoracion_utilizado" />
-          <ScalarProperty Name="costo_implemento_utilizado" ColumnName="costo_implemento_utilizado" />
-          <ScalarProperty Name="costo_suministro_utilizado" ColumnName="costo_suministro_utilizado" />
-          <ScalarProperty Name="iva" ColumnName="iva" />
-          <ScalarProperty Name="impuesto_de_servicio" ColumnName="impuesto_de_servicio" />
-          <ScalarProperty Name="envio" ColumnName="envio" />
-          <ScalarProperty Name="plataforma_de_envio" ColumnName="plataforma_de_envio" />
-          <ScalarProperty Name="precio_final_sugerido" ColumnName="precio_final_sugerido" />
-          <ScalarProperty Name="costo_de_impresion_de_factura_por_insumo" ColumnName="costo_de_impresion_de_factura_por_insumo" />
-          <ScalarProperty Name="costo_total_de_impresion_de_factura" ColumnName="costo_total_de_impresion_de_factura" />
-          <ScalarProperty Name="factura_total" ColumnName="factura_total" />
-          <ScalarProperty Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" ColumnName="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" />
-          <ScalarProperty Name="factura_por_insumo" ColumnName="factura_por_insumo" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -247,28 +89,6 @@
           <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
           <ScalarProperty Name="precio_por_unidad" ColumnName="precio_por_unidad" />
           <ScalarProperty Name="img_url" ColumnName="img_url" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tabla_productos_preparados">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_productos_preparados">
-        <MappingFragment StoreEntitySet="tabla_productos_preparados">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="tipo" ColumnName="tipo" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="marca" ColumnName="marca" />
-          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-          <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
-          <ScalarProperty Name="costo" ColumnName="costo" />
-          <ScalarProperty Name="peso" ColumnName="peso" />
-          <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
-          <ScalarProperty Name="costo_por_peso" ColumnName="costo_por_peso" />
-          <ScalarProperty Name="costo_por_porcion_con_merma" ColumnName="costo_por_porcion_con_merma" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
-          <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
-          <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
-          <ScalarProperty Name="unidad_de_medida_convertida" ColumnName="unidad_de_medida_convertida" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -299,21 +119,6 @@
           <ScalarProperty Name="motivo" ColumnName="motivo" />
           <ScalarProperty Name="estado" ColumnName="estado" />
           <ScalarProperty Name="tipo" ColumnName="tipo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tabla_suministros">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_suministros">
-        <MappingFragment StoreEntitySet="tabla_suministros">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="marca" ColumnName="marca" />
-          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
-          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
-          <ScalarProperty Name="costo" ColumnName="costo" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
-          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -420,6 +225,11 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_calculos_empaque_decoracion" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_calculos_empaque_decoracion" />
+    <FunctionImportMapping FunctionImportName="sp_calculos_implemento" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_calculos_implemento" />
+    <FunctionImportMapping FunctionImportName="sp_calculos_materiaprima" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_calculos_materiaprima" />
+    <FunctionImportMapping FunctionImportName="sp_calculos_productopreparado" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_calculos_productopreparado" />
+    <FunctionImportMapping FunctionImportName="sp_calculos_suministro" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_calculos_suministro" />
     <FunctionImportMapping FunctionImportName="sp_cancelar_pedido" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_cancelar_pedido">
       <ResultMapping>
         <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_cancelar_pedido_Result">
@@ -629,5 +439,200 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="costos_receta_materias_primas_utilizadas">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_materias_primas_utilizadas">
+        <MappingFragment StoreEntitySet="costos_receta_materias_primas_utilizadas">
+          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
+          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
+          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="id_materia_prima_utilizada" ColumnName="id_materia_prima_utilizada" />
+          <ScalarProperty Name="id_receta" ColumnName="id_receta" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="costos_receta_productos_preparados_utilizados">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.costos_receta_productos_preparados_utilizados">
+        <MappingFragment StoreEntitySet="costos_receta_productos_preparados_utilizados">
+          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
+          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
+          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="id_producto_preparado_utilizado" ColumnName="id_producto_preparado_utilizado" />
+          <ScalarProperty Name="id_receta" ColumnName="id_receta" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="precios_empaques_decoraciones_utilizados">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_empaques_decoraciones_utilizados">
+        <MappingFragment StoreEntitySet="precios_empaques_decoraciones_utilizados">
+          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
+          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
+          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="id_empaque_decoracion_utilizado" ColumnName="id_empaque_decoracion_utilizado" />
+          <ScalarProperty Name="id_precio_final_sugerido" ColumnName="id_precio_final_sugerido" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="precios_implementos_utilizados">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_implementos_utilizados">
+        <MappingFragment StoreEntitySet="precios_implementos_utilizados">
+          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
+          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
+          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="id_implemento_utilizado" ColumnName="id_implemento_utilizado" />
+          <ScalarProperty Name="id_precio_final_sugerido" ColumnName="id_precio_final_sugerido" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="precios_suministros_utilizados">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.precios_suministros_utilizados">
+        <MappingFragment StoreEntitySet="precios_suministros_utilizados">
+          <ScalarProperty Name="es_impresion_de_facturas" ColumnName="es_impresion_de_facturas" />
+          <ScalarProperty Name="total_costo" ColumnName="total_costo" />
+          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
+          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="id_suministro_utilizado" ColumnName="id_suministro_utilizado" />
+          <ScalarProperty Name="id_precio_final_sugerido" ColumnName="id_precio_final_sugerido" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tabla_costos_recetas">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_costos_recetas">
+        <MappingFragment StoreEntitySet="tabla_costos_recetas">
+          <ScalarProperty Name="costo_por_porcion" ColumnName="costo_por_porcion" />
+          <ScalarProperty Name="porcion" ColumnName="porcion" />
+          <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tabla_precios_finales_sugeridos">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_precios_finales_sugeridos">
+        <MappingFragment StoreEntitySet="tabla_precios_finales_sugeridos">
+          <ScalarProperty Name="factura_por_insumo" ColumnName="factura_por_insumo" />
+          <ScalarProperty Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" ColumnName="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" />
+          <ScalarProperty Name="factura_total" ColumnName="factura_total" />
+          <ScalarProperty Name="costo_total_de_impresion_de_factura" ColumnName="costo_total_de_impresion_de_factura" />
+          <ScalarProperty Name="costo_de_impresion_de_factura_por_insumo" ColumnName="costo_de_impresion_de_factura_por_insumo" />
+          <ScalarProperty Name="precio_final_sugerido" ColumnName="precio_final_sugerido" />
+          <ScalarProperty Name="plataforma_de_envio" ColumnName="plataforma_de_envio" />
+          <ScalarProperty Name="envio" ColumnName="envio" />
+          <ScalarProperty Name="impuesto_de_servicio" ColumnName="impuesto_de_servicio" />
+          <ScalarProperty Name="iva" ColumnName="iva" />
+          <ScalarProperty Name="costo_suministro_utilizado" ColumnName="costo_suministro_utilizado" />
+          <ScalarProperty Name="costo_implemento_utilizado" ColumnName="costo_implemento_utilizado" />
+          <ScalarProperty Name="costo_empaque_decoracion_utilizado" ColumnName="costo_empaque_decoracion_utilizado" />
+          <ScalarProperty Name="costo_con_margen_de_utilidad" ColumnName="costo_con_margen_de_utilidad" />
+          <ScalarProperty Name="costo_sin_margen_de_utilidad" ColumnName="costo_sin_margen_de_utilidad" />
+          <ScalarProperty Name="margen_de_utilidad" ColumnName="margen_de_utilidad" />
+          <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
+          <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
+          <ScalarProperty Name="id_receta" ColumnName="id_receta" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tabla_empaques_decoraciones">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_empaques_decoraciones">
+        <MappingFragment StoreEntitySet="tabla_empaques_decoraciones">
+          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
+          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="costo" ColumnName="costo" />
+          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tabla_implementos">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_implementos">
+        <MappingFragment StoreEntitySet="tabla_implementos">
+          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
+          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="costo" ColumnName="costo" />
+          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tabla_materias_primas">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_materias_primas">
+        <MappingFragment StoreEntitySet="tabla_materias_primas">
+          <ScalarProperty Name="unidad_de_medida_convertida" ColumnName="unidad_de_medida_convertida" />
+          <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
+          <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
+          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+          <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="costo_por_gramo_con_merma" ColumnName="costo_por_gramo_con_merma" />
+          <ScalarProperty Name="costo_total_mas_merma_total" ColumnName="costo_total_mas_merma_total" />
+          <ScalarProperty Name="costo_de_merma_total" ColumnName="costo_de_merma_total" />
+          <ScalarProperty Name="porcentaje_de_merma" ColumnName="porcentaje_de_merma" />
+          <ScalarProperty Name="merma_total_en_gramos" ColumnName="merma_total_en_gramos" />
+          <ScalarProperty Name="costo_por_gramo" ColumnName="costo_por_gramo" />
+          <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
+          <ScalarProperty Name="peso" ColumnName="peso" />
+          <ScalarProperty Name="costo" ColumnName="costo" />
+          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tabla_productos_preparados">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_productos_preparados">
+        <MappingFragment StoreEntitySet="tabla_productos_preparados">
+          <ScalarProperty Name="unidad_de_medida_convertida" ColumnName="unidad_de_medida_convertida" />
+          <ScalarProperty Name="volumen_de_porcion_convertido" ColumnName="volumen_de_porcion_convertido" />
+          <ScalarProperty Name="unidad_de_medida_de_presentacion" ColumnName="unidad_de_medida_de_presentacion" />
+          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="costo_por_porcion_con_merma" ColumnName="costo_por_porcion_con_merma" />
+          <ScalarProperty Name="costo_por_peso" ColumnName="costo_por_peso" />
+          <ScalarProperty Name="unidad_de_medida_del_peso" ColumnName="unidad_de_medida_del_peso" />
+          <ScalarProperty Name="peso" ColumnName="peso" />
+          <ScalarProperty Name="costo" ColumnName="costo" />
+          <ScalarProperty Name="volumen_de_porcion_de_presentacion" ColumnName="volumen_de_porcion_de_presentacion" />
+          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="tipo" ColumnName="tipo" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tabla_suministros">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_suministros">
+        <MappingFragment StoreEntitySet="tabla_suministros">
+          <ScalarProperty Name="costo_por_cantidad" ColumnName="costo_por_cantidad" />
+          <ScalarProperty Name="unidad_de_medida" ColumnName="unidad_de_medida" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="costo" ColumnName="costo" />
+          <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+          <ScalarProperty Name="presentacion" ColumnName="presentacion" />
+          <ScalarProperty Name="marca" ColumnName="marca" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -15,12 +15,12 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
     public partial class precios_empaques_decoraciones_utilizados
     {
         public int id { get; set; }
-        public int id_precio_final_sugerido { get; set; }
-        public int id_empaque_decoracion_utilizado { get; set; }
-        public int cantidad { get; set; }
+        public Nullable<int> id_precio_final_sugerido { get; set; }
+        public Nullable<int> id_empaque_decoracion_utilizado { get; set; }
+        public Nullable<int> cantidad { get; set; }
         public string unidad_de_medida { get; set; }
-        public decimal costo_por_cantidad { get; set; }
-        public decimal total_costo { get; set; }
+        public Nullable<decimal> costo_por_cantidad { get; set; }
+        public Nullable<decimal> total_costo { get; set; }
     
         public virtual tabla_empaques_decoraciones tabla_empaques_decoraciones { get; set; }
         public virtual tabla_precios_finales_sugeridos tabla_precios_finales_sugeridos { get; set; }
