@@ -97,7 +97,7 @@
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? (productoPreparadoEditado.costo.HasValue ? productoPreparadoEditado.costo.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "") : "")" step="0.01" lang="en" />
+            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? productoPreparadoEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />"
         </div>
 
         <div class="mb-3 text-start">
@@ -174,9 +174,7 @@
                             <td>@producto_preparado.unidad_de_medida_de_presentacion</td>
                             <td>@(producto_preparado.volumen_de_porcion_convertido.HasValue ? producto_preparado.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td><td>@producto_preparado.unidad_de_medida_convertida</td>
                             <td>@producto_preparado.proveedor</td>
-                            <td>
-                                @(producto_preparado.costo.HasValue ? "₡" + producto_preparado.costo.Value.ToString("N2") : "")
-                            </td>
+                            <td>₡@(producto_preparado.costo.ToString("N2"))</td>
                             <td>@(producto_preparado.cantidad * producto_preparado.volumen_de_porcion_convertido)</td>
                             <td>@producto_preparado.unidad_de_medida_del_peso</td>
                             <td>

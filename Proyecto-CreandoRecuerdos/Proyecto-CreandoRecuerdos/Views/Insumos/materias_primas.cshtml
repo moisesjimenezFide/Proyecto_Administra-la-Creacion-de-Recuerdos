@@ -93,7 +93,7 @@
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? (materiaPrimaEditado.costo.HasValue ? materiaPrimaEditado.costo.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "") : "")" step="0.01" lang="en" />
+            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? materiaPrimaEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />"
         </div>
 
         <div class="mb-3 text-start">
@@ -178,9 +178,7 @@
                             <td>@materia_prima.unidad_de_medida_de_presentacion</td>
                             <td>@(materia_prima.volumen_de_porcion_convertido.HasValue ? materia_prima.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td><td>@materia_prima.unidad_de_medida_convertida</td>
                             <td>@materia_prima.proveedor</td>
-                            <td>
-                                @(materia_prima.costo.HasValue ? "₡" + materia_prima.costo.Value.ToString("N2") : "")
-                            </td>
+                            <td>₡@(materia_prima.costo.ToString("N2"))</td>
                             <td>@(materia_prima.cantidad * materia_prima.volumen_de_porcion_convertido)</td>
                             <td>@materia_prima.unidad_de_medida_del_peso</td>
                             <td>
