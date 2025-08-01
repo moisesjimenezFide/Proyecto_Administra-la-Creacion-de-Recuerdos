@@ -12,7 +12,101 @@
 
 @section Styles {
     <link href="~/Templates/css/insumos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
+}
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* Botones de exportación */
+    .btn-custom-pink {
+        background-color: #E27AB0;
+        color: white;
+        border: none;
     }
+
+        .btn-custom-pink:hover {
+            background-color: #c6729b; /* tono un poco más oscuro para hover */
+            color: white;
+        }
+
+    /* Espaciado entre botones de exportación */
+    div.dt-buttons {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .pagination .page-item .page-link {
+        background-color: #E27AB0;
+        color: white;
+        border: none;
+        margin: 0 0.2rem;
+        border-radius: 0.25rem;
+        font-size: 0.9rem;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
+        background-color: #b86c93; /* tono más bajito (más oscuro) para activo */
+        font-weight: bold;
+        color: white;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .pagination .page-item.disabled .page-link {
+        background-color: #f8d7e0;
+        color: #a6a6a6;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .pagination .page-item .page-link:hover {
+        background-color: #c6729b; /* mismo que hover */
+        color: white;
+    }
+
+
+    .dt-buttons {
+        /* Opcional: centra o alinea como quieras */
+        text-align: left; /* o center, right */
+    }
+
+    .d-flex > div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+
+
+    .dataTables_filter {
+        margin-left: 0;
+    }
+
+    .dt-length {
+        margin-left: auto;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
@@ -102,6 +196,7 @@
     }
 </div>
 
+
 <!-- Listado -->
 <div class="container">
     <h4><strong>Listado de Empaques y/o Decoraciones</strong></h4>
@@ -163,51 +258,63 @@
         </div>
     }
 </div>
-
 @section Scripts {
     <script src="~/Templates/js/insumos.js"></script>
     @Html.Partial("accion_exitosa")
+
+    <!-- DataTables core -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Botones de exportación -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
+    <!-- Activar DataTables -->
     <script>
         $(document).ready(function () {
-            const totalFilas = $('#tabla_empaques_decoraciones tbody tr').length;
-
-            // Opciones de cantidad (como en la respuesta anterior)
-            let opciones = [];
-            for (let i = 5; i <= totalFilas; i += 5) {
-                opciones.push(i);
-            }
-
-            const ultimoMultiplo = Math.floor(totalFilas / 5) * 5;
-            const siguienteValor = totalFilas !== ultimoMultiplo ? totalFilas - 1 : null;
-            if (siguienteValor && !opciones.includes(siguienteValor)) {
-                opciones.push(siguienteValor);
-            }
-
-            opciones.sort((a, b) => a - b);
-            const valoresNumericos = [...opciones, -1];
-            const valoresVisibles = [...opciones.map(n => n.toString()), "Todos"];
-
             $('#tabla_empaques_decoraciones').DataTable({
-                pageLength: 3, // Cantidad inicial de filas por página
-                searching: false,
-                pagingType: "full_numbers", // Muestra números + inicio + fin
-                lengthMenu: [valoresNumericos, valoresVisibles],
                 language: {
-                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
-                    lengthMenu: "Mostrar _MENU_ registros por página",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    infoEmpty: "No hay registros disponibles",
-                    infoFiltered: "(filtrado de _MAX_ registros totales)",
-                    paginate: {
-                        first: "Primer página",
-                        last: "Última página",
-                        previous: false,
-                        next: false,
+                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                },
+                lengthChange: true,
+                pageLength: 5,
+                lengthMenu: [5, 10, 20, 50],
+                dom: "<'dt-buttons mb-2'B><'d-flex justify-content-between align-items-center'<'dataTables_filter'f><'dt-length'l>>rtip",
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copiar',
+                        className: 'btn btn-custom-pink btn-sm'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Exportar a Excel',
+                        className: 'btn btn-custom-pink btn-sm'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: 'Exportar a PDF',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        className: 'btn btn-custom-pink btn-sm'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        className: 'btn btn-custom-pink btn-sm'
                     }
-                }
+                ]
             });
         });
+
+
+
     </script>
 }
