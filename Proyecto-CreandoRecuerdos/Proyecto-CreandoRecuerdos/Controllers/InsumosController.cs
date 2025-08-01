@@ -112,6 +112,16 @@ public class InsumosController : Controller
             }
         }
 
+        // Unidades permitidas
+        var unidadesPresentacion = new[] { "kg", "kilo", "kilos", "kilogramo", "kilogramos", "g", "gr", "grs", "gramo", "gramos", "l", "litro", "litros", "ml", "mililitro", "mililitros" };
+        var unidadesPeso = new[] { "g", "gr", "grs", "gramo", "gramos", "ml", "mililitro", "mililitros" };
+        var unidadesPresentacionMayorA0 = new[] { "g", "grs", "gramos", "kilos", "kilogramos", "l", "litros", "ml", "mililitros" };
+        var unidadesPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
+
+        string unidadPresentacion = materia_prima.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
+        string unidadPeso = materia_prima.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
+        decimal volumen = materia_prima.volumen_de_porcion_de_presentacion ?? 0m;
+
         var errores = new List<string>();
 
         // Normalizar valores para comparación
@@ -166,6 +176,23 @@ public class InsumosController : Controller
 
         if (materia_prima.merma_total_en_gramos < 0m)
             errores.Add("La merma total en gramos no puede ser negativa.");
+
+        if (!unidadesPresentacion.Contains(unidadPresentacion))
+            errores.Add("Unidad de medida de presentación no permitida.");
+
+        if (!unidadesPeso.Contains(unidadPeso))
+            errores.Add("Unidad de medida del peso no permitida.");
+
+        if (volumen > 0m && volumen != 1m)
+        {
+            if (!unidadesPresentacionMayorA0.Contains(unidadPresentacion))
+                errores.Add("Si el volumen de porción de presentación mayor a 0.00 y distinto de 1.00, solo se permiten palabras plurales (g, grs, gramos, kilos, kilogramos, l, litros, ml, mililitros.).");
+        }
+        else if (volumen == 1m)
+        {
+            if (!unidadesPresentacionIgualA1.Contains(unidadPresentacion))
+                errores.Add("Si el volumen de porción de presentación igual a 1.00, solo se permiten palabras singurales (g, gr, gramo, kilo, kilogramo, l, litro, ml, mililitro.).");
+        }
 
         if (errores.Any())
         {
@@ -321,6 +348,16 @@ public class InsumosController : Controller
             }
         }
 
+        // Unidades permitidas
+        var unidadesPresentacion = new[] { "kg", "kilo", "kilos", "kilogramo", "kilogramos", "g", "gr", "grs", "gramo", "gramos", "l", "litro", "litros", "ml", "mililitro", "mililitros" };
+        var unidadesPeso = new[] { "g", "gr", "grs", "gramo", "gramos", "ml", "mililitro", "mililitros" };
+        var unidadesPresentacionMayorA0 = new[] { "g", "grs", "gramos", "kilos", "kilogramos", "l", "litros", "ml", "mililitros" };
+        var unidadesPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
+
+        string unidadPresentacion = materia_prima.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
+        string unidadPeso = materia_prima.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
+        decimal volumen = materia_prima.volumen_de_porcion_de_presentacion ?? 0m;
+
         var errores = new List<string>();
 
         // Normalizar valores para comparación
@@ -376,6 +413,23 @@ public class InsumosController : Controller
 
         if (materia_prima.merma_total_en_gramos < 0)
             errores.Add("La merma total en gramos no puede ser negativa.");
+
+        if (!unidadesPresentacion.Contains(unidadPresentacion))
+            errores.Add("Unidad de medida de presentación no permitida.");
+
+        if (!unidadesPeso.Contains(unidadPeso))
+            errores.Add("Unidad de medida del peso no permitida.");
+
+        if (volumen > 0m && volumen != 1m)
+        {
+            if (!unidadesPresentacionMayorA0.Contains(unidadPresentacion))
+                errores.Add("Si el volumen de porción de presentación mayor a 0.00 y distinto de 1.00, solo se permiten palabras plurales (g, grs, gramos, kilos, kilogramos, l, litros, ml, mililitros.).");
+        }
+        else if (volumen == 1m)
+        {
+            if (!unidadesPresentacionIgualA1.Contains(unidadPresentacion))
+                errores.Add("Si el volumen de porción de presentación igual a 1.00, solo se permiten palabras singurales (g, gr, gramo, kilo, kilogramo, l, litro, ml, mililitro.).");
+        }
 
         if (errores.Any())
         {
@@ -535,6 +589,16 @@ public class InsumosController : Controller
             }
         }
 
+        // Unidades permitidas
+        var unidadesPresentacion = new[] { "kg", "kilo", "kilos", "kilogramo", "kilogramos", "g", "gr", "grs", "gramo", "gramos", "l", "litro", "litros", "ml", "mililitro", "mililitros" };
+        var unidadesPeso = new[] { "g", "gr", "grs", "gramo", "gramos", "ml", "mililitro", "mililitros" };
+        var unidadesPresentacionMayorA0 = new[] { "g", "grs", "gramos", "kilos", "kilogramos", "l", "litros", "ml", "mililitros" };
+        var unidadesPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
+
+        string unidadPresentacion = producto_preparado.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
+        string unidadPeso = producto_preparado.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
+        decimal volumen = producto_preparado.volumen_de_porcion_de_presentacion ?? 0m;
+
         var errores = new List<string>();
         
         // Normalizar valores para comparación
@@ -587,6 +651,23 @@ public class InsumosController : Controller
 
         if (producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
             errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
+
+        if (!unidadesPresentacion.Contains(unidadPresentacion))
+            errores.Add("Unidad de medida de presentación no permitida.");
+
+        if (!unidadesPeso.Contains(unidadPeso))
+            errores.Add("Unidad de medida del peso no permitida.");
+
+        if (volumen > 0m && volumen != 1m)
+        {
+            if (!unidadesPresentacionMayorA0.Contains(unidadPresentacion))
+                errores.Add("Si el volumen de porción de presentación mayor a 0.00 y distinto de 1.00, solo se permiten palabras plurales (g, grs, gramos, kilos, kilogramos, l, litros, ml, mililitros.).");
+        }
+        else if (volumen == 1m)
+        {
+            if (!unidadesPresentacionIgualA1.Contains(unidadPresentacion))
+                errores.Add("Si el volumen de porción de presentación igual a 1.00, solo se permiten palabras singurales (g, gr, gramo, kilo, kilogramo, l, litro, ml, mililitro.).");
+        }
 
         if (errores.Any())
         {
@@ -723,6 +804,17 @@ public class InsumosController : Controller
             }
         }
 
+        // Unidades permitidas
+        var unidadesPresentacion = new[] { "kg", "kilo", "kilos", "kilogramo", "kilogramos", "g", "gr", "grs", "gramo", "gramos", "l", "litro", "litros", "ml", "mililitro", "mililitros" };
+        var unidadesPeso = new[] { "g", "gr", "grs", "gramo", "gramos", "ml", "mililitro", "mililitros" };
+        var unidadesPresentacionMayorA0 = new[] { "g", "grs", "gramos", "kilos", "kilogramos", "l", "litros", "ml", "mililitros" };
+        var unidadesPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
+
+        string unidadPresentacion = producto_preparado.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
+        string unidadPeso = producto_preparado.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
+        decimal volumen = producto_preparado.volumen_de_porcion_de_presentacion ?? 0m;
+
+
         var errores = new List<string>();
 
         // Normalizar valores para comparación
@@ -778,6 +870,23 @@ public class InsumosController : Controller
 
         if (producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
             errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
+
+        if (!unidadesPresentacion.Contains(unidadPresentacion))
+            errores.Add("Unidad de medida de presentación no permitida.");
+
+        if (!unidadesPeso.Contains(unidadPeso))
+            errores.Add("Unidad de medida del peso no permitida.");
+
+        if (volumen > 0m && volumen != 1m)
+        {
+            if (!unidadesPresentacionMayorA0.Contains(unidadPresentacion))
+                errores.Add("Si el volumen de porción de presentación mayor a 0.00 y distinto de 1.00, solo se permiten palabras plurales (g, grs, gramos, kilos, kilogramos, l, litros, ml, mililitros.).");
+        }
+        else if (volumen == 1m)
+        {
+            if (!unidadesPresentacionIgualA1.Contains(unidadPresentacion))
+                errores.Add("Si el volumen de porción de presentación igual a 1.00, solo se permiten palabras singurales (g, gr, gramo, kilo, kilogramo, l, litro, ml, mililitro.).");
+        }
 
         if (errores.Any())
         {
