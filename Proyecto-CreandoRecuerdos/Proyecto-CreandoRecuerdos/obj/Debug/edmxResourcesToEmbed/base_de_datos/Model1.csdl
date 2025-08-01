@@ -939,21 +939,11 @@
       <Parameter Name="correo" Mode="In" Type="String" />
       <Parameter Name="contrasenna" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="sp_calculos_empaque_decoracion">
-      <Parameter Name="id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_calculos_implemento">
-      <Parameter Name="id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_calculos_materiaprima">
-      <Parameter Name="id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_calculos_productopreparado">
-      <Parameter Name="id" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="sp_calculos_suministro">
-      <Parameter Name="id" Mode="In" Type="Int32" />
-    </FunctionImport>
+    <FunctionImport Name="sp_calculos_empaque_decoracion" />
+    <FunctionImport Name="sp_calculos_implemento" />
+    <FunctionImport Name="sp_calculos_materiaprima" />
+    <FunctionImport Name="sp_calculos_productopreparado" />
+    <FunctionImport Name="sp_calculos_suministro" />
     <FunctionImport Name="sp_cancelar_pedido" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_cancelar_pedido_Result)">
       <Parameter Name="id_pedido" Mode="In" Type="Int32" />
       <Parameter Name="pin" Mode="In" Type="String" />

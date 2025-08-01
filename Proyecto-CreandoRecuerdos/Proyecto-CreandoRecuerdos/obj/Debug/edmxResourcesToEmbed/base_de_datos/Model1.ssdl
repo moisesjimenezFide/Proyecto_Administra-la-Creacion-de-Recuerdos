@@ -742,21 +742,11 @@
     <Parameter Name="correo" Type="varchar" Mode="In" />
     <Parameter Name="contrasenna" Type="varchar" Mode="In" />
   </Function>
-  <Function Name="sp_calculos_empaque_decoracion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_calculos_implemento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_calculos_materiaprima" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_calculos_productopreparado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_calculos_suministro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="id" Type="int" Mode="In" />
-  </Function>
+  <Function Name="sp_calculos_empaque_decoracion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_calculos_implemento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_calculos_materiaprima" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_calculos_productopreparado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_calculos_suministro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="sp_cancelar_pedido" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="id_pedido" Type="int" Mode="In" />
     <Parameter Name="pin" Type="nvarchar" Mode="In" />

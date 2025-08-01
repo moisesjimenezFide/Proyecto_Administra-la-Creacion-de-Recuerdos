@@ -747,21 +747,11 @@
           <Parameter Name="correo" Type="varchar" Mode="In" />
           <Parameter Name="contrasenna" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="sp_calculos_empaque_decoracion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_calculos_implemento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_calculos_materiaprima" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_calculos_productopreparado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_calculos_suministro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="id" Type="int" Mode="In" />
-        </Function>
+        <Function Name="sp_calculos_empaque_decoracion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_calculos_implemento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_calculos_materiaprima" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_calculos_productopreparado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_calculos_suministro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_cancelar_pedido" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_pedido" Type="int" Mode="In" />
           <Parameter Name="pin" Type="nvarchar" Mode="In" />
@@ -1977,21 +1967,11 @@
             <Parameter Name="correo" Mode="In" Type="String" />
             <Parameter Name="contrasenna" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_calculos_empaque_decoracion">
-            <Parameter Name="id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_calculos_implemento">
-            <Parameter Name="id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_calculos_materiaprima">
-            <Parameter Name="id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_calculos_productopreparado">
-            <Parameter Name="id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_calculos_suministro">
-            <Parameter Name="id" Mode="In" Type="Int32" />
-          </FunctionImport>
+          <FunctionImport Name="sp_calculos_empaque_decoracion" />
+          <FunctionImport Name="sp_calculos_implemento" />
+          <FunctionImport Name="sp_calculos_materiaprima" />
+          <FunctionImport Name="sp_calculos_productopreparado" />
+          <FunctionImport Name="sp_calculos_suministro" />
           <FunctionImport Name="sp_cancelar_pedido" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_cancelar_pedido_Result)">
             <Parameter Name="id_pedido" Mode="In" Type="Int32" />
             <Parameter Name="pin" Mode="In" Type="String" />

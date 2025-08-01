@@ -229,49 +229,29 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_autenticar_usuario_Result>("sp_autenticar_usuario", correoParameter, contrasennaParameter);
         }
     
-        public virtual int sp_calculos_empaque_decoracion(Nullable<int> id)
+        public virtual int sp_calculos_empaque_decoracion()
         {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("id", id) :
-                new ObjectParameter("id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_empaque_decoracion", idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_empaque_decoracion");
         }
     
-        public virtual int sp_calculos_implemento(Nullable<int> id)
+        public virtual int sp_calculos_implemento()
         {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("id", id) :
-                new ObjectParameter("id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_implemento", idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_implemento");
         }
     
-        public virtual int sp_calculos_materiaprima(Nullable<int> id)
+        public virtual int sp_calculos_materiaprima()
         {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("id", id) :
-                new ObjectParameter("id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_materiaprima", idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_materiaprima");
         }
     
-        public virtual int sp_calculos_productopreparado(Nullable<int> id)
+        public virtual int sp_calculos_productopreparado()
         {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("id", id) :
-                new ObjectParameter("id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_productopreparado", idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_productopreparado");
         }
     
-        public virtual int sp_calculos_suministro(Nullable<int> id)
+        public virtual int sp_calculos_suministro()
         {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("id", id) :
-                new ObjectParameter("id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_suministro", idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_calculos_suministro");
         }
     
         public virtual ObjectResult<sp_cancelar_pedido_Result> sp_cancelar_pedido(Nullable<int> id_pedido, string pin, Nullable<int> id_usuario)

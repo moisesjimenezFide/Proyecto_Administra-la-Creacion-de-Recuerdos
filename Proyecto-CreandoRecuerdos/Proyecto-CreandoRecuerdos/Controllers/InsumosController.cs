@@ -9,9 +9,9 @@ public class InsumosController : Controller
 {
     private BD_CREANDO_RECUERDOSEntities db = new BD_CREANDO_RECUERDOSEntities();
 
-    // ----------- Materias Primas -----------
+    /* Materias Primas */
 
-    //Listar y buscar materias primas
+    // Listar y buscar materias primas
     public ActionResult materias_primas(string search)
     {
         // Verificar si el usuario es administrador
@@ -216,12 +216,13 @@ public class InsumosController : Controller
             merma_total_en_gramos = materia_prima.merma_total_en_gramos ?? 0m,
         });
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_materiaprima @id = {0}", materia_prima.id);
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_materiaprima");
         TempData["SuccessMessage"] = "¡Materia prima agregada con éxito!";
         return RedirectToAction("materias_primas");
     }
 
     // Editar una materia prima existente (GET id)
+    [HttpGet]
     public ActionResult EditarMateriaPrima(int id)
     {
         var m = db.tabla_materias_primas.Find(id);
@@ -427,7 +428,9 @@ public class InsumosController : Controller
             m.merma_total_en_gramos = materia_prima.merma_total_en_gramos ?? 0m;
         }
         db.SaveChanges();
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_materiaprima");
         TempData["SuccessMessage"] = "¡Materia prima actualizada con éxito!";
+
         return RedirectToAction("materias_primas");
     }
 
@@ -440,12 +443,11 @@ public class InsumosController : Controller
             db.tabla_materias_primas.Remove(m);
         }
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_materiaprima @id = {0}", m.id);
         TempData["SuccessMessage"] = "¡Materia prima eliminada con éxito!";
         return RedirectToAction("materias_primas");
     }
 
-    // ----------- Productos Preparados -----------
+    /* Productos Preparados */
 
     // Listar y buscar productos preparados
     public ActionResult productos_preparados(string search)
@@ -632,12 +634,13 @@ public class InsumosController : Controller
             unidad_de_medida_del_peso = producto_preparado.unidad_de_medida_del_peso,
         });
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_productopreparado @id = {0}", producto_preparado.id);
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_productopreparado");
         TempData["SuccessMessage"] = "¡Producto preparado agregado con éxito!";
         return RedirectToAction("productos_preparados");
     }
 
     // Editar un producto preparado existente (GET id)
+    [HttpGet]
     public ActionResult EditarProductoPreparado(int id)
     {
         var p = db.tabla_productos_preparados.Find(id);
@@ -825,7 +828,7 @@ public class InsumosController : Controller
             pp.unidad_de_medida_del_peso = producto_preparado.unidad_de_medida_del_peso;
         }
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_productopreparado @id = {0}", producto_preparado.id);
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_productopreparado"); 
         TempData["SuccessMessage"] = "¡Producto preparado actualizado con éxito!";
         return RedirectToAction("productos_preparados");
     }
@@ -843,7 +846,7 @@ public class InsumosController : Controller
         return RedirectToAction("productos_preparados");
     }
 
-    // ----------- Empaques y/o Decoraciones -----------
+    /* Empaques y/o Decoraciones */
 
     // Listar y buscar empaques y/o decoraciones
     public ActionResult empaques_decoraciones(string search)
@@ -976,12 +979,13 @@ public class InsumosController : Controller
             unidad_de_medida = empaque_decoracion.unidad_de_medida,
         });
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_empaque_decoracion @id = {0}", empaque_decoracion.id);
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_empaque_decoracion");
         TempData["SuccessMessage"] = "¡Empaque o decoración agregado con éxito!";
         return RedirectToAction("empaques_decoraciones");
     }
 
     // Editar un empaque o decoración existente (GET id)
+    [HttpGet]
     public ActionResult EditarEmpaqueDecoracion(int id)
     {
         var ed = db.tabla_empaques_decoraciones.Find(id);
@@ -1115,7 +1119,7 @@ public class InsumosController : Controller
             ed.unidad_de_medida = empaque_decoracion.unidad_de_medida;
         }
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_empaque_decoracion @id = {0}", empaque_decoracion.id);
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_empaque_decoracion");
         TempData["SuccessMessage"] = "¡Empaque o decoración actualizado con éxito!";
         return RedirectToAction("empaques_decoraciones");
     }
@@ -1133,7 +1137,7 @@ public class InsumosController : Controller
         return RedirectToAction("empaques_decoraciones");
     }
 
-    // ----------- Implementos -----------
+    /* Implementos */
 
     // Listar y buscar implementos
     public ActionResult implementos(string search)
@@ -1266,12 +1270,13 @@ public class InsumosController : Controller
             unidad_de_medida = implemento.unidad_de_medida,
         });
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_implemento @id = {0}", implemento.id);
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_implemento");
         TempData["SuccessMessage"] = "¡Implemento agregado con éxito!";
         return RedirectToAction("implementos");
     }
 
     // Editar un implemento existente (GET id)
+    [HttpGet]
     public ActionResult EditarImplemento(int id)
     {
         var i = db.tabla_implementos.Find(id);
@@ -1404,7 +1409,7 @@ public class InsumosController : Controller
             i.unidad_de_medida = implemento.unidad_de_medida;
         }
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_implemento @id = {0}", implemento.id);
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_implemento"); 
         TempData["SuccessMessage"] = "¡Implemento actualizado con éxito!";
         return RedirectToAction("implementos");
     }
@@ -1422,7 +1427,7 @@ public class InsumosController : Controller
         return RedirectToAction("implementos");
     }
 
-    // ----------- Suministros -----------
+    /*  Suministros */
 
     // Listar y buscar suministros
     public ActionResult suministros(string search)
@@ -1558,12 +1563,13 @@ public class InsumosController : Controller
             unidad_de_medida = suministro.unidad_de_medida,
         });
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_suministro @id = {0}", suministro.id);
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_suministro");
         TempData["SuccessMessage"] = "¡Suministro agregado con éxito!";
         return RedirectToAction("suministros");
     }
 
     // Editar un suministro existente (GET id)
+    [HttpGet]
     public ActionResult EditarSuministro(int id)
     {
         var s = db.tabla_suministros.Find(id);
@@ -1697,7 +1703,7 @@ public class InsumosController : Controller
             s.unidad_de_medida = suministro.unidad_de_medida;
         }
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_suministro @id = {0}", suministro.id);
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_suministro");
         TempData["SuccessMessage"] = "¡Suministro actualizado con éxito!";
         return RedirectToAction("suministros");
     }
@@ -1715,7 +1721,7 @@ public class InsumosController : Controller
         return RedirectToAction("suministros");
     }
 
-   // ----------- Costos de Recetas -----------
+   /* Costos de Recetas */
 
     // Listar y buscar recetas
     public ActionResult costos_recetas(string search)
@@ -2066,6 +2072,7 @@ public class InsumosController : Controller
     }
 
     // Editar receta existente (GET id)
+    [HttpGet]
     public ActionResult EditarReceta(int id)
     {
         var r = db.tabla_costos_recetas.Find(id);
@@ -2434,7 +2441,7 @@ public class InsumosController : Controller
         return RedirectToAction("costos_recetas");
     }
 
-    // ----------- Precios Finales Sugeridos de Productos Finales -----------
+    /* Precios Finales Sugeridos de Productos Finales */
 
     // Listar y buscar productos finales
     public ActionResult precio_final(string search)
@@ -2968,6 +2975,7 @@ public class InsumosController : Controller
     }
 
     //Editar un producto final existente (GET id)
+    [HttpGet]
     public ActionResult EditarProductoFinal(int id)
     {
         var pf = db.tabla_precios_finales_sugeridos.Find(id);
