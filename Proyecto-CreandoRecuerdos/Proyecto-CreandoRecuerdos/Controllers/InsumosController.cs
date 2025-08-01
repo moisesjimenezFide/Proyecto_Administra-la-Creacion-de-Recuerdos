@@ -1058,23 +1058,26 @@ public class InsumosController : Controller
         if (errores.Any())
         {
             ViewBag.Errores = errores;
-            var lista = db.tabla_empaques_decoraciones.Select(ed => new EmpaqueDecoracion
-            {
-                id = ed.id,
-                nombre = ed.nombre,
-                marca = ed.marca,
-                presentacion = ed.presentacion,
-                proveedor = ed.proveedor,
-                costo = ed.costo ?? 0m,
-                cantidad = (int)ed.cantidad,
-                unidad_de_medida = ed.unidad_de_medida,
-                costo_por_cantidad = ed.costo_por_cantidad
-            }).ToList();
-            return View("empaques_decoraciones", new InsumosModel
-            {
-                EmpaqueDecoracionEditado = empaque_decoracion,
-                EmpaquesDecoraciones = lista
-            });
+            var empaques = db.tabla_empaques_decoraciones
+                         .AsNoTracking()
+                         .Select(ed => new EmpaqueDecoracion
+                         {
+                             id = ed.id,
+                             nombre = ed.nombre,
+                             marca = ed.marca,
+                             presentacion = ed.presentacion,
+                             proveedor = ed.proveedor,
+                             costo = ed.costo ?? 0m,
+                             cantidad = ed.cantidad ?? 0,
+                             unidad_de_medida = ed.unidad_de_medida,
+                             costo_por_cantidad = ed.costo_por_cantidad
+                         }).ToList();
+
+        return View("empaques_decoraciones", new InsumosModel
+        {
+            EmpaqueDecoracionEditado = empaque_decoracion,
+            EmpaquesDecoraciones = empaques
+        });
         }
 
         db.tabla_empaques_decoraciones.Add(new tabla_empaques_decoraciones

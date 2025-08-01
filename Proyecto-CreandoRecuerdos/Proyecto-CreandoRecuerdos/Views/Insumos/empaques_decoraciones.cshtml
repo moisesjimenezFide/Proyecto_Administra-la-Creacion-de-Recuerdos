@@ -12,7 +12,7 @@
 
 @section Styles {
     <link href="~/Templates/css/insumos.css" rel="stylesheet" />
-}
+    }
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
@@ -78,7 +78,7 @@
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control"  value="@(editando ? empaqueDecoracionEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />"  
+            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? empaqueDecoracionEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />
         </div>
 
         <div class="mb-3 text-start">
@@ -121,7 +121,7 @@
     else
     {
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sm text-center">
+            <table id="tabla_empaques_decoraciones" class="table table-bordered table-striped table-sm text-center">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -167,4 +167,47 @@
 @section Scripts {
     <script src="~/Templates/js/insumos.js"></script>
     @Html.Partial("accion_exitosa")
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const totalFilas = $('#tabla_empaques_decoraciones tbody tr').length;
+
+            // Opciones de cantidad (como en la respuesta anterior)
+            let opciones = [];
+            for (let i = 5; i <= totalFilas; i += 5) {
+                opciones.push(i);
+            }
+
+            const ultimoMultiplo = Math.floor(totalFilas / 5) * 5;
+            const siguienteValor = totalFilas !== ultimoMultiplo ? totalFilas - 1 : null;
+            if (siguienteValor && !opciones.includes(siguienteValor)) {
+                opciones.push(siguienteValor);
+            }
+
+            opciones.sort((a, b) => a - b);
+            const valoresNumericos = [...opciones, -1];
+            const valoresVisibles = [...opciones.map(n => n.toString()), "Todos"];
+
+            $('#tabla_empaques_decoraciones').DataTable({
+                pageLength: 3, // Cantidad inicial de filas por página
+                searching: false,
+                pagingType: "full_numbers", // Muestra números + inicio + fin
+                lengthMenu: [valoresNumericos, valoresVisibles],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+                    lengthMenu: "Mostrar _MENU_ registros por página",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "No hay registros disponibles",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    paginate: {
+                        first: "Primer página",
+                        last: "Última página",
+                        previous: false,
+                        next: false,
+                    }
+                }
+            });
+        });
+    </script>
 }
