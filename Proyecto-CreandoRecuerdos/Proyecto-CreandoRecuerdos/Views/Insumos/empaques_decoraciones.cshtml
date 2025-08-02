@@ -12,126 +12,201 @@
 
 @section Styles {
     <link href="~/Templates/css/insumos.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
+    <style>
+
+        /* Botones de exportación */
+        .btn-custom-pink {
+            background-color: #E27AB0;
+            color: #FFFFFF;
+            border: none;
+        }
+
+            .btn-custom-pink:hover {
+                background-color: #C6729B; /* tono un poco más oscuro para hover */
+                color: #FFFFFF;
+            }
+
+        /* Espaciado entre botones de exportación */
+        div.dt-buttons {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /*
+        * ----------------------------------------------------
+        * ESTILOS PERSONALIZADOS PARA DATATABLES
+        * ----------------------------------------------------
+        */
+
+        /* Estilo para los botones de paginación (activo y hover) */
+        .dataTables_wrapper .pagination .page-item.active .page-link {
+            background-color: #E27AB0 !important;
+            border-color: #E27AB0 !important;
+            color: #FFFFFF !important;
+        }
+
+        /* Estilo para los botones de paginación (normal) */
+        .dataTables_wrapper .pagination .page-item .page-link {
+            color: #E27AB0 !important;
+            border-color: #E27AB0 !important;
+        }
+
+            /* Estilo para el hover de los botones de paginación */
+            .dataTables_wrapper .pagination .page-item .page-link:hover {
+                background-color: #F8E5ED !important;
+                color: #E27AB0 !important;
+                border-color: #E27AB0 !important;
+            }
+
+        /*
+        * ----------------------------------------------------
+        * ESTILOS PARA ELIMINAR BORDES Y SOMBRAS DE DATATABLES
+        * ----------------------------------------------------
+        */
+
+        /* Eliminar bordes de la paginación */
+        .dataTables_wrapper .pagination .page-link {
+            border: none !important;
+        }
+
+        /* Eliminar la sombra del botón activo */
+        .dataTables_wrapper .pagination .page-item.active .page-link:focus {
+            box-shadow: none !important;
+        }
+
+        /* Eliminar el borde y la sombra del select de "Mostrar" */
+        .dataTables_wrapper .dataTables_length .form-select {
+            border: none;
+            box-shadow: none;
+        }
+
+        /* Estilo del dropdown (cantidad de filas) */
+        .dataTables_wrapper .dataTables_length label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .dataTables_wrapper .dataTables_length select:hover {
+            border-color: #E27AB0;
+            box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
+            outline: none;
+        }
+
+        /* Hide default select */
+        .dataTables_wrapper .dataTables_length select {
+            display: none !important;
+        }
+
+        /* Custom dropdown styles */
+        .custom-length-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-dropdown-button {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            background-color: #f8f9fa;
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+            cursor: pointer;
+            position: relative;
+            min-width: 80px;
+            text-align: left;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+            .custom-dropdown-button:after {
+                content: '▼';
+                position: absolute;
+                right: 8px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 10px;
+                color: #495057;
+            }
+
+            .custom-dropdown-button:hover {
+                border-color: #E27AB0;
+                box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
+            }
+
+        .custom-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #E27AB0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+            .custom-dropdown-menu.show {
+                display: block;
+            }
+
+        .custom-dropdown-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+            border-bottom: 1px solid #f8f9fa;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+            .custom-dropdown-item:last-child {
+                border-bottom: none;
+            }
+
+            .custom-dropdown-item:hover {
+                background-color: #F8E5ED;
+                color: #E27AB0;
+            }
+
+            .custom-dropdown-item.active {
+                background-color: #E27AB0;
+                color: white;
+            }
+
+        .dt-buttons {
+            text-align: left;
+        }
+
+        .d-flex > div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dataTables_filter {
+            margin-left: 0;
+        }
+
+        .dt-length {
+            margin-left: auto;
+        }
+    </style>
 }
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-    /* Botones de exportación */
-    .btn-custom-pink {
-        background-color: #E27AB0;
-        color: white;
-        border: none;
-    }
-
-        .btn-custom-pink:hover {
-            background-color: #c6729b; /* tono un poco más oscuro para hover */
-            color: white;
-        }
-
-    /* Espaciado entre botones de exportación */
-    div.dt-buttons {
-        margin-bottom: 1rem;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .pagination .page-item .page-link {
-        background-color: #E27AB0;
-        color: white;
-        border: none;
-        margin: 0 0.2rem;
-        border-radius: 0.25rem;
-        font-size: 0.9rem;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
-        background-color: #b86c93; /* tono más bajito (más oscuro) para activo */
-        font-weight: bold;
-        color: white;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .pagination .page-item.disabled .page-link {
-        background-color: #f8d7e0;
-        color: #a6a6a6;
-        opacity: 0.6;
-        pointer-events: none;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .pagination .page-item .page-link:hover {
-        background-color: #c6729b; /* mismo que hover */
-        color: white;
-    }
-
-
-    .dt-buttons {
-        /* Opcional: centra o alinea como quieras */
-        text-align: left; /* o center, right */
-    }
-
-    .d-flex > div {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-
-
-    .dataTables_filter {
-        margin-left: 0;
-    }
-
-    .dt-length {
-        margin-left: auto;
-    }
-
-
-    /* Estilo del dropdown (cantidad de filas) */
-    .dataTables_length select {
-        background-color: #E27AB0; /* color de fondo */
-        color: white; /* color del texto */
-        border: none;
-        border-radius: 0.25rem;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
-        background-image: none; /* Quita el icono de fondo */
-        padding: 5%;
-        text-align: center;
-    }
-
-        /* Al pasar el mouse */
-        .dataTables_length select:hover {
-            background-color: #c6729b;
-        }
-
-    /* Opcional: Estilo del texto que acompaña el dropdown */
-    .dataTables_length label {
-        font-weight: 500;
-        color: #333;
-    }
-</style>
-
-
-
-
-
-
-
-
-
-
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
@@ -221,7 +296,6 @@
     }
 </div>
 
-
 <!-- Listado -->
 <div class="container">
     <h4><strong>Listado de Empaques y/o Decoraciones</strong></h4>
@@ -283,11 +357,13 @@
         </div>
     }
 </div>
+
 @section Scripts {
     <script src="~/Templates/js/insumos.js"></script>
+
     @Html.Partial("accion_exitosa")
 
-    <!-- DataTables core -->
+    <!-- DataTables-->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
@@ -301,16 +377,33 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
 
+
     <!-- Activar DataTables -->
     <script>
         $(document).ready(function () {
+            const totalFilas = $('#tabla_empaques_decoraciones tbody tr').length;
+
+            // Opciones de cantidad
+            let opciones = [];
+            for (let i = 5; i <= totalFilas; i += 5) {
+                opciones.push(i);
+            }
+
+            const ultimoMultiplo = Math.floor(totalFilas / 5) * 5;
+            const siguienteValor = totalFilas !== ultimoMultiplo ? totalFilas - 1 : null;
+            if (siguienteValor && !opciones.includes(siguienteValor)) {
+                opciones.push(siguienteValor);
+            }
+
+            opciones.sort((a, b) => a - b);
+            const valoresNumericos = [...opciones, -1];
+            const valoresVisibles = [...opciones.map(n => n.toString()), "Todos"];
+
             $('#tabla_empaques_decoraciones').DataTable({
-                language: {
-                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
-                },
-                lengthChange: true,
-                pageLength: 5,
-                lengthMenu: [5, 10, 20, 50],
+                pageLength: 3, // Cantidad inicial de filas por página
+                searching: false,
+                pagingType: "full_numbers", // Muestra números + inicio + fin
+                lengthMenu: [valoresNumericos, valoresVisibles],
                 dom: "<'dt-buttons mb-2'B><'d-flex justify-content-between align-items-center'<'dataTables_filter'f><'dt-length'l>>rtip",
                 buttons: [
                     {
@@ -335,11 +428,101 @@
                         text: 'Imprimir',
                         className: 'btn btn-custom-pink btn-sm'
                     }
-                ]
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+                    lengthMenu: "Mostrar _MENU_ registros por página",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "No hay registros disponibles",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    paginate: {
+                        first: "Primer página",
+                        last: "Última página",
+                        previous: false,
+                        next: false,
+                    }
+                }
+            });
+
+            // Create custom dropdown after DataTable initialization
+            setTimeout(function () {
+                createCustomLengthDropdown();
+            }, 100);
+
+            function createCustomLengthDropdown() {
+                var lengthContainer = $('.dataTables_length');
+                var originalSelect = lengthContainer.find('select');
+
+                // Create custom dropdown HTML with dynamic options
+                var dropdownItems = '';
+                for (let i = 0; i < valoresNumericos.length; i++) {
+                    const value = valoresNumericos[i];
+                    const text = valoresVisibles[i];
+                    const activeClass = value === 3 ? 'active' : ''; // Set initial active based on pageLength
+                    dropdownItems += `<div class="custom-dropdown-item ${activeClass}" data-value="${value}">${text}</div>`;
+                }
+
+                var customDropdown = $(`
+                    <div class="custom-length-dropdown">
+                        <div class="custom-dropdown-button" id="lengthDropdownBtn">3</div>
+                        <div class="custom-dropdown-menu" id="lengthDropdownMenu">
+                            ${dropdownItems}
+                        </div>
+                    </div>
+                `);
+
+                // Replace the select with custom dropdown
+                originalSelect.after(customDropdown);
+
+                // Update the label text
+                lengthContainer.find('label').contents().filter(function () {
+                    return this.nodeType === 3; // Text nodes
+                }).first().replaceWith('Mostrar ');
+
+                lengthContainer.find('label').append(' registros por página');
+            }
+
+            // Handle custom dropdown clicks
+            $(document).on('click', '.custom-dropdown-button', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $('.custom-dropdown-menu').toggleClass('show');
+            });
+
+            // Handle dropdown item selection
+            $(document).on('click', '.custom-dropdown-item', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var value = $(this).data('value');
+                var text = $(this).text();
+
+                // Update button text
+                $('.custom-dropdown-button').text(text);
+
+                // Update active state
+                $('.custom-dropdown-item').removeClass('active');
+                $(this).addClass('active');
+
+                // Hide dropdown
+                $('.custom-dropdown-menu').removeClass('show');
+
+                // Update DataTable page length
+                table.page.len(value).draw();
+            });
+
+            // Close dropdown when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.custom-length-dropdown').length) {
+                    $('.custom-dropdown-menu').removeClass('show');
+                }
+            });
+
+            // Prevent any context menus on the custom dropdown
+            $(document).on('contextmenu selectstart dragstart', '.custom-length-dropdown, .custom-dropdown-button, .custom-dropdown-item', function (e) {
+                e.preventDefault();
+                return false;
             });
         });
-
-
-
     </script>
 }
