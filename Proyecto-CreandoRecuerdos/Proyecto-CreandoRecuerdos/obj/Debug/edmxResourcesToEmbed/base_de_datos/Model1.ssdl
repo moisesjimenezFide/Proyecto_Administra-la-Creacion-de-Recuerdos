@@ -334,6 +334,7 @@
     <Property Name="fecha_actualizacion" Type="datetime" />
     <Property Name="telefono" Type="nvarchar" MaxLength="20" />
     <Property Name="telefono_sinpe" Type="nvarchar" MaxLength="20" />
+    <Property Name="nombre_cliente" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="Vehiculos">
     <Key>

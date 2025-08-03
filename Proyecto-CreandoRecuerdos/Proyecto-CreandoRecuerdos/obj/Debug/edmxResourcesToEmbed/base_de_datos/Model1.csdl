@@ -388,6 +388,7 @@
     <NavigationProperty Name="tabla_notificaciones_vistas" Relationship="Self.FK_notificaciones_vistas_pedidos" FromRole="tabla_ventas" ToRole="tabla_notificaciones_vistas" />
     <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_ven__id_us__151B244E" FromRole="tabla_ventas" ToRole="tabla_usuarios" />
     <NavigationProperty Name="tabla_valoraciones" Relationship="Self.FK_valoraciones_pedidos" FromRole="tabla_ventas" ToRole="tabla_valoraciones" />
+    <Property Name="nombre_cliente" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Vehiculos">
     <Key>

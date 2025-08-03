@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BD_CREANDO_RECUERDOSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="costos_receta_materias_primas_utilizadas">
           <Key>
             <PropertyRef Name="id" />
@@ -339,6 +339,7 @@
           <Property Name="fecha_actualizacion" Type="datetime" />
           <Property Name="telefono" Type="nvarchar" MaxLength="20" />
           <Property Name="telefono_sinpe" Type="nvarchar" MaxLength="20" />
+          <Property Name="nombre_cliente" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Vehiculos">
           <Key>
@@ -1023,8 +1024,7 @@
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BD_CREANDO_RECUERDOSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1416,6 +1416,7 @@
           <NavigationProperty Name="tabla_notificaciones_vistas" Relationship="Self.FK_notificaciones_vistas_pedidos" FromRole="tabla_ventas" ToRole="tabla_notificaciones_vistas" />
           <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_ven__id_us__151B244E" FromRole="tabla_ventas" ToRole="tabla_usuarios" />
           <NavigationProperty Name="tabla_valoraciones" Relationship="Self.FK_valoraciones_pedidos" FromRole="tabla_ventas" ToRole="tabla_valoraciones" />
+          <Property Name="nombre_cliente" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Vehiculos">
           <Key>
@@ -1918,7 +1919,7 @@
             <End Role="Vehiculos" EntitySet="Vehiculos" />
           </AssociationSet>
           <FunctionImport Name="sp_activar_usuario">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_actualizar_empleado">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
@@ -2018,16 +2019,16 @@
             <Parameter Name="img_url" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_empleado">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_producto">
-            <Parameter Name="id_producto" Mode="In" Type="Int32" />
+          <Parameter Name="id_producto" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_eliminar_recomendacion">
-            <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
+          <Parameter Name="id_recomendacion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_inactivar_usuario">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_insertar_recomendacion" ReturnType="Collection(Decimal)">
             <Parameter Name="id_producto" Mode="In" Type="Int32" />
@@ -2044,10 +2045,10 @@
             <Parameter Name="nuevo_estado" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_detalle_pedido" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_detalle_pedido_Result)">
-            <Parameter Name="id_pedido" Mode="In" Type="Int32" />
+          <Parameter Name="id_pedido" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleado" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleado_Result)">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_empleados" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_empleados_Result)" />
           <FunctionImport Name="sp_obtener_historial_actividades" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_historial_actividades_Result)">
@@ -2059,7 +2060,7 @@
             <Parameter Name="id_registro_afectado" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_notificaciones_pendientes" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_notificaciones_pendientes_Result)">
-            <Parameter Name="id_cliente" Mode="In" Type="Int32" />
+          <Parameter Name="id_cliente" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_o_crear_cliente" ReturnType="Collection(Int32)">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
@@ -2073,10 +2074,10 @@
             <Parameter Name="metodo_pago" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_pedidos_con_notificaciones" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_pedidos_con_notificaciones_Result)">
-            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_productos_por_categoria" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_productos_por_categoria_Result)">
-            <Parameter Name="idCategoria" Mode="In" Type="Int32" />
+          <Parameter Name="idCategoria" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_obtener_recomendaciones" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_recomendaciones_Result)" />
           <FunctionImport Name="sp_obtener_roles" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_obtener_roles_Result)" />
@@ -2600,6 +2601,7 @@
           <EntitySetMapping Name="tabla_ventas">
             <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_ventas">
               <MappingFragment StoreEntitySet="tabla_ventas">
+                <ScalarProperty Name="nombre_cliente" ColumnName="nombre_cliente" />
                 <ScalarProperty Name="id_venta" ColumnName="id_venta" />
                 <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
                 <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />

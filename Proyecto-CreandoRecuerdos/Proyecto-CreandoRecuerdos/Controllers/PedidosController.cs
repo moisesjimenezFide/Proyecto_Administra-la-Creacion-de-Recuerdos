@@ -226,7 +226,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                            id_pedido = p.id_venta,
                            id_cliente = p.id_cliente,
                            numero_pedido = p.numero_pedido ?? $"ORD-{p.fecha.Value.Year}-{p.id_venta.ToString().PadLeft(4, '0')}",
-                           nombre_cliente = p.tabla_clientes.nombre + " " + p.tabla_clientes.apellido,
+                           nombre_cliente = (p.id_usuario == null && !string.IsNullOrEmpty(p.nombre_cliente)) ? p.nombre_cliente : p.tabla_clientes.nombre + " " + p.tabla_clientes.apellido,
                            telefono = p.tabla_clientes.telefono ?? "N/A",
                            cantidad_productos = p.tabla_detalle_venta.Count,
                            fecha = p.fecha?.ToString("yyyy-MM-dd HH:mm") ?? "N/A",
@@ -313,7 +313,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 {
                     IdPedido = pedido.id_venta,
                     NumeroPedido = pedido.numero_pedido ?? $"ORD-{pedido.fecha.Value.Year}-{pedido.id_venta.ToString("D4")}",
-                    NombreCliente = pedido.tabla_clientes.nombre + " " + pedido.tabla_clientes.apellido,
+                    NombreCliente = !string.IsNullOrEmpty(pedido.nombre_cliente) ? pedido.nombre_cliente : pedido.tabla_clientes.nombre + " " + pedido.tabla_clientes.apellido,
                     TelefonoCliente = pedido.tabla_clientes.telefono,
                     TelefonoPedido = pedido.telefono,
                     TelefonoSinpe = pedido.telefono_sinpe,
@@ -430,7 +430,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         .Select(v => new {
                             id_pedido = v.id_venta,
                             numero_pedido = "ORD-" + v.fecha.Value.Year + "-" + v.id_venta.ToString().PadLeft(4, '0'),
-                            nombre_cliente = v.tabla_clientes.nombre + " " + v.tabla_clientes.apellido,
+                            nombre_cliente = (v.id_usuario == null && !string.IsNullOrEmpty(v.nombre_cliente)) ? v.nombre_cliente : v.tabla_clientes.nombre + " " + v.tabla_clientes.apellido,
                             telefono = v.tabla_clientes.telefono ?? "N/A",
                             fecha = v.fecha,
                             total = v.total,
@@ -659,7 +659,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         metodo_pago = model.MetodoPago,
                         para_llevar = pedidoTemporal.ParaLlevar,
                         pin = pin,
-                        tiempo_estimado = CalcularTiempoEstimado(pedidoTemporal.Productos.Count)
+                        tiempo_estimado = CalcularTiempoEstimado(pedidoTemporal.Productos.Count),
+                        nombre_cliente = idUsuario == null ? pedidoTemporal.NombreCliente : null
                     };
 
                     db.tabla_ventas.Add(pedido);
@@ -893,7 +894,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             TiempoEstimado = v.tiempo_estimado ?? 20,
                             Notificacion = v.notificacion,
                             Valorado = db.tabla_valoraciones.Any(val => val.id_pedido == v.id_venta),
-                            Pin = v.pin // string directo
+                            Pin = v.pin 
                         })
                         .ToList();
                 }
@@ -912,7 +913,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             TiempoEstimado = v.tiempo_estimado ?? 20,
                             Notificacion = v.notificacion,
                             Valorado = db.tabla_valoraciones.Any(val => val.id_pedido == v.id_venta),
-                            Pin = v.pin // string directo
+                            Pin = v.pin 
                         })
                         .ToList();
                 }
@@ -1099,6 +1100,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     Total = pedido.total,
                     MetodoPago = pedido.metodo_pago,
                     TelefonoSinpe = pedido.telefono,
+                    NombreCliente = !string.IsNullOrEmpty(pedido.nombre_cliente) ? pedido.nombre_cliente : pedido.tabla_clientes.nombre + " " + pedido.tabla_clientes.apellido,
                     Productos = pedido.tabla_detalle_venta.Select(d => new ProductoPedidoModel
                     {
                         IdProducto = d.id_producto,

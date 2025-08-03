@@ -162,6 +162,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public List<ProductoPedidoModel> Productos { get; set; }
         public string TelefonoCliente { get; set; }
         public string TelefonoPedido { get; set; }
+        public string NombreCliente { get; set; }
         public string TelefonoMostrado
         {
             get

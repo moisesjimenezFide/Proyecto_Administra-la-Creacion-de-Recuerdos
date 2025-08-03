@@ -344,6 +344,7 @@
     <EntitySetMapping Name="tabla_ventas">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_ventas">
         <MappingFragment StoreEntitySet="tabla_ventas">
+          <ScalarProperty Name="nombre_cliente" ColumnName="nombre_cliente" />
           <ScalarProperty Name="id_venta" ColumnName="id_venta" />
           <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
           <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />

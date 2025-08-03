@@ -37,6 +37,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<System.DateTime> fecha_actualizacion { get; set; }
         public string telefono { get; set; }
         public string telefono_sinpe { get; set; }
+        public string nombre_cliente { get; set; }
     
         public virtual tabla_clientes tabla_clientes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
