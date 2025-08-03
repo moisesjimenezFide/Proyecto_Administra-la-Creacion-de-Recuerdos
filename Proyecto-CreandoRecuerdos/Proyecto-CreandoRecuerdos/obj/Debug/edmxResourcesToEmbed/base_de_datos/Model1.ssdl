@@ -320,7 +320,7 @@
       <PropertyRef Name="id_venta" />
     </Key>
     <Property Name="id_venta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="id_usuario" Type="int" Nullable="false" />
+    <Property Name="id_usuario" Type="int" />
     <Property Name="id_cliente" Type="int" Nullable="false" />
     <Property Name="fecha" Type="datetime" />
     <Property Name="total" Type="decimal" Precision="10" Scale="2" Nullable="false" />
@@ -561,7 +561,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK__tabla_ven__id_us__151B244E">
-    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
+    <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="0..1" />
     <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tabla_usuarios">

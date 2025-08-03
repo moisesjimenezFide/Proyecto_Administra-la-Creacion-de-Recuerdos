@@ -558,6 +558,14 @@ C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-Cr
 C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto.E04E3056.Up2Date
 C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.dll
 C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.pdb
+C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.dll
+C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.xml
+C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.dll
+C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\libSkiaSharp.dylib
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\x86\libSkiaSharp.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\x64\libSkiaSharp.dll
@@ -624,6 +632,7 @@ C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyect
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\EntityFramework.SqlServer.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\ExcelNumberFormat.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\iTextSharp.LGPLv2.Core.dll
+C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.HashCode.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.IO.RecyclableMemoryStream.dll
@@ -633,6 +642,7 @@ C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyect
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\RBush.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\SixLabors.Fonts.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\SkiaSharp.dll
+C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\System.Buffers.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\System.ComponentModel.Annotations.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\System.Memory.dll
@@ -661,6 +671,7 @@ C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyect
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\EntityFramework.SqlServer.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\ExcelNumberFormat.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\iTextSharp.LGPLv2.Core.xml
+C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.HashCode.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.IO.RecyclableMemoryStream.xml
@@ -669,6 +680,7 @@ C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyect
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\RBush.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\SixLabors.Fonts.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\SkiaSharp.pdb
+C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\System.Buffers.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\System.Memory.xml
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\System.Net.Http.Formatting.xml
@@ -698,11 +710,3 @@ C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyect
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto.E04E3056.Up2Date
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.pdb
-C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.dll
-C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.xml
-C:\Users\PC\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.xml
-C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.dll
-C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.xml
-C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.xml

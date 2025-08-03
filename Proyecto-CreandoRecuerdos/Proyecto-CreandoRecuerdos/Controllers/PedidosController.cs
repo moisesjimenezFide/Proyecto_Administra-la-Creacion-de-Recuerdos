@@ -255,7 +255,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
-        // Obtener pedidos con notificaciones para el usuario actual
+        // Obtener pedidos con notificaciones para el usuario actualmente
         [HttpGet]
         public JsonResult ObtenerPedidosConNotificaciones()
         {
@@ -555,7 +555,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
-                // Obtener pedido temporal de la sesión
                 var pedidoTemporal = Session["PedidoTemporal"] as PedidoPagoCompletoModel;
 
                 if (pedidoTemporal == null)
@@ -564,7 +563,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 }
 
                 // Validar datos según método de pago
-                switch (model.MetodoPago.ToLower())
+                switch (model.MetodoPago?.ToLower())
                 {
                     case "tarjeta":
                         if (string.IsNullOrEmpty(model.NumeroTarjeta) ||
@@ -580,7 +579,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         {
                             return Json(new { success = false, message = "Número SINPE móvil inválido (debe tener 8 dígitos)" });
                         }
-
                         pedidoTemporal.TelefonoSinpe = model.TelefonoSinpe;
                         break;
 
@@ -590,29 +588,64 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             return Json(new { success = false, message = "Monto recibido inválido o insuficiente" });
                         }
                         break;
+
+                    default:
+                        return Json(new { success = false, message = "Método de pago no válido" });
                 }
 
-                // Guardar pedido en la base de datos
                 using (var db = new BD_CREANDO_RECUERDOSEntities())
                 {
-                    int idUsuario = GetUserId();
-                    // Buscar o crear cliente
-                    var cliente = db.tabla_clientes.FirstOrDefault(c => c.id_usuario == idUsuario);
-
-                    if (cliente == null)
+                    int? idUsuario = null;
+                    if (Session["IdUsuario"] != null)
                     {
-                        cliente = new tabla_clientes
-                        {
-                            nombre = pedidoTemporal.NombreCliente,
-                            apellido = "",
-                            telefono = pedidoTemporal.Telefono ?? "",
-                            id_usuario = idUsuario
-                        };
-                        db.tabla_clientes.Add(cliente);
-                        db.SaveChanges();
+                        idUsuario = Convert.ToInt32(Session["IdUsuario"]);
                     }
 
-                    // Crear registro de venta
+                    // Validar y truncar teléfono
+                    var telefono = pedidoTemporal.Telefono ?? "";
+                    if (telefono.Length > 20) telefono = telefono.Substring(0, 20);
+
+                    // Buscar o crear cliente
+                    tabla_clientes cliente = null;
+                    if (idUsuario != null)
+                    {
+                        cliente = db.tabla_clientes.FirstOrDefault(c => c.id_usuario == idUsuario);
+                        if (cliente == null)
+                        {
+                            cliente = new tabla_clientes
+                            {
+                                nombre = pedidoTemporal.NombreCliente,
+                                apellido = "",
+                                telefono = telefono,
+                                id_usuario = idUsuario
+                            };
+                            db.tabla_clientes.Add(cliente);
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        // Para invitados, reutiliza el cliente con id_usuario == null (solo debe haber uno)
+                        cliente = db.tabla_clientes.FirstOrDefault(c => c.id_usuario == null);
+                        if (cliente == null)
+                        {
+                            cliente = new tabla_clientes
+                            {
+                                nombre = pedidoTemporal.NombreCliente,
+                                apellido = "",
+                                telefono = telefono,
+                                id_usuario = null
+                            };
+                            db.tabla_clientes.Add(cliente);
+                            db.SaveChanges();
+                        }
+                    }
+
+                    // Truncar número de pedido y pin si es necesario
+                    var numeroPedido = $"ORD-{DateTime.Now.Year}-{(db.tabla_ventas.Count() + 1).ToString("D4")}";
+                    if (numeroPedido.Length > 20) numeroPedido = numeroPedido.Substring(0, 20);
+                    var pin = new Random().Next(1000, 9999).ToString();
+
                     var pedido = new tabla_ventas
                     {
                         id_usuario = idUsuario,
@@ -620,12 +653,12 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         fecha = DateTime.Now,
                         total = pedidoTemporal.Total,
                         id_estado = db.tabla_estados_pedido.First(e => e.nombre == "Pendiente").id_estado,
-                        numero_pedido = $"ORD-{DateTime.Now.Year}-{(db.tabla_ventas.Count() + 1).ToString("D4")}",
-                        telefono = model.MetodoPago.ToLower() != "sinpe" ? pedidoTemporal.Telefono : null,
+                        numero_pedido = numeroPedido,
+                        telefono = telefono,
                         telefono_sinpe = model.MetodoPago.ToLower() == "sinpe" ? model.TelefonoSinpe : null,
                         metodo_pago = model.MetodoPago,
                         para_llevar = pedidoTemporal.ParaLlevar,
-                        pin = new Random().Next(1000, 9999).ToString(),
+                        pin = pin,
                         tiempo_estimado = CalcularTiempoEstimado(pedidoTemporal.Productos.Count)
                     };
 
@@ -635,43 +668,61 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     // Agregar productos al pedido
                     foreach (var producto in pedidoTemporal.Productos)
                     {
+                        var personalizacion = string.IsNullOrEmpty(producto.Personalizacion) ? "" : producto.Personalizacion;
+                        if (personalizacion.Length > 500) personalizacion = personalizacion.Substring(0, 500);
+
                         db.tabla_detalle_venta.Add(new tabla_detalle_venta
                         {
                             id_venta = pedido.id_venta,
                             id_producto = producto.IdProducto,
                             cantidad = producto.Cantidad,
                             precio_unitario = producto.PrecioUnitario,
-                            personalizacion = !string.IsNullOrEmpty(producto.Personalizacion) ?
-                                producto.Personalizacion : null
+                            personalizacion = personalizacion
                         });
                     }
 
                     db.SaveChanges();
 
                     // Actualizar número de pedido con ID real
-                    pedido.numero_pedido = $"ORD-{pedido.fecha.Value.Year}-{pedido.id_venta.ToString("D4")}";
+                    var numeroPedidoFinal = $"ORD-{pedido.fecha.Value.Year}-{pedido.id_venta.ToString("D4")}";
+                    if (numeroPedidoFinal.Length > 20) numeroPedidoFinal = numeroPedidoFinal.Substring(0, 20);
+                    pedido.numero_pedido = numeroPedidoFinal;
                     db.SaveChanges();
 
-                    // Limpiar sesión
                     Session.Remove("PedidoTemporal");
 
                     return Json(new
                     {
                         success = true,
                         message = "Pago procesado exitosamente",
-                        numeroPedido = $"ORD-{DateTime.Now.Year}-{pedido.id_venta.ToString("D4")}",
+                        numeroPedido = numeroPedidoFinal,
                         pin = pedido.pin,
                         tiempoEstimado = pedido.tiempo_estimado,
                         redirectUrl = Url.Action("ConfirmacionPedido", new { id = pedido.id_venta })
                     });
                 }
             }
+            catch (DbEntityValidationException ex)
+            {
+                var errorMessages = ex.EntityValidationErrors
+                    .SelectMany(x => x.ValidationErrors)
+                    .Select(x => x.ErrorMessage);
+                var fullErrorMessage = string.Join("; ", errorMessages);
+                return Json(new { success = false, message = "Error de validación: " + fullErrorMessage });
+            }
             catch (Exception ex)
             {
+                var inner = ex;
+                var sb = new StringBuilder();
+                while (inner != null)
+                {
+                    sb.AppendLine(inner.Message);
+                    inner = inner.InnerException;
+                }
                 return Json(new
                 {
                     success = false,
-                    message = "Error al procesar el pago: " + ex.Message
+                    message = "Error al procesar el pago: " + sb.ToString()
                 });
             }
         }
@@ -679,28 +730,37 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         // Registrar valoración de un pedido
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RegistrarValoracion(ValoracionModel model)
+        public ActionResult RegistrarValoracion(ValoracionModel model, string pin = null)
         {
             try
             {
                 using (var db = new BD_CREANDO_RECUERDOSEntities())
                 {
-                    int userId = GetUserId();
-                    var cliente = db.tabla_clientes.FirstOrDefault(c => c.id_usuario == userId);
+                    tabla_ventas pedido = null;
 
-                    if (cliente == null)
-                        return RedirectToAction("MisPedidos");
+                    if (Session["IdUsuario"] != null)
+                    {
+                        int userId = GetUserId();
+                        var cliente = db.tabla_clientes.FirstOrDefault(c => c.id_usuario == userId);
+                        if (cliente == null)
+                            return RedirectToAction("MisPedidos");
 
-                    // Validar que el pedido existe y está entregado
-                    var pedido = db.tabla_ventas.FirstOrDefault(v =>
-                        v.id_venta == model.IdPedido &&
-                        v.id_cliente == cliente.id_cliente &&
-                        v.tabla_estados_pedido.nombre == "Entregado");
+                        pedido = db.tabla_ventas.FirstOrDefault(v =>
+                            v.id_venta == model.IdPedido &&
+                            v.id_cliente == cliente.id_cliente &&
+                            v.tabla_estados_pedido.nombre == "Entregado");
+                    }
+                    else if (!string.IsNullOrEmpty(pin))
+                    {
+                        pedido = db.tabla_ventas.FirstOrDefault(v =>
+                            v.id_venta == model.IdPedido &&
+                            v.pin == pin &&
+                            v.tabla_estados_pedido.nombre == "Entregado");
+                    }
 
                     if (pedido == null || db.tabla_valoraciones.Any(v => v.id_pedido == model.IdPedido))
                         return RedirectToAction("MisPedidos");
 
-                    // Crear valoración
                     var valoracion = new tabla_valoraciones
                     {
                         id_pedido = model.IdPedido,
@@ -712,7 +772,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     db.tabla_valoraciones.Add(valoracion);
                     db.SaveChanges();
 
-                    // Configurar mensaje de éxito
                     TempData["SweetAlert"] = JsonConvert.SerializeObject(new
                     {
                         title = "¡Gracias!",
@@ -722,13 +781,13 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         showConfirmButton = false
                     });
 
-                    return RedirectToAction("MisPedidos");
+                    return RedirectToAction("MisPedidos", new { pin });
                 }
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Error al registrar la valoración: " + ex.Message;
-                return RedirectToAction("ValorarPedido", new { idPedido = model.IdPedido });
+                return RedirectToAction("ValorarPedido", new { idPedido = model.IdPedido, pin });
             }
         }
 
@@ -812,37 +871,95 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         // Mostrar pedidos del usuario actual
         [HttpGet]
-        public ActionResult MisPedidos()
+        public ActionResult MisPedidos(string numeroPedido = null, string pin = null)
         {
-            int userId = GetUserId();
-
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
-                int idCliente = ObtenerIdCliente(db, userId);
+                List<PedidoClienteViewModel> pedidos;
 
-                // Obtener pedidos del usuario
-                var pedidos = db.tabla_ventas
-                    .Where(v => v.id_usuario == userId)
-                    .OrderByDescending(v => v.fecha)
-                    .Select(v => new PedidoClienteViewModel
-                    {
-                        IdPedido = v.id_venta,
-                        NumeroPedido = SqlFunctions.StringConvert((double)v.id_venta).TrimStart(),
-                        Fecha = v.fecha.Value,
-                        Total = v.total,
-                        Estado = v.tabla_estados_pedido.nombre,
-                        TiempoEstimado = v.tiempo_estimado ?? 20,
-                        Notificacion = v.notificacion,
-                        Valorado = db.tabla_valoraciones.Any(val => val.id_pedido == v.id_venta)
-                    })
-                    .AsEnumerable()
-                    .Select(v => {
-                        v.NumeroPedido = $"ORD-{v.Fecha.Year}-{v.NumeroPedido.PadLeft(4, '0')}";
-                        return v;
-                    })
-                    .ToList();
+                if (Session["IdUsuario"] != null)
+                {
+                    int userId = GetUserId();
+                    pedidos = db.tabla_ventas
+                        .Where(v => v.id_usuario == userId)
+                        .OrderByDescending(v => v.fecha)
+                        .Select(v => new PedidoClienteViewModel
+                        {
+                            IdPedido = v.id_venta,
+                            NumeroPedido = v.numero_pedido,
+                            Fecha = v.fecha.Value,
+                            Total = v.total,
+                            Estado = v.tabla_estados_pedido.nombre,
+                            TiempoEstimado = v.tiempo_estimado ?? 20,
+                            Notificacion = v.notificacion,
+                            Valorado = db.tabla_valoraciones.Any(val => val.id_pedido == v.id_venta),
+                            Pin = v.pin // string directo
+                        })
+                        .ToList();
+                }
+                else if (!string.IsNullOrEmpty(numeroPedido) && !string.IsNullOrEmpty(pin))
+                {
+                    pedidos = db.tabla_ventas
+                        .Where(v => v.numero_pedido == numeroPedido && v.pin == pin)
+                        .OrderByDescending(v => v.fecha)
+                        .Select(v => new PedidoClienteViewModel
+                        {
+                            IdPedido = v.id_venta,
+                            NumeroPedido = v.numero_pedido,
+                            Fecha = v.fecha.Value,
+                            Total = v.total,
+                            Estado = v.tabla_estados_pedido.nombre,
+                            TiempoEstimado = v.tiempo_estimado ?? 20,
+                            Notificacion = v.notificacion,
+                            Valorado = db.tabla_valoraciones.Any(val => val.id_pedido == v.id_venta),
+                            Pin = v.pin // string directo
+                        })
+                        .ToList();
+                }
+                else
+                {
+                    pedidos = new List<PedidoClienteViewModel>();
+                }
 
+                ViewBag.EsInvitado = Session["IdUsuario"] == null;
+                ViewBag.NumeroPedido = numeroPedido;
+                ViewBag.Pin = pin;
                 return View(pedidos);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CancelarPedidoInvitado(int idPedido, string pin)
+        {
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
+            {
+                var pedido = db.tabla_ventas.FirstOrDefault(v =>
+                    v.id_venta == idPedido &&
+                    v.pin == pin &&
+                    (v.tabla_estados_pedido.nombre == "Pendiente" || v.tabla_estados_pedido.nombre == "En preparación")
+                );
+
+                if (pedido == null)
+                {
+                    TempData["ErrorMessage"] = "No se pudo cancelar el pedido. Verifica los datos.";
+                    return RedirectToAction("MisPedidos", new { numeroPedido = (string)null, pin });
+                }
+
+                var estadoCancelado = db.tabla_estados_pedido.FirstOrDefault(e => e.nombre == "Cancelado");
+                if (estadoCancelado == null)
+                {
+                    TempData["ErrorMessage"] = "No se pudo cancelar el pedido. Estado no configurado.";
+                    return RedirectToAction("MisPedidos", new { numeroPedido = pedido.numero_pedido, pin });
+                }
+
+                pedido.id_estado = estadoCancelado.id_estado;
+                pedido.notificacion = "Pedido cancelado por el cliente";
+                pedido.fecha_actualizacion = DateTime.Now;
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Pedido cancelado exitosamente";
+                return RedirectToAction("MisPedidos", new { numeroPedido = pedido.numero_pedido, pin });
             }
         }
 
@@ -910,7 +1027,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
-                // Validar modelo
                 if (!ModelState.IsValid)
                 {
                     var errors = ModelState.Values
@@ -921,12 +1037,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     return Json(new { success = false, message = "Error de validación", errors });
                 }
 
-                // Calcular totales
                 decimal subtotal = model.Productos.Sum(p => p.Cantidad * p.PrecioUnitario);
                 decimal impuestos = subtotal * 0.13m;
                 decimal total = subtotal + impuestos;
 
-                // Crear modelo temporal del pedido
                 var pedidoTemporal = new PedidoPagoCompletoModel
                 {
                     NombreCliente = model.NombreCliente,
@@ -939,7 +1053,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     Fecha = DateTime.Now
                 };
 
-                // Guardar en sesión
+                // Guardar en sesión, sin importar si hay usuario autenticado
                 Session["PedidoTemporal"] = pedidoTemporal;
 
                 return Json(new
@@ -957,6 +1071,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 });
             }
         }
+
 
         // Mostrar confirmación de pedido
         [HttpGet]
@@ -1000,39 +1115,40 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         // Mostrar formulario para valorar un pedido
         [HttpGet]
-        public ActionResult ValorarPedido(int? idPedido)
+        public ActionResult ValorarPedido(int? idPedido, string pin = null)
         {
             if (!idPedido.HasValue)
-            {
                 return RedirectToAction("MisPedidos");
-            }
 
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
-                int userId = GetUserId();
-                var cliente = db.tabla_clientes.FirstOrDefault(c => c.id_usuario == userId);
+                tabla_ventas pedido = null;
 
-                if (cliente == null)
+                if (Session["IdUsuario"] != null)
                 {
-                    return RedirectToAction("MisPedidos");
-                }
+                    int userId = GetUserId();
+                    var cliente = db.tabla_clientes.FirstOrDefault(c => c.id_usuario == userId);
+                    if (cliente == null)
+                        return RedirectToAction("MisPedidos");
 
-                // Validar que el pedido existe, es del usuario y está entregado
-                var pedido = db.tabla_ventas.FirstOrDefault(v =>
-                    v.id_venta == idPedido.Value &&
-                    v.id_cliente == cliente.id_cliente &&
-                    v.tabla_estados_pedido.nombre == "Entregado");
+                    pedido = db.tabla_ventas.FirstOrDefault(v =>
+                        v.id_venta == idPedido.Value &&
+                        v.id_cliente == cliente.id_cliente &&
+                        v.tabla_estados_pedido.nombre == "Entregado");
+                }
+                else if (!string.IsNullOrEmpty(pin))
+                {
+                    pedido = db.tabla_ventas.FirstOrDefault(v =>
+                        v.id_venta == idPedido.Value &&
+                        v.pin == pin &&
+                        v.tabla_estados_pedido.nombre == "Entregado");
+                }
 
                 if (pedido == null)
-                {
                     return RedirectToAction("MisPedidos");
-                }
 
-                // Verificar que no tenga ya una valoración
                 if (db.tabla_valoraciones.Any(v => v.id_pedido == idPedido.Value))
-                {
                     return RedirectToAction("MisPedidos");
-                }
 
                 var model = new ValoracionModel
                 {
@@ -1040,6 +1156,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     NumeroPedido = $"ORD-{pedido.fecha.Value.Year}-{pedido.id_venta.ToString("D4")}"
                 };
 
+                ViewBag.Pin = pin;
                 return View(model);
             }
         }
@@ -1202,11 +1319,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         // Obtener ID de usuario de la sesión
         private int GetUserId()
         {
-            if (Session["UserId"] != null)
+            if (Session["IdUsuario"] != null)
             {
-                return Convert.ToInt32(Session["UserId"]);
+                return Convert.ToInt32(Session["IdUsuario"]);
             }
-            return 1; // Valor por defecto (debería manejarse mejor en producción)
+            throw new Exception("Usuario no autenticado");
         }
 
         // Calcular tiempo estimado basado en cantidad de productos

@@ -1,110 +1,222 @@
 ﻿@model List<Proyecto_CreandoRecuerdos.Models.PedidoClienteViewModel>
 @{
     ViewData["Title"] = "Mis Pedidos";
+    bool esInvitado = ViewBag.EsInvitado != null && (bool)ViewBag.EsInvitado;
+    string numeroPedido = ViewBag.NumeroPedido as string;
+    string pin = ViewBag.Pin as string;
 }
 
-<div class="container mt-4">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <div class="d-flex justify-content-between align-items-center">
-                <h4><i class="fas fa-history me-2"></i> Mis Pedidos</h4>
-                <button id="refreshPedidosBtn" class="btn btn-sm btn-light">
-                    <i class="fas fa-sync-alt me-1"></i> Actualizar
-                </button>
-            </div>
-        </div>
-
+@if (esInvitado)
+{
+    <div class="card mb-4">
         <div class="card-body">
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="alert alert-success alert-dismissible fade show">
-                    @TempData["SuccessMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <h4 class="card-title">Consulta tu pedido</h4>
+            <form method="get" action="@Url.Action("MisPedidos", "Pedidos")" class="row g-2">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="numeroPedido" name="numeroPedido" placeholder="Número de Orden" value="@numeroPedido" required maxlength="20" />
                 </div>
-            }
-
-            @if (!Model.Any())
-            {
-                <div class="alert alert-info text-center py-4">
-                    <i class="fas fa-info-circle fa-2x mb-3"></i>
-                    <h5>No tienes pedidos registrados</h5>
-                    <p class="mb-0">Realiza tu primer pedido en nuestro menú</p>
-                    <a href="@Url.Action("Pedidos")" class="btn btn-primary mt-3">
-                        <i class="fas fa-utensils me-2"></i> Ver Menú
-                    </a>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="pin" name="pin" placeholder="PIN" value="@pin" required maxlength="4" />
                 </div>
-            }
-            else
-            {
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>N° Pedido</th>
-                                <th>Fecha</th>
-                                <th>Total</th>
-                                <th>Estado</th>
-                                <th>Tiempo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var pedido in Model)
-                            {
-                                <tr>
-                                    <td>@pedido.NumeroPedido</td>
-                                    <td>@pedido.Fecha.ToString("g")</td>
-                                    <td>₡@pedido.Total.ToString("N2")</td>
-                                    <td>
-                                        <span class="badge @pedido.ClaseEstado">@pedido.Estado</span>
-                                        @if (!string.IsNullOrEmpty(pedido.Notificacion))
-                                        {
-                                            <div class="notification-badge" data-bs-toggle="tooltip" title="@pedido.Notificacion">
-                                                <i class="fas fa-bell"></i>
-                                            </div>
-                                        }
-                                    </td>
-                                    <td>@pedido.TiempoEstimado min</td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <a href="@Url.Action("DetallePedido", new { id = pedido.IdPedido })"
-                                               class="btn btn-sm btn-outline-primary"
-                                               data-bs-toggle="tooltip"
-                                               title="Ver detalles">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-
-                                            @if (pedido.Estado == "Entregado" && !pedido.Valorado)
-                                            {
-                                                <a href="@Url.Action("ValorarPedido", new { idPedido = pedido.IdPedido })"
-                                                   class="btn btn-sm btn-outline-warning"
-                                                   data-bs-toggle="tooltip"
-                                                   title="Valorar pedido">
-                                                    <i class="fas fa-star"></i>
-                                                </a>
-                                            }
-
-                                            @if (pedido.Estado == "Pendiente" || pedido.Estado == "En preparación")
-                                            {
-                                                <button class="btn btn-sm btn-outline-danger btn-cancelar"
-                                                        data-id="@pedido.IdPedido"
-                                                        data-pin="@pedido.Pin"
-                                                        data-bs-toggle="tooltip"
-                                                        title="Cancelar pedido">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            }
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Buscar</button>
                 </div>
-            }
+            </form>
+            <small class="text-muted d-block mt-2">Debes ingresar el número de pedido y el PIN que recibiste al hacer tu pedido.</small>
         </div>
     </div>
-</div>
+
+    if (Model != null && Model.Any())
+    {
+        <div class="container mt-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4><i class="fas fa-history me-2"></i> Pedido Encontrado</h4>
+                        <button id="refreshPedidosBtn" class="btn btn-sm btn-light">
+                            <i class="fas fa-sync-alt me-1"></i> Actualizar
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>N° Pedido</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Tiempo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var pedido in Model)
+                                {
+                                    <tr>
+                                        <td>@pedido.NumeroPedido</td>
+                                        <td>@pedido.Fecha.ToString("g")</td>
+                                        <td>₡@pedido.Total.ToString("N2")</td>
+                                        <td>
+                                            <span class="badge @pedido.ClaseEstado">@pedido.Estado</span>
+                                            @if (!string.IsNullOrEmpty(pedido.Notificacion))
+                                            {
+                                                <div class="notification-badge" data-bs-toggle="tooltip" title="@pedido.Notificacion">
+                                                    <i class="fas fa-bell"></i>
+                                                </div>
+                                            }
+                                        </td>
+                                        <td>@pedido.TiempoEstimado min</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="@Url.Action("DetallePedido", "Pedidos", new { id = pedido.IdPedido, pin = pin })"
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   data-bs-toggle="tooltip"
+                                                   title="Ver detalles">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                @if (pedido.Estado == "Entregado" && !pedido.Valorado)
+                                                {
+                                                    <a href="@Url.Action("ValorarPedido", "Pedidos", new { idPedido = pedido.IdPedido, pin = pin })"
+                                                       class="btn btn-sm btn-outline-warning"
+                                                       data-bs-toggle="tooltip"
+                                                       title="Valorar pedido">
+                                                        <i class="fas fa-star"></i>
+                                                    </a>
+                                                }
+                                                @if (pedido.Estado == "Pendiente" || pedido.Estado == "En preparación")
+                                                {
+                                                    <form method="post" action="@Url.Action("CancelarPedidoInvitado", "Pedidos")" class="form-cancelar-invitado" style="display:inline;">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="idPedido" value="@pedido.IdPedido" />
+                                                        <input type="hidden" name="pin" value="@pin" />
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger btn-cancelar" data-bs-toggle="tooltip" title="Cancelar pedido">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(numeroPedido))
+    {
+        <div class="alert alert-warning mt-4">
+            No se encontró ningún pedido con esos datos. Verifica el número de pedido y el PIN.
+        </div>
+    }
+}
+
+@if (!esInvitado)
+{
+    <div class="container mt-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4><i class="fas fa-history me-2"></i> Mis Pedidos</h4>
+                    <button id="refreshPedidosBtn" class="btn btn-sm btn-light">
+                        <i class="fas fa-sync-alt me-1"></i> Actualizar
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show">
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                @if (!Model.Any())
+                {
+                    <div class="alert alert-info text-center py-4">
+                        <i class="fas fa-info-circle fa-2x mb-3"></i>
+                        <h5>No tienes pedidos registrados</h5>
+                        <p class="mb-0">Realiza tu primer pedido en nuestro menú</p>
+                        <a href="@Url.Action("Pedidos")" class="btn btn-primary mt-3">
+                            <i class="fas fa-utensils me-2"></i> Ver Menú
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>N° Pedido</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Tiempo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var pedido in Model)
+                                {
+                                    <tr>
+                                        <td>@pedido.NumeroPedido</td>
+                                        <td>@pedido.Fecha.ToString("g")</td>
+                                        <td>₡@pedido.Total.ToString("N2")</td>
+                                        <td>
+                                            <span class="badge @pedido.ClaseEstado">@pedido.Estado</span>
+                                            @if (!string.IsNullOrEmpty(pedido.Notificacion))
+                                            {
+                                                <div class="notification-badge" data-bs-toggle="tooltip" title="@pedido.Notificacion">
+                                                    <i class="fas fa-bell"></i>
+                                                </div>
+                                            }
+                                        </td>
+                                        <td>@pedido.TiempoEstimado min</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="@Url.Action("DetallePedido", new { id = pedido.IdPedido })"
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   data-bs-toggle="tooltip"
+                                                   title="Ver detalles">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                @if (pedido.Estado == "Entregado" && !pedido.Valorado)
+                                                {
+                                                    <a href="@Url.Action("ValorarPedido", "Pedidos", new { idPedido = pedido.IdPedido, pin = pin })"
+                                                       class="btn btn-sm btn-outline-warning"
+                                                       data-bs-toggle="tooltip"
+                                                       title="Valorar pedido">
+                                                        <i class="fas fa-star"></i>
+                                                    </a>
+                                                }
+                                                @if (pedido.Estado == "Pendiente" || pedido.Estado == "En preparación")
+                                                {
+                                                    <button class="btn btn-sm btn-outline-danger btn-cancelar"
+                                                            data-id="@pedido.IdPedido"
+                                                            data-pin="@pedido.Pin"
+                                                            data-bs-toggle="tooltip"
+                                                            title="Cancelar pedido">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
 
 @section Scripts {
     <script>
@@ -143,7 +255,7 @@
         });
 
         $(document).ready(function() {
-        // Manejar clic en botón de cancelar
+            // Manejar clic en botón de cancelar
             $('.btn-cancelar').click(function() {
                 const idPedido = $(this).data('id');
 
@@ -187,6 +299,26 @@
                                 });
                             }
                         });
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            // Interceptar el submit del formulario de cancelar para invitados
+            $('.form-cancelar-invitado').on('submit', function (e) {
+                e.preventDefault();
+                const form = this;
+                Swal.fire({
+                    title: 'Cancelar Pedido',
+                    text: '¿Estás seguro que deseas cancelar este pedido?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, cancelar',
+                    cancelButtonText: 'No, volver'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
                     }
                 });
             });

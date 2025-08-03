@@ -1,6 +1,7 @@
 ﻿@model Proyecto_CreandoRecuerdos.Models.ValoracionModel
 @{
     ViewData["Title"] = "Valorar Pedido";
+    string pin = ViewBag.Pin as string;
 }
 
 <div class="container mt-4">
@@ -8,7 +9,6 @@
         <div class="card-header bg-primary text-white">
             <h4><i class="fas fa-star me-2"></i> Valorar Pedido @Model.NumeroPedido</h4>
         </div>
-
         <div class="card-body">
             @if (TempData["ErrorMessage"] != null)
             {
@@ -20,6 +20,10 @@
             <form id="formValoracion" method="post" action="@Url.Action("RegistrarValoracion", "Pedidos")">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="IdPedido" value="@Model.IdPedido" />
+                @if (!string.IsNullOrEmpty(pin))
+                {
+                    <input type="hidden" name="pin" value="@pin" />
+                }
 
                 <div class="text-center mb-4">
                     <p>¿Cómo calificarías tu experiencia con este pedido?</p>
@@ -46,7 +50,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-paper-plane me-2"></i> Enviar Valoración
                     </button>
-                    <a href="@Url.Action("MisPedidos")" class="btn btn-secondary ms-2">
+                    <a href="@Url.Action("MisPedidos", "Pedidos", new { pin = pin })" class="btn btn-secondary ms-2">
                         <i class="fas fa-arrow-left me-2"></i> Volver
                     </a>
                 </div>
@@ -57,7 +61,6 @@
 
 @section Scripts {
     <script>
-        // SCRIPTS HECHOS CON LA AYUDA DE IA
         $(document).ready(function () {
             // Manejar selección de estrellas
             $('.star').hover(
@@ -115,7 +118,6 @@
             });
         });
     </script>
-
     <style>
         .rating-stars {
             font-size: 2rem;

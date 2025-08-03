@@ -240,7 +240,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public decimal Total { get; set; }
         public string Estado { get; set; }
         public int TiempoEstimado { get; set; }
-        public int Pin { get; set; }
+        public string Pin { get; set; }
         public string Notificacion { get; set; }
         public bool Valorado { get; set; }
 
