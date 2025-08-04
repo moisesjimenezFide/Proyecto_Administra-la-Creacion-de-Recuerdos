@@ -360,7 +360,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 using (var db = new BD_CREANDO_RECUERDOSEntities())
                 {
                     int idUsuario = GetUserId();
-                    var pedido = db.tabla_ventas.Find(idPedido);
+                    var pedido = db.tabla_ventas
+                        .Include(p => p.tabla_estados_pedido)
+                        .FirstOrDefault(p => p.id_venta == idPedido);
 
                     if (pedido == null)
                     {
@@ -376,8 +378,14 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         return RedirectToAction("DetallePedido", new { id = idPedido });
                     }
 
-                    // Actualizar estado
+                    // Generar mensaje de notificación automático
+                    string mensajeNotificacion = GenerarMensajeNotificacion(pedido, nuevoEstado);
+
+                    // Actualizar estado y notificación
                     pedido.id_estado = estado.id_estado;
+                    pedido.notificacion = mensajeNotificacion;
+                    pedido.fecha_actualizacion = DateTime.Now;
+
                     db.SaveChanges();
 
                     // Registrar actividad
@@ -386,6 +394,19 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         "UPDATE",
                         $"Actualizado estado del pedido {idPedido} a {nuevoEstado}"
                     );
+
+                    // Marcar notificación como no leída para el cliente
+                    var cliente = db.tabla_clientes.Find(pedido.id_cliente);
+                    if (cliente != null && cliente.id_usuario.HasValue)
+                    {
+                        // Eliminar vistas previas de esta notificación
+                        var vistasAnteriores = db.tabla_notificaciones_vistas
+                            .Where(n => n.id_pedido == idPedido && n.id_usuario == cliente.id_usuario)
+                            .ToList();
+
+                        db.tabla_notificaciones_vistas.RemoveRange(vistasAnteriores);
+                        db.SaveChanges();
+                    }
 
                     TempData["SuccessMessage"] = $"Estado actualizado a {nuevoEstado}";
                     return RedirectToAction("DetallePedido", new { id = idPedido });
@@ -559,8 +580,25 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                 if (pedidoTemporal == null)
                 {
-                    return Json(new { success = false, message = "La sesión del pedido ha expirado" });
+                    return Json(new
+                    {
+                        success = false,
+                        showAlert = true,
+                        title = "Sesión expirada",
+                        message = "La sesión del pedido ha expirado, por favor inicia el pedido nuevamente",
+                        icon = "error"
+                    });
                 }
+
+                // Asegurar que todas las personalizaciones tengan valor
+                pedidoTemporal.Productos = pedidoTemporal.Productos.Select(p => new ProductoPedidoModel
+                {
+                    IdProducto = p.IdProducto,
+                    Nombre = p.Nombre,
+                    Cantidad = p.Cantidad,
+                    PrecioUnitario = p.PrecioUnitario,
+                    Personalizacion = p.Personalizacion ?? string.Empty
+                }).ToList();
 
                 // Validar datos según método de pago
                 switch (model.MetodoPago?.ToLower())
@@ -570,14 +608,28 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             string.IsNullOrEmpty(model.FechaExpiracion) ||
                             string.IsNullOrEmpty(model.CVV))
                         {
-                            return Json(new { success = false, message = "Datos de tarjeta incompletos" });
+                            return Json(new
+                            {
+                                success = false,
+                                showAlert = true,
+                                title = "Datos incompletos",
+                                message = "Por favor complete todos los datos de la tarjeta",
+                                icon = "error"
+                            });
                         }
                         break;
 
                     case "sinpe":
                         if (string.IsNullOrEmpty(model.TelefonoSinpe) || !Regex.IsMatch(model.TelefonoSinpe, @"^\d{8}$"))
                         {
-                            return Json(new { success = false, message = "Número SINPE móvil inválido (debe tener 8 dígitos)" });
+                            return Json(new
+                            {
+                                success = false,
+                                showAlert = true,
+                                title = "Teléfono inválido",
+                                message = "Número SINPE móvil inválido (debe tener 8 dígitos)",
+                                icon = "error"
+                            });
                         }
                         pedidoTemporal.TelefonoSinpe = model.TelefonoSinpe;
                         break;
@@ -585,12 +637,28 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     case "efectivo":
                         if (model.MontoRecibido <= 0 || model.MontoRecibido < pedidoTemporal.Total)
                         {
-                            return Json(new { success = false, message = "Monto recibido inválido o insuficiente" });
+                            return Json(new
+                            {
+                                success = false,
+                                showAlert = true,
+                                title = "Monto inválido",
+                                message = "Monto recibido inválido o insuficiente",
+                                icon = "error"
+                            });
+
                         }
                         break;
 
                     default:
-                        return Json(new { success = false, message = "Método de pago no válido" });
+                        return Json(new
+                        {
+                            success = false,
+                            showAlert = true,
+                            title = "Método inválido",
+                            message = "Método de pago no válido",
+                            icon = "error"
+                        });
+
                 }
 
                 using (var db = new BD_CREANDO_RECUERDOSEntities())
@@ -709,7 +777,14 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     .SelectMany(x => x.ValidationErrors)
                     .Select(x => x.ErrorMessage);
                 var fullErrorMessage = string.Join("; ", errorMessages);
-                return Json(new { success = false, message = "Error de validación: " + fullErrorMessage });
+                return Json(new
+                {
+                    success = false,
+                    showAlert = true,
+                    title = "Error de validación",
+                    message = fullErrorMessage,
+                    icon = "error"
+                });
             }
             catch (Exception ex)
             {
@@ -723,7 +798,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return Json(new
                 {
                     success = false,
-                    message = "Error al procesar el pago: " + sb.ToString()
+                    showAlert = true,
+                    title = "Error",
+                    message = "Error al procesar el pago: " + ex.Message,
+                    icon = "error"
                 });
             }
         }
@@ -894,7 +972,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             TiempoEstimado = v.tiempo_estimado ?? 20,
                             Notificacion = v.notificacion,
                             Valorado = db.tabla_valoraciones.Any(val => val.id_pedido == v.id_venta),
-                            Pin = v.pin 
+                            Pin = v.pin
                         })
                         .ToList();
                 }
@@ -913,7 +991,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             TiempoEstimado = v.tiempo_estimado ?? 20,
                             Notificacion = v.notificacion,
                             Valorado = db.tabla_valoraciones.Any(val => val.id_pedido == v.id_venta),
-                            Pin = v.pin 
+                            Pin = v.pin
                         })
                         .ToList();
                 }
@@ -1028,48 +1106,44 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
+                // Asegurar que las personalizaciones no sean nulas
+                if (model.Productos != null)
                 {
-                    var errors = ModelState.Values
-                        .SelectMany(v => v.Errors)
-                        .Select(e => e.ErrorMessage)
-                        .ToList();
-
-                    return Json(new { success = false, message = "Error de validación", errors });
+                    foreach (var producto in model.Productos)
+                    {
+                        producto.Personalizacion = producto.Personalizacion ?? string.Empty;
+                    }
                 }
 
-                decimal subtotal = model.Productos.Sum(p => p.Cantidad * p.PrecioUnitario);
-                decimal impuestos = subtotal * 0.13m;
-                decimal total = subtotal + impuestos;
-
+                // Inicializar completamente el objeto pedidoTemporal
                 var pedidoTemporal = new PedidoPagoCompletoModel
                 {
                     NombreCliente = model.NombreCliente,
-                    Telefono = model.Telefono,
+                    Telefono = model.Telefono ?? string.Empty,
                     ParaLlevar = model.ParaLlevar,
-                    Productos = model.Productos,
-                    Subtotal = subtotal,
-                    Impuestos = impuestos,
-                    Total = total,
+                    Productos = model.Productos.Select(p => new ProductoPedidoModel
+                    {
+                        IdProducto = p.IdProducto,
+                        Nombre = p.Nombre,
+                        Cantidad = p.Cantidad,
+                        PrecioUnitario = p.PrecioUnitario,
+                        Personalizacion = p.Personalizacion ?? string.Empty
+                    }).ToList(),
+                    Subtotal = model.Productos.Sum(p => p.Cantidad * p.PrecioUnitario),
+                    Impuestos = model.Productos.Sum(p => p.Cantidad * p.PrecioUnitario) * 0.13m,
+                    Total = model.Productos.Sum(p => p.Cantidad * p.PrecioUnitario) * 1.13m,
                     Fecha = DateTime.Now
                 };
 
-                // Guardar en sesión, sin importar si hay usuario autenticado
+                // Limpiar y recrear la sesión completamente
+                Session.Remove("PedidoTemporal");
                 Session["PedidoTemporal"] = pedidoTemporal;
 
-                return Json(new
-                {
-                    success = true,
-                    redirectUrl = Url.Action("FormularioPago")
-                });
+                return Json(new { success = true, redirectUrl = Url.Action("FormularioPago") });
             }
             catch (Exception ex)
             {
-                return Json(new
-                {
-                    success = false,
-                    message = "Error al procesar el pedido: " + ex.Message
-                });
+                return Json(new { success = false, message = "Error al procesar el pedido: " + ex.Message });
             }
         }
 
@@ -1333,17 +1407,5 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             return Math.Min(20 + (cantidadProductos * 5), 60);
         }
-
-        [HttpGet]
-        public ActionResult registro_vetas()
-        {
-            using (var context = new BD_CREANDO_RECUERDOSEntities())
-            {
-                var usuarios = context.sp_mostrar_ventas_web().ToList();
-
-                return View(usuarios);
-            }
-        }
-
     }
 }

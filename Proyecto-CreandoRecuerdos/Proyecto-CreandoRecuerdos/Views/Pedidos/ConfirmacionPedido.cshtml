@@ -60,9 +60,15 @@
                                     <span>@producto.Nombre x @producto.Cantidad</span>
                                     <span class="badge bg-primary rounded-pill">₡@((producto.PrecioUnitario * producto.Cantidad).ToString("N2"))</span>
                                 </div>
-                                <div class="mt-2">
-                                    <small class="text-muted"><strong>Notas:</strong> @producto.Personalizacion</small>
-                                </div>
+                                @if (!string.IsNullOrEmpty(producto.Personalizacion))
+                                {
+                                    <div class="mt-2">
+                                        <div class="alert alert-light p-2 mb-0">
+                                            <strong><i class="fas fa-sticky-note me-1"></i> Notas:</strong>
+                                            @producto.Personalizacion
+                                        </div>
+                                    </div>
+                                }
                             </li>
                         }
                     </ul>

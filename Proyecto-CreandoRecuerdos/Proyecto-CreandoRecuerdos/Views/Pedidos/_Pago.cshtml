@@ -12,12 +12,9 @@
                     <div class="item-pedido">
                         <div class="nombre-producto">@producto.Nombre x @producto.Cantidad</div>
                         <div class="precio-producto">₡@((producto.PrecioUnitario * producto.Cantidad).ToString("N2"))</div>
-                        @if (!string.IsNullOrEmpty(producto.Personalizacion))
-                        {
-                            <div class="notas-producto">
-                                <small><strong>Notas:</strong> @producto.Personalizacion</small>
-                            </div>
-                        }
+                        <div class="notas-producto @(string.IsNullOrEmpty(producto.Personalizacion) ? "d-none" : "")">
+                            <small><strong>Notas:</strong> @producto.Personalizacion</small>
+                        </div>
                     </div>
                 }
             </div>

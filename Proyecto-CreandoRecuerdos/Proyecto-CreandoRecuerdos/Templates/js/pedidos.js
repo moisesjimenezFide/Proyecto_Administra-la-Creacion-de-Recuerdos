@@ -103,7 +103,15 @@ class SistemaPedidos {
             }
         }).then((result) => {
             if (result.isConfirmed && this.pedidoActual[index]) {
-                this.pedidoActual[index].personalizacion = result.value;
+
+                const productoId = this.pedidoActual[index].id;
+                this.pedidoActual = this.pedidoActual.map(item => {
+                    if (item.id === productoId) {
+                        return { ...item, personalizacion: result.value || '' };
+                    }
+                    return item;
+                });
+
                 this.actualizarPedido();
             }
         });
@@ -150,17 +158,17 @@ class SistemaPedidos {
         const impuestos = subtotal * 0.13;
         const total = subtotal + impuestos;
 
-        // Crear objeto del pedido
+        // Crear objeto del pedido - Asegurando que todos los campos estén presentes
         const pedidoData = {
             NombreCliente: nombreCliente,
             Telefono: telefono || '',
-            ParaLlevar: document.getElementById('takeawayOrder').checked,
+            ParaLlevar: document.getElementById('takeawayOrder').checked ? true : false, // Asegurar valor booleano
             Productos: this.pedidoActual.map(item => ({
                 IdProducto: item.id,
                 Nombre: item.nombre,
                 Cantidad: item.cantidad,
                 PrecioUnitario: item.precio,
-                Personalizacion: item.personalizacion || ''
+                Personalizacion: item.personalizacion || '' // Asegurar que siempre haya un valor
             })),
             Subtotal: subtotal,
             Impuestos: impuestos,
@@ -261,7 +269,7 @@ class SistemaPedidos {
             img_url: btn.closest('.product-item').querySelector('img').src
         };
 
-        const itemExistente = this.pedidoActual.find(item => item.id === producto.id);
+        const itemExistente = this.pedidoActual.find(item => item.id === producto.id && item.personalizacion === producto.personalizacion);
 
         if (itemExistente) {
             itemExistente.cantidad += 1;
@@ -279,10 +287,10 @@ class SistemaPedidos {
 
         if (this.pedidoActual.length === 0) {
             contenedor.innerHTML = `
-                <div class="empty-order">
-                    <i class="fas fa-shopping-cart"></i>
-                    <p>No hay productos en el pedido</p>
-                </div>`;
+            <div class="empty-order">
+                <i class="fas fa-shopping-cart"></i>
+                <p>No hay productos en el pedido</p>
+            </div>`;
             document.getElementById('checkoutBtn').disabled = true;
             return;
         }
@@ -292,30 +300,28 @@ class SistemaPedidos {
         const total = subtotal + impuestos;
 
         contenedor.innerHTML = this.pedidoActual.map((item, index) => `
-            <div class="order-item" data-index="${index}">
-                <div class="item-name">${item.nombre}</div>
-                <div class="item-quantity">
-                    <button class="btn btn-sm btn-outline-secondary disminuir-cantidad">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <span class="quantity-display">${item.cantidad}</span>
-                    <button class="btn btn-sm btn-outline-secondary aumentar-cantidad">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                <div class="item-price">₡${(item.precio * item.cantidad).toLocaleString('es-CR')}</div>
+        <div class="order-item" data-index="${index}">
+            <div class="item-name">${item.nombre}</div>
+            <div class="item-quantity">
+                <button class="btn btn-sm btn-outline-secondary disminuir-cantidad">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <span class="quantity-display">${item.cantidad}</span>
+                <button class="btn btn-sm btn-outline-secondary aumentar-cantidad">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            <div class="item-price">₡${(item.precio * item.cantidad).toLocaleString('es-CR')}</div>
+            <div class="item-actions">
                 <button class="btn btn-sm btn-outline-primary agregar-personalizacion">
                     <i class="fas fa-edit"></i>
                 </button>
                 <button class="btn btn-sm btn-outline-danger eliminar-item">
                     <i class="fas fa-times"></i>
                 </button>
-                ${item.personalizacion ? `
-                <div class="item-notes">
-                    <small>${item.personalizacion}</small>
-                </div>` : ''}
             </div>
-        `).join('');
+        </div>
+    `).join('');
 
         document.getElementById('orderSubtotal').textContent = `₡${subtotal.toLocaleString('es-CR')}`;
         document.getElementById('orderTax').textContent = `₡${impuestos.toLocaleString('es-CR')}`;

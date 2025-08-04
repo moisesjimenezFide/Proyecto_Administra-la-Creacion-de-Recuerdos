@@ -566,10 +566,6 @@ C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-Cr
 C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.dll
 C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.xml
 C:\Diseño y Desarrollo\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.xml
-C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\libSkiaSharp.dylib
-C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\x86\libSkiaSharp.dll
-C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\x64\libSkiaSharp.dll
-C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\arm64\libSkiaSharp.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Proyecto-CreandoRecuerdos.dll.config
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Proyecto-CreandoRecuerdos.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Proyecto-CreandoRecuerdos.pdb

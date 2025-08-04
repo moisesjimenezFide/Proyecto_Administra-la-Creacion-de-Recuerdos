@@ -90,7 +90,7 @@
                             <th>Cantidad</th>
                             <th>Precio Unitario</th>
                             <th>Subtotal</th>
-                            <th>Notas</th>
+                            <th>Notas Especiales</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,7 +101,19 @@
                                 <td>@producto.Cantidad</td>
                                 <td>₡@producto.PrecioUnitario.ToString("N2")</td>
                                 <td>₡@((producto.Cantidad * producto.PrecioUnitario).ToString("N2"))</td>
-                                <td>@(!string.IsNullOrEmpty(producto.Personalizacion) ? producto.Personalizacion : "Ninguna")</td>
+                                <td class="@(!string.IsNullOrEmpty(producto.Personalizacion) ? "bg-light" : "")">
+                                    @if (!string.IsNullOrEmpty(producto.Personalizacion))
+                                    {
+                                        <div class="personalizacion-nota">
+                                            <i class="fas fa-sticky-note"></i>
+                                            <span>@producto.Personalizacion</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sin personalización</span>
+                                    }
+                                </td>
                             </tr>
                         }
                     </tbody>
