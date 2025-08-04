@@ -253,6 +253,9 @@
     <Compile Include="base_de_datos\sp_crear_pedido_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="base_de_datos\sp_mostrar_ventas_web_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="base_de_datos\sp_notificar_cliente_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -562,6 +565,7 @@
     <Content Include="Views\Pedidos\Pago.cshtml" />
     <Content Include="Views\Pedidos\MisPedidos.cshtml" />
     <Content Include="Views\Inicio\pago.cshtml" />
+    <Content Include="Views\Pedidos\registro_vetas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,9 +11,16 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
 {
     using System;
     
-    public partial class sp_notificar_cliente_Result
+    public partial class sp_mostrar_ventas_web_Result
     {
-        public int resultado { get; set; }
-        public string mensaje { get; set; }
+        public int id_venta { get; set; }
+        public string nombre_cliente { get; set; }
+        public string fecha_corta { get; set; }
+        public string estado_pedido { get; set; }
+        public Nullable<int> tiempo_estimado { get; set; }
+        public string metodo_pago { get; set; }
+        public string numero_pedido { get; set; }
+        public string telefono { get; set; }
+        public string telefono_sinpe { get; set; }
     }
 }

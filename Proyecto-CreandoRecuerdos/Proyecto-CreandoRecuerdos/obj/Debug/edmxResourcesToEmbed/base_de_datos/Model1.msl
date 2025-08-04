@@ -344,7 +344,6 @@
     <EntitySetMapping Name="tabla_ventas">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_ventas">
         <MappingFragment StoreEntitySet="tabla_ventas">
-          <ScalarProperty Name="nombre_cliente" ColumnName="nombre_cliente" />
           <ScalarProperty Name="id_venta" ColumnName="id_venta" />
           <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
           <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
@@ -360,6 +359,7 @@
           <ScalarProperty Name="fecha_actualizacion" ColumnName="fecha_actualizacion" />
           <ScalarProperty Name="telefono" ColumnName="telefono" />
           <ScalarProperty Name="telefono_sinpe" ColumnName="telefono_sinpe" />
+          <ScalarProperty Name="nombre_cliente" ColumnName="nombre_cliente" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -470,6 +470,21 @@
     <FunctionImportMapping FunctionImportName="sp_inactivar_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_inactivar_usuario" />
     <FunctionImportMapping FunctionImportName="sp_insertar_recomendacion" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_insertar_recomendacion" />
     <FunctionImportMapping FunctionImportName="sp_manejar_cliente_pedido" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_manejar_cliente_pedido" />
+    <FunctionImportMapping FunctionImportName="sp_mostrar_ventas_web" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_mostrar_ventas_web">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_mostrar_ventas_web_Result">
+          <ScalarProperty Name="id_venta" ColumnName="id_venta" />
+          <ScalarProperty Name="nombre_cliente" ColumnName="nombre_cliente" />
+          <ScalarProperty Name="fecha_corta" ColumnName="fecha_corta" />
+          <ScalarProperty Name="estado_pedido" ColumnName="estado_pedido" />
+          <ScalarProperty Name="tiempo_estimado" ColumnName="tiempo_estimado" />
+          <ScalarProperty Name="metodo_pago" ColumnName="metodo_pago" />
+          <ScalarProperty Name="numero_pedido" ColumnName="numero_pedido" />
+          <ScalarProperty Name="telefono" ColumnName="telefono" />
+          <ScalarProperty Name="telefono_sinpe" ColumnName="telefono_sinpe" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_notificar_cliente" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_notificar_cliente">
       <ResultMapping>
         <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_notificar_cliente_Result">

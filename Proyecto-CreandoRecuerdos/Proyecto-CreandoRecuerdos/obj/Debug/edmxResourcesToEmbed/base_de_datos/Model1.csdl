@@ -382,13 +382,13 @@
     <Property Name="fecha_actualizacion" Type="DateTime" Precision="3" />
     <Property Name="telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="telefono_sinpe" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="nombre_cliente" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="tabla_clientes" Relationship="Self.FK__tabla_ven__id_cl__14270015" FromRole="tabla_ventas" ToRole="tabla_clientes" />
     <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_ve__0D7A0286" FromRole="tabla_ventas" ToRole="tabla_detalle_venta" />
     <NavigationProperty Name="tabla_estados_pedido" Relationship="Self.FK_ventas_estados" FromRole="tabla_ventas" ToRole="tabla_estados_pedido" />
     <NavigationProperty Name="tabla_notificaciones_vistas" Relationship="Self.FK_notificaciones_vistas_pedidos" FromRole="tabla_ventas" ToRole="tabla_notificaciones_vistas" />
     <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_ven__id_us__151B244E" FromRole="tabla_ventas" ToRole="tabla_usuarios" />
     <NavigationProperty Name="tabla_valoraciones" Relationship="Self.FK_valoraciones_pedidos" FromRole="tabla_ventas" ToRole="tabla_valoraciones" />
-    <Property Name="nombre_cliente" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Vehiculos">
     <Key>
@@ -1011,6 +1011,7 @@
       <Parameter Name="nombre" Mode="In" Type="String" />
       <Parameter Name="telefono" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="sp_mostrar_ventas_web" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_mostrar_ventas_web_Result)" />
     <FunctionImport Name="sp_notificar_cliente" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_notificar_cliente_Result)">
       <Parameter Name="id_pedido" Mode="In" Type="Int32" />
       <Parameter Name="id_usuario" Mode="In" Type="Int32" />
@@ -1113,6 +1114,17 @@
     <Property Type="Int32" Name="tiempo_estimado" Nullable="true" />
     <Property Type="Int32" Name="resultado" Nullable="false" />
     <Property Type="String" Name="mensaje" Nullable="false" MaxLength="26" />
+  </ComplexType>
+  <ComplexType Name="sp_mostrar_ventas_web_Result">
+    <Property Type="Int32" Name="id_venta" Nullable="false" />
+    <Property Type="String" Name="nombre_cliente" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="fecha_corta" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="estado_pedido" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="tiempo_estimado" Nullable="true" />
+    <Property Type="String" Name="metodo_pago" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="numero_pedido" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="telefono" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="telefono_sinpe" Nullable="true" MaxLength="20" />
   </ComplexType>
   <ComplexType Name="sp_notificar_cliente_Result">
     <Property Type="Int32" Name="resultado" Nullable="false" />

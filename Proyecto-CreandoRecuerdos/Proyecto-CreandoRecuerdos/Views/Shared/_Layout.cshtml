@@ -63,6 +63,7 @@
                                 @if (rol == "1" || rol == "2") // Admin o empleado
                                 {
                                     <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("Gestionar", "Pedidos")" asp-action="Gestionar">Gestión de Pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("registro_vetas", "Pedidos")" asp-action="Gestionar">Gestión de Ventas</a></li>
                                 }
                             </ul>
                         </li>

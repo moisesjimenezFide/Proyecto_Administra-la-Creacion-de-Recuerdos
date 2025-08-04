@@ -814,6 +814,7 @@
     <Parameter Name="nombre" Type="nvarchar" Mode="In" />
     <Parameter Name="telefono" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="sp_mostrar_ventas_web" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="sp_notificar_cliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="id_pedido" Type="int" Mode="In" />
     <Parameter Name="id_usuario" Type="int" Mode="In" />
