@@ -381,12 +381,12 @@
     </Compile>
     <Compile Include="Helpers\ActividadHelper.cs" />
     <Compile Include="Models\ActividadModel.cs" />
+    <Compile Include="Models\InsumosModel.cs" />
     <Compile Include="ViewModels\CostosOperativosViewModel.cs" />
     <Compile Include="ViewModels\EmpleadosDisponiblesViewModel.cs" />
     <Compile Include="ViewModels\HistorialVentasViewModel.cs" />
     <Compile Include="Models\HorarioModel.cs" />
     <Compile Include="Models\EmpleadoModel.cs" />
-    <Compile Include="Models\InsumosModel.cs" />
     <Compile Include="Models\PedidosModel.cs" />
     <Compile Include="Models\ProductoModel.cs" />
     <Compile Include="ViewModels\ProductosDisponiblesViewModel.cs" />
@@ -454,9 +454,9 @@
     <Content Include="Templates\css\gestion_usuarios.css" />
     <Content Include="Templates\css\home.css" />
     <Content Include="Templates\css\estilos.css" />
+    <Content Include="Templates\css\insumos.css" />
     <Content Include="Templates\css\menu.css" />
     <Content Include="Templates\css\pedidos.css" />
-    <Content Include="Templates\css\insumos.css" />
     <Content Include="Templates\img\favicon.ico" />
     <Content Include="Templates\img\favicon.png" />
     <Content Include="Templates\img\logo.png" />
@@ -554,13 +554,6 @@
     <Content Include="Views\Registro_Usuarios\editar_usuario.cshtml" />
     <Content Include="Views\Menu\menu.cshtml" />
     <Content Include="Views\Menu\menu_admin.cshtml" />
-    <Content Include="Views\Insumos\costos_recetas.cshtml" />
-    <Content Include="Views\Insumos\empaques_decoraciones.cshtml" />
-    <Content Include="Views\Insumos\implementos.cshtml" />
-    <Content Include="Views\Insumos\materias_primas.cshtml" />
-    <Content Include="Views\Insumos\precio_final.cshtml" />
-    <Content Include="Views\Insumos\productos_preparados.cshtml" />
-    <Content Include="Views\Insumos\suministros.cshtml" />
     <Content Include="Views\Insumos\accion_exitosa.cshtml" />
     <Content Include="Views\Pedidos\Gestionar.cshtml" />
     <Content Include="Views\Pedidos\DetallePedido.cshtml" />
@@ -578,6 +571,13 @@
     <Content Include="Views\Reportes\EmpleadosDisponibles.cshtml" />
     <Content Include="Views\Reportes\ProductosDisponibles.cshtml" />
     <Content Include="Views\Reportes\CostosOperativos.cshtml" />
+    <Content Include="Views\Insumos\costos_recetas.cshtml" />
+    <Content Include="Views\Insumos\empaques_decoraciones.cshtml" />
+    <Content Include="Views\Insumos\implementos.cshtml" />
+    <Content Include="Views\Insumos\materias_primas.cshtml" />
+    <Content Include="Views\Insumos\precios_finales_sugeridos.cshtml" />
+    <Content Include="Views\Insumos\productos_preparados.cshtml" />
+    <Content Include="Views\Insumos\suministros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

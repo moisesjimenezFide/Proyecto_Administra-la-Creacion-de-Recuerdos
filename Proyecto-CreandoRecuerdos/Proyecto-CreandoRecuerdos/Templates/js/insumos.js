@@ -1,24 +1,106 @@
 // =====================
+// CUSTOM DROPDOWNS PARA FORMULARIOS
+// =====================
+
+// Función para convertir dropdowns normales al estilo personalizado
+function convertToCustomDropdown(selectElement) {
+    var $select = $(selectElement);
+    var selectedValue = $select.val();
+    var selectedText = $select.find('option:selected').text();
+
+    // Si no hay valor seleccionado, usar el placeholder
+    if (!selectedValue || selectedValue === '') {
+        selectedText = $select.find('option:first').text();
+    }
+
+    // Crear el HTML del dropdown personalizado
+    var dropdownItems = '';
+    $select.find('option').each(function () {
+        var value = $(this).val();
+        var text = $(this).text();
+        var isSelected = value === selectedValue;
+        var activeClass = isSelected ? 'active' : '';
+
+        dropdownItems += `<div class="custom-select-item ${activeClass}" data-value="${value}">${text}</div>`;
+    });
+
+    var customDropdown = $(`
+        <div class="custom-select">
+            <div class="custom-select-button">${selectedText}</div>
+            <div class="custom-select-menu">
+                ${dropdownItems}
+            </div>
+        </div>
+    `);
+
+    // Insertar el dropdown personalizado después del select original
+    $select.after(customDropdown);
+
+    // Ocultar el select original
+    $select.addClass('custom-hidden');
+
+    return customDropdown;
+}
+
+// Función para actualizar dropdowns cuando se agregan dinámicamente
+function updateCustomDropdowns() {
+    $('.form-control:not(.custom-hidden)').each(function () {
+        if ($(this).is('select') && !$(this).next('.custom-select').length) {
+            convertToCustomDropdown(this);
+        }
+    });
+}
+
+// =====================
 // Materias Primas
 // =====================
 function calcularCamposMateriaPrima() {
     var costo = parseFloat($('#costo').val()) || 0;
-    var cantidad = parseFloat($('#cantidad').val()) || 1;
-    var volumen_de_porcion = parseFloat($('#volumen_de_porcion').val()) || 1;
-    var peso = cantidad * volumen_de_porcion;
-    $('#peso').val(peso.toFixed(2));
+    var cantidad = parseFloat($('#cantidad').val()) || 0;
+    var volumen = parseFloat($('#volumen_de_porcion_de_presentacion').val()) || 0;
+    var unidadPresentacion = ($('#unidad_de_medida_de_presentacion').val() || '').toLowerCase();
+    var unidadPeso = ($('#unidad_de_medida_del_peso').val() || '').toLowerCase();
     var merma = parseFloat($('#merma_total_en_gramos').val()) || 0;
-    var costoPorGramo = (peso > 0) ? (costo / peso) : 0;
-    var porcentajeMerma = (peso > 0) ? (merma / peso) * 100 : 0;
-    var costoMermaTotal = costoPorGramo * merma;
-    var costoTotalMasMerma = costo + costoMermaTotal;
-    var costoPorGramoConMerma = (peso > 0) ? (costoTotalMasMerma / peso) : 0;
 
-    $('#costo_por_gramo').val(costoPorGramo.toFixed(2));
-    $('#porcentaje_de_merma').val(porcentajeMerma.toFixed(2));
-    $('#costo_de_merma_total').val(costoMermaTotal.toFixed(2));
-    $('#costo_total_mas_merma_total').val(costoTotalMasMerma.toFixed(2));
-    $('#costo_por_gramo_con_merma').val(costoPorGramoConMerma.toFixed(2));
+    // --- Volumen de porción convertido ---
+    function esGramos(u) { return ['g', 'gr', 'grs', 'gramo', 'gramos'].includes(u); }
+    function esKilos(u) { return ['kg', 'kilo', 'kilos', 'kilogramo', 'kilogramos'].includes(u); }
+    function esMililitros(u) { return ['ml', 'mililitro', 'mililitros'].includes(u); }
+    function esLitros(u) { return ['l', 'litro', 'litros'].includes(u); }
+
+    var volumenConvertido = 0;
+    var unidadConvertida = unidadPeso;
+    if (esKilos(unidadPresentacion) && esGramos(unidadPeso)) {
+        volumenConvertido = volumen * 1000;
+    } else if (esGramos(unidadPresentacion) && esGramos(unidadPeso)) {
+        volumenConvertido = volumen;
+    } else if (esLitros(unidadPresentacion) && esMililitros(unidadPeso)) {
+        volumenConvertido = volumen * 1000;
+    } else if (esMililitros(unidadPresentacion) && esMililitros(unidadPeso)) {
+        volumenConvertido = volumen;
+    } else {
+        volumenConvertido = 0;
+        unidadConvertida = '';
+    }
+    $('#volumen_de_porcion_convertido').text(volumenConvertido.toFixed(2));
+    $('#unidad_volumen_convertido_span').text(unidadConvertida);
+
+    // --- Resto de cálculos ---
+    $('#unidad_peso_span').text($('#unidad_de_medida_del_peso').val() || '');
+    var peso = (cantidad > 0 && volumen > 0) ? cantidad * volumenConvertido : 0;
+    var divisor = cantidad * volumenConvertido;
+    var costoPorGramo = (cantidad > 0 && volumen > 0 && divisor > 0) ? (costo / divisor) : 0;
+    var porcentajeMerma = (divisor > 0) ? (merma * 100.0 / divisor) : 0;
+    var costoDeMermaTotal = (divisor > 0) ? ((costo / divisor) * merma) : 0;
+    var costoTotalMasMerma = costo + costoDeMermaTotal;
+    var costoPorGramoConMerma = (divisor > 0) ? ((costo + ((costo / divisor) * merma)) / divisor) : 0;
+
+    $('#peso').text(peso.toFixed(2));
+    $('#costo_por_gramo').text(costoPorGramo.toFixed(2));
+    $('#porcentaje_de_merma').text(porcentajeMerma.toFixed(2));
+    $('#costo_de_merma_total').text(costoDeMermaTotal.toFixed(2));
+    $('#costo_total_mas_merma_total').text(costoTotalMasMerma.toFixed(2));
+    $('#costo_por_gramo_con_merma').text(costoPorGramoConMerma.toFixed(2));
 }
 
 // =====================
@@ -26,41 +108,45 @@ function calcularCamposMateriaPrima() {
 // =====================
 function calcularCamposProductoPreparado() {
     var costo = parseFloat($('#costo').val()) || 0;
-    var cantidad = parseInt($('#cantidad').val()) || 1;
-    var porcion = parseFloat($('#volumen_de_porcion').val()) || 1;
-    var peso = cantidad * porcion;
-    $('#peso').val(peso.toFixed(2));
-    var costoPorPeso = (peso > 0) ? (costo / peso) : 0;
-    var costoPorPorcion = (porcion > 0) ? (costo / porcion) : 0;
-    $('#costo_por_peso').text(costoPorPeso.toFixed(2));
-    $('#costo_por_porcion_con_merma').text(costoPorPorcion.toFixed(2));
-}
-
-// =====================
-// Conversión de Volumen de Porción
-// =====================
-function convertirVolumenDePorcion() {
-    var volumen = parseFloat($('#volumen_de_porcion').val()) || 0;
+    var cantidad = parseFloat($('#cantidad').val()) || 0;
+    var volumen = parseFloat($('#volumen_de_porcion_de_presentacion').val()) || 0;
     var unidadPresentacion = ($('#unidad_de_medida_de_presentacion').val() || '').toLowerCase();
-    var unidadPeso = ($('#unidad_medida_del_peso').val() || '').toLowerCase();
-    var volumenConvertido = volumen;
+    var unidadPeso = ($('#unidad_de_medida_del_peso').val() || '').toLowerCase();
 
-    if (unidadPresentacion === "kg" && unidadPeso === "gramos") volumenConvertido = volumen * 1000;
-    else if (unidadPresentacion === "g" && unidadPeso === "gramos") volumenConvertido = volumen;
-    else if (unidadPresentacion === "l" && unidadPeso === "mililitros") volumenConvertido = volumen * 1000;
-    else if (unidadPresentacion === "ml" && unidadPeso === "mililitros") volumenConvertido = volumen;
+    // --- Volumen de porción convertido ---
+    function esGramos(u) { return ['g', 'gr', 'grs', 'gramo', 'gramos'].includes(u); }
+    function esKilos(u) { return ['kg', 'kilo', 'kilos', 'kilogramo', 'kilogramos'].includes(u); }
+    function esMililitros(u) { return ['ml', 'mililitro', 'mililitros'].includes(u); }
+    function esLitros(u) { return ['l', 'litro', 'litros'].includes(u); }
 
-    $('#volumen_de_porcion_convertido').val(volumenConvertido.toFixed(2));
-    $('#unidad_de_medida_convertida').val(unidadPeso);
+    var volumenConvertido = 0;
+    var unidadConvertida = unidadPeso;
+    if (esKilos(unidadPresentacion) && esGramos(unidadPeso)) {
+        volumenConvertido = volumen * 1000;
+    } else if (esGramos(unidadPresentacion) && esGramos(unidadPeso)) {
+        volumenConvertido = volumen;
+    } else if (esLitros(unidadPresentacion) && esMililitros(unidadPeso)) {
+        volumenConvertido = volumen * 1000;
+    } else if (esMililitros(unidadPresentacion) && esMililitros(unidadPeso)) {
+        volumenConvertido = volumen;
+    } else {
+        volumenConvertido = 0;
+        unidadConvertida = '';
+    }
+    $('#volumen_de_porcion_convertido').text(volumenConvertido.toFixed(2));
+    $('#unidad_volumen_convertido_span').text(unidadConvertida);
 
-    // Calcula el peso
-    var cantidad = parseFloat($('#cantidad').val()) || 1;
-    var peso = cantidad * volumenConvertido;
+    // --- Resto de cálculos ---
+    $('#unidad_peso_span').text($('#unidad_de_medida_del_peso').val() || '');
+    var peso = (cantidad > 0 && volumen > 0) ? cantidad * volumenConvertido : 0;
+    var divisor = cantidad * volumenConvertido;
+    var costoPorPeso = (cantidad > 0 && volumen > 0 && divisor > 0) ? (costo / divisor) : 0;
+    var costoPorPorcionConMerma = volumen * costoPorPeso;
+
     $('#peso').text(peso.toFixed(2));
+    $('#costo_por_peso').text(costoPorPeso.toFixed(2));
+    $('#costo_por_porcion_con_merma').text(costoPorPorcionConMerma.toFixed(2));
 }
-
-// Llama a la función en los eventos de cambio
-$('#volumen_de_porcion, #unidad_de_medida_de_presentacion, #unidad_medida_del_peso, #cantidad').on('input', convertirVolumenDePorcion);
 
 // =====================
 // Empaques y Decoraciones
@@ -69,7 +155,7 @@ function mostrarCostoPorCantidadEmpaque() {
     var costo = parseFloat($('#costo').val()) || 0;
     var cantidad = parseFloat($('#cantidad').val()) || 1;
     var resultado = (cantidad > 0) ? (costo / cantidad) : 0;
-    $('#costoPorCantidad').val(resultado.toFixed(4));
+    $('#costoPorCantidad').text(resultado.toFixed(2));
 }
 
 // =====================
@@ -79,7 +165,7 @@ function mostrarCostoPorCantidadImplemento() {
     var costo = parseFloat($('#costo').val()) || 0;
     var cantidad = parseFloat($('#cantidad').val()) || 1;
     var resultado = (cantidad > 0) ? (costo / cantidad) : 0;
-    $('#costoPorCantidad').val(resultado.toFixed(4));
+    $('#costoPorCantidad').text(resultado.toFixed(2));
 }
 
 // =====================
@@ -89,40 +175,50 @@ function mostrarCostoPorCantidadSuministro() {
     var costo = parseFloat($('#costo').val()) || 0;
     var cantidad = parseFloat($('#cantidad').val()) || 1;
     var resultado = (cantidad > 0) ? (costo / cantidad) : 0;
-    $('#costoPorCantidad').val(resultado.toFixed(4));
+    $('#costoPorCantidad').text(resultado.toFixed(2));
 }
 
 // =====================
 // Recetas
 // =====================
-function obtenerCostoPorGramo(nombre) {
+function obtenerCostoPorGramoConMerma(nombre) {
     if (typeof materiasPrimas === "undefined") return 0;
     var found = materiasPrimas.find(x => x.nombre === nombre);
-    return found ? parseFloat(found.costo_por_gramo) : 0;
+    return found ? parseFloat(found.costo_por_gramo_con_merma) : 0;
 }
+
 function obtenerCostoPorPeso(nombre) {
-    if (typeof productosPreparados === "undefined") return 0;
     var found = productosPreparados.find(x => x.nombre === nombre);
     return found ? parseFloat(found.costo_por_peso) : 0;
 }
+
 function calcularCostosReceta() {
     var total = 0;
+
+    // Materias primas
     $('#materias_primas-container .fila-insumo:not(.template-materia_prima)').each(function () {
-        var nombre = $(this).find('select[name="MateriaPrimaSeleccionada"]').val();
-        var cantidad = parseFloat($(this).find('input[name="CantidadMateriaPrima"]').val()) || 0;
-        var costo = obtenerCostoPorGramo(nombre);
+        var idMateriaPrima = $(this).find('select[name*="id_materia_prima_utilizada"]').val();
+        var cantidad = parseFloat($(this).find('input[name*=".cantidad"]').val()) || 0;
+        var nombre = $(this).find('select[name*="id_materia_prima_utilizada"] option:selected').text();
+        var costo = obtenerCostoPorGramoConMerma(nombre);
+        console.log("Materia Prima - ID:", idMateriaPrima, "Cantidad:", cantidad, "Nombre:", nombre, "Costo:", costo);
         total += cantidad * costo;
     });
+
+    // Productos preparados
     $('#productos_preparados-container .fila-insumo:not(.template-producto_preparado)').each(function () {
-        var nombre = $(this).find('select[name="ProductoPreparadoSeleccionado"]').val();
-        var cantidad = parseFloat($(this).find('input[name="CantidadProductoPreparado"]').val()) || 0;
+        var idProductoPreparado = $(this).find('select[name*="id_producto_preparado_utilizado"]').val();
+        var cantidad = parseFloat($(this).find('input[name*=".cantidad"]').val()) || 0;
+        var nombre = $(this).find('select[name*="id_producto_preparado_utilizado"] option:selected').text();
         var costo = obtenerCostoPorPeso(nombre);
+        console.log("Producto Preparado - ID:", idProductoPreparado, "Cantidad:", cantidad, "Nombre:", nombre, "Costo:", costo);
         total += cantidad * costo;
     });
+
     $('#costoTotalReceta').text(total.toFixed(2));
     var porcion = parseFloat($('#porcion').val()) || 0;
     var costoPorPorcion = porcion > 0 ? total / porcion : 0;
-    $('#costoPorPorcion').text(costoPorPorcion.toFixed(4));
+    $('#costoPorPorcion').text(costoPorPorcion.toFixed(2));
 }
 
 // =====================
@@ -157,103 +253,121 @@ function calcularTotalesPorInsumo(container, catalogo) {
 }
 
 function calcularPrecioFinalProductoFinal() {
+    // Costo de la receta
     var nombreReceta = $('#nombre_receta').val();
-    var costoTotalReceta = obtenerCostoReceta(nombreReceta);
+    var receta = recetas.find(x => x.nombre === nombreReceta) || {};
+    var costoReceta = parseFloat(receta.costo_total_receta) || 0;
+    var porcion = parseFloat(receta.porcion) || 1;
 
-    var margen_de_utilidad = parseFloat($('#margen_de_utilidad').val()) || 0;
-    var costoSinUtilidad = costoTotalReceta;
-    var costoConUtilidad = costoTotalReceta / ((100 - margen_de_utilidad) / 100);
+    // Margen de utilidad
+    var margenUtilidad = parseFloat($('#margen_de_utilidad').val()) || 0;
+    var costoSinUtilidad = 100 - margenUtilidad;
+    var costoConUtilidad = costoReceta / (costoSinUtilidad / 100);
 
-    var totalEmpaques = calcularTotalesPorInsumo('#empaques_decoraciones-container', empaques);
-    var totalImplementos = calcularTotalesPorInsumo('#implementos-container', implementos);
-    var totalSuministros = calcularTotalesPorInsumo('#suministros-container', suministros);
+    // Suministros normales y de impresión
+    var suministrosUtilizados = [];
+    $('#suministros-container .fila-insumo:not([style*="display: none"])').each(function () {
+        var id = $(this).find('select').val();
+        var cantidad = parseFloat($(this).find('input[name$=".cantidad"]').val()) || 0;
+        var esImpresion = $(this).find('input[type="checkbox"]').is(':checked');
+        var obj = suministros.find(s => s.id == id) || {};
+        suministrosUtilizados.push({
+            ...obj,
+            cantidad: cantidad,
+            es_impresion_de_facturas: esImpresion,
+            costo_por_cantidad: parseFloat(obj.costo_por_cantidad) || 0
+        });
+    });
 
-    // 1. Costo de impresión de factura por insumo (suministro de impresión láser)
+    var suministrosNormales = suministrosUtilizados.filter(s => !s.es_impresion_de_facturas);
+    var suministroImpresion = suministrosUtilizados.find(s => s.es_impresion_de_facturas);
+
+    var totalSuministros = suministrosNormales.reduce((acc, s) => acc + ((s.costo_por_cantidad || 0) * (s.cantidad || 0)), 0);
+
+    // Costo impresión factura
     var costoImpresionFacturaPorInsumo = 0;
-    var suministroImpresionLaser = $('#suministros-container .fila-insumo:not([style*="display: none"]) input[name$=".costo_por_cantidad"]').first().val();
-    if (suministroImpresionLaser) {
-        costoImpresionFacturaPorInsumo = parseFloat(suministroImpresionLaser) / 20;
+    var costoTotalImpresionFactura = 0;
+    if (suministroImpresion) {
+        costoImpresionFacturaPorInsumo = (suministroImpresion.costo_por_cantidad || 0) / 20;
+        costoTotalImpresionFactura = porcion * costoImpresionFacturaPorInsumo;
     }
 
-    // 2. Costo total de impresión de factura
-    var porcion = parseFloat($('#porcion').val()) || 0;
-    var costoTotalImpresionFactura = porcion * costoImpresionFacturaPorInsumo;
-
-    // 3. Factura
-    var factura = totalImplementos + totalEmpaques + totalSuministros + costoTotalImpresionFactura;
-
-    // 4. Costos por porcentaje de ganancia
-    var costoEmpaqueDecoracionPorPorcentajeDeGanancia = factura * 0.10;
-    var costoImplementoPorPorcentajeDeGanancia = factura * 0.10;
-    var costoSuministroPorPorcentajeDeGanancia = factura * 0.10;
-
-    // 5. Costo total empaque, implemento, suministro
-    var costoTotalEmpaqueDecoracionImplementoSuministro =
-        costoEmpaqueDecoracionPorPorcentajeDeGanancia +
-        costoImplementoPorPorcentajeDeGanancia +
-        costoSuministroPorPorcentajeDeGanancia;
-
-    // 6. Factura por insumo
-    var facturaPorInsumo = 0;
-    $('#implementos-container .fila-insumo:not([style*="display: none"]) input[name$=".costo_por_cantidad"]').each(function () {
-        facturaPorInsumo += parseFloat($(this).val()) || 0;
+    // Empaques y decoraciones
+    var sumaEmpaquesPorCantidad = 0;
+    $('#empaques_decoraciones-container .fila-insumo:not([style*="display: none"])').each(function () {
+        var id = $(this).find('select').val();
+        var cantidad = parseFloat($(this).find('input[name$=".cantidad"]').val()) || 0;
+        var obj = empaques.find(e => e.id == id) || {};
+        sumaEmpaquesPorCantidad += (parseFloat(obj.costo_por_cantidad) || 0) * cantidad;
     });
-    $('#empaques_decoraciones-container .fila-insumo:not([style*="display: none"]) input[name$=".costo_por_cantidad"]').each(function () {
-        facturaPorInsumo += parseFloat($(this).val()) || 0;
-    });
-    $('#suministros-container .fila-insumo:not([style*="display: none"]) input[name$=".costo_por_cantidad"]').each(function () {
-        facturaPorInsumo += parseFloat($(this).val()) || 0;
-    });
-    facturaPorInsumo += costoImpresionFacturaPorInsumo;
 
-    // 7. Base para impuestos
-    var baseImpuestos = costoConUtilidad + costoEmpaqueDecoracionPorPorcentajeDeGanancia + costoImplementoPorPorcentajeDeGanancia + costoSuministroPorPorcentajeDeGanancia;
-    var iva = baseImpuestos * 0.13;
-    var servicio = baseImpuestos * 0.10;
+    // Implementos
+    var sumaImplementosPorCantidad = 0;
+    $('#implementos-container .fila-insumo:not([style*="display: none"])').each(function () {
+        var id = $(this).find('select').val();
+        var cantidad = parseFloat($(this).find('input[name$=".cantidad"]').val()) || 0;
+        var obj = implementos.find(i => i.id == id) || {};
+        sumaImplementosPorCantidad += (parseFloat(obj.costo_por_cantidad) || 0) * cantidad;
+    });
 
-    // 8. Envío
+    // Suministros normales (ya calculado arriba)
+    var sumaSuministrosPorCantidad = totalSuministros;
+
+    var costoTotalInsumos = sumaEmpaquesPorCantidad + sumaImplementosPorCantidad + sumaSuministrosPorCantidad; // NUEVO
+
+    // Factura por insumo y factura total
+    var facturaPorInsumo = costoTotalInsumos + costoImpresionFacturaPorInsumo;
+    var facturaTotal = costoTotalInsumos + costoTotalImpresionFactura;
+
+    // Total insumos con ganancia
+    var totalInsumosConGanancia = facturaTotal * 1.10;
+
+    // IVA y Servicio
+    var ivaPorcentaje = parseFloat($('#iva_porcentaje').val()) || 0;
+    var servicioPorcentaje = parseFloat($('#servicio_porcentaje').val()) || 0;
+    var baseImpuestos = costoConUtilidad + totalInsumosConGanancia;
+    var iva = baseImpuestos * (ivaPorcentaje / 100);
+    var servicio = baseImpuestos * (servicioPorcentaje / 100);
+
+    // Envío
     var plataforma = $('#plataforma_de_envio').val();
-    var porcentajeEnvio = 0;
+    var envio = 0;
     switch (plataforma) {
         case "PedidosYa (25%)":
         case "Rappi (25%)":
-            porcentajeEnvio = 0.25;
+            envio = baseImpuestos * 0.25;
             break;
         case "DidiFood (30%)":
-            porcentajeEnvio = 0.30;
+            envio = baseImpuestos * 0.30;
             break;
         case "UberEats (40%)":
-            porcentajeEnvio = 0.40;
+            envio = baseImpuestos * 0.40;
             break;
-        case "Propio (0%)":
         default:
-            porcentajeEnvio = 0.0;
+            envio = 0;
             break;
     }
-    var envio = baseImpuestos * porcentajeEnvio;
 
-    // 9. Precio final sugerido
+    // Precio final sugerido
     var precioFinal = baseImpuestos + iva + servicio + envio;
 
     // Mostrar resultados en la vista
-    $('#costo_total_receta').val(costoTotalReceta.toFixed(2));
-    $('#costo_sin_margen_de_utilidad').val(costoSinUtilidad.toFixed(2));
-    $('#costo_con_margen_de_utilidad').val(costoConUtilidad.toFixed(2));
-    $('#costo_empaque_decoracion_utilizado').val(totalEmpaques.toFixed(2));
-    $('#costo_implemento_utilizado').val(totalImplementos.toFixed(2));
-    $('#costo_suministro_utilizado').val(totalSuministros.toFixed(2));
-    $('#costo_de_impresion_de_factura_por_insumo').val(costoImpresionFacturaPorInsumo.toFixed(2));
-    $('#costo_total_de_impresion_de_factura').val(costoTotalImpresionFactura.toFixed(2));
-    $('#factura').val(factura.toFixed(2));
-    $('#costo_empaque_decoracion_por_porcentaje_de_ganancia').val(costoEmpaqueDecoracionPorPorcentajeDeGanancia.toFixed(2));
-    $('#costo_implemento_por_porcentaje_de_ganancia').val(costoImplementoPorPorcentajeDeGanancia.toFixed(2));
-    $('#costo_suministro_por_porcentaje_de_ganancia').val(costoSuministroPorPorcentajeDeGanancia.toFixed(2));
-    $('#costo_total_empaque_decoracion_implemento_suministro').val(costoTotalEmpaqueDecoracionImplementoSuministro.toFixed(2));
-    $('#factura_por_insumo').val(facturaPorInsumo.toFixed(2));
-    $('#iva').val(iva.toFixed(2));
-    $('#impuesto_de_servicio').val(servicio.toFixed(2));
-    $('#envio').val(envio.toFixed(2));
-    $('#precio_final_sugerido').val(precioFinal.toFixed(2));
+    $('#costo_total_receta').text(costoReceta.toFixed(2));
+    $('#costo_sin_margen_de_utilidad').text(costoSinUtilidad.toFixed(2));
+    $('#costo_con_margen_de_utilidad').text(costoConUtilidad.toFixed(2));
+    $('#costo_empaque_decoracion_utilizado').text(sumaEmpaquesPorCantidad.toFixed(2));
+    $('#costo_implemento_utilizado').text(sumaImplementosPorCantidad.toFixed(2));
+    $('#costo_suministro_utilizado').text(sumaSuministrosPorCantidad.toFixed(2));
+    $('#costo_total_insumos').text(costoTotalInsumos.toFixed(2));
+    $('#costo_de_impresion_de_factura_por_insumo').text(costoImpresionFacturaPorInsumo.toFixed(2));
+    $('#costo_total_de_impresion_de_factura').text(costoTotalImpresionFactura.toFixed(2));
+    $('#factura_por_insumo').text(facturaPorInsumo.toFixed(2));
+    $('#factura_total').text(facturaTotal.toFixed(2));
+    $('#costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia').val(totalInsumosConGanancia.toFixed(2));
+    $('#iva').text(iva.toFixed(2));
+    $('#impuesto_de_servicio').text(servicio.toFixed(2));
+    $('#envio').text(envio.toFixed(2));
+    $('#precio_final_sugerido').text(precioFinal.toFixed(2));
 }
 
 // =====================
@@ -303,56 +417,92 @@ function eliminarFila(boton) {
 // Inicialización por vista
 // =====================
 $(document).ready(function () {
-    // Materias Primas
-    if ($('#costo_por_gramo').length) {
-        $('#costo, #peso, #merma_total_en_gramos').on('input', calcularCamposMateriaPrima);
-        $('form').on('submit', validarMateriaPrimaForm);
-        calcularCamposMateriaPrima();
-    }
 
-    // Productos Preparados
-    if ($('#costo_por_peso').length) {
-        $('#costo, #peso, #volumen_de_porcion').on('input', calcularCamposProductoPreparado);
-        $('form').on('submit', validarProductoPreparadoForm);
-        calcularCamposProductoPreparado();
-    }
+    // Convertir todos los dropdowns con clase form-control al cargar la página
+    $('.form-control').each(function () {
+        if ($(this).is('select')) {
+            convertToCustomDropdown(this);
+        }
+    });
 
-    // Empaques y Decoraciones
-    if ($('#costoPorCantidad').length && $('body').text().includes('Empaques y/o Decoraciones')) {
-        $('#costo, #cantidad').on('input', mostrarCostoPorCantidadEmpaque);
-        $('form').on('submit', validarEmpaqueDecoracionForm);
-        mostrarCostoPorCantidadEmpaque();
-    }
+    // Manejar clicks en el botón del dropdown de formularios
+    $(document).on('click', '.custom-select-button', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-    // Implementos
-    if ($('#costoPorCantidad').length && $('body').text().includes('Implementos')) {
-        $('#costo, #cantidad').on('input', mostrarCostoPorCantidadImplemento);
-        $('form').on('submit', validarImplementoForm);
-        mostrarCostoPorCantidadImplemento();
-    }
+        // Cerrar otros dropdowns abiertos
+        $('.custom-select-menu').not($(this).siblings('.custom-select-menu')).removeClass('show');
+        $('.custom-dropdown-menu').removeClass('show'); // También cerrar dropdowns de DataTable
 
-    // Suministros
-    if ($('#costoPorCantidad').length && $('body').text().includes('Suministros')) {
-        $('#costo, #cantidad').on('input', mostrarCostoPorCantidadSuministro);
-        $('form').on('submit', validarSuministroForm);
-        mostrarCostoPorCantidadSuministro();
-    }
+        // Toggle del dropdown actual
+        var $menu = $(this).siblings('.custom-select-menu');
+        $menu.toggleClass('show');
+    });
 
-    // Recetas
-    if ($('#costoTotalReceta').length) {
-        $(document).on('input change', '#materias_primas-container input, #materias_primas-container select, #productos_preparados-container input, #productos_preparados-container select, #porcion', calcularCostosReceta);
-        calcularCostosReceta();
-    }
+    // Manejar selección de items en formularios
+    $(document).on('click', '.custom-select-item', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-    // Productos Finales (precio_final)
-    if ($('#precio_final_sugerido').length) {
-        $(document).on('change', '#nombre_receta', calcularPrecioFinalProductoFinal);
-        $(document).on('input', '#margen_de_utilidad', calcularPrecioFinalProductoFinal);
-        $(document).on('input change', '#empaques_decoraciones-container input, #empaques_decoraciones-container select', calcularPrecioFinalProductoFinal);
-        $(document).on('input change', '#implementos-container input, #implementos-container select', calcularPrecioFinalProductoFinal);
-        $(document).on('input change', '#suministros-container input, #suministros-container select', calcularPrecioFinalProductoFinal);
-        calcularPrecioFinalProductoFinal();
-    }
+        var value = $(this).data('value');
+        var text = $(this).text();
+        var $dropdown = $(this).closest('.custom-select');
+        var $button = $dropdown.find('.custom-select-button');
+        var $menu = $dropdown.find('.custom-select-menu');
+        var $originalSelect = $dropdown.prev('select.custom-hidden');
+
+        // Actualizar el texto del botón
+        $button.text(text);
+
+        // Actualizar estados activos
+        $menu.find('.custom-select-item').removeClass('active');
+        $(this).addClass('active');
+
+        // Actualizar el select original
+        $originalSelect.val(value).trigger('change');
+
+        // Cerrar el dropdown
+        $menu.removeClass('show');
+    });
+
+    // Cerrar dropdowns al hacer click fuera
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.custom-select, .custom-length-dropdown').length) {
+            $('.custom-select-menu').removeClass('show');
+            $('.custom-dropdown-menu').removeClass('show');
+        }
+    });
+
+    // Prevenir menús contextuales en los dropdowns personalizados
+    $(document).on('contextmenu selectstart dragstart', '.custom-select, .custom-select-button, .custom-select-item', function (e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Observar cambios en el DOM para dropdowns agregados dinámicamente
+    var observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(function (node) {
+                    if (node.nodeType === 1) { // Element node
+                        var $node = $(node);
+                        // Buscar selects en el nodo agregado
+                        $node.find('select.form-control').each(function () {
+                            if (!$(this).hasClass('custom-hidden')) {
+                                convertToCustomDropdown(this);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Iniciar observación
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 
     // Botón eliminar con confirmación (Swal)
     $(document).on('click', '.btn-eliminar', function (e) {
@@ -373,4 +523,180 @@ $(document).ready(function () {
             }
         });
     });
+
+    // =====================
+    // DataTables y Exportaciones para todas las tablas de insumos
+    // =====================
+    if ($('#tabla_insumos').length) {
+        const totalFilas = $('#tabla_insumos tbody tr').length;
+
+        // Opciones de cantidad
+        let opciones = [];
+        for (let i = 5; i <= totalFilas; i += 5) {
+            opciones.push(i);
+        }
+        const ultimoMultiplo = Math.floor(totalFilas / 5) * 5;
+        const siguienteValor = totalFilas !== ultimoMultiplo ? totalFilas - 1 : null;
+        if (siguienteValor && !opciones.includes(siguienteValor)) {
+            opciones.push(siguienteValor);
+        }
+        opciones.sort((a, b) => a - b);
+        const valoresNumericos = [...opciones, -1];
+        const valoresVisibles = [...opciones.map(n => n.toString()), "Todos"];
+
+        var table = $('#tabla_insumos').DataTable({
+            pageLength: 3,
+            searching: false,
+            pagingType: "full_numbers",
+            lengthMenu: [valoresNumericos, valoresVisibles],
+            dom: "<'dt-buttons mb-2'B><'d-flex justify-content-between align-items-center mb-3'<'dt-length'l><'dataTables_filter'f>>rtip",
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: 'Copiar',
+                    className: 'btn btn-custom-pink btn-sm'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: 'Exportar a Excel',
+                    className: 'btn btn-custom-pink btn-sm'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: 'Exportar a PDF',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    className: 'btn btn-custom-pink btn-sm'
+                },
+                {
+                    extend: 'print',
+                    text: 'Imprimir',
+                    className: 'btn btn-custom-pink btn-sm'
+                }
+            ],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                infoEmpty: "No hay registros disponibles",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                paginate: {
+                    first: "Primer página",
+                    last: "Última página",
+                    previous: false,
+                    next: false,
+                }
+            }
+        });
+
+        // Dropdown personalizado para la cantidad de registros por página 
+        setTimeout(function () {
+            createCustomLengthDropdown();
+        }, 100);
+
+        function createCustomLengthDropdown() {
+            var lengthContainer = $('.dataTables_length');
+            var originalSelect = lengthContainer.find('select');
+
+            // Crear HTML del dropdown personalizado para la cantidad de registros por página
+            var dropdownItems = '';
+            for (let i = 0; i < valoresNumericos.length; i++) {
+                const value = valoresNumericos[i];
+                const text = valoresVisibles[i];
+                const activeClass = value === 3 ? 'active' : '';
+                dropdownItems += `<div class="custom-dropdown-item ${activeClass}" data-value="${value}">${text}</div>`;
+            }
+
+            var customDropdown = $(`
+                <div class="custom-length-dropdown">
+                    <div class="custom-dropdown-button" id="lengthDropdownBtn">3</div>
+                    <div class="custom-dropdown-menu" id="lengthDropdownMenu">
+                        ${dropdownItems}
+                    </div>
+                </div>
+            `);
+
+            // Reemplazar el select por el dropdown personalizado para la cantidad de registros por página
+            originalSelect.after(customDropdown);
+
+            // Actualizar el texto del label
+            var label = lengthContainer.find('label');
+            label.contents().filter(function () {
+                return this.nodeType === 3;
+            }).remove();
+            label.prepend('Mostrar ');
+            label.append(' registros por página');
+        }
+
+        // Eventos para el dropdown personalizado para la cantidad de registros por página
+        $(document).on('click', '.custom-dropdown-button', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $('.custom-dropdown-menu').toggleClass('show');
+        });
+
+        $(document).on('click', '.custom-dropdown-item', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var value = $(this).data('value');
+            var text = $(this).text();
+
+            $('.custom-dropdown-button').text(text);
+            $('.custom-dropdown-item').removeClass('active');
+            $(this).addClass('active');
+            $('.custom-dropdown-menu').removeClass('show');
+            table.page.len(value).draw();
+        });
+
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('.custom-length-dropdown').length) {
+                $('.custom-dropdown-menu').removeClass('show');
+            }
+        });
+
+        $(document).on('contextmenu selectstart dragstart', '.custom-length-dropdown, .custom-dropdown-button, .custom-dropdown-item', function (e) {
+            e.preventDefault();
+            return false;
+        });
+    }
+
+    // Materias Primas
+    $('#cantidad, #volumen_de_porcion_de_presentacion, #unidad_de_medida_de_presentacion, #costo, #unidad_de_medida_del_peso, #merma_total_en_gramos')
+        .on('input change', calcularCamposMateriaPrima);
+    calcularCamposMateriaPrima();
+
+    // Productos Preparados
+    $('#cantidad, #volumen_de_porcion_de_presentacion, #unidad_de_medida_de_presentacion, #costo, #unidad_de_medida_del_peso')
+        .on('input change', calcularCamposProductoPreparado);
+    calcularCamposProductoPreparado();
+
+    // Empaques y Decoraciones
+    $('#costo, #cantidad').on('input change', mostrarCostoPorCantidadEmpaque);
+    mostrarCostoPorCantidadEmpaque();
+
+    // Implementos
+    $('#costo, #cantidad').on('input change', mostrarCostoPorCantidadImplemento);
+    mostrarCostoPorCantidadImplemento();
+
+    // Suministros
+    $('#costo, #cantidad').on('input change', mostrarCostoPorCantidadSuministro);
+    mostrarCostoPorCantidadSuministro();
+
+    // Recetas
+    // Delegar eventos a los inputs y selects internos de materias primas y productos preparados
+    $('#materias_primas-container').on('input change', 'input[name*=".cantidad"]', calcularCostosReceta);
+    $('#materias_primas-container').on('change', 'select[name*="id_materia_prima_utilizada"]', calcularCostosReceta);
+
+    $('#productos_preparados-container').on('input change', 'input[name*=".cantidad"]', calcularCostosReceta);
+    $('#productos_preparados-container').on('change', 'select[name*="id_producto_preparado_utilizada"]', calcularCostosReceta);
+
+    $('#porcion').on('input change', calcularCostosReceta);
+
+    calcularCostosReceta();
+
+    // Precio Final Sugerido
+    $('#nombre_receta, #margen_de_utilidad, #plataforma_de_envio, #iva_porcentaje, #servicio_porcentaje, #empaques_decoraciones-container, #implementos-container, #suministros-container')
+        .on('input change', calcularPrecioFinalProductoFinal);
+    calcularPrecioFinalProductoFinal();
 });

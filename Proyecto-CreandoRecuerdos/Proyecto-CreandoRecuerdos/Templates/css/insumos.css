@@ -41,3 +41,285 @@
         background-color: #d66da3;
         color: white;
     }
+
+.input-group-text {
+    background-color: white;
+    border-color: #ced4da;
+}
+
+
+/* Botones de exportación */
+.dt-buttons {
+    text-align: left;
+}
+
+.d-flex > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dt-length {
+    margin-left: auto;
+}
+
+/* Espaciado entre botones de exportación */
+div.dt-buttons {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Estilos personalizados para DataTables */
+
+.dataTables_wrapper .pagination .page-item.active .page-link {
+    background-color: #E27AB0 !important;
+    border-color: #E27AB0 !important;
+    color: #FFFFFF !important;
+}
+
+.dataTables_wrapper .pagination .page-item .page-link {
+    color: #E27AB0 !important;
+    border-color: #E27AB0 !important;
+}
+
+    .dataTables_wrapper .pagination .page-item .page-link:hover {
+        background-color: #F8E5ED !important;
+        color: #E27AB0 !important;
+        border-color: #E27AB0 !important;
+    }
+
+.dataTables_wrapper .pagination .page-link {
+    border: none !important;
+}
+
+.dataTables_wrapper .pagination .page-item.active .page-link:focus {
+    box-shadow: none !important;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    display: none !important;
+}
+
+.dataTables_filter {
+    margin-left: 0;
+}
+
+/* Estilos personalizados para el dropdown de menú de longitud (LengthMenu) del DataTable */
+
+.custom-length-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-dropdown-button {
+    border: 2px solid #E9ECEF;
+    border-radius: 8px;
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    background-color: #F8F9FA;
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+    cursor: pointer;
+    position: relative;
+    min-width: 80px;
+    text-align: left;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+    .custom-dropdown-button:after {
+        content: '▼';
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 10px;
+        color: #495057;
+    }
+
+    .custom-dropdown-button:hover {
+        border-color: #E27AB0;
+        box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
+    }
+
+.custom-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #E27AB0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+    .custom-dropdown-menu.show {
+        display: block;
+    }
+
+.custom-dropdown-item {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #495057;
+    border-bottom: 1px solid #F8F9FA;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+    .custom-dropdown-item:last-child {
+        border-bottom: none;
+    }
+
+    .custom-dropdown-item:hover {
+        background-color: #F8E5ED;
+        color: #E27AB0;
+    }
+
+    .custom-dropdown-item.active {
+        background-color: #E27AB0;
+        color: white;
+    }
+
+/* Estilos personalizados para dropdowns de formularios de costos_recetas.cshtml y precio_final_sugerido */
+
+.custom-select {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+    .custom-select .custom-select-button {
+        border: 2px solid #E9ECEF;
+        border-radius: 8px;
+        padding: 0.5rem 2rem 0.5rem 1rem;
+        background-color: #F8F9FA;
+        font-size: 14px;
+        font-weight: 500;
+        color: #495057;
+        cursor: pointer;
+        position: relative;
+        min-width: 80px;
+        width: 100%;
+        text-align: left;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+        .custom-select .custom-select-button:after {
+            content: '▼';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: #495057;
+        }
+
+        .custom-select .custom-select-button:hover {
+            border-color: #E27AB0;
+            box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
+        }
+
+    .custom-select .custom-select-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 2px solid #E27AB0;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 1000;
+        display: none;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+        .custom-select .custom-select-menu.show {
+            display: block;
+        }
+
+    .custom-select .custom-select-item {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: #495057;
+        border-bottom: 1px solid #F8F9FA;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+        .custom-select .custom-select-item:last-child {
+            border-bottom: none;
+        }
+
+        .custom-select .custom-select-item:hover {
+            background-color: #F8E5ED;
+            color: #E27AB0;
+        }
+
+        .custom-select .custom-select-item.active {
+            background-color: #E27AB0;
+            color: white;
+        }
+
+/* Ocultar los selects originales */
+.form-control.custom-hidden {
+    display: none !important;
+}
+
+/* Estilos para los inputs con símbolos a la izquierda y derecha */
+.input-symbol-left {
+    color: #495057;
+    font-size: 1rem;
+    margin-right: 0.5em;
+    position: static;
+}
+
+.result-symbol {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+}
+
+.form-result {
+    background: transparent;
+    border: none;
+    min-width: 2.5em;
+    text-align: right;
+    font-size: 1rem;
+    margin-right: 0.25em;
+    margin-left: 0.25em;
+    padding: 0;
+    line-height: 38px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.input-symbol-right {
+    color: #495057;
+    font-size: 1rem;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+    position: static;
+}

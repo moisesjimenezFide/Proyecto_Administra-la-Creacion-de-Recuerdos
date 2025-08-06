@@ -212,32 +212,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tabla_precios_finales_sugeridos">
-      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_precios_finales_sugeridos">
-        <MappingFragment StoreEntitySet="tabla_precios_finales_sugeridos">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="id_receta" ColumnName="id_receta" />
-          <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
-          <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
-          <ScalarProperty Name="margen_de_utilidad" ColumnName="margen_de_utilidad" />
-          <ScalarProperty Name="costo_sin_margen_de_utilidad" ColumnName="costo_sin_margen_de_utilidad" />
-          <ScalarProperty Name="costo_con_margen_de_utilidad" ColumnName="costo_con_margen_de_utilidad" />
-          <ScalarProperty Name="costo_empaque_decoracion_utilizado" ColumnName="costo_empaque_decoracion_utilizado" />
-          <ScalarProperty Name="costo_implemento_utilizado" ColumnName="costo_implemento_utilizado" />
-          <ScalarProperty Name="costo_suministro_utilizado" ColumnName="costo_suministro_utilizado" />
-          <ScalarProperty Name="iva" ColumnName="iva" />
-          <ScalarProperty Name="impuesto_de_servicio" ColumnName="impuesto_de_servicio" />
-          <ScalarProperty Name="envio" ColumnName="envio" />
-          <ScalarProperty Name="plataforma_de_envio" ColumnName="plataforma_de_envio" />
-          <ScalarProperty Name="precio_final_sugerido" ColumnName="precio_final_sugerido" />
-          <ScalarProperty Name="costo_de_impresion_de_factura_por_insumo" ColumnName="costo_de_impresion_de_factura_por_insumo" />
-          <ScalarProperty Name="costo_total_de_impresion_de_factura" ColumnName="costo_total_de_impresion_de_factura" />
-          <ScalarProperty Name="factura_total" ColumnName="factura_total" />
-          <ScalarProperty Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" ColumnName="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" />
-          <ScalarProperty Name="factura_por_insumo" ColumnName="factura_por_insumo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tabla_productos">
       <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_productos">
         <MappingFragment StoreEntitySet="tabla_productos">
@@ -650,5 +624,32 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="tabla_precios_finales_sugeridos">
+      <EntityTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.tabla_precios_finales_sugeridos">
+        <MappingFragment StoreEntitySet="tabla_precios_finales_sugeridos">
+          <ScalarProperty Name="costo_total_insumos" ColumnName="costo_total_insumos" />
+          <ScalarProperty Name="factura_por_insumo" ColumnName="factura_por_insumo" />
+          <ScalarProperty Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" ColumnName="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" />
+          <ScalarProperty Name="factura_total" ColumnName="factura_total" />
+          <ScalarProperty Name="costo_total_de_impresion_de_factura" ColumnName="costo_total_de_impresion_de_factura" />
+          <ScalarProperty Name="costo_de_impresion_de_factura_por_insumo" ColumnName="costo_de_impresion_de_factura_por_insumo" />
+          <ScalarProperty Name="precio_final_sugerido" ColumnName="precio_final_sugerido" />
+          <ScalarProperty Name="plataforma_de_envio" ColumnName="plataforma_de_envio" />
+          <ScalarProperty Name="envio" ColumnName="envio" />
+          <ScalarProperty Name="impuesto_de_servicio" ColumnName="impuesto_de_servicio" />
+          <ScalarProperty Name="iva" ColumnName="iva" />
+          <ScalarProperty Name="costo_suministro_utilizado" ColumnName="costo_suministro_utilizado" />
+          <ScalarProperty Name="costo_implemento_utilizado" ColumnName="costo_implemento_utilizado" />
+          <ScalarProperty Name="costo_empaque_decoracion_utilizado" ColumnName="costo_empaque_decoracion_utilizado" />
+          <ScalarProperty Name="costo_con_margen_de_utilidad" ColumnName="costo_con_margen_de_utilidad" />
+          <ScalarProperty Name="costo_sin_margen_de_utilidad" ColumnName="costo_sin_margen_de_utilidad" />
+          <ScalarProperty Name="margen_de_utilidad" ColumnName="margen_de_utilidad" />
+          <ScalarProperty Name="costo_total_receta" ColumnName="costo_total_receta" />
+          <ScalarProperty Name="nombre_receta" ColumnName="nombre_receta" />
+          <ScalarProperty Name="id_receta" ColumnName="id_receta" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

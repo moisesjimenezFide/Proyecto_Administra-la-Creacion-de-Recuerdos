@@ -12,6 +12,8 @@
 
 @section Styles {
     <link href="~/Templates/css/insumos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
 }
 
 <div class="container my-5 text-center">
@@ -43,7 +45,7 @@
 
         if (ViewBag.Errores != null)
         {
-            @:<script>
+            @: <script>
            @:     $(function () {
            @:         Swal.fire({
            @:             icon: 'error',
@@ -78,7 +80,10 @@
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? implementoEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />
+            <div class="input-group">
+                <span class="input-group-text">₡</span>
+                <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? implementoEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />
+            </div>
         </div>
 
         <div class="mb-3 text-start">
@@ -89,6 +94,14 @@
         <div class="mb-3 text-start">
             <label for="unidad_de_medida" class="form-label">Unidad de Medida</label>
             <input type="text" name="unidad_de_medida" id="unidad_de_medida" class="form-control" value="@(editando ? implementoEditado.unidad_de_medida : "")" />
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo por Cantidad (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costoPorCantidad" class="form-result">0.00</label>
+            </div>
         </div>
 
         <div class="d-flex justify-content-end gap-2">
@@ -121,7 +134,7 @@
     else
     {
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sm text-center">
+            <table id="tabla_insumos" class="table table-bordered table-striped table-sm text-center">
                 <thead>
                     <tr>
                         <td>ID</td>

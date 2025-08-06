@@ -224,6 +224,7 @@
           <Property Name="factura_total" Type="decimal" Precision="18" Scale="2" />
           <Property Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
           <Property Name="factura_por_insumo" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="costo_total_insumos" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tabla_productos">
           <Key>
@@ -1276,6 +1277,7 @@
           <Property Name="factura_total" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="factura_por_insumo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="costo_total_insumos" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="precios_empaques_decoraciones_utilizados" Relationship="Self.FK__precios_e__id_pr__06CD04F7" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_empaques_decoraciones_utilizados" />
           <NavigationProperty Name="precios_implementos_utilizados" Relationship="Self.FK__precios_i__id_pr__08B54D69" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_implementos_utilizados" />
           <NavigationProperty Name="precios_suministros_utilizados" Relationship="Self.FK__precios_s__id_pr__09A971A2" FromRole="tabla_precios_finales_sugeridos" ToRole="precios_suministros_utilizados" />
@@ -2506,6 +2508,7 @@
                 <ScalarProperty Name="factura_total" ColumnName="factura_total" />
                 <ScalarProperty Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" ColumnName="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" />
                 <ScalarProperty Name="factura_por_insumo" ColumnName="factura_por_insumo" />
+                <ScalarProperty Name="costo_total_insumos" ColumnName="costo_total_insumos" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

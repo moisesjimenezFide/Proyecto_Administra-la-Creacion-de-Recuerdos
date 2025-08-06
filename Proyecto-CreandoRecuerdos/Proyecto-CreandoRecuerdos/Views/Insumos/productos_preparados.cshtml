@@ -12,6 +12,8 @@
 
 @section Styles {
     <link href="~/Templates/css/insumos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
 }
 
 <div class="container my-5 text-center">
@@ -42,7 +44,7 @@
 
         if (ViewBag.Errores != null)
         {
-            @:<script>
+            @: <script>
            @:     $(function () {
            @:         Swal.fire({
            @:             icon: 'error',
@@ -97,12 +99,47 @@
 
         <div class="mb-3 text-start">
             <label for="costo" class="form-label">Costo</label>
-            <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? productoPreparadoEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />
+            <div class="input-group">
+                <span class="input-group-text">₡</span>
+                <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? productoPreparadoEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />
+            </div>
         </div>
 
         <div class="mb-3 text-start">
             <label for="unidad_de_medida_del_peso" class="form-label">Unidad de Medida del peso</label>
             <input type="text" name="unidad_de_medida_del_peso" id="unidad_de_medida_del_peso" class="form-control" value="@(editando ? productoPreparadoEditado.unidad_de_medida_del_peso : "")" />
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Volumen de Porción Convertido:</label>
+            <div class="result-symbol">
+                <label id="volumen_de_porcion_convertido" class="form-result">0.00</label>
+                <span class="input-symbol-right" id="unidad_volumen_convertido_span"></span>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Peso Total:</label>
+            <div class="result-symbol">
+                <label id="peso" class="form-result">0.00</label>
+                <span class="input-symbol-right" id="unidad_peso_span"></span>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo por Peso (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_por_peso" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo por Porción con Merma (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_por_porcion_con_merma" class="form-result">0.00</label>
+            </div>
         </div>
 
         <div class="d-flex justify-content-end gap-2">
@@ -135,7 +172,7 @@
     else
     {
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sm text-center">
+            <table id="tabla_insumos" class="table table-bordered table-striped table-sm text-center">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -172,19 +209,14 @@
                                 ? producto_preparado.volumen_de_porcion_de_presentacion.Value.ToString("N2"): "")
                             </td>
                             <td>@producto_preparado.unidad_de_medida_de_presentacion</td>
-                            <td>@(producto_preparado.volumen_de_porcion_convertido.HasValue ? producto_preparado.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td><td>@producto_preparado.unidad_de_medida_convertida</td>
+                            <td>@(producto_preparado.volumen_de_porcion_convertido.HasValue ? producto_preparado.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td>
+                            <td>@producto_preparado.unidad_de_medida_convertida</td>
                             <td>@producto_preparado.proveedor</td>
                             <td>₡@(producto_preparado.costo.ToString("N2"))</td>
                             <td>@(producto_preparado.cantidad * producto_preparado.volumen_de_porcion_convertido)</td>
                             <td>@producto_preparado.unidad_de_medida_del_peso</td>
-                            <td>
-                                @(producto_preparado.costo_por_peso.HasValue
-                                ? "₡" + producto_preparado.costo_por_peso.Value.ToString("N2"): "")
-                            </td>
-                            <td>
-                                @(producto_preparado.costo_por_porcion_con_merma.HasValue
-                                ? "₡" + producto_preparado.costo_por_porcion_con_merma.Value.ToString("N2"): "")
-                            </td>
+                            <td>@(producto_preparado.costo_por_peso.HasValue ? "₡" + producto_preparado.costo_por_peso.Value.ToString("N2"): "")</td>
+                            <td>@(producto_preparado.costo_por_porcion_con_merma.HasValue ? "₡" + producto_preparado.costo_por_porcion_con_merma.Value.ToString("N2"): "")</td>
                             <td>
                                 <a href="@Url.Action("EditarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
                                 <a href="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })"></a>
@@ -200,4 +232,18 @@
 @section Scripts {
     <script src="~/Templates/js/insumos.js"></script>
     @Html.Partial("accion_exitosa")
+
+    <!-- DataTables-->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Botones de exportación -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
 }

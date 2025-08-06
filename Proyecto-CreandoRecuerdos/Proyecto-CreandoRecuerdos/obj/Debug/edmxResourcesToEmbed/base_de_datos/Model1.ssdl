@@ -219,6 +219,7 @@
     <Property Name="factura_total" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
     <Property Name="factura_por_insumo" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="costo_total_insumos" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="tabla_productos">
     <Key>

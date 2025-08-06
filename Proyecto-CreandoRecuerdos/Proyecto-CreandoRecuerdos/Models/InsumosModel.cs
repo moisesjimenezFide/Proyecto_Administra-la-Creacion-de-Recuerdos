@@ -18,7 +18,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public Suministro SuministroEditado { get; set; }
         public Receta RecetaEditada { get; set; }
         public ProductoFinal ProductoFinalEditado { get; set; }
-
+        public Receta RecetaSeleccionada { get; set; }
     }
 
     public class MateriaPrima
@@ -151,6 +151,7 @@ namespace Proyecto_CreandoRecuerdos.Models
         public decimal costo_empaque_decoracion_utilizado { get; set; }
         public decimal costo_implemento_utilizado { get; set; }
         public decimal costo_suministro_utilizado { get; set; }
+        public decimal costo_total_insumos { get; set; }
         public decimal iva { get; set; }
         public decimal impuesto_de_servicio { get; set; }
         public decimal envio { get; set; }

@@ -12,16 +12,8 @@
 
 @section Styles {
     <link href="~/Templates/css/insumos.css" rel="stylesheet" />
-    <style>
-        .select-scroll-horizontal-vertical {
-            overflow-x: auto;
-            overflow-y: auto;
-            white-space: nowrap;
-            display: block;
-            min-width: 100%;
-            max-width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
 }
 
 <div class="container my-5 text-center">
@@ -98,7 +90,7 @@
                                     materia_prima.id_materia_prima_utilizada
                                 ),
                                 "Seleccione una materia prima",
-                                new { @class = "form-control select-scroll-horizontal-vertical" }
+                                new { @class = "form-control" }
                             )
                         </div>
 
@@ -131,7 +123,7 @@
                         "MateriasPrimasUtilizadas[__index__].id_materia_prima_utilizada",
                         ViewBag.MateriasPrimas as SelectList,
                         "Seleccione una materia prima",
-                        new { @class = "form-control select-scroll-horizontal-vertical" }
+                        new { @class = "form-control" }
                     )
                 </div>
 
@@ -179,7 +171,7 @@
                                     producto_preparado.id_producto_preparado_utilizado
                                 ),
                                 "Seleccione un producto preparado",
-                                new { @class = "form-control select-scroll-horizontal-vertical" }
+                                new { @class = "form-control" }
                             )
                         </div>
 
@@ -212,7 +204,7 @@
                         "ProductosPreparadosUtilizados[__index__].id_producto_preparado_utilizado",
                         ViewBag.ProductosPreparados as SelectList,
                         "Seleccione un producto preparado",
-                        new { @class = "form-control select-scroll-horizontal-vertical" }
+                        new { @class = "form-control" }
                     )
                 </div>
 
@@ -237,6 +229,22 @@
             <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('productos_preparados-container', 'template-producto_preparado')">+ Agregar</button>
         </div>
         <br />
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo Total de Receta (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costoTotalReceta" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo por Porción (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costoPorPorcion" class="form-result">0.00</label>
+            </div>
+        </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
             @if (editando)
@@ -268,7 +276,7 @@
     else
     {
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sm text-center">
+            <table id="tabla_insumos" class="table table-bordered table-striped table-sm text-center">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -378,4 +386,8 @@
 @section Scripts {
     <script src="~/Templates/js/insumos.js"></script>
     @Html.Partial("accion_exitosa")
+    <script>
+        window.materiasPrimas = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.MateriasPrimasCatalogo));
+        window.productosPreparados = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ProductosPreparadosCatalogo));
+    </script>
 }

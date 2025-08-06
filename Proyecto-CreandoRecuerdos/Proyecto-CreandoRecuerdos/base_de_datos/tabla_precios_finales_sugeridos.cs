@@ -42,6 +42,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<decimal> factura_total { get; set; }
         public Nullable<decimal> costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia { get; set; }
         public Nullable<decimal> factura_por_insumo { get; set; }
+        public Nullable<decimal> costo_total_insumos { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<precios_empaques_decoraciones_utilizados> precios_empaques_decoraciones_utilizados { get; set; }
