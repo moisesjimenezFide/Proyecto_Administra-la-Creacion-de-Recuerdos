@@ -1,0 +1,45 @@
+﻿@model Proyecto_CreandoRecuerdos.ViewModels.CostosOperativosMensualesViewModel
+
+@{
+    ViewBag.Title = "Costos Operativos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>📊 Costos Operativos Promedios del Mes</h2>
+
+<div class="mb-3">
+    <a href="@Url.Action("ExportarCostosOperativos", "Reportes", new { formato = "PDF" })" class="btn btn-danger">Exportar PDF</a>
+    <a href="@Url.Action("ExportarCostosOperativos", "Reportes", new { formato = "EXCEL" })" class="btn btn-success">Exportar Excel</a>
+    <a href="@Url.Action("Index", "Reportes")" class="btn btn-secondary">Volver</a>
+</div>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Tipo de Costo</th>
+            <th>Promedio</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Recetas (por porción)</td>
+            <td>@Model.PromedioCostosRecetas.ToString("C")</td>
+        </tr>
+        <tr>
+            <td>Empaques y decoraciones</td>
+            <td>@Model.PromedioCostosEmpaques.ToString("C")</td>
+        </tr>
+        <tr>
+            <td>Implementos</td>
+            <td>@Model.PromedioCostosImplementos.ToString("C")</td>
+        </tr>
+        <tr>
+            <td>Suministros</td>
+            <td>@Model.PromedioCostosSuministros.ToString("C")</td>
+        </tr>
+        <tr>
+            <th>Total Operativo Estimado</th>
+            <th>@Model.TotalCostoOperativo.ToString("C")</th>
+        </tr>
+    </tbody>
+</table>

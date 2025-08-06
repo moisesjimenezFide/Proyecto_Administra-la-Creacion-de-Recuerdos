@@ -1,0 +1,61 @@
+﻿@model List<Proyecto_CreandoRecuerdos.ViewModels.HistorialVentasViewModel>
+
+@{
+    ViewBag.Title = "Historial de Ventas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>📊 Historial de Ventas</h2>
+
+<form method="get" action="@Url.Action("HistorialVentas", "Reportes")" class="mb-3">
+    <div class="row">
+        <div class="col">
+            <label>Fecha Inicio:</label>
+            <input type="date" name="fechaInicio" class="form-control" value="@ViewBag.FechaInicio" />
+        </div>
+        <div class="col">
+            <label>Fecha Fin:</label>
+            <input type="date" name="fechaFin" class="form-control" value="@ViewBag.FechaFin" />
+        </div>
+        <div class="col d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </div>
+    </div>
+</form>
+
+<div class="mb-3">
+    <a href="@Url.Action("ExportarHistorialVentas", "Reportes", new { formato = "PDF", fechaInicio = ViewBag.FechaInicio, fechaFin = ViewBag.FechaFin })" class="btn btn-danger">Exportar PDF</a>
+    <a href="@Url.Action("ExportarHistorialVentas", "Reportes", new { formato = "EXCEL", fechaInicio = ViewBag.FechaInicio, fechaFin = ViewBag.FechaFin })" class="btn btn-success">Exportar Excel</a>
+    <a href="@Url.Action("Index", "Reportes")" class="btn btn-secondary">Volver</a>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID Venta</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Cliente</th>
+                <th>Vendedor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var v in Model)
+            {
+                <tr>
+                    <td>@v.IdVenta</td>
+                    <td>@v.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@v.Total.ToString("C")</td>
+                    <td>@(v.Cliente ?? "N/A")</td>
+                    <td>@(v.Usuario ?? "N/A")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontraron ventas en el rango de fechas indicado.</p>
+}

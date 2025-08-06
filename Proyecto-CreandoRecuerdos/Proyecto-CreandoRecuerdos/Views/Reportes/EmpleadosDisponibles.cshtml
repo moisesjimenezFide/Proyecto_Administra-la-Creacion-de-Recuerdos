@@ -1,0 +1,43 @@
+﻿@model List<Proyecto_CreandoRecuerdos.ViewModels.EmpleadosDisponiblesViewModel>
+
+@{
+    ViewBag.Title = "Empleados Disponibles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>👥 Empleados Disponibles</h2>
+
+<div class="mb-3">
+    <a href="@Url.Action("ExportarEmpleados", "Reportes", new { formato = "PDF" })" class="btn btn-danger">Exportar PDF</a>
+    <a href="@Url.Action("ExportarEmpleados", "Reportes", new { formato = "EXCEL" })" class="btn btn-success">Exportar Excel</a>
+    <a href="@Url.Action("Index", "Reportes")" class="btn btn-secondary">Volver</a>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model)
+            {
+                <tr>
+                    <td>@e.NombreCompleto</td>
+                    <td>@e.Correo</td> <!-- ✅ Aquí el cambio -->
+                    <td>@e.Rol</td>
+                    <td>@e.Estado</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontraron empleados disponibles.</p>
+}

@@ -706,3 +706,7 @@ C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyect
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto.E04E3056.Up2Date
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.dll
 C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\obj\Debug\Proyecto-CreandoRecuerdos.pdb
+C:\Users\georg\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\georg\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.dll
+C:\Users\georg\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\georg\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.xml

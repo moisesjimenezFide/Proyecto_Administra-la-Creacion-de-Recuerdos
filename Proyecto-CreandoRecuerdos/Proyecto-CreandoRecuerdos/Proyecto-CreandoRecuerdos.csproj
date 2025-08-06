@@ -374,19 +374,25 @@
     <Compile Include="Controllers\PedidosController.cs" />
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
     <Compile Include="Controllers\PresentacionController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\StripeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ActividadHelper.cs" />
     <Compile Include="Models\ActividadModel.cs" />
+    <Compile Include="ViewModels\CostosOperativosViewModel.cs" />
+    <Compile Include="ViewModels\EmpleadosDisponiblesViewModel.cs" />
+    <Compile Include="ViewModels\HistorialVentasViewModel.cs" />
     <Compile Include="Models\HorarioModel.cs" />
     <Compile Include="Models\EmpleadoModel.cs" />
     <Compile Include="Models\InsumosModel.cs" />
     <Compile Include="Models\PedidosModel.cs" />
     <Compile Include="Models\ProductoModel.cs" />
+    <Compile Include="ViewModels\ProductosDisponiblesViewModel.cs" />
     <Compile Include="Models\SolicitudAusenciaModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
+    <Compile Include="ViewModels\VentasMensualesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -566,6 +572,12 @@
     <Content Include="Views\Pedidos\MisPedidos.cshtml" />
     <Content Include="Views\Inicio\pago.cshtml" />
     <Content Include="Views\Pedidos\registro_vetas.cshtml" />
+    <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\Reportes\HistorialVentas.cshtml" />
+    <Content Include="Views\Reportes\VentasMensuales.cshtml" />
+    <Content Include="Views\Reportes\EmpleadosDisponibles.cshtml" />
+    <Content Include="Views\Reportes\ProductosDisponibles.cshtml" />
+    <Content Include="Views\Reportes\CostosOperativos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
