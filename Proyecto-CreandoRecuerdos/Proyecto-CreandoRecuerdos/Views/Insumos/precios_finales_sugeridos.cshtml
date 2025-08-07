@@ -148,11 +148,11 @@
             <label for="plataforma_de_envio" class="form-label">Plataforma de Envío</label>
             <select name="plataforma_de_envio" id="plataforma_de_envio" class="form-control" required="required">
                 <option value="">Seleccione una plataforma de envío</option>
-                <option value="Propio (0%)" @(editando && productoFinalEditado?.plataforma_de_envio == "Propio (0%)" ? "selected" : "")>Propio</option>
-                <option value="PedidosYa (25%)" @(editando && productoFinalEditado?.plataforma_de_envio == "PedidosYa (25%)" ? "selected" : "")>PedidosYa</option>
-                <option value="Rappi (25%)" @(editando && productoFinalEditado?.plataforma_de_envio == "Rappi (25%)" ? "selected" : "")>Rappi</option>
-                <option value="DidiFood (30%)" @(editando && productoFinalEditado?.plataforma_de_envio == "DidiFood (30%)" ? "selected" : "")>DidiFood</option>
-                <option value="UberEats (40%)" @(editando && productoFinalEditado?.plataforma_de_envio == "UberEats (40%)" ? "selected" : "")>UberEats</option>
+                <option value="Propio (0%)" @(editando && productoFinalEditado?.plataforma_de_envio == "Propio (0%)" ? "selected" : "")>Propio (0%)</option>
+                <option value="PedidosYa (25%)" @(editando && productoFinalEditado?.plataforma_de_envio == "PedidosYa (25%)" ? "selected" : "")>PedidosYa (25%)</option>
+                <option value="Rappi (25%)" @(editando && productoFinalEditado?.plataforma_de_envio == "Rappi (25%)" ? "selected" : "")>Rappi (25%)</option>
+                <option value="DidiFood (30%)" @(editando && productoFinalEditado?.plataforma_de_envio == "DidiFood (30%)" ? "selected" : "")>DidiFood (30%)</option>
+                <option value="UberEats (40%)" @(editando && productoFinalEditado?.plataforma_de_envio == "UberEats (40%)" ? "selected" : "")>UberEats (40%)</option>
             </select>
         </div>
 
@@ -556,7 +556,7 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
             @if (editando)
             {
-                <a href="@Url.Action("precio_final_sugerido", "Insumos")" class="btn btn-secondary">Salir</a>
+                <a href="@Url.Action("precios_finales_sugeridos", "Insumos")" class="btn btn-secondary">Salir</a>
             }
 
             <button type="reset" class="btn btn-danger">Cancelar</button>
@@ -658,7 +658,7 @@
                                 {
                                     foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
                                     {
-                                        <div>₡@(item.costo_por_cantidad * item.cantidad).ToString("N2")</div>
+                                        <div>₡@((item.costo_por_cantidad * item.cantidad).ToString("N2"))</div>
                                     }
                                 }
                             </td>
@@ -685,7 +685,7 @@
                                 {
                                     foreach (var item in productofinal.ImplementosUtilizados)
                                     {
-                                        <div>₡@(item.costo_por_cantidad * item.cantidad).ToString("N2")</div>
+                                        <div>₡@((item.costo_por_cantidad * item.cantidad).ToString("N2"))</div>
                                     }
                                 }
                             </td>
@@ -718,7 +718,7 @@
                                 {
                                     foreach (var item in productofinal.SuministrosUtilizados)
                                     {
-                                        <div>₡@(item.costo_por_cantidad * item.cantidad).ToString("N2")</div>
+                                        <div>₡@((item.costo_por_cantidad * item.cantidad).ToString("N2"))</div>
                                     }
                                 }
                             </td>

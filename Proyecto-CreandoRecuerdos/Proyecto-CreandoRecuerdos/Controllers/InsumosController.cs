@@ -2828,10 +2828,22 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult CrearProductoFinal(ProductoFinal producto_final)
     {
-        // Obtener el id de la receta seleccionada desde el formulario
+        // Obtener el id_receta del formulario
         int idReceta = 0;
         int.TryParse(Request.Form["id_receta"], out idReceta);
+
+        // Buscar la receta por ID
         var receta = db.tabla_costos_recetas.FirstOrDefault(r => r.id == idReceta);
+
+        // Asignar el nombre de la receta al modelo
+        if (receta != null)
+        {
+            producto_final.nombre_receta = receta.nombre;
+        }
+        else
+        {
+            producto_final.nombre_receta = ""; // Para que falle la validación si no existe
+        }
 
         // Asignar el valor del checkbox manualmente para cada suministro
         if (producto_final.SuministrosUtilizados != null)
@@ -2845,25 +2857,22 @@ public class InsumosController : Controller
 
         var errores = new List<string>();
 
+        // Validar campos obligatorios
+        if (idReceta == 0 || string.IsNullOrWhiteSpace(producto_final.nombre_receta))
+        {
+            errores.Add("El nombre de la receta es obligatorio. Debe seleccionar una receta");
+        }
+
         // Validar que no exista un producto final con el mismo nombre de receta
         if (db.tabla_precios_finales_sugeridos.Any(p => p.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && p.id != producto_final.id))
         {
             errores.Add("Ya existe un producto final para esa receta.");
         }
 
-        // Validar que la receta seleccionada exista en la base de datos
-        int.TryParse(Request.Form["id_receta"], out idReceta);
-        if (idReceta > 0)
+        // Validar que la receta exista en la base de datos
+        if (receta == null)
         {
-            receta = db.tabla_costos_recetas.FirstOrDefault(r => r.id == idReceta);
-            if (receta == null)
-            {
-                errores.Add("La receta seleccionada no existe en el sistema.");
-            }
-        }
-        else
-        {
-            errores.Add("Debe seleccionar una receta.");
+            errores.Add("La receta seleccionada no existe en la base de datos.");
         }
 
         if (producto_final.margen_de_utilidad < 0 || producto_final.margen_de_utilidad > 100)
@@ -2992,7 +3001,7 @@ public class InsumosController : Controller
                     Value = r.id,
                     Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2}"
                 }),
-                "Value", "Text"
+                "Value", "Text", producto_final.id_receta
             );
 
             ViewBag.EmpaquesDecoraciones = new SelectList(
@@ -3204,16 +3213,203 @@ public class InsumosController : Controller
         return RedirectToAction("precios_finales_sugeridos");
     }
 
+    //Editar un producto final existente (GET id)
+    [HttpGet]
+    public ActionResult EditarProductoFinal(int id)
+    {
+        var pf = db.tabla_precios_finales_sugeridos.Find(id);
+        if (pf == null) return HttpNotFound();
+
+        var producto_final = new ProductoFinal
+        {
+            id = pf.id,
+            nombre_receta = pf.nombre_receta,
+            id_receta = pf.id_receta ?? 0,
+            costo_total_receta = pf.costo_total_receta ?? 0m,
+            margen_de_utilidad = pf.margen_de_utilidad,
+            costo_sin_margen_de_utilidad = pf.costo_sin_margen_de_utilidad ?? 0,
+            costo_con_margen_de_utilidad = pf.costo_con_margen_de_utilidad ?? 0m,
+            costo_empaque_decoracion_utilizado = pf.costo_empaque_decoracion_utilizado ?? 0m,
+            costo_implemento_utilizado = pf.costo_implemento_utilizado ?? 0m,
+            costo_suministro_utilizado = pf.costo_suministro_utilizado ?? 0m,
+            costo_de_impresion_de_factura_por_insumo = pf.costo_de_impresion_de_factura_por_insumo ?? 0m,
+            costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0m,
+            factura_total = pf.factura_total ?? 0m,
+            factura_por_insumo = pf.factura_por_insumo ?? 0m,
+            iva = pf.iva ?? 0m,
+            impuesto_de_servicio = pf.impuesto_de_servicio ?? 0m,
+            envio = pf.envio ?? 0m,
+            plataforma_de_envio = pf.plataforma_de_envio,
+            precio_final_sugerido = pf.precio_final_sugerido ?? 0m,
+
+            EmpaquesDecoracionesUtilizados = db.precios_empaques_decoraciones_utilizados
+                .Where(ed => ed.id_precio_final_sugerido == pf.id)
+                .Select(ed => new EmpaqueDecoracionUtilizado
+                {
+                    id = ed.id,
+                    id_empaque_decoracion_utilizado = ed.id_empaque_decoracion_utilizado ?? 0,
+                    nombre = ed.tabla_empaques_decoraciones.nombre,
+                    cantidad = ed.cantidad ?? 0,
+                    unidad_de_medida = ed.unidad_de_medida,
+                    costo_por_cantidad = ed.costo_por_cantidad ?? 0m,
+                    total_costo = ed.total_costo ?? 0m
+                }).ToList(),
+
+            ImplementosUtilizados = db.precios_implementos_utilizados
+                .Where(i => i.id_precio_final_sugerido == pf.id)
+                .Select(i => new ImplementoUtilizado
+                {
+                    id = i.id,
+                    id_implemento_utilizado = i.id_implemento_utilizado ?? 0,
+                    nombre = i.tabla_implementos.nombre,
+                    cantidad = i.cantidad ?? 0,
+                    unidad_de_medida = i.unidad_de_medida,
+                    costo_por_cantidad = i.costo_por_cantidad ?? 0m,
+                    total_costo = i.total_costo ?? 0m
+                }).ToList(),
+
+            SuministrosUtilizados = db.precios_suministros_utilizados
+                .Where(s => s.id_precio_final_sugerido == pf.id)
+                .Select(s => new SuministroUtilizado
+                {
+                    id = s.id,
+                    id_suministro_utilizado = s.id_suministro_utilizado ?? 0,
+                    nombre = s.tabla_suministros.nombre,
+                    cantidad = s.cantidad ?? 0,
+                    unidad_de_medida = s.unidad_de_medida,
+                    costo_por_cantidad = s.costo_por_cantidad ?? 0m,
+                    total_costo = s.total_costo ?? 0m,
+                    es_impresion_de_facturas = s.es_impresion_de_facturas ?? false
+                }).ToList()
+        };
+
+        var productosFinales = db.tabla_precios_finales_sugeridos.ToList().Select(prodfinal => new ProductoFinal
+        {
+            id = prodfinal.id,
+            nombre_receta = prodfinal.nombre_receta,
+            costo_total_receta = prodfinal.costo_total_receta ?? 0m,
+            margen_de_utilidad = prodfinal.margen_de_utilidad,
+            costo_sin_margen_de_utilidad = prodfinal.costo_sin_margen_de_utilidad ?? 0,
+            costo_con_margen_de_utilidad = prodfinal.costo_con_margen_de_utilidad ?? 0m,
+            costo_empaque_decoracion_utilizado = prodfinal.costo_empaque_decoracion_utilizado ?? 0m,
+            costo_implemento_utilizado = prodfinal.costo_implemento_utilizado ?? 0m,
+            costo_suministro_utilizado = prodfinal.costo_suministro_utilizado ?? 0m,
+            costo_de_impresion_de_factura_por_insumo = prodfinal.costo_de_impresion_de_factura_por_insumo ?? 0m,
+            costo_total_de_impresion_de_factura = prodfinal.costo_total_de_impresion_de_factura ?? 0m,
+            factura_total = prodfinal.factura_total ?? 0m,
+            factura_por_insumo = prodfinal.factura_por_insumo ?? 0m,
+            iva = prodfinal.iva ?? 0m,
+            impuesto_de_servicio = prodfinal.impuesto_de_servicio ?? 0m,
+            envio = prodfinal.envio ?? 0m,
+            plataforma_de_envio = prodfinal.plataforma_de_envio,
+            precio_final_sugerido = prodfinal.precio_final_sugerido ?? 0m,
+
+            EmpaquesDecoracionesUtilizados = db.precios_empaques_decoraciones_utilizados
+                .Where(ed => ed.id_precio_final_sugerido == prodfinal.id)
+                .Select(ed => new EmpaqueDecoracionUtilizado
+                {
+                    id = ed.id,
+                    id_empaque_decoracion_utilizado = ed.id_empaque_decoracion_utilizado ?? 0,
+                    nombre = ed.tabla_empaques_decoraciones.nombre,
+                    cantidad = ed.cantidad ?? 0,
+                    unidad_de_medida = ed.unidad_de_medida,
+                    costo_por_cantidad = ed.costo_por_cantidad ?? 0m,
+                    total_costo = ed.total_costo ?? 0m
+                }).ToList(),
+
+            ImplementosUtilizados = db.precios_implementos_utilizados
+                .Where(i => i.id_precio_final_sugerido == prodfinal.id)
+                .Select(i => new ImplementoUtilizado
+                {
+                    id = i.id,
+                    id_implemento_utilizado = i.id_implemento_utilizado ?? 0,
+                    nombre = i.tabla_implementos.nombre,
+                    cantidad = i.cantidad ?? 0,
+                    unidad_de_medida = i.unidad_de_medida,
+                    costo_por_cantidad = i.costo_por_cantidad ?? 0m,
+                    total_costo = i.total_costo ?? 0m
+                }).ToList(),
+
+            SuministrosUtilizados = db.precios_suministros_utilizados
+                .Where(s => s.id_precio_final_sugerido == prodfinal.id)
+                .Select(s => new SuministroUtilizado
+                {
+                    id = s.id,
+                    id_suministro_utilizado = s.id_suministro_utilizado ?? 0,
+                    nombre = s.tabla_suministros.nombre,
+                    cantidad = s.cantidad ?? 0,
+                    unidad_de_medida = s.unidad_de_medida,
+                    costo_por_cantidad = s.costo_por_cantidad ?? 0m,
+                    total_costo = s.total_costo ?? 0m,
+                    es_impresion_de_facturas = s.es_impresion_de_facturas ?? false
+                }).ToList()
+        }).ToList();
+
+        ViewBag.Recetas = new SelectList(
+                db.tabla_costos_recetas.ToList().Select(r => new {
+                    Value = r.id,
+                    Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2}"
+                }),
+                "Value", "Text", producto_final.id_receta
+        ); 
+        
+        ViewBag.EmpaquesDecoraciones = new SelectList(
+            db.tabla_empaques_decoraciones.ToList()
+            .Select(ed => new {
+                Value = ed.id,
+                Text = $"ID: {ed.id} | Nombre: {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad}"
+            }),
+            "Value", "Text"
+        );
+
+        ViewBag.Implementos = new SelectList(
+            db.tabla_implementos.ToList()
+                .Select(i => new {
+                    Value = i.id,
+                    Text = $"ID: {i.id} | Nombre: {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad}"
+                }),
+            "Value", "Text"
+        );
+
+        ViewBag.Suministros = new SelectList(
+            db.tabla_suministros.ToList()
+                .Select(s => new {
+                    Value = s.id,
+                    Text = $"ID: {s.id} | Nombre: {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad}"
+                }),
+            "Value", "Text"
+        );
+
+        ViewBag.Editando = true;
+        return View("precios_finales_sugeridos", new InsumosModel
+        {
+            ProductoFinalEditado = producto_final,
+            ProductosFinales = productosFinales
+        });
+    }
+
 
     // Editar un producto final existente (POST)
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult EditarProductoFinal(ProductoFinal producto_final)
     {
-        // Obtener el id de la receta seleccionada desde el formulario
+        // Obtener el id_receta del formulario
         int idReceta = 0;
         int.TryParse(Request.Form["id_receta"], out idReceta);
+
+        // Buscar la receta por ID
         var receta = db.tabla_costos_recetas.FirstOrDefault(r => r.id == idReceta);
+
+        // Asignar el nombre de la receta al modelo
+        if (receta != null)
+        {
+            producto_final.nombre_receta = receta.nombre;
+        }
+        else
+        {
+            producto_final.nombre_receta = ""; // Para que falle la validación si no existe
+        }
 
         // Asignar el valor del checkbox manualmente para cada suministro
         if (producto_final.SuministrosUtilizados != null)
@@ -3227,11 +3423,23 @@ public class InsumosController : Controller
 
         var errores = new List<string>();
 
-        if (db.tabla_precios_finales_sugeridos.Any(pf => pf.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && pf.id != producto_final.id))
-            errores.Add("Ya existe un producto final para esa receta.");
+        // Validar campos obligatorios
+        if (idReceta == 0 || string.IsNullOrWhiteSpace(producto_final.nombre_receta))
+        {
+            errores.Add("El nombre de la receta es obligatorio. Debe seleccionar una receta");
+        }
 
-        if (string.IsNullOrWhiteSpace(producto_final.nombre_receta))
-            errores.Add("El nombre de la receta es obligatorio.");
+        // Validar que no exista un producto final con el mismo nombre de receta
+        if (db.tabla_precios_finales_sugeridos.Any(pf => pf.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && pf.id != producto_final.id))
+        {
+            errores.Add("Ya existe un producto final para esa receta.");
+        }
+
+        // Validar que la receta exista en la base de datos
+        if (receta == null)
+        {
+            errores.Add("La receta seleccionada no existe en la base de datos.");
+        }
 
         if (producto_final.margen_de_utilidad < 0 || producto_final.margen_de_utilidad > 100)
             errores.Add("El margen de utilidad debe estar entre 0 y 100.");
@@ -3351,21 +3559,6 @@ public class InsumosController : Controller
         var p = db.tabla_precios_finales_sugeridos.Find(producto_final.id);
         if (p == null) return HttpNotFound();
 
-        // Validar que la receta seleccionada exista en la base de datos
-        int.TryParse(Request.Form["id_receta"], out idReceta);
-        if (idReceta > 0)
-        {
-            receta = db.tabla_costos_recetas.FirstOrDefault(r => r.id == idReceta);
-            if (receta == null)
-            {
-                errores.Add("La receta seleccionada no existe en el sistema.");
-            }
-        }
-        else
-        {
-            errores.Add("Debe seleccionar una receta.");
-        }
-
         if (errores.Any())
         {
             ViewBag.Errores = errores;
@@ -3376,7 +3569,7 @@ public class InsumosController : Controller
                     Value = r.id,
                     Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2}"
                 }),
-                "Value", "Text"
+                "Value", "Text", producto_final.id_receta
             );
 
             ViewBag.EmpaquesDecoraciones = new SelectList(
