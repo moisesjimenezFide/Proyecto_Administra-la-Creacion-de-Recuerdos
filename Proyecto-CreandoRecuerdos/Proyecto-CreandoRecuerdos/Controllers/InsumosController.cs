@@ -3204,6 +3204,7 @@ public class InsumosController : Controller
         return RedirectToAction("precios_finales_sugeridos");
     }
 
+
     // Editar un producto final existente (POST)
     [HttpPost]
     [ValidateAntiForgeryToken]
