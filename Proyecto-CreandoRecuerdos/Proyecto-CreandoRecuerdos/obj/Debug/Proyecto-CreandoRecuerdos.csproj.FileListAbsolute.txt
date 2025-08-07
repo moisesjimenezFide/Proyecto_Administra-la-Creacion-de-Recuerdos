@@ -710,3 +710,7 @@ C:\Users\georg\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Pro
 C:\Users\georg\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.dll
 C:\Users\georg\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Microsoft.Bcl.AsyncInterfaces.xml
 C:\Users\georg\Documents\GitHub\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\Stripe.net.xml
+C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\libSkiaSharp.dylib
+C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\x86\libSkiaSharp.dll
+C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\x64\libSkiaSharp.dll
+C:\Users\moise\source\repos\Proyecto_Administra-la-Creacion-de-Recuerdos\Proyecto-CreandoRecuerdos\Proyecto-CreandoRecuerdos\bin\arm64\libSkiaSharp.dll

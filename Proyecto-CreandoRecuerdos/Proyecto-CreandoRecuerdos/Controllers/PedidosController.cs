@@ -1407,5 +1407,16 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             return Math.Min(20 + (cantidadProductos * 5), 60);
         }
+
+        [HttpGet]
+        public ActionResult registro_vetas()
+        {
+            using (var context = new BD_CREANDO_RECUERDOSEntities())
+            {
+                var usuarios = context.sp_mostrar_ventas_web().ToList();
+
+                return View(usuarios);
+            }
+        }
     }
 }
