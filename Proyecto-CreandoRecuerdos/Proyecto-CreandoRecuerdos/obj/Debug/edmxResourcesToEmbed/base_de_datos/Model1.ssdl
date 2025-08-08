@@ -209,8 +209,8 @@
     <Property Name="costo_empaque_decoracion_utilizado" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_implemento_utilizado" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_suministro_utilizado" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="iva" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="impuesto_de_servicio" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="costo_con_iva" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="costo_con_servicio" Type="decimal" Precision="18" Scale="2" />
     <Property Name="envio" Type="decimal" Precision="18" Scale="2" />
     <Property Name="plataforma_de_envio" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="precio_final_sugerido" Type="decimal" Precision="18" Scale="2" />
@@ -220,6 +220,8 @@
     <Property Name="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" Type="decimal" Precision="18" Scale="2" />
     <Property Name="factura_por_insumo" Type="decimal" Precision="18" Scale="2" />
     <Property Name="costo_total_insumos" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="porcentaje_de_iva" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="porcentaje_de_servicio" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="tabla_productos">
     <Key>

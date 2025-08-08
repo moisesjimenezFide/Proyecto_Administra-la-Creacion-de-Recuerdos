@@ -67,11 +67,11 @@
         }
 
 
-            /* Cambio de color al estar marcado */
-            .custom-checkbox input[type="checkbox"]:checked + span::before {
-                border-color: #E27AB0;
-                background-color: #E27AB0;
-            }
+        /* Cambio de color al estar marcado */
+        .custom-checkbox input[type="checkbox"]:checked + span::before {
+            border-color: #E27AB0;
+            background-color: #E27AB0;
+        }
 
         /* Hover */
         .custom-checkbox span:hover::before {
@@ -128,7 +128,7 @@
             <div class="col-md-4">
                 @Html.DropDownList(
                     "id_receta",
-                    ViewBag.Recetas as SelectList,
+                    ViewBag.Recetas as IEnumerable<SelectListItem>,
                     "Seleccione una receta",
                     new { @class = "form-control" }
                 )
@@ -137,11 +137,11 @@
         </div>
 
         <div class="mb-3 text-start">
-                <label for="margen_de_utilidad" class="form-label">Margen de Utilidad (%)</label>
-                <div class="input-group">
-                    <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" value="@(editando ? productoFinalEditado.margen_de_utilidad.ToString("0.##") : "")" min="0" max="100" />
-                    <span class="input-group-text">%</span>
-                </div>
+            <label for="margen_de_utilidad" class="form-label">Margen de Utilidad (%)</label>
+            <div class="input-group">
+                <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" value="@(editando ? productoFinalEditado.margen_de_utilidad.ToString("0.##") : "")" min="0" max="100" />
+                <span class="input-group-text">%</span>
+            </div>
         </div>
 
         <div class="mb-3 text-start">
@@ -410,26 +410,26 @@
         <br />
 
         <div class="mb-3 text-start">
-            <label for="iva_porcentaje" class="form-label">Porcentaje de IVA (%)</label>
+            <label for="porcentaje_de_iva" class="form-label">Porcentaje de IVA (%)</label>
             <div class="input-group">
-                <input type="number" name="iva_porcentaje" id="iva_porcentaje" class="form-control" value="@(editando ? productoFinalEditado.iva.ToString("0.##") : "")" min="0" max="100" step="0.01" />
+                <input type="number" name="porcentaje_de_iva" id="porcentaje_de_iva" class="form-control" value="@(editando ? productoFinalEditado.porcentaje_de_iva.ToString("0.##") : "")" min="0" max="100" step="0.01" />
                 <span class="input-group-text">%</span>
             </div>
         </div>
 
         <div class="mb-3 text-start">
-            <label for="servicio_porcentaje" class="form-label">Porcentaje de de Servicio (%)</label>
+            <label for="porcentaje_de_servicio" class="form-label">Porcentaje de de Servicio (%)</label>
             <div class="input-group">
-                <input type="number" name="servicio_porcentaje" id="servicio_porcentaje" class="form-control" value="@(editando ? productoFinalEditado.impuesto_de_servicio.ToString("0.##") : "")" min="0" max="100" step="0.01" />
+                <input type="number" name="porcentaje_de_servicio" id="porcentaje_de_servicio" class="form-control" value="@(editando ? productoFinalEditado.porcentaje_de_servicio.ToString("0.##") : "")" min="0" max="100" step="0.01" />
                 <span class="input-group-text">%</span>
             </div>
         </div>
 
         <div class="mb-3 text-start">
-            <label class="form-label">Costo Total de Receta (₡):</label>
+            <label class="form-label">Costo de Receta (₡):</label>
             <div class="result-symbol">
                 <span class="input-symbol-left">₡</span>
-                <label id="costo_total_receta" class="form-result">0.00</label>
+                <label id="costo_receta" class="form-result">0.00</label>
             </div>
         </div>
 
@@ -514,7 +514,7 @@
         </div>
 
         <div class="mb-3 text-start">
-            <label class="form-label">Total Insumos por Porcentaje de Ganancia (₡):</label>
+            <label class="form-label">Costo Total de Insumos por Porcentaje de Ganancia (₡):</label>
             <div class="result-symbol">
                 <span class="input-symbol-left">₡</span>
                 <label id="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" class="form-result">0.00</label>
@@ -525,7 +525,7 @@
             <label class="form-label">Costo con IVA (₡):</label>
             <div class="result-symbol">
                 <span class="input-symbol-left">₡</span>
-                <label id="iva" class="form-result">0.00</label>
+                <label id="costo_con_iva" class="form-result">0.00</label>
             </div>
         </div>
 
@@ -533,7 +533,7 @@
             <label class="form-label">Costo con Servicio (₡):</label>
             <div class="result-symbol">
                 <span class="input-symbol-left">₡</span>
-                <label id="impuesto_de_servicio" class="form-result">0.00</label>
+                <label id="costo_con_servicio" class="form-result">0.00</label>
             </div>
         </div>
 
@@ -610,8 +610,10 @@
                         <th>Factura por Insumo (₡)</th>
                         <th>Factura Total (₡)</th>
                         <th>Total Insumos por Porcentaje de Ganancia (₡)</th>
-                        <th>IVA (₡)</th>
-                        <th>Servicio (₡)</th>
+                        <th>Porcentaje de IVA (%)</th>
+                        <th>Porcentaje de Servicio (%)</th>
+                        <th>Costo con IVA (₡)</th>
+                        <th>Costo con Servicio (₡)</th>
                         <th>Plataforma de Envío</th>
                         <th>Envío (₡)</th>
                         <th>Precio Final (₡)</th>
@@ -733,8 +735,10 @@
                             <td>₡@productofinal.factura_por_insumo.ToString("N2")</td>
                             <td>₡@productofinal.factura_total.ToString("N2")</td>
                             <td>₡@productofinal.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia.ToString("N2")</td>
-                            <td>₡@productofinal.iva.ToString("N2")</td>
-                            <td>₡@productofinal.impuesto_de_servicio.ToString("N2")</td>
+                            <td>₡@productofinal.porcentaje_de_iva.ToString("N2")</td>
+                            <td>₡@productofinal.porcentaje_de_servicio.ToString("N2")</td>
+                            <td>₡@productofinal.costo_con_iva.ToString("N2")</td>
+                            <td>₡@productofinal.costo_con_servicio.ToString("N2")</td>
                             <td>@productofinal.plataforma_de_envio</td>
                             <td>₡@productofinal.envio.ToString("N2")</td>
                             <td><strong>₡@productofinal.precio_final_sugerido.ToString("N2")</strong></td>

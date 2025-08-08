@@ -152,8 +152,10 @@ namespace Proyecto_CreandoRecuerdos.Models
         public decimal costo_implemento_utilizado { get; set; }
         public decimal costo_suministro_utilizado { get; set; }
         public decimal costo_total_insumos { get; set; }
-        public decimal iva { get; set; }
-        public decimal impuesto_de_servicio { get; set; }
+        public decimal porcentaje_de_iva { get; set; }
+        public decimal porcentaje_de_servicio { get; set; }
+        public decimal costo_con_iva { get; set; }
+        public decimal costo_con_servicio { get; set; }
         public decimal envio { get; set; }
         public string plataforma_de_envio { get; set; }
         public decimal precio_final_sugerido { get; set; }

@@ -234,7 +234,7 @@
             <label class="form-label">Costo Total de Receta (₡):</label>
             <div class="result-symbol">
                 <span class="input-symbol-left">₡</span>
-                <label id="costoTotalReceta" class="form-result">0.00</label>
+                <label id="costo_total_receta" class="form-result">0.00</label>
             </div>
         </div>
 
@@ -386,8 +386,4 @@
 @section Scripts {
     <script src="~/Templates/js/insumos.js"></script>
     @Html.Partial("accion_exitosa")
-    <script>
-        window.materiasPrimas = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.MateriasPrimasCatalogo));
-        window.productosPreparados = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ProductosPreparadosCatalogo));
-    </script>
 }

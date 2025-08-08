@@ -32,8 +32,8 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<decimal> costo_empaque_decoracion_utilizado { get; set; }
         public Nullable<decimal> costo_implemento_utilizado { get; set; }
         public Nullable<decimal> costo_suministro_utilizado { get; set; }
-        public Nullable<decimal> iva { get; set; }
-        public Nullable<decimal> impuesto_de_servicio { get; set; }
+        public Nullable<decimal> costo_con_iva { get; set; }
+        public Nullable<decimal> costo_con_servicio { get; set; }
         public Nullable<decimal> envio { get; set; }
         public string plataforma_de_envio { get; set; }
         public Nullable<decimal> precio_final_sugerido { get; set; }
@@ -43,6 +43,8 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<decimal> costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia { get; set; }
         public Nullable<decimal> factura_por_insumo { get; set; }
         public Nullable<decimal> costo_total_insumos { get; set; }
+        public Nullable<decimal> porcentaje_de_iva { get; set; }
+        public Nullable<decimal> porcentaje_de_servicio { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<precios_empaques_decoraciones_utilizados> precios_empaques_decoraciones_utilizados { get; set; }

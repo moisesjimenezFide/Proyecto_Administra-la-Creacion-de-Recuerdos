@@ -23,7 +23,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<decimal> total_costo { get; set; }
         public Nullable<bool> es_impresion_de_facturas { get; set; }
     
-        public virtual tabla_precios_finales_sugeridos tabla_precios_finales_sugeridos { get; set; }
         public virtual tabla_suministros tabla_suministros { get; set; }
+        public virtual tabla_precios_finales_sugeridos tabla_precios_finales_sugeridos { get; set; }
     }
 }

@@ -175,7 +175,7 @@ public class InsumosController : Controller
             errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
 
         if (materia_prima.merma_total_en_gramos < 0m)
-            errores.Add("La merma total en gramos no puede ser negativa.");
+            errores.Add("La merma total en gramos no puede ser negatcosto_con_iva.");
 
         if (!unidadesPresentacion.Contains(unidadPresentacion))
             errores.Add("Unidad de medida de presentación no permitida.");
@@ -412,7 +412,7 @@ public class InsumosController : Controller
             errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
 
         if (materia_prima.merma_total_en_gramos < 0)
-            errores.Add("La merma total en gramos no puede ser negativa.");
+            errores.Add("La merma total en gramos no puede ser negatcosto_con_iva.");
 
         if (!unidadesPresentacion.Contains(unidadPresentacion))
             errores.Add("Unidad de medida de presentación no permitida.");
@@ -1917,35 +1917,11 @@ public class InsumosController : Controller
         };
         ViewBag.Search = search;
 
-        // Obtener las materias primas para el catálogo
-        var materiasPrimasCatalogo = db.tabla_materias_primas
-            .Select(mp => new
-            {
-                id = mp.id,
-                nombre = mp.nombre,
-                costo_por_gramo_con_merma = mp.costo_por_gramo_con_merma ?? 0m // Asegurar que no sea nulo
-            }).ToList();
-
-        // Obtener los productos preparados para el catálogo
-        var productosPreparadosCatalogo = db.tabla_productos_preparados
-            .Select(pp => new
-            {
-                id = pp.id,
-                nombre = pp.nombre,
-                costo_por_peso = pp.costo_por_peso ?? 0m // Asegurar que no sea nulo
-            }).ToList();
-
-        // Asignar los catálogos al ViewBag
-        ViewBag.MateriasPrimasCatalogo = materiasPrimasCatalogo;
-        ViewBag.ProductosPreparadosCatalogo = productosPreparadosCatalogo;
-
-
-
         ViewBag.MateriasPrimas = new SelectList(
                 db.tabla_materias_primas.ToList()
                 .Select(mp => new {
                     Value = mp.id,
-                    Text = $"ID: {mp.id} | Nombre: {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
+                    Text = $"ID: {mp.id} | {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
                 }),
                 "Value", "Text"
             );
@@ -1954,7 +1930,7 @@ public class InsumosController : Controller
             db.tabla_productos_preparados.ToList()
                 .Select(pp => new {
                     Value = pp.id,
-                    Text = $"ID: {pp.id} | Nombre: {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
+                    Text = $"ID: {pp.id} | {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
                 }),
             "Value", "Text"
         );
@@ -2068,33 +2044,11 @@ public class InsumosController : Controller
         {
             ViewBag.Errores = errores;
 
-            // Obtener las materias primas para el catálogo
-            var materiasPrimasCatalogo = db.tabla_materias_primas
-                .Select(mp => new
-                {
-                    id = mp.id,
-                    nombre = mp.nombre,
-                    costo_por_gramo_con_merma = mp.costo_por_gramo_con_merma ?? 0m // Asegurar que no sea nulo
-                }).ToList();
-
-            // Obtener los productos preparados para el catálogo
-            var productosPreparadosCatalogo = db.tabla_productos_preparados
-                .Select(pp => new
-                {
-                    id = pp.id,
-                    nombre = pp.nombre,
-                    costo_por_peso = pp.costo_por_peso ?? 0m // Asegurar que no sea nulo
-                }).ToList();
-
-            // Asignar los catálogos al ViewBag
-            ViewBag.MateriasPrimasCatalogo = materiasPrimasCatalogo;
-            ViewBag.ProductosPreparadosCatalogo = productosPreparadosCatalogo;
-
             ViewBag.MateriasPrimas = new SelectList(
                 db.tabla_materias_primas.ToList()
                 .Select(mp => new {
                     Value = mp.id,
-                    Text = $"ID: {mp.id} | Nombre: {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
+                    Text = $"ID: {mp.id} | {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
                 }),
                 "Value", "Text"
             );
@@ -2103,7 +2057,7 @@ public class InsumosController : Controller
                 db.tabla_productos_preparados.ToList()
                     .Select(pp => new {
                         Value = pp.id,
-                        Text = $"ID: {pp.id} | Nombre: {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
+                        Text = $"ID: {pp.id} | {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
                     }),
                 "Value", "Text"
             );
@@ -2310,34 +2264,11 @@ public class InsumosController : Controller
                 }).ToList()
         }).ToList();
 
-        // Obtener las materias primas para el catálogo
-        var materiasPrimasCatalogo = db.tabla_materias_primas
-            .Select(mp => new
-            {
-                id = mp.id,
-                nombre = mp.nombre,
-                costo_por_gramo_con_merma = mp.costo_por_gramo_con_merma ?? 0m // Asegurar que no sea nulo
-            }).ToList();
-
-        // Obtener los productos preparados para el catálogo
-        var productosPreparadosCatalogo = db.tabla_productos_preparados
-            .Select(pp => new
-            {
-                id = pp.id,
-                nombre = pp.nombre,
-                costo_por_peso = pp.costo_por_peso ?? 0m // Asegurar que no sea nulo
-            }).ToList();
-
-        // Asignar los catálogos al ViewBag
-        ViewBag.MateriasPrimasCatalogo = materiasPrimasCatalogo;
-        ViewBag.ProductosPreparadosCatalogo = productosPreparadosCatalogo;
-
-
         ViewBag.MateriasPrimas = new SelectList(
                 db.tabla_materias_primas.ToList()
                 .Select(mp => new {
                     Value = mp.id,
-                    Text = $"ID: {mp.id} | Nombre: {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
+                    Text = $"ID: {mp.id} | {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
                 }),
                 "Value", "Text"
             );
@@ -2346,7 +2277,7 @@ public class InsumosController : Controller
             db.tabla_productos_preparados.ToList()
                 .Select(pp => new {
                     Value = pp.id,
-                    Text = $"ID: {pp.id} | Nombre: {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
+                    Text = $"ID: {pp.id} | {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
                 }),
             "Value", "Text"
         );
@@ -2464,34 +2395,11 @@ public class InsumosController : Controller
             ViewBag.Errores = errores;
             ViewBag.Editando = true;
 
-            // Obtener las materias primas para el catálogo
-            var materiasPrimasCatalogo = db.tabla_materias_primas
-                .Select(mp => new
-                {
-                    id = mp.id,
-                    nombre = mp.nombre,
-                    costo_por_gramo_con_merma = mp.costo_por_gramo_con_merma ?? 0m // Asegurar que no sea nulo
-                }).ToList();
-
-            // Obtener los productos preparados para el catálogo
-            var productosPreparadosCatalogo = db.tabla_productos_preparados
-                .Select(pp => new
-                {
-                    id = pp.id,
-                    nombre = pp.nombre,
-                    costo_por_peso = pp.costo_por_peso ?? 0m // Asegurar que no sea nulo
-                }).ToList();
-
-            // Asignar los catálogos al ViewBag
-            ViewBag.MateriasPrimasCatalogo = materiasPrimasCatalogo;
-            ViewBag.ProductosPreparadosCatalogo = productosPreparadosCatalogo;
-
-
             ViewBag.MateriasPrimas = new SelectList(
                 db.tabla_materias_primas.ToList()
                 .Select(mp => new {
                     Value = mp.id,
-                    Text = $"ID: {mp.id} | Nombre: {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
+                    Text = $"ID: {mp.id} | {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
                 }),
                 "Value", "Text"
             );
@@ -2500,7 +2408,7 @@ public class InsumosController : Controller
                 db.tabla_productos_preparados.ToList()
                     .Select(pp => new {
                         Value = pp.id,
-                        Text = $"ID: {pp.id} | Nombre: {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
+                        Text = $"ID: {pp.id} | {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
                     }),
                 "Value", "Text"
             );
@@ -2677,8 +2585,10 @@ public class InsumosController : Controller
                 pf.factura_por_insumo.ToString().Contains(search) ||
                 pf.costo_total_de_impresion_de_factura.ToString().Contains(search) ||
                 pf.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia.ToString().Contains(search) ||
-                pf.iva.ToString().Contains(search) ||
-                pf.impuesto_de_servicio.ToString().Contains(search) ||
+                pf.porcentaje_de_iva.ToString().Contains(search) ||
+                pf.porcentaje_de_servicio.ToString().Contains(search) ||
+                pf.costo_con_iva.ToString().Contains(search) ||
+                pf.costo_con_servicio.ToString().Contains(search) ||
                 pf.envio.ToString().Contains(search) ||
                 pf.plataforma_de_envio.Contains(search) ||
                 pf.precio_final_sugerido.ToString().Contains(search) ||
@@ -2737,8 +2647,10 @@ public class InsumosController : Controller
                 costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0m,
                 factura_total = pf.factura_total ?? 0m,
                 factura_por_insumo = pf.factura_por_insumo ?? 0m,
-                iva = pf.iva ?? 0m,
-                impuesto_de_servicio = pf.impuesto_de_servicio ?? 0m,
+                porcentaje_de_iva = pf.porcentaje_de_iva ?? 0m,
+                porcentaje_de_servicio = pf.porcentaje_de_servicio ?? 0m,
+                costo_con_iva = pf.costo_con_iva ?? 0m,
+                costo_con_servicio = pf.costo_con_servicio ?? 0m,
                 envio = pf.envio ?? 0m,
                 plataforma_de_envio = pf.plataforma_de_envio,
                 precio_final_sugerido = pf.precio_final_sugerido ?? 0m,
@@ -2786,19 +2698,19 @@ public class InsumosController : Controller
         };
         ViewBag.Search = search;
 
-        ViewBag.Recetas = new SelectList(
-            db.tabla_costos_recetas.ToList().Select(r => new {
-                Value = r.id,
-                Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2}"
-            }),
-            "Value", "Text"
-        ); 
-        
+        ViewBag.Recetas = db.tabla_costos_recetas.ToList()
+                .Select(r => new SelectListItem
+                {
+                    Value = r.id.ToString(),
+                    Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2} | Porción: {r.porcion}"
+                })
+                .ToList();
+
         ViewBag.EmpaquesDecoraciones = new SelectList(
             db.tabla_empaques_decoraciones.ToList()
             .Select(ed => new {
             Value = ed.id,
-            Text = $"ID: {ed.id} | Nombre: {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad}"
+            Text = $"ID: {ed.id} | {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad:N2}"
             }),
             "Value", "Text"
         );
@@ -2807,7 +2719,7 @@ public class InsumosController : Controller
             db.tabla_implementos.ToList()
                 .Select(i => new {
                     Value = i.id,
-                    Text = $"ID: {i.id} | Nombre: {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad}"
+                    Text = $"ID: {i.id} | {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad:N2}"
                 }),
             "Value", "Text"
         );
@@ -2816,7 +2728,7 @@ public class InsumosController : Controller
             db.tabla_suministros.ToList()
                 .Select(s => new {
                     Value = s.id,
-                    Text = $"ID: {s.id} | Nombre: {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad}"
+                    Text = $"ID: {s.id} | {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad:N2}"
                 }),
             "Value", "Text"
         ); 
@@ -2893,10 +2805,13 @@ public class InsumosController : Controller
                     errores.Add($"Fila {i + 1} de Empaques/Decoraciones: No puede dejar filas vacías.");
                     continue;
                 }
+
                 if (ed.id_empaque_decoracion_utilizado == 0)
                     errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Debe seleccionar un empaque/decoración.");
+                
                 if (ed.cantidad <= 0)
                     errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La cantidad debe ser mayor a cero.");
+                
                 if (string.IsNullOrWhiteSpace(ed.unidad_de_medida))
                     errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La unidad de medida es obligatoria.");
 
@@ -2930,10 +2845,13 @@ public class InsumosController : Controller
                     errores.Add($"Fila {i + 1} de Implementos: No puede dejar filas vacías.");
                     continue;
                 }
+                
                 if (impl.id_implemento_utilizado == 0)
                     errores.Add($"Fila {i + 1} de Implementos: Debe seleccionar un implemento.");
+                
                 if (impl.cantidad <= 0)
                     errores.Add($"Fila {i + 1} de Implementos: La cantidad debe ser mayor a cero.");
+                
                 if (string.IsNullOrWhiteSpace(impl.unidad_de_medida))
                     errores.Add($"Fila {i + 1} de Implementos: La unidad de medida es obligatoria.");
 
@@ -2967,10 +2885,13 @@ public class InsumosController : Controller
                     errores.Add($"Fila {i + 1} de Suministros: No puede dejar filas vacías.");
                     continue;
                 }
+                
                 if (sumn.id_suministro_utilizado == 0)
                     errores.Add($"Fila {i + 1} de Suministros: Debe seleccionar un suministro.");
+                
                 if (sumn.cantidad <= 0)
                     errores.Add($"Fila {i + 1} de Suministros: La cantidad debe ser mayor a cero.");
+                
                 if (string.IsNullOrWhiteSpace(sumn.unidad_de_medida))
                     errores.Add($"Fila {i + 1} de Suministros: La unidad de medida es obligatoria.");
 
@@ -2996,19 +2917,19 @@ public class InsumosController : Controller
         {
             ViewBag.Errores = errores;
 
-            ViewBag.Recetas = new SelectList(
-                db.tabla_costos_recetas.ToList().Select(r => new {
-                    Value = r.id,
-                    Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2}"
-                }),
-                "Value", "Text", producto_final.id_receta
-            );
+            ViewBag.Recetas = db.tabla_costos_recetas.ToList()
+                .Select(r => new SelectListItem
+                {
+                    Value = r.id.ToString(),
+                    Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2} | Porción: {r.porcion}"
+                })
+                .ToList();
 
             ViewBag.EmpaquesDecoraciones = new SelectList(
                 db.tabla_empaques_decoraciones.ToList()
                 .Select(ed => new {
                     Value = ed.id,
-                    Text = $"ID: {ed.id} | Nombre: {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad}"
+                    Text = $"ID: {ed.id} | {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad:N2}"
                 }),
                 "Value", "Text"
             );
@@ -3017,7 +2938,7 @@ public class InsumosController : Controller
                 db.tabla_implementos.ToList()
                     .Select(i => new {
                         Value = i.id,
-                        Text = $"ID: {i.id} | Nombre: {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad}"
+                        Text = $"ID: {i.id} | {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad:N2}"
                     }),
                 "Value", "Text"
             );
@@ -3026,7 +2947,7 @@ public class InsumosController : Controller
                 db.tabla_suministros.ToList()
                     .Select(s => new {
                         Value = s.id,
-                        Text = $"ID: {s.id} | Nombre: {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad}"
+                        Text = $"ID: {s.id} | {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad:N2}"
                     }),
                 "Value", "Text"
             );
@@ -3046,8 +2967,10 @@ public class InsumosController : Controller
                 factura_total = pf.factura_total ?? 0m,
                 factura_por_insumo = pf.factura_por_insumo ?? 0m,
                 costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0m,
-                iva = pf.iva ?? 0m,
-                impuesto_de_servicio = pf.impuesto_de_servicio ?? 0m,
+                porcentaje_de_iva = pf.porcentaje_de_iva ?? 0m,
+                porcentaje_de_servicio = pf.porcentaje_de_servicio ?? 0m,
+                costo_con_iva = pf.costo_con_iva ?? 0m,
+                costo_con_servicio = pf.costo_con_servicio ?? 0m,
                 envio = pf.envio ?? 0m,
                 plataforma_de_envio = pf.plataforma_de_envio,
                 precio_final_sugerido = pf.precio_final_sugerido ?? 0m,
@@ -3103,16 +3026,13 @@ public class InsumosController : Controller
         decimal totalInsumosConGanancia = facturaTotal * 1.10m;
 
         // IVA y Servicio
-        decimal ivaPorcentaje = 0;
-        decimal servicioPorcentaje = 0;
-        decimal.TryParse(Request.Form["iva_porcentaje"], out ivaPorcentaje);
-        decimal.TryParse(Request.Form["servicio_porcentaje"], out servicioPorcentaje);
-
+        decimal porcentajeIva = producto_final.porcentaje_de_iva;
+        decimal porcentajeServicio = producto_final.porcentaje_de_servicio;
         decimal baseImpuestos = costoConUtilidad + totalInsumosConGanancia;
-        decimal iva = baseImpuestos * (ivaPorcentaje / 100m);
-        decimal servicio = baseImpuestos * (servicioPorcentaje / 100m);
+        decimal costoConIva = baseImpuestos * (porcentajeIva / 100m);
+        decimal costoConServicio = baseImpuestos * (porcentajeServicio / 100m);
 
-        // Envío
+        // Envío según plataforma
         decimal envio = 0;
         switch (producto_final.plataforma_de_envio)
         {
@@ -3132,7 +3052,7 @@ public class InsumosController : Controller
         }
 
         // Precio final sugerido
-        decimal precioFinal = baseImpuestos + iva + servicio + envio;
+        decimal precioFinalSugerido = baseImpuestos + costoConIva + costoConServicio + envio;
 
         var precio = new tabla_precios_finales_sugeridos
         {
@@ -3151,11 +3071,13 @@ public class InsumosController : Controller
             costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia = totalInsumosConGanancia,
             factura_por_insumo = facturaPorInsumo,
             factura_total = facturaTotal,
-            iva = iva,
-            impuesto_de_servicio = servicio,
+            porcentaje_de_iva = porcentajeIva,
+            porcentaje_de_servicio = porcentajeServicio,
+            costo_con_iva = costoConIva,
+            costo_con_servicio = costoConServicio,
             envio = envio,
             plataforma_de_envio = producto_final.plataforma_de_envio,
-            precio_final_sugerido = precioFinal
+            precio_final_sugerido = precioFinalSugerido
         };
         db.tabla_precios_finales_sugeridos.Add(precio);
         db.SaveChanges();
@@ -3236,8 +3158,10 @@ public class InsumosController : Controller
             costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0m,
             factura_total = pf.factura_total ?? 0m,
             factura_por_insumo = pf.factura_por_insumo ?? 0m,
-            iva = pf.iva ?? 0m,
-            impuesto_de_servicio = pf.impuesto_de_servicio ?? 0m,
+            porcentaje_de_iva = pf.porcentaje_de_iva ?? 0m,
+            porcentaje_de_servicio = pf.porcentaje_de_servicio ?? 0m,
+            costo_con_iva = pf.costo_con_iva ?? 0m,
+            costo_con_servicio = pf.costo_con_servicio ?? 0m,
             envio = pf.envio ?? 0m,
             plataforma_de_envio = pf.plataforma_de_envio,
             precio_final_sugerido = pf.precio_final_sugerido ?? 0m,
@@ -3298,8 +3222,10 @@ public class InsumosController : Controller
             costo_total_de_impresion_de_factura = prodfinal.costo_total_de_impresion_de_factura ?? 0m,
             factura_total = prodfinal.factura_total ?? 0m,
             factura_por_insumo = prodfinal.factura_por_insumo ?? 0m,
-            iva = prodfinal.iva ?? 0m,
-            impuesto_de_servicio = prodfinal.impuesto_de_servicio ?? 0m,
+            porcentaje_de_iva = prodfinal.porcentaje_de_iva ?? 0m,
+            porcentaje_de_servicio = prodfinal.porcentaje_de_servicio ?? 0m,
+            costo_con_iva = prodfinal.costo_con_iva ?? 0m,
+            costo_con_servicio = prodfinal.costo_con_servicio ?? 0m,
             envio = prodfinal.envio ?? 0m,
             plataforma_de_envio = prodfinal.plataforma_de_envio,
             precio_final_sugerido = prodfinal.precio_final_sugerido ?? 0m,
@@ -3345,19 +3271,19 @@ public class InsumosController : Controller
                 }).ToList()
         }).ToList();
 
-        ViewBag.Recetas = new SelectList(
-                db.tabla_costos_recetas.ToList().Select(r => new {
-                    Value = r.id,
-                    Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2}"
-                }),
-                "Value", "Text", producto_final.id_receta
-        ); 
-        
+        ViewBag.Recetas = db.tabla_costos_recetas.ToList()
+                .Select(r => new SelectListItem
+                {
+                    Value = r.id.ToString(),
+                    Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2} | Porción: {r.porcion}",
+                    Selected = r.id == producto_final.id_receta
+                }).ToList();
+
         ViewBag.EmpaquesDecoraciones = new SelectList(
             db.tabla_empaques_decoraciones.ToList()
             .Select(ed => new {
                 Value = ed.id,
-                Text = $"ID: {ed.id} | Nombre: {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad}"
+                Text = $"ID: {ed.id} | {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad:N2}"
             }),
             "Value", "Text"
         );
@@ -3366,7 +3292,7 @@ public class InsumosController : Controller
             db.tabla_implementos.ToList()
                 .Select(i => new {
                     Value = i.id,
-                    Text = $"ID: {i.id} | Nombre: {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad}"
+                    Text = $"ID: {i.id} | {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad:N2}"
                 }),
             "Value", "Text"
         );
@@ -3375,7 +3301,7 @@ public class InsumosController : Controller
             db.tabla_suministros.ToList()
                 .Select(s => new {
                     Value = s.id,
-                    Text = $"ID: {s.id} | Nombre: {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad}"
+                    Text = $"ID: {s.id} | {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad:N2}"
                 }),
             "Value", "Text"
         );
@@ -3457,10 +3383,13 @@ public class InsumosController : Controller
                     errores.Add($"Fila {i + 1} de Empaques/Decoraciones: No puede dejar filas vacías.");
                     continue;
                 }
+                
                 if (ed.id_empaque_decoracion_utilizado == 0)
                     errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Debe seleccionar un empaque/decoración.");
+                
                 if (ed.cantidad <= 0)
                     errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La cantidad debe ser mayor a cero.");
+                
                 if (string.IsNullOrWhiteSpace(ed.unidad_de_medida))
                     errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La unidad de medida es obligatoria.");
 
@@ -3494,10 +3423,13 @@ public class InsumosController : Controller
                     errores.Add($"Fila {i + 1} de Implementos: No puede dejar filas vacías.");
                     continue;
                 }
+                
                 if (impl.id_implemento_utilizado == 0)
                     errores.Add($"Fila {i + 1} de Implementos: Debe seleccionar un implemento.");
+                
                 if (impl.cantidad <= 0)
                     errores.Add($"Fila {i + 1} de Implementos: La cantidad debe ser mayor a cero.");
+                
                 if (string.IsNullOrWhiteSpace(impl.unidad_de_medida))
                     errores.Add($"Fila {i + 1} de Implementos: La unidad de medida es obligatoria.");
 
@@ -3564,19 +3496,20 @@ public class InsumosController : Controller
             ViewBag.Errores = errores;
             ViewBag.Editando = true;
 
-            ViewBag.Recetas = new SelectList(
-                db.tabla_costos_recetas.ToList().Select(r => new {
-                    Value = r.id,
-                    Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2}"
-                }),
-                "Value", "Text", producto_final.id_receta
-            );
+            ViewBag.Recetas = db.tabla_costos_recetas.ToList()
+                .Select(r => new SelectListItem
+                {
+                    Value = r.id.ToString(),
+                    Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2} | Porción: {r.porcion}",
+                    Selected = r.id == producto_final.id_receta
+                })
+                .ToList();
 
             ViewBag.EmpaquesDecoraciones = new SelectList(
                 db.tabla_empaques_decoraciones.ToList()
                 .Select(ed => new {
                     Value = ed.id,
-                    Text = $"ID: {ed.id} | Nombre: {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad}"
+                    Text = $"ID: {ed.id} | {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad:N2}"
                 }),
                 "Value", "Text"
             );
@@ -3585,7 +3518,7 @@ public class InsumosController : Controller
                 db.tabla_implementos.ToList()
                     .Select(i => new {
                         Value = i.id,
-                        Text = $"ID: {i.id} | Nombre: {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad}"
+                        Text = $"ID: {i.id} | {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad:N2}"
                     }),
                 "Value", "Text"
             );
@@ -3594,7 +3527,7 @@ public class InsumosController : Controller
                 db.tabla_suministros.ToList()
                     .Select(s => new {
                         Value = s.id,
-                        Text = $"ID: {s.id} | Nombre: {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad}"
+                        Text = $"ID: {s.id} | {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad:N2}"
                     }),
                 "Value", "Text"
             ); 
@@ -3614,8 +3547,10 @@ public class InsumosController : Controller
                 costo_total_de_impresion_de_factura = pf.costo_total_de_impresion_de_factura ?? 0m,
                 factura_total = pf.factura_total ?? 0m,
                 factura_por_insumo = pf.factura_por_insumo ?? 0m,
-                iva = pf.iva ?? 0m,
-                impuesto_de_servicio = pf.impuesto_de_servicio ?? 0m,
+                porcentaje_de_iva = pf.porcentaje_de_iva ?? 0m,
+                porcentaje_de_servicio = pf.porcentaje_de_servicio ?? 0m,
+                costo_con_iva = pf.costo_con_iva ?? 0m,
+                costo_con_servicio = pf.costo_con_servicio ?? 0m,
                 envio = pf.envio ?? 0m,
                 plataforma_de_envio = pf.plataforma_de_envio,
             }).ToList();
@@ -3670,17 +3605,13 @@ public class InsumosController : Controller
         decimal totalInsumosConGanancia = facturaTotal * 1.10m;
 
         // IVA y Servicio
-        // Obtén los porcentajes digitados desde el formulario
-        decimal ivaPorcentaje = 0;
-        decimal servicioPorcentaje = 0;
-        decimal.TryParse(Request.Form["iva_porcentaje"], out ivaPorcentaje);
-        decimal.TryParse(Request.Form["servicio_porcentaje"], out servicioPorcentaje);
-
+        decimal porcentajeIva = producto_final.porcentaje_de_iva;
+        decimal porcentajeServicio = producto_final.porcentaje_de_servicio;
         decimal baseImpuestos = costoConUtilidad + totalInsumosConGanancia;
-        decimal iva = baseImpuestos * (ivaPorcentaje / 100m);
-        decimal servicio = baseImpuestos * (servicioPorcentaje / 100m);
+        decimal costoConIva = baseImpuestos * (porcentajeIva / 100m);
+        decimal costoConServicio = baseImpuestos * (porcentajeServicio / 100m);
 
-        // Envío
+        // Envío según plataforma
         decimal envio = 0;
         switch (producto_final.plataforma_de_envio)
         {
@@ -3700,7 +3631,7 @@ public class InsumosController : Controller
         }
 
         // Precio final sugerido
-        decimal precioFinal = baseImpuestos + iva + servicio + envio;
+        decimal precioFinalSugerido = baseImpuestos + costoConIva + costoConServicio + envio;
 
         // Actualizar campos principales
         p.id_receta = receta.id;
@@ -3718,11 +3649,13 @@ public class InsumosController : Controller
         p.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia = totalInsumosConGanancia;
         p.factura_por_insumo = facturaPorInsumo;
         p.factura_total = facturaTotal;
-        p.iva = iva;
-        p.impuesto_de_servicio = servicio;
+        p.porcentaje_de_iva = porcentajeIva;
+        p.porcentaje_de_servicio = porcentajeServicio;
+        p.costo_con_iva = costoConIva;
+        p.costo_con_servicio = costoConServicio;
         p.envio = envio;
         p.plataforma_de_envio = producto_final.plataforma_de_envio;
-        p.precio_final_sugerido = precioFinal;
+        p.precio_final_sugerido = precioFinalSugerido;
 
         // Eliminar detalles existentes
         var empaques = db.precios_empaques_decoraciones_utilizados.Where(x => x.id_precio_final_sugerido == p.id).ToList();
