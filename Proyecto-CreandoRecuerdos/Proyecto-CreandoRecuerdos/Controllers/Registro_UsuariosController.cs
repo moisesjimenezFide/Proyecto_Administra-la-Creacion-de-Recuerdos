@@ -2,12 +2,15 @@
 using Proyecto_CreandoRecuerdos.Models;
 using System;
 using System.Linq;
+using System.Text;
+using System.util;
 using System.Web.Mvc;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
     public class Registro_UsuariosController : Controller
     {
+        Utilitarios util = new Utilitarios();
 
         [HttpGet]
         public ActionResult registro_usuarios()
@@ -179,6 +182,53 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 context.sp_actualizar_usuario(idUsuario, model.nombre, model.id_rol);
             }
             return RedirectToAction("gestion_usuarios");
+        }
+
+
+        // Metodo para cambiar la contrasenna
+        [HttpGet]
+        public ActionResult recuperar_contrasenna()
+        {
+            return View();
+        }
+
+        // Metodo para cambiar la contrasenna
+        [HttpPost]
+        public ActionResult recuperar_contrasenna(UsuarioModel model)
+        {
+            using (var context = new BD_CREANDO_RECUERDOSEntities())
+                {
+                    var info = context.tabla_usuarios.Where(x => x.correo == model.correo
+                                                       && x.activo == true).FirstOrDefault();
+                    if (info != null)
+                    {
+                        var codigoTemporal = CrearCodigo();
+                        info.contrasenna = codigoTemporal;
+                        context.SaveChanges();
+
+                        string mensaje = $"Hola {info.nombre}, por favor utilice el siguiente código para ingresar al sistema: {codigoTemporal}";
+                        var notificacion = util.EnviarCorreo(info.correo, mensaje, "Acceso a DataGym");
+
+                        if (notificacion)
+                            return RedirectToAction("Login", "Usuario");
+                    }
+
+                    ViewBag.Mensaje = "Su acceso no se ha podido reestablecer correctamente";
+                    return View(model);
+                }
+        }
+
+        private string CrearCodigo()
+        {
+            int length = 5;
+            const string valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            StringBuilder res = new StringBuilder();
+            Random rnd = new Random();
+            while (0 < length--)
+            {
+                res.Append(valid[rnd.Next(valid.Length)]);
+            }
+            return res.ToString();
         }
 
 

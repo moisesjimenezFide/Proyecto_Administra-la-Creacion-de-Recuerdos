@@ -378,6 +378,7 @@
     <Compile Include="Helpers\ActividadHelper.cs" />
     <Compile Include="Models\ActividadModel.cs" />
     <Compile Include="Models\InsumosModel.cs" />
+    <Compile Include="Models\Utilitarios.cs" />
     <Compile Include="ViewModels\CostosOperativosViewModel.cs" />
     <Compile Include="ViewModels\EmpleadosDisponiblesViewModel.cs" />
     <Compile Include="ViewModels\HistorialVentasViewModel.cs" />
@@ -574,6 +575,7 @@
     <Content Include="Views\Insumos\precios_finales_sugeridos.cshtml" />
     <Content Include="Views\Insumos\productos_preparados.cshtml" />
     <Content Include="Views\Insumos\suministros.cshtml" />
+    <Content Include="Views\Registro_Usuarios\recuperar_contrasenna.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

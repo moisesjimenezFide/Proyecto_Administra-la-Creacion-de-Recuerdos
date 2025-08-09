@@ -1,0 +1,34 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.UsuarioModel
+
+@{
+    ViewData["Title"] = "Recuperar Contraseña";
+    var errorMessage = TempData["ErrorMessage"] as string;
+    var successMessage = TempData["SuccessMessage"] as string;
+}
+
+<div class="container mt-5" style="max-width: 400px;">
+    <h2 class="text-center mb-4" style="color: #E27AB0;">Recuperar Contraseña</h2>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success">@successMessage</div>
+    }
+
+    @using (Html.BeginForm("recuperar_contrasenna", "Registro_Usuarios", FormMethod.Post))
+    {
+        <div class="mb-3">
+            <label for="correo" class="form-label fw-bold">Correo Electrónico</label>
+            @Html.TextBoxFor(m => m.correo, new { @class = "form-control", @type = "email", @id = "correo", @placeholder = "correo@ejemplo.com", required = "required" })
+            @Html.ValidationMessageFor(m => m.correo, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" style="background-color: #E27AB0; border: none;">
+            Enviar instrucciones
+        </button>
+    }
+</div>
