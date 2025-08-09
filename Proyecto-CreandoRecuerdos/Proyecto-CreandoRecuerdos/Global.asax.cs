@@ -1,5 +1,4 @@
-﻿using Stripe;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,7 +13,6 @@ namespace Proyecto_CreandoRecuerdos
     {
         protected void Application_Start()
         {
-            StripeConfiguration.ApiKey = "sk_test_51RpDQn4CTUg5t4Leo5Mp1midGwRbLfoHhhndiSwNa1ns5mORrHjQxYPWAiJdCi7ePnP8TQm5XI500rQTxcfvITju00UVnxS9z0";
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

@@ -46,12 +46,6 @@
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="tarjeta-tab" data-bs-toggle="tab"
-                            data-bs-target="#tarjeta" type="button" role="tab">
-                        <i class="fas fa-credit-card me-1"></i> Tarjeta
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
                     <button class="nav-link" id="sinpe-tab" data-bs-toggle="tab"
                             data-bs-target="#sinpe" type="button" role="tab">
                         <i class="fas fa-mobile-alt me-1"></i> SINPE
@@ -65,47 +59,6 @@
                     <div class="alert alert-info mb-3">
                         <i class="fas fa-info-circle me-2"></i>
                         Por favor traiga el monto exacto o prepare su cambio.
-                    </div>
-                    <div class="mb-3">
-                        <label for="montoRecibido" class="form-label">Monto Recibido *</label>
-                        <input type="number" class="form-control" id="montoRecibido"
-                               min="@Model.Total" step="0.01" required
-                               oninput="calcularCambio(@Model.Total)">
-                        <div class="invalid-feedback">Por favor ingrese el monto recibido</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cambio" class="form-label">Cambio</label>
-                        <input type="text" class="form-control" id="cambio" readonly
-                               value="₡0.00">
-                    </div>
-                </div>
-
-                <!-- Tarjeta -->
-                <div class="tab-pane fade" id="tarjeta" role="tabpanel">
-                    <div class="mb-3">
-                        <label for="numeroTarjeta" class="form-label">Número de Tarjeta *</label>
-                        <input type="text" class="form-control" id="numeroTarjeta"
-                               placeholder="1234 5678 9012 3456" maxlength="19" required>
-                        <div class="invalid-feedback">Por favor ingrese un número de tarjeta válido</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="fechaExpiracion" class="form-label">Fecha de Expiración *</label>
-                            <input type="text" class="form-control" id="fechaExpiracion"
-                                   placeholder="MM/AA" maxlength="5" required>
-                            <div class="invalid-feedback">Formato inválido. Use MM/AA</div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="cvv" class="form-label">CVV *</label>
-                            <input type="text" class="form-control" id="cvv"
-                                   placeholder="123" maxlength="4" required>
-                            <small class="text-muted">3 o 4 dígitos en el reverso</small>
-                            <div class="invalid-feedback">CVV inválido</div>
-                        </div>
-                    </div>
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        Asegúrese de que los datos de la tarjeta sean correctos.
                     </div>
                 </div>
 
@@ -140,7 +93,6 @@
 
 @section Scripts {
     <script>
-        // SCRIPTS HECHOS CON LA AYUDA DE IA
         // Función para calcular el cambio en efectivo
         function calcularCambio(total) {
             const montoRecibido = parseFloat(document.getElementById('montoRecibido').value) || 0;
@@ -161,82 +113,10 @@
             }
         }
 
-        // Validación de tarjeta con algoritmo de Luhn
-        function validarTarjeta(numero) {
-            // Eliminar espacios y caracteres no numéricos
-            numero = numero.replace(/\s+/g, '').replace(/-/g, '');
-
-            // Verificar que solo contenga números y tenga longitud válida
-            if (!/^\d{13,19}$/.test(numero)) return false;
-
-            // Algoritmo de Luhn
-            let sum = 0;
-            let alternate = false;
-            for (let i = numero.length - 1; i >= 0; i--) {
-                let digit = parseInt(numero.charAt(i));
-                if (alternate) {
-                    digit *= 2;
-                    if (digit > 9) digit -= 9;
-                }
-                sum += digit;
-                alternate = !alternate;
-            }
-            return sum % 10 === 0;
-        }
-
-        // Validación de fecha de expiración
-        function validarFechaExpiracion(fecha) {
-            const [mes, ano] = fecha.split('/').map(Number);
-            if (!mes || !ano || mes < 1 || mes > 12) return false;
-
-            const ahora = new Date();
-            const anoActual = ahora.getFullYear() % 100;
-            const mesActual = ahora.getMonth() + 1;
-
-            if (ano < anoActual) return false;
-            if (ano === anoActual && mes < mesActual) return false;
-
-            return true;
-        }
-
-        // Validación de CVV
-        function validarCVV(cvv) {
-            return /^\d{3,4}$/.test(cvv);
-        }
-
         // Validación de teléfono SINPE
         function validarTelefonoSinpe(telefono) {
             return /^\d{8}$/.test(telefono);
         }
-
-        // Event listeners para validación en tiempo real
-        document.getElementById('numeroTarjeta').addEventListener('input', function(e) {
-            const valido = validarTarjeta(e.target.value);
-            e.target.classList.toggle('is-invalid', !valido);
-            e.target.classList.toggle('is-valid', valido);
-
-            // Formatear con espacios cada 4 dígitos
-            if (valido) {
-                e.target.value = e.target.value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
-            }
-        });
-
-        document.getElementById('fechaExpiracion').addEventListener('input', function(e) {
-            // Auto-insertar barra después de 2 dígitos
-            if (e.target.value.length === 2 && !e.target.value.includes('/')) {
-                e.target.value += '/';
-            }
-
-            const valido = validarFechaExpiracion(e.target.value);
-            e.target.classList.toggle('is-invalid', !valido);
-            e.target.classList.toggle('is-valid', valido);
-        });
-
-        document.getElementById('cvv').addEventListener('input', function(e) {
-            const valido = validarCVV(e.target.value);
-            e.target.classList.toggle('is-invalid', !valido);
-            e.target.classList.toggle('is-valid', valido);
-        });
 
         document.getElementById('telefonoSinpe').addEventListener('input', function(e) {
             const valido = validarTelefonoSinpe(e.target.value);
@@ -244,19 +124,15 @@
             e.target.classList.toggle('is-valid', valido);
         });
 
-        // Configurar evento para el botón de confirmar pago
+        // Botón confirmar pago
         document.getElementById('confirmarPago').addEventListener('click', function() {
             const metodoPago = document.querySelector('#metodosPagoTab .nav-link.active').id.replace('-tab', '');
             const pagoData = {
                 MetodoPago: metodoPago,
-                NumeroTarjeta: document.getElementById('numeroTarjeta')?.value,
-                FechaExpiracion: document.getElementById('fechaExpiracion')?.value,
-                CVV: document.getElementById('cvv')?.value,
                 TelefonoSinpe: document.getElementById('telefonoSinpe')?.value,
                 MontoRecibido: parseFloat(document.getElementById('montoRecibido')?.value) || 0
             };
 
-            // Validar según el método de pago seleccionado
             let valido = true;
             let mensajeError = '';
 
@@ -268,19 +144,6 @@
                     } else if (pagoData.MontoRecibido < @Model.Total) {
                         valido = false;
                         mensajeError = 'El monto recibido es menor al total del pedido';
-                    }
-                    break;
-
-                case 'tarjeta':
-                    if (!validarTarjeta(pagoData.NumeroTarjeta)) {
-                        valido = false;
-                        mensajeError = 'Número de tarjeta inválido';
-                    } else if (!validarFechaExpiracion(pagoData.FechaExpiracion)) {
-                        valido = false;
-                        mensajeError = 'Fecha de expiración inválida o vencida';
-                    } else if (!validarCVV(pagoData.CVV)) {
-                        valido = false;
-                        mensajeError = 'CVV inválido (debe tener 3 o 4 dígitos)';
                     }
                     break;
 
@@ -301,18 +164,14 @@
                 return;
             }
 
-            // Mostrar loading
             const btn = this;
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Procesando...';
             btn.disabled = true;
 
-            // Enviar datos al servidor
             fetch('/Pedidos/ProcesarPago', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(pagoData)
             })
             .then(response => response.json())

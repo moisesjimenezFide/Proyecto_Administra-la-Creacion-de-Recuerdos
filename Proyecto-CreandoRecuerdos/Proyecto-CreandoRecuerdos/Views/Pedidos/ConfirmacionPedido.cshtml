@@ -39,7 +39,18 @@
                     {
                         <div class="alert alert-info mt-3">
                             <h5><i class="fas fa-mobile-alt me-2"></i> Pago con SINPE Móvil</h5>
-                            <p class="mb-0">Debe realizar el pago por SINPE Móvil con el número que proporcionó.</p>
+                            <p class="mb-0">Debe realizar el pago con el número que proporcionó.</p>
+                            <p class="mb-0">El pago debe realizarse al número <strong>83688310</strong> a nombre de <strong>Marcela Valverde Solís</strong>.</p>
+                            <p class="mb-0">En el detalle, colocar <strong>@Model.NumeroPedido</strong>.</p>
+                            <p class="mb-0">
+                                Enviar captura al siguiente enlace:
+                                <a href="https://wa.me/50683688310?text=Hola%20quiero%20m%C3%A1s%20informaci%C3%B3n"
+                                   class="whatsapp-float"
+                                   target="_blank">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                </a>
+                            </p>
+                            <p class="mb-0">Al recoger el pedido, proporcionar el PIN: <strong>@Model.Pin</strong>.</p>
                         </div>
                     }
                     else if (!string.IsNullOrEmpty(Model.TelefonoMostrado))
@@ -49,6 +60,9 @@
                             <p>Teléfono registrado: <strong>@Model.TelefonoSinpe</strong></p>
                         </div>
                     }
+
+
+
                 </div>
                 <div class="col-md-6">
                     <h4><i class="fas fa-list me-2"></i>Productos</h4>
@@ -74,24 +88,6 @@
                     </ul>
                 </div>
             </div>
-
-            <div class="alert alert-info mt-4">
-                <h5><i class="fas fa-info-circle me-2"></i>Instrucciones para Recoger tu Pedido</h5>
-                <ul class="mb-0">
-                    <li>Preséntate en el mostrador con tu <strong>Número de Pedido: @Model.NumeroPedido</strong></li>
-                    <li>Proporciona tu <strong>PIN: @Model.Pin</strong> para verificar tu identidad</li>
-                    @if (Model.MetodoPago == "Efectivo")
-                    {
-                        <li>Realiza el pago en efectivo al momento de recoger</li>
-                    }
-                    @if (!string.IsNullOrEmpty(Model.TelefonoSinpe))
-                    {
-                        <li><strong>Pago realizado por:</strong> @Model.NombreCliente</li>
-
-                    }
-                </ul>
-            </div>
-
             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                 <a href="@Url.Action("Pedidos", "Pedidos")" class="btn btn-primary">
                     <i class="fas fa-utensils me-2"></i>Realizar otro pedido

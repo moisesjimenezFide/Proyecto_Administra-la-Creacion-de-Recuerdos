@@ -99,9 +99,6 @@
     <Reference Include="SkiaSharp, Version=3.119.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\SkiaSharp.3.119.0\lib\net462\SkiaSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Stripe.net, Version=48.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Stripe.net.48.3.0\lib\net461\Stripe.net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -375,7 +372,6 @@
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
     <Compile Include="Controllers\PresentacionController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
-    <Compile Include="Controllers\StripeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
