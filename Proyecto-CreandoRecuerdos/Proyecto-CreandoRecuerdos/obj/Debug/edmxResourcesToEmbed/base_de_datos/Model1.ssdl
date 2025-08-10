@@ -74,7 +74,6 @@
     <Property Name="id_registro_afectado" Type="int" />
     <Property Name="valores_anteriores" Type="nvarchar(max)" />
     <Property Name="valores_nuevos" Type="nvarchar(max)" />
-    <Property Name="ip_solicitud" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="tabla_categorias">
     <Key>
@@ -873,7 +872,6 @@
     <Parameter Name="id_registro_afectado" Type="int" Mode="In" />
     <Parameter Name="valores_anteriores" Type="nvarchar(max)" Mode="In" />
     <Parameter Name="valores_nuevos" Type="nvarchar(max)" Mode="In" />
-    <Parameter Name="ip_solicitud" Type="nvarchar" Mode="In" />
     <Parameter Name="descripcion" Type="nvarchar(max)" Mode="In" />
   </Function>
   <Function Name="sp_registrar_valoracion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">

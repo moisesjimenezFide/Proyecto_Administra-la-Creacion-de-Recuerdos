@@ -73,12 +73,6 @@
                                 <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("Pedidos", "Pedidos")" asp-action="Index">Pedidos</a></li>
 
                                 <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("MisPedidos", "Pedidos")" asp-action="MisPedidos">Mis Pedidos</a></li>
-
-                                @if (rol == "1" || rol == "2") // Admin o empleado
-                                {
-                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("Gestionar", "Pedidos")" asp-action="Gestionar">Gestión de Pedidos</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("registro_vetas", "Pedidos")" asp-action="Gestionar">Gestión de Ventas</a></li>
-                                }
                             </ul>
                         </li>
                         @if (rol == "1")
@@ -112,8 +106,8 @@
                                             Gestión de Solicitudes de Ausencias
                                         </a>
                                     </li>
-                                    <li><a class="dropdown-item" asp-controller="Pedidos" asp-action="Gestionar">Gestionar Pedidos</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Ventas" asp-action="Registro">Gestión Ventas</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("Gestionar", "Pedidos")" asp-action="Gestionar">Gestión de Pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("registro_vetas", "Pedidos")" asp-action="Gestionar">Gestión de Ventas</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("HistorialActividades", "Admin")">Historial de Actividades</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("Index", "Reportes")">Reportes</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("menu_admin", "Menu")">Menú Admin</a></li>

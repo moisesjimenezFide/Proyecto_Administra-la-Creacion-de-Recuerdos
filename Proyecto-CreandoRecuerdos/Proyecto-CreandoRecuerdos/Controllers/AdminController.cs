@@ -79,7 +79,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         JsonConvert.DeserializeObject<Dictionary<string, object>>(a.valores_anteriores) : null,
                     ValoresNuevos = !string.IsNullOrEmpty(a.valores_nuevos) ?
                         JsonConvert.DeserializeObject<Dictionary<string, object>>(a.valores_nuevos) : null,
-                    IpSolicitud = a.ip_solicitud,
                     Descripcion = a.descripcion,
                     FechaHora = a.fecha_hora
                 }).ToList();

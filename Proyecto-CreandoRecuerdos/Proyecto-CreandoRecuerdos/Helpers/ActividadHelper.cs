@@ -32,7 +32,6 @@ namespace Proyecto_CreandoRecuerdos.Helpers
                         idRegistroAfectado,
                         valoresAnteriores != null ? SerializarDiccionario(valoresAnteriores) : null,
                         valoresNuevos != null ? SerializarDiccionario(valoresNuevos) : null,
-                        ip,
                         descripcion
                     );
                 }

@@ -118,19 +118,18 @@
             return /^\d{8}$/.test(telefono);
         }
 
-        document.getElementById('telefonoSinpe').addEventListener('input', function(e) {
+        document.getElementById('telefonoSinpe').addEventListener('input', function (e) {
             const valido = validarTelefonoSinpe(e.target.value);
             e.target.classList.toggle('is-invalid', !valido);
             e.target.classList.toggle('is-valid', valido);
         });
 
         // Botón confirmar pago
-        document.getElementById('confirmarPago').addEventListener('click', function() {
+        document.getElementById('confirmarPago').addEventListener('click', function () {
             const metodoPago = document.querySelector('#metodosPagoTab .nav-link.active').id.replace('-tab', '');
             const pagoData = {
                 MetodoPago: metodoPago,
                 TelefonoSinpe: document.getElementById('telefonoSinpe')?.value,
-                MontoRecibido: parseFloat(document.getElementById('montoRecibido')?.value) || 0
             };
 
             let valido = true;
@@ -138,13 +137,6 @@
 
             switch (metodoPago) {
                 case 'efectivo':
-                    if (pagoData.MontoRecibido <= 0) {
-                        valido = false;
-                        mensajeError = 'Ingrese un monto recibido válido';
-                    } else if (pagoData.MontoRecibido < @Model.Total) {
-                        valido = false;
-                        mensajeError = 'El monto recibido es menor al total del pedido';
-                    }
                     break;
 
                 case 'sinpe':
@@ -174,25 +166,25 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(pagoData)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = data.redirectUrl;
-                } else {
-                    throw new Error(data.message || 'Error al procesar el pago');
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error en el pago',
-                    text: error.message,
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        throw new Error(data.message || 'Error al procesar el pago');
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error en el pago',
+                        text: error.message,
+                    });
+                })
+                .finally(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
                 });
-            })
-            .finally(() => {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            });
         });
     </script>
 }

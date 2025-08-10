@@ -603,21 +603,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 // Validar datos según método de pago
                 switch (model.MetodoPago?.ToLower())
                 {
-                    case "tarjeta":
-                        if (string.IsNullOrEmpty(model.NumeroTarjeta) ||
-                            string.IsNullOrEmpty(model.FechaExpiracion) ||
-                            string.IsNullOrEmpty(model.CVV))
-                        {
-                            return Json(new
-                            {
-                                success = false,
-                                showAlert = true,
-                                title = "Datos incompletos",
-                                message = "Por favor complete todos los datos de la tarjeta",
-                                icon = "error"
-                            });
-                        }
-                        break;
 
                     case "sinpe":
                         if (string.IsNullOrEmpty(model.TelefonoSinpe) || !Regex.IsMatch(model.TelefonoSinpe, @"^\d{8}$"))
@@ -635,18 +620,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         break;
 
                     case "efectivo":
-                        if (model.MontoRecibido <= 0 || model.MontoRecibido < pedidoTemporal.Total)
-                        {
-                            return Json(new
-                            {
-                                success = false,
-                                showAlert = true,
-                                title = "Monto inválido",
-                                message = "Monto recibido inválido o insuficiente",
-                                icon = "error"
-                            });
 
-                        }
                         break;
 
                     default:
@@ -1106,6 +1080,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
+                if (model.Productos.Any(p => p.PrecioUnitario <= 0))
+                {
+                    return Json(new { success = false, message = "No se pueden incluir productos que requieren consultar precio" });
+                }
                 // Asegurar que las personalizaciones no sean nulas
                 if (model.Productos != null)
                 {

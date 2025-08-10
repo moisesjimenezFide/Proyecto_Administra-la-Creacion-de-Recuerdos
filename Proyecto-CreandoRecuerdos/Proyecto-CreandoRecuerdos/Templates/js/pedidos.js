@@ -260,6 +260,12 @@ class SistemaPedidos {
     }
 
     agregarAlCarrito(btn) {
+
+        if (parseFloat(btn.dataset.price) <= 0) {
+            this.mostrarAlerta('Consultar precio de este producto en el lugar o llamándonos al número 8888-8888', 'warning');
+            return;
+        }
+
         const producto = {
             id: parseInt(btn.dataset.id),
             nombre: btn.dataset.name,
