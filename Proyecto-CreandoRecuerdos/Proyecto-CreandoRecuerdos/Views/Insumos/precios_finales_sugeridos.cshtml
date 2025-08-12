@@ -165,7 +165,7 @@
                 {
                     var item = productoFinalEditado.EmpaquesDecoracionesUtilizados[i];
 
-                    <div class="row fila-insumo template-empaque_decoracion">
+                    <div class="row fila-insumo">
                         <div class="col-md-4">
                             <br>
                             <label>Nombre</label>
@@ -192,7 +192,7 @@
                         <div class="col-md-2">
                             <br>
                             <br>
-                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
+                            <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
                         </div>
 
                     </div>
@@ -224,12 +224,12 @@
                 <div class="col-md-2">
                     <br>
                     <br>
-                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
+                    <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
                 </div>
 
             </div>
 
-            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('empaques_decoraciones-container', 'template-empaque_decoracion')">+ Agregar Empaque o Decoración</button>
+            <button type="button" class="btn btn-custom-pink mt-2 btn-agregar-fila" data-container="empaques_decoraciones-container" data-template="template-empaque_decoracion">+ Agregar Empaque o Decoración</button>
         </div>
         <br />
 
@@ -242,7 +242,7 @@
                 {
                     var item = productoFinalEditado.ImplementosUtilizados[i];
 
-                    <div class="row fila-insumo template-implemento">
+                    <div class="row fila-insumo">
                         <div class="col-md-3">
                             <br>
                             <label>Nombre</label>
@@ -269,7 +269,7 @@
                         <div class="col-md-2">
                             <br>
                             <br>
-                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
+                            <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
                         </div>
                     </div>
                 }
@@ -300,12 +300,12 @@
                 <div class="col-md-2">
                     <br>
                     <br>
-                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
+                    <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
                 </div>
 
             </div>
 
-            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('implementos-container', 'template-implemento')">+ Agregar Implemento</button>
+            <button type="button" class="btn btn-custom-pink mt-2 btn-agregar-fila" data-container="implementos-container" data-template="template-implemento">+ Agregar Implemento</button>
         </div>
         <br />
 
@@ -318,7 +318,7 @@
                 {
                     var item = productoFinalEditado.SuministrosUtilizados[i];
 
-                    <div class="row fila-insumo template-suministro">
+                    <div class="row fila-insumo">
                         <div class="col-md-3">
                             <br>
                             <label>Nombre</label>
@@ -355,7 +355,7 @@
                                     </div>
                                 </div>
                                 <div class="col-3 d-flex align-items-center justify-content-end">
-                                    <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
+                                    <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
                                 </div>
                             </div>
                         </div>
@@ -399,13 +399,13 @@
                             </div>
                         </div>
                         <div class="col-3 d-flex align-items-center justify-content-end">
-                            <button type="button" class="btn btn-danger" onclick="eliminarFila(this)">- Eliminar</button>
+                            <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <button type="button" class="btn btn-custom-pink mt-2" onclick="agregarFila('suministros-container', 'template-suministro')">+ Agregar Suministro</button>
+            <button type="button" class="btn btn-custom-pink mt-2 btn-agregar-fila" data-container="suministros-container" data-template="template-suministro">+ Agregar Suministro</button>
         </div>
         <br />
 

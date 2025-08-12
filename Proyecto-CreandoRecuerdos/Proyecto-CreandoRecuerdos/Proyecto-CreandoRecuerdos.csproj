@@ -568,14 +568,14 @@
     <Content Include="Views\Reportes\EmpleadosDisponibles.cshtml" />
     <Content Include="Views\Reportes\ProductosDisponibles.cshtml" />
     <Content Include="Views\Reportes\CostosOperativos.cshtml" />
-    <Content Include="Views\Insumos\costos_recetas.cshtml" />
     <Content Include="Views\Insumos\empaques_decoraciones.cshtml" />
     <Content Include="Views\Insumos\implementos.cshtml" />
     <Content Include="Views\Insumos\materias_primas.cshtml" />
-    <Content Include="Views\Insumos\precios_finales_sugeridos.cshtml" />
     <Content Include="Views\Insumos\productos_preparados.cshtml" />
     <Content Include="Views\Insumos\suministros.cshtml" />
     <Content Include="Views\Registro_Usuarios\recuperar_contrasenna.cshtml" />
+    <Content Include="Views\Insumos\costos_recetas.cshtml" />
+    <Content Include="Views\Insumos\precios_finales_sugeridos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
