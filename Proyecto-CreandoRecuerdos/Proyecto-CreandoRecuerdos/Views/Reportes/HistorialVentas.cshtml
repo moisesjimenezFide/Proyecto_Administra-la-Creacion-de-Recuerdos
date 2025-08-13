@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Historial de Ventas";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var cr = new System.Globalization.CultureInfo("es-CR");
+    cr.NumberFormat.CurrencySymbol = "₡";
+    cr.NumberFormat.CurrencyPositivePattern = 0;
+    cr.NumberFormat.CurrencyDecimalSeparator = ".";
+    cr.NumberFormat.CurrencyGroupSeparator = ",";
 }
 
 <h2>📊 Historial de Ventas</h2>
@@ -11,11 +17,11 @@
     <div class="row">
         <div class="col">
             <label>Fecha Inicio:</label>
-            <input type="date" name="fechaInicio" class="form-control" value="@ViewBag.FechaInicio" />
+            <input id="fi" type="text" name="fechaInicio" class="form-control datepicker" value="@ViewBag.FechaInicio" autocomplete="off" />
         </div>
         <div class="col">
             <label>Fecha Fin:</label>
-            <input type="date" name="fechaFin" class="form-control" value="@ViewBag.FechaFin" />
+            <input id="ff" type="text" name="fechaFin" class="form-control datepicker" value="@ViewBag.FechaFin" autocomplete="off" />
         </div>
         <div class="col d-flex align-items-end">
             <button type="submit" class="btn btn-primary">Filtrar</button>
@@ -46,10 +52,10 @@
             {
                 <tr>
                     <td>@v.IdVenta</td>
-                    <td>@v.Fecha.ToString("dd/MM/yyyy")</td>
-                    <td>@v.Total.ToString("C")</td>
+                    <td>@v.Fecha.ToString("dd-MM-yyyy")</td>
                     <td>@(v.Cliente ?? "N/A")</td>
                     <td>@(v.Usuario ?? "N/A")</td>
+                    <td>@v.Total.ToString("C", cr)</td>
                 </tr>
             }
         </tbody>
@@ -59,3 +65,118 @@ else
 {
     <p>No se encontraron ventas en el rango de fechas indicado.</p>
 }
+
+<hr />
+<h4>Ventas por Día (según filtro)</h4>
+<canvas id="ventasDiaChart" height="110"></canvas>
+
+<hr class="my-4" />
+<h4>Ventas por Mes (año del filtro)</h4>
+<canvas id="ventasMesChart" height="110"></canvas>
+@section Scripts {
+    <!-- Bootstrap Datepicker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.es.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inicializar datepickers
+        $('.datepicker').datepicker({
+            format: 'dd-mm-yyyy',
+            language: 'es',
+            autoclose: true,
+            todayHighlight: true
+        });
+
+        const urlMes = '@Url.Action("VentasPorMes","Reportes")';
+        const urlDia = '@Url.Action("VentasPorDia","Reportes")';
+
+        const $fi = document.getElementById('fi');
+        const $ff = document.getElementById('ff');
+
+        const fiVal = $fi?.value || '';
+        const ffVal = $ff?.value || '';
+        let baseDate = ffVal ? new Date(ffVal.split('-').reverse().join('-') + 'T00:00:00') : new Date();
+        let year = baseDate.getFullYear();
+        let month = baseDate.getMonth() + 1;
+
+        const moneyCR = n => new Intl.NumberFormat('es-CR', {
+            style: 'currency', currency: 'CRC', minimumFractionDigits: 2
+        }).format(n || 0);
+
+        let chartMes = null;
+        let chartDia = null;
+
+        // --- Ventas por mes ---
+        fetch(`${urlMes}?anio=${encodeURIComponent(year)}&fechaInicio=${encodeURIComponent(fiVal)}&fechaFin=${encodeURIComponent(ffVal)}`, { cache: 'no-store' })
+            .then(r => r.json())
+            .then(data => {
+                const labels = data.map(x => {
+                    const d = new Date(x.label + '-01T00:00:00');
+                    return d.toLocaleDateString('es-CR', { month: 'short' }).toUpperCase();
+                });
+                const values = data.map(x => x.total || 0);
+
+                const ctxMes = document.getElementById('ventasMesChart').getContext('2d');
+                if (chartMes) chartMes.destroy();
+                chartMes = new Chart(ctxMes, {
+                    type: 'bar',
+                    data: { labels, datasets: [{ label: `Ventas ${year}`, data: values, borderWidth: 2 }] },
+                    options: {
+                        animation: false,
+                        plugins: {
+                            tooltip: { callbacks: { label: c => `${c.dataset.label}: ${moneyCR(c.parsed.y)}` } },
+                            legend: { display: true }
+                        },
+                        scales: { y: { ticks: { callback: v => moneyCR(v) } } }
+                    }
+                });
+
+                document.getElementById('ventasMesChart').onclick = (evt) => {
+                    const points = chartMes.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
+                    if (!points.length) return;
+                    const idx = points[0].index;
+                    const yymm = data[idx].label.split('-');
+                    month = parseInt(yymm[1], 10);
+                    cargarDiario(year, month);
+                };
+            })
+            .catch(console.error);
+
+        // --- Ventas por día ---
+        function cargarDiario(anio, mes) {
+            fetch(`${urlDia}?anio=${encodeURIComponent(anio)}&mes=${encodeURIComponent(mes)}&fechaInicio=${encodeURIComponent(fiVal)}&fechaFin=${encodeURIComponent(ffVal)}`, { cache: 'no-store' })
+                .then(r => r.json())
+                .then(data => {
+                    const labels = data.map(x => {
+                        const d = new Date(x.label.split('-').reverse().join('-') + 'T00:00:00');
+                        return d.toLocaleDateString('es-CR', { day: '2-digit', month: '2-digit' });
+                    });
+                    const values = data.map(x => x.total || 0);
+
+                    const canvas = document.getElementById('ventasDiaChart');
+                    if (chartDia) chartDia.destroy();
+                    chartDia = new Chart(canvas.getContext('2d'), {
+                        type: 'line',
+                        data: { labels, datasets: [{ label: `Ventas ${anio}-${String(mes).padStart(2,'0')}`, data: values, borderWidth: 2, tension: .25 }] },
+                        options: {
+                            animation: false,
+                            plugins: {
+                                tooltip: { callbacks: { label: c => `${c.dataset.label}: ${moneyCR(c.parsed.y)}` } },
+                                legend: { display: true }
+                            },
+                            scales: { y: { ticks: { callback: v => moneyCR(v) } } }
+                        }
+                    });
+                })
+                .catch(console.error);
+        }
+
+        cargarDiario(year, month);
+    });
+    </script>
+}
+

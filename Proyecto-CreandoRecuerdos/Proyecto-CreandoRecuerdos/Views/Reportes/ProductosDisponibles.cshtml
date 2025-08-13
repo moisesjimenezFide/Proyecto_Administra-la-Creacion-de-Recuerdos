@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Productos Disponibles";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var cr = new System.Globalization.CultureInfo("es-CR");
+    cr.NumberFormat.CurrencySymbol = "₡";
+    cr.NumberFormat.CurrencyPositivePattern = 0;
+    cr.NumberFormat.CurrencyDecimalSeparator = ".";
+    cr.NumberFormat.CurrencyGroupSeparator = ",";
 }
 
 <h2>📦 Productos Disponibles</h2>
@@ -29,7 +35,7 @@
                 <tr>
                     <td>@producto.Nombre</td>
                     <td>@producto.Descripcion</td>
-                    <td>@producto.PrecioUnidad.ToString("C")</td>
+                    <td>@producto.PrecioUnidad.ToString("C", cr)</td>
                 </tr>
             }
         </tbody>

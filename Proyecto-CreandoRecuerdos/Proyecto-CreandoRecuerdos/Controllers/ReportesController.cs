@@ -5,10 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Vml;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Proyecto_CreandoRecuerdos.base_de_datos;
 using Proyecto_CreandoRecuerdos.ViewModels;
+using System.Globalization;
+
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
@@ -32,121 +35,187 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             if (!UsuarioEsAdmin())
                 return RedirectToAction("registro_usuarios", "Registro_Usuarios");
 
-            DateTime fechaInicioFiltrada = DateTime.MinValue;
-            DateTime fechaFinFiltrada = DateTime.MaxValue;
+            DateTime? inicio = null;
+            DateTime? fin = null;
 
-            if (DateTime.TryParseExact(fechaInicio, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out var fInicio))
-                fechaInicioFiltrada = fInicio.Date;
+            var formato = "dd-MM-yyyy";
+            var cultura = System.Globalization.CultureInfo.InvariantCulture;
 
-            if (DateTime.TryParseExact(fechaFin, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out var fFin))
-                fechaFinFiltrada = fFin.Date.AddDays(1).AddTicks(-1);
+            // Parseo de fecha de inicio
+            if (!string.IsNullOrWhiteSpace(fechaInicio) &&
+                DateTime.TryParseExact(fechaInicio, formato, cultura,
+                                       System.Globalization.DateTimeStyles.None, out var fInicio))
+            {
+                inicio = fInicio.Date;
+                ViewBag.FechaInicio = fInicio.ToString(formato);
+            }
+            else
+            {
+                ViewBag.FechaInicio = "";
+            }
 
-            ViewBag.FechaInicio = fInicio.ToString("yyyy-MM-dd");
-            ViewBag.FechaFin = fFin.ToString("yyyy-MM-dd");
+            // Parseo de fecha de fin
+            if (!string.IsNullOrWhiteSpace(fechaFin) &&
+                DateTime.TryParseExact(fechaFin, formato, cultura,
+                                       System.Globalization.DateTimeStyles.None, out var fFin))
+            {
+                // fin del día inclusive
+                fin = fFin.Date.AddDays(1).AddTicks(-1);
+                ViewBag.FechaFin = fFin.ToString(formato);
+            }
+            else
+            {
+                ViewBag.FechaFin = "";
+            }
+
+            // Si faltan fechas, no cargamos datos
+            if (!inicio.HasValue || !fin.HasValue)
+                return View("HistorialVentas", new List<HistorialVentasViewModel>());
 
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
-                var ventas = (from v in db.tabla_ventas
-                              join u in db.tabla_usuarios on v.id_usuario equals u.id_usuario
-                              join c in db.tabla_clientes on v.id_cliente equals c.id_cliente into clienteJoin
-                              from cj in clienteJoin.DefaultIfEmpty()
-                              where v.fecha >= fechaInicioFiltrada && v.fecha <= fechaFinFiltrada
-                              select new HistorialVentasViewModel
-                              {
-                                  IdVenta = v.id_venta,
-                                  Fecha = v.fecha ?? DateTime.MinValue,
-                                  Total = v.total,
-                                  Cliente = cj != null ? cj.nombre + " " + cj.apellido : "Consumidor Final",
-                                  Usuario = u.nombre
-                              }).ToList();
+                var q = from v in db.tabla_ventas
+                        join u in db.tabla_usuarios on v.id_usuario equals u.id_usuario into usuarioJoin
+                        from uj in usuarioJoin.DefaultIfEmpty()
+                        join c in db.tabla_clientes on v.id_cliente equals c.id_cliente into clienteJoin
+                        from cj in clienteJoin.DefaultIfEmpty()
+                        where v.fecha >= inicio && v.fecha <= fin
+                        orderby v.fecha descending
+                        select new HistorialVentasViewModel
+                        {
+                            IdVenta = v.id_venta,
+                            Fecha = v.fecha ?? DateTime.MinValue,
+                            Total = v.total,
+                            Cliente = cj != null ? (cj.nombre + " " + cj.apellido) : "Consumidor Final",
+                            Usuario = uj != null ? uj.nombre : "Sin usuario"
+                        };
 
-                return View("HistorialVentas", ventas);
+                var lista = q.ToList();
+
+                // Forzar el formato dd-MM-yyyy en la vista
+                foreach (var item in lista)
+                {
+                    if (item.Fecha != DateTime.MinValue)
+                        item.Fecha = DateTime.ParseExact(item.Fecha.ToString(formato), formato, cultura);
+                }
+
+                return View("HistorialVentas", lista);
             }
         }
-
-
 
         public ActionResult ExportarHistorialVentas(string formato, DateTime? fechaInicio, DateTime? fechaFin)
         {
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
-                var fechaInicioSinHora = fechaInicio?.Date;
-                var fechaFinSinHora = fechaFin?.Date.AddDays(1).AddTicks(-1);
+                DateTime? inicio = null;
+                DateTime? fin = null;
 
-                var ventas = (from v in db.tabla_ventas
-                              join u in db.tabla_usuarios on v.id_usuario equals u.id_usuario
-                              join c in db.tabla_clientes on v.id_cliente equals c.id_cliente into clienteJoin
-                              from cj in clienteJoin.DefaultIfEmpty()
-                              where (!fechaInicio.HasValue || v.fecha >= fechaInicioSinHora) &&
-                                    (!fechaFin.HasValue || v.fecha <= fechaFinSinHora)
-                              select new HistorialVentasViewModel
-                              {
-                                  IdVenta = v.id_venta,
-                                  Fecha = v.fecha ?? DateTime.MinValue,
-                                  Total = v.total,
-                                  Cliente = cj != null ? cj.nombre + " " + cj.apellido : "Consumidor Final",
-                                  Usuario = u.nombre
-                              }).ToList();
+                if (fechaInicio.HasValue && fechaInicio.Value.Year > 1)
+                    inicio = fechaInicio.Value.Date;
 
-                if (formato == "PDF")
-                {
-                    using (MemoryStream stream = new MemoryStream())
+                if (fechaFin.HasValue && fechaFin.Value.Year > 1)
+                    fin = fechaFin.Value.Date.AddDays(1).AddTicks(-1);
+
+                var q =
+                    from v in db.tabla_ventas
+                    join u in db.tabla_usuarios on v.id_usuario equals u.id_usuario into usuarioJoin
+                    from uj in usuarioJoin.DefaultIfEmpty()
+                    join c in db.tabla_clientes on v.id_cliente equals c.id_cliente into clienteJoin
+                    from cj in clienteJoin.DefaultIfEmpty()
+                    select new
                     {
-                        Document doc = new Document(PageSize.A4);
+                        v.id_venta,
+                        v.fecha,
+                        v.total,
+                        cliente = cj != null ? (cj.nombre + " " + cj.apellido) : "Consumidor Final",
+                        usuario = uj != null ? uj.nombre : "Sin usuario"
+                    };
+
+                if (inicio.HasValue) q = q.Where(x => x.fecha >= inicio.Value);
+                if (fin.HasValue) q = q.Where(x => x.fecha <= fin.Value);
+
+                q = q.OrderByDescending(x => x.fecha);
+
+                var ventas = q.Select(x => new HistorialVentasViewModel
+                {
+                    IdVenta = x.id_venta,
+                    Fecha = x.fecha ?? DateTime.MinValue,
+                    Total = x.total,
+                    Cliente = x.cliente,
+                    Usuario = x.usuario
+                }).ToList();
+
+                if (string.Equals(formato, "PDF", StringComparison.OrdinalIgnoreCase))
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        var doc = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4);
                         PdfWriter.GetInstance(doc, stream).CloseStream = false;
                         doc.Open();
 
                         doc.Add(new Paragraph("Historial de Ventas"));
                         doc.Add(new Paragraph(" "));
 
-                        PdfPTable table = new PdfPTable(5);
+                        var table = new PdfPTable(5);
                         table.AddCell("ID Venta");
                         table.AddCell("Fecha");
                         table.AddCell("Total");
                         table.AddCell("Cliente");
                         table.AddCell("Vendedor");
 
-                        foreach (var venta in ventas)
+                        // --- SOLO CURRENCY (CR) ---
+                        var cr = new System.Globalization.CultureInfo("es-CR");
+                        cr.NumberFormat.CurrencySymbol = "₡";
+                        cr.NumberFormat.CurrencyPositivePattern = 0; // símbolo antes del número
+
+                        foreach (var v in ventas)
                         {
-                            table.AddCell(venta.IdVenta.ToString());
-                            table.AddCell(venta.Fecha.ToString("dd/MM/yyyy"));
-                            table.AddCell(venta.Total.ToString("C"));
-                            table.AddCell(venta.Cliente);
-                            table.AddCell(venta.Usuario);
+                            table.AddCell(v.IdVenta.ToString());
+                            table.AddCell(v.Fecha.ToString("dd/MM/yyyy"));
+                            table.AddCell(v.Total.ToString("C", cr)); // ₡ y formato CR
+                            table.AddCell(v.Cliente);
+                            table.AddCell(v.Usuario);
                         }
 
                         doc.Add(table);
                         doc.Close();
 
-                        byte[] pdfBytes = stream.ToArray();
+                        var pdfBytes = stream.ToArray();
                         return File(pdfBytes, "application/pdf", "HistorialVentas.pdf");
                     }
                 }
-                else if (formato == "EXCEL")
+                else if (string.Equals(formato, "EXCEL", StringComparison.OrdinalIgnoreCase))
                 {
-                    using (var workbook = new XLWorkbook())
+                    using (var workbook = new ClosedXML.Excel.XLWorkbook())
                     {
-                        var worksheet = workbook.Worksheets.Add("HistorialVentas");
-                        worksheet.Cell(1, 1).Value = "ID Venta";
-                        worksheet.Cell(1, 2).Value = "Fecha";
-                        worksheet.Cell(1, 3).Value = "Total";
-                        worksheet.Cell(1, 4).Value = "Cliente";
-                        worksheet.Cell(1, 5).Value = "Vendedor";
+                        var ws = workbook.Worksheets.Add("HistorialVentas");
+                        ws.Cell(1, 1).Value = "ID Venta";
+                        ws.Cell(1, 2).Value = "Fecha";
+                        ws.Cell(1, 3).Value = "Total";
+                        ws.Cell(1, 4).Value = "Cliente";
+                        ws.Cell(1, 5).Value = "Vendedor";
 
                         for (int i = 0; i < ventas.Count; i++)
                         {
-                            worksheet.Cell(i + 2, 1).Value = ventas[i].IdVenta;
-                            worksheet.Cell(i + 2, 2).Value = ventas[i].Fecha.ToString("dd/MM/yyyy");
-                            worksheet.Cell(i + 2, 3).Value = ventas[i].Total;
-                            worksheet.Cell(i + 2, 4).Value = ventas[i].Cliente;
-                            worksheet.Cell(i + 2, 5).Value = ventas[i].Usuario;
+                            ws.Cell(i + 2, 1).Value = ventas[i].IdVenta;
+                            ws.Cell(i + 2, 2).Value = ventas[i].Fecha.ToString("dd/MM/yyyy");
+                            ws.Cell(i + 2, 3).Value = ventas[i].Total;        // número
+                            ws.Cell(i + 2, 4).Value = ventas[i].Cliente;
+                            ws.Cell(i + 2, 5).Value = ventas[i].Usuario;
                         }
+
+                        // --- SOLO CURRENCY (CR) ---
+                        ws.Column(3).Style.NumberFormat.Format = "[$₡-es-CR] #,##0.00";
 
                         using (var stream = new MemoryStream())
                         {
                             workbook.SaveAs(stream);
-                            byte[] content = stream.ToArray();
-                            return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "HistorialVentas.xlsx");
+                            var content = stream.ToArray();
+                            return File(
+                                content,
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                "HistorialVentas.xlsx"
+                            );
                         }
                     }
                 }
@@ -540,5 +609,90 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
+
+        [HttpGet]
+        public ActionResult VentasPorMes(int? anio, string fechaInicio, string fechaFin)
+        {
+            if (!UsuarioEsAdmin()) return new HttpStatusCodeResult(401);
+
+            DateTime? inicio = null;
+            DateTime? fin = null;
+            string formato = "dd-MM-yyyy";
+
+            if (!string.IsNullOrWhiteSpace(fechaInicio) &&
+                DateTime.TryParseExact(fechaInicio, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fInicio))
+                inicio = fInicio.Date;
+
+            if (!string.IsNullOrWhiteSpace(fechaFin) &&
+                DateTime.TryParseExact(fechaFin, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fFin))
+                fin = fFin.Date.AddDays(1).AddTicks(-1);
+
+            if (!inicio.HasValue || !fin.HasValue)
+                return Json(new List<object>(), JsonRequestBehavior.AllowGet);
+
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
+            {
+                var rows = (from v in db.tabla_ventas
+                            where v.fecha >= inicio && v.fecha <= fin
+                            group v by new { v.fecha.Value.Year, v.fecha.Value.Month } into g
+                            orderby g.Key.Year, g.Key.Month
+                            select new
+                            {
+                                y = g.Key.Year,
+                                m = g.Key.Month,
+                                total = g.Sum(x => (decimal?)x.total) ?? 0m
+                            }).ToList();
+
+                var data = rows.Select(x => new
+                {
+                    label = new DateTime(x.y, x.m, 1).ToString("MM-yyyy"),
+                    total = x.total
+                });
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult VentasPorDia(int anio, int mes, string fechaInicio, string fechaFin)
+        {
+            if (!UsuarioEsAdmin()) return new HttpStatusCodeResult(401);
+
+            DateTime? inicio = null;
+            DateTime? fin = null;
+            string formato = "dd-MM-yyyy";
+
+            if (!string.IsNullOrWhiteSpace(fechaInicio) &&
+                DateTime.TryParseExact(fechaInicio, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fInicio))
+                inicio = fInicio.Date;
+
+            if (!string.IsNullOrWhiteSpace(fechaFin) &&
+                DateTime.TryParseExact(fechaFin, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fFin))
+                fin = fFin.Date.AddDays(1).AddTicks(-1);
+
+            if (!inicio.HasValue || !fin.HasValue)
+                return Json(new List<object>(), JsonRequestBehavior.AllowGet);
+
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
+            {
+                var rows = (from v in db.tabla_ventas
+                            where v.fecha >= inicio && v.fecha <= fin
+                            group v by DbFunctions.TruncateTime(v.fecha) into g
+                            orderby g.Key
+                            select new
+                            {
+                                d = g.Key,
+                                total = g.Sum(x => (decimal?)x.total) ?? 0m
+                            }).ToList();
+
+                var data = rows.Select(x => new
+                {
+                    label = x.d.HasValue ? x.d.Value.ToString("dd-MM-yyyy") : "",
+                    total = x.total
+                });
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
