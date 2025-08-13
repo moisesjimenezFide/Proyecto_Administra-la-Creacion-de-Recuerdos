@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Ventas Mensuales";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var cr = new System.Globalization.CultureInfo("es-CR");
+    cr.NumberFormat.CurrencySymbol = "₡";
+    cr.NumberFormat.CurrencyPositivePattern = 0;
+    cr.NumberFormat.CurrencyDecimalSeparator = ".";
+    cr.NumberFormat.CurrencyGroupSeparator = ",";
 }
 
 <h2>📅 Ventas Mensuales</h2>
@@ -39,7 +45,7 @@
             {
                 <tr>
                     <td>@item.MesFormateado</td>
-                    <td>@item.Total.ToString("C")</td>
+                    <td>@item.Total.ToString("C", cr)</td>
                 </tr>
             }
         </tbody>

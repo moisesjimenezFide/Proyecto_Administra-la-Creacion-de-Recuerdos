@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Costos Operativos";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var cr = new System.Globalization.CultureInfo("es-CR");
+    cr.NumberFormat.CurrencySymbol = "₡";
+    cr.NumberFormat.CurrencyPositivePattern = 0;
+    cr.NumberFormat.CurrencyDecimalSeparator = ".";
+    cr.NumberFormat.CurrencyGroupSeparator = ",";
 }
 
 <h2>📊 Costos Operativos Promedios del Mes</h2>
@@ -23,23 +29,23 @@
     <tbody>
         <tr>
             <td>Recetas (por porción)</td>
-            <td>@Model.PromedioCostosRecetas.ToString("C")</td>
+            <td>@Model.PromedioCostosRecetas.ToString("C", cr)</td>
         </tr>
         <tr>
             <td>Empaques y decoraciones</td>
-            <td>@Model.PromedioCostosEmpaques.ToString("C")</td>
+            <td>@Model.PromedioCostosEmpaques.ToString("C", cr)</td>
         </tr>
         <tr>
             <td>Implementos</td>
-            <td>@Model.PromedioCostosImplementos.ToString("C")</td>
+            <td>@Model.PromedioCostosImplementos.ToString("C", cr)</td>
         </tr>
         <tr>
             <td>Suministros</td>
-            <td>@Model.PromedioCostosSuministros.ToString("C")</td>
+            <td>@Model.PromedioCostosSuministros.ToString("C", cr)</td>
         </tr>
         <tr>
             <th>Total Operativo Estimado</th>
-            <th>@Model.TotalCostoOperativo.ToString("C")</th>
+            <th>@Model.TotalCostoOperativo.ToString("C", cr)</th>
         </tr>
     </tbody>
 </table>
