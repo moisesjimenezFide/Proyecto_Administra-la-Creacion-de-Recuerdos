@@ -1,6 +1,7 @@
 <%@ Page Language="C#" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
 <%@ Import Namespace="System.Configuration" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
 
 <!DOCTYPE html>
 <html>
@@ -11,7 +12,17 @@
     <h1>Estado de la Conexión a la Base de Datos</h1>
     <%
         string connectionString = ConfigurationManager.ConnectionStrings["BD_CREANDO_RECUERDOSEntities"].ConnectionString;
-        SqlConnection connection = new SqlConnection(connectionString);
+
+        // Extraer la cadena de conexión de SQL Server de la cadena de Entity Framework
+        string sqlConnectionString = "";
+        Match match = Regex.Match(connectionString, "provider connection string=\"(.+)\"");
+        if (match.Success)
+        {
+            sqlConnectionString = match.Groups[1].Value.Replace("&quot;", "\"");
+        }
+
+        // Crear y probar la conexión
+        SqlConnection connection = new SqlConnection(sqlConnectionString);
         string message = "";
 
         try
