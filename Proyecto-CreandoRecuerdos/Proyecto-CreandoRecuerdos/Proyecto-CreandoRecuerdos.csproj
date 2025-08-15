@@ -560,7 +560,6 @@
     <Content Include="Views\Pedidos\Pedidos.cshtml" />
     <Content Include="Views\Pedidos\Pago.cshtml" />
     <Content Include="Views\Pedidos\MisPedidos.cshtml" />
-    <Content Include="Views\Inicio\pago.cshtml" />
     <Content Include="Views\Pedidos\registro_vetas.cshtml" />
     <Content Include="Views\Reportes\Index.cshtml" />
     <Content Include="Views\Reportes\HistorialVentas.cshtml" />
@@ -579,7 +578,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Stripe\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
