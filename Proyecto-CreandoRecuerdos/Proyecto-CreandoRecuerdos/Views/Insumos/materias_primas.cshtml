@@ -46,7 +46,7 @@
 
         if (ViewBag.Errores != null)
         {
-            @: <script>
+           @: <script>
            @:     $(function () {
            @:         Swal.fire({
            @:             icon: 'error',
@@ -202,7 +202,7 @@
                 else
                 {
                     <div class="table-responsive">
-                        <table id="tabla_insumos" class="table table-bordered table-striped table-sm text-center">
+                        <table id="tabla_insumos" class="table table-bordered table-striped table-sm text-center dataTable con-exportaciones" data-page-length="3">
                             <thead>
                                 <tr>
                                     <th>ID</th>

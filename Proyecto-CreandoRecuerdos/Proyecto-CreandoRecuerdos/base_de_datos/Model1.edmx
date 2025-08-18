@@ -472,7 +472,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_act__id_us__0B91BA14">
+        <Association Name="FK__tabla_act__id_us__123EB7A3">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_actividades" Type="Self.tabla_actividades" Multiplicity="*" />
           <ReferentialConstraint>
@@ -484,7 +484,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_det__id_pr__0C85DE4D">
+        <Association Name="FK__tabla_det__id_pr__151B244E">
           <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="1" />
           <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -496,7 +496,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_det__id_ve__0D7A0286">
+        <Association Name="FK__tabla_det__id_ve__160F4887">
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="1" />
           <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -508,7 +508,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_hor__id_us__0E6E26BF">
+        <Association Name="FK__tabla_hor__id_us__17036CC0">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_horarios" Type="Self.tabla_horarios" Multiplicity="*" />
           <ReferentialConstraint>
@@ -532,7 +532,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_pro__id_ca__10566F31">
+        <Association Name="FK__tabla_pro__id_ca__1AD3FDA4">
           <End Role="tabla_categorias" Type="Self.tabla_categorias" Multiplicity="1" />
           <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="*" />
           <ReferentialConstraint>
@@ -544,7 +544,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_usu__id_ro__1332DBDC">
+        <Association Name="FK__tabla_usu__id_ro__1DB06A4F">
           <End Role="tabla_roles" Type="Self.tabla_roles" Multiplicity="1" />
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="*" />
           <ReferentialConstraint>
@@ -556,7 +556,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_ven__id_cl__14270015">
+        <Association Name="FK__tabla_ven__id_cl__1F98B2C1">
           <End Role="tabla_clientes" Type="Self.tabla_clientes" Multiplicity="1" />
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -568,7 +568,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_ven__id_us__151B244E">
+        <Association Name="FK__tabla_ven__id_us__208CD6FA">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="0..1" />
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -949,19 +949,19 @@
             <End Role="tabla_suministros" EntitySet="tabla_suministros" />
             <End Role="precios_suministros_utilizados" EntitySet="precios_suministros_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_act__id_us__0B91BA14" Association="Self.FK__tabla_act__id_us__0B91BA14">
+          <AssociationSet Name="FK__tabla_act__id_us__123EB7A3" Association="Self.FK__tabla_act__id_us__123EB7A3">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_actividades" EntitySet="tabla_actividades" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_det__id_pr__0C85DE4D" Association="Self.FK__tabla_det__id_pr__0C85DE4D">
+          <AssociationSet Name="FK__tabla_det__id_pr__151B244E" Association="Self.FK__tabla_det__id_pr__151B244E">
             <End Role="tabla_productos" EntitySet="tabla_productos" />
             <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_det__id_ve__0D7A0286" Association="Self.FK__tabla_det__id_ve__0D7A0286">
+          <AssociationSet Name="FK__tabla_det__id_ve__160F4887" Association="Self.FK__tabla_det__id_ve__160F4887">
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
             <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_hor__id_us__0E6E26BF" Association="Self.FK__tabla_hor__id_us__0E6E26BF">
+          <AssociationSet Name="FK__tabla_hor__id_us__17036CC0" Association="Self.FK__tabla_hor__id_us__17036CC0">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_horarios" EntitySet="tabla_horarios" />
           </AssociationSet>
@@ -969,19 +969,19 @@
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_pro__id_ca__10566F31" Association="Self.FK__tabla_pro__id_ca__10566F31">
+          <AssociationSet Name="FK__tabla_pro__id_ca__1AD3FDA4" Association="Self.FK__tabla_pro__id_ca__1AD3FDA4">
             <End Role="tabla_categorias" EntitySet="tabla_categorias" />
             <End Role="tabla_productos" EntitySet="tabla_productos" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_usu__id_ro__1332DBDC" Association="Self.FK__tabla_usu__id_ro__1332DBDC">
+          <AssociationSet Name="FK__tabla_usu__id_ro__1DB06A4F" Association="Self.FK__tabla_usu__id_ro__1DB06A4F">
             <End Role="tabla_roles" EntitySet="tabla_roles" />
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_ven__id_cl__14270015" Association="Self.FK__tabla_ven__id_cl__14270015">
+          <AssociationSet Name="FK__tabla_ven__id_cl__1F98B2C1" Association="Self.FK__tabla_ven__id_cl__1F98B2C1">
             <End Role="tabla_clientes" EntitySet="tabla_clientes" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_ven__id_us__151B244E" Association="Self.FK__tabla_ven__id_us__151B244E">
+          <AssociationSet Name="FK__tabla_ven__id_us__208CD6FA" Association="Self.FK__tabla_ven__id_us__208CD6FA">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
@@ -1115,7 +1115,7 @@
           <Property Name="id_registro_afectado" Type="Int32" />
           <Property Name="valores_anteriores" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="valores_nuevos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_act__id_us__0B91BA14" FromRole="tabla_actividades" ToRole="tabla_usuarios" />
+          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_act__id_us__123EB7A3" FromRole="tabla_actividades" ToRole="tabla_usuarios" />
           <NavigationProperty Name="tabla_usuarios1" Relationship="Self.FK_tabla_actividades_usuarios" FromRole="tabla_actividades" ToRole="tabla_usuarios" />
         </EntityType>
         <EntityType Name="tabla_categorias">
@@ -1124,7 +1124,7 @@
           </Key>
           <Property Name="id_categoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="tabla_productos" Relationship="Self.FK__tabla_pro__id_ca__10566F31" FromRole="tabla_categorias" ToRole="tabla_productos" />
+          <NavigationProperty Name="tabla_productos" Relationship="Self.FK__tabla_pro__id_ca__1AD3FDA4" FromRole="tabla_categorias" ToRole="tabla_productos" />
         </EntityType>
         <EntityType Name="tabla_clientes">
           <Key>
@@ -1135,7 +1135,7 @@
           <Property Name="apellido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="id_usuario" Type="Int32" />
-          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_cl__14270015" FromRole="tabla_clientes" ToRole="tabla_ventas" />
+          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_cl__1F98B2C1" FromRole="tabla_clientes" ToRole="tabla_ventas" />
           <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK_clientes_usuarios" FromRole="tabla_clientes" ToRole="tabla_usuarios" />
         </EntityType>
         <EntityType Name="tabla_costos_recetas">
@@ -1162,8 +1162,8 @@
           <Property Name="precio_unitario" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="subtotal" Type="Decimal" Precision="21" Scale="2" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="personalizacion" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tabla_productos" Relationship="Self.FK__tabla_det__id_pr__0C85DE4D" FromRole="tabla_detalle_venta" ToRole="tabla_productos" />
-          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_det__id_ve__0D7A0286" FromRole="tabla_detalle_venta" ToRole="tabla_ventas" />
+          <NavigationProperty Name="tabla_productos" Relationship="Self.FK__tabla_det__id_pr__151B244E" FromRole="tabla_detalle_venta" ToRole="tabla_productos" />
+          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_det__id_ve__160F4887" FromRole="tabla_detalle_venta" ToRole="tabla_ventas" />
         </EntityType>
         <EntityType Name="tabla_empaques_decoraciones">
           <Key>
@@ -1199,7 +1199,7 @@
           <Property Name="hora_entrada" Type="Time" Nullable="false" Precision="7" />
           <Property Name="hora_salida" Type="Time" Nullable="false" Precision="7" />
           <Property Name="activo" Type="Boolean" />
-          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_hor__id_us__0E6E26BF" FromRole="tabla_horarios" ToRole="tabla_usuarios" />
+          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_hor__id_us__17036CC0" FromRole="tabla_horarios" ToRole="tabla_usuarios" />
         </EntityType>
         <EntityType Name="tabla_implementos">
           <Key>
@@ -1294,8 +1294,8 @@
           <Property Name="id_categoria" Type="Int32" Nullable="false" />
           <Property Name="precio_por_unidad" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="img_url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tabla_categorias" Relationship="Self.FK__tabla_pro__id_ca__10566F31" FromRole="tabla_productos" ToRole="tabla_categorias" />
-          <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_pr__0C85DE4D" FromRole="tabla_productos" ToRole="tabla_detalle_venta" />
+          <NavigationProperty Name="tabla_categorias" Relationship="Self.FK__tabla_pro__id_ca__1AD3FDA4" FromRole="tabla_productos" ToRole="tabla_categorias" />
+          <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_pr__151B244E" FromRole="tabla_productos" ToRole="tabla_detalle_venta" />
           <NavigationProperty Name="tabla_recomendaciones" Relationship="Self.FK_tabla_recomendaciones_productos" FromRole="tabla_productos" ToRole="tabla_recomendaciones" />
         </EntityType>
         <EntityType Name="tabla_productos_preparados">
@@ -1335,7 +1335,7 @@
           </Key>
           <Property Name="id_rol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_usu__id_ro__1332DBDC" FromRole="tabla_roles" ToRole="tabla_usuarios" />
+          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_usu__id_ro__1DB06A4F" FromRole="tabla_roles" ToRole="tabla_usuarios" />
         </EntityType>
         <EntityType Name="tabla_solicitudes_ausencias">
           <Key>
@@ -1376,14 +1376,14 @@
           <Property Name="activo" Type="Boolean" />
           <Property Name="fecha_creacion" Type="DateTime" Precision="3" />
           <Property Name="contrasenna" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="tabla_actividades" Relationship="Self.FK__tabla_act__id_us__0B91BA14" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
+          <NavigationProperty Name="tabla_actividades" Relationship="Self.FK__tabla_act__id_us__123EB7A3" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
           <NavigationProperty Name="tabla_actividades1" Relationship="Self.FK_tabla_actividades_usuarios" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
           <NavigationProperty Name="tabla_clientes" Relationship="Self.FK_clientes_usuarios" FromRole="tabla_usuarios" ToRole="tabla_clientes" />
-          <NavigationProperty Name="tabla_horarios" Relationship="Self.FK__tabla_hor__id_us__0E6E26BF" FromRole="tabla_usuarios" ToRole="tabla_horarios" />
+          <NavigationProperty Name="tabla_horarios" Relationship="Self.FK__tabla_hor__id_us__17036CC0" FromRole="tabla_usuarios" ToRole="tabla_horarios" />
           <NavigationProperty Name="tabla_notificaciones_vistas" Relationship="Self.FK_notificaciones_vistas_usuarios" FromRole="tabla_usuarios" ToRole="tabla_notificaciones_vistas" />
-          <NavigationProperty Name="tabla_roles" Relationship="Self.FK__tabla_usu__id_ro__1332DBDC" FromRole="tabla_usuarios" ToRole="tabla_roles" />
+          <NavigationProperty Name="tabla_roles" Relationship="Self.FK__tabla_usu__id_ro__1DB06A4F" FromRole="tabla_usuarios" ToRole="tabla_roles" />
           <NavigationProperty Name="tabla_solicitudes_ausencias" Relationship="Self.FK_usuario" FromRole="tabla_usuarios" ToRole="tabla_solicitudes_ausencias" />
-          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_us__151B244E" FromRole="tabla_usuarios" ToRole="tabla_ventas" />
+          <NavigationProperty Name="tabla_ventas" Relationship="Self.FK__tabla_ven__id_us__208CD6FA" FromRole="tabla_usuarios" ToRole="tabla_ventas" />
         </EntityType>
         <EntityType Name="tabla_valoraciones">
           <Key>
@@ -1416,11 +1416,11 @@
           <Property Name="telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="telefono_sinpe" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="nombre_cliente" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tabla_clientes" Relationship="Self.FK__tabla_ven__id_cl__14270015" FromRole="tabla_ventas" ToRole="tabla_clientes" />
-          <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_ve__0D7A0286" FromRole="tabla_ventas" ToRole="tabla_detalle_venta" />
+          <NavigationProperty Name="tabla_clientes" Relationship="Self.FK__tabla_ven__id_cl__1F98B2C1" FromRole="tabla_ventas" ToRole="tabla_clientes" />
+          <NavigationProperty Name="tabla_detalle_venta" Relationship="Self.FK__tabla_det__id_ve__160F4887" FromRole="tabla_ventas" ToRole="tabla_detalle_venta" />
           <NavigationProperty Name="tabla_estados_pedido" Relationship="Self.FK_ventas_estados" FromRole="tabla_ventas" ToRole="tabla_estados_pedido" />
           <NavigationProperty Name="tabla_notificaciones_vistas" Relationship="Self.FK_notificaciones_vistas_pedidos" FromRole="tabla_ventas" ToRole="tabla_notificaciones_vistas" />
-          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_ven__id_us__151B244E" FromRole="tabla_ventas" ToRole="tabla_usuarios" />
+          <NavigationProperty Name="tabla_usuarios" Relationship="Self.FK__tabla_ven__id_us__208CD6FA" FromRole="tabla_ventas" ToRole="tabla_usuarios" />
           <NavigationProperty Name="tabla_valoraciones" Relationship="Self.FK_valoraciones_pedidos" FromRole="tabla_ventas" ToRole="tabla_valoraciones" />
         </EntityType>
         <EntityType Name="Vehiculos">
@@ -1566,7 +1566,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_act__id_us__0B91BA14">
+        <Association Name="FK__tabla_act__id_us__123EB7A3">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_actividades" Type="Self.tabla_actividades" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1590,7 +1590,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_pro__id_ca__10566F31">
+        <Association Name="FK__tabla_pro__id_ca__1AD3FDA4">
           <End Role="tabla_categorias" Type="Self.tabla_categorias" Multiplicity="1" />
           <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1602,7 +1602,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_ven__id_cl__14270015">
+        <Association Name="FK__tabla_ven__id_cl__1F98B2C1">
           <End Role="tabla_clientes" Type="Self.tabla_clientes" Multiplicity="1" />
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1638,7 +1638,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_det__id_pr__0C85DE4D">
+        <Association Name="FK__tabla_det__id_pr__151B244E">
           <End Role="tabla_productos" Type="Self.tabla_productos" Multiplicity="1" />
           <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1650,7 +1650,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_det__id_ve__0D7A0286">
+        <Association Name="FK__tabla_det__id_ve__160F4887">
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="1" />
           <End Role="tabla_detalle_venta" Type="Self.tabla_detalle_venta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1674,7 +1674,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_hor__id_us__0E6E26BF">
+        <Association Name="FK__tabla_hor__id_us__17036CC0">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="1" />
           <End Role="tabla_horarios" Type="Self.tabla_horarios" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1722,7 +1722,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_usu__id_ro__1332DBDC">
+        <Association Name="FK__tabla_usu__id_ro__1DB06A4F">
           <End Role="tabla_roles" Type="Self.tabla_roles" Multiplicity="1" />
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1746,7 +1746,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tabla_ven__id_us__151B244E">
+        <Association Name="FK__tabla_ven__id_us__208CD6FA">
           <End Role="tabla_usuarios" Type="Self.tabla_usuarios" Multiplicity="0..1" />
           <End Role="tabla_ventas" Type="Self.tabla_ventas" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1851,7 +1851,7 @@
             <End Role="tabla_suministros" EntitySet="tabla_suministros" />
             <End Role="precios_suministros_utilizados" EntitySet="precios_suministros_utilizados" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_act__id_us__0B91BA14" Association="Self.FK__tabla_act__id_us__0B91BA14">
+          <AssociationSet Name="FK__tabla_act__id_us__123EB7A3" Association="Self.FK__tabla_act__id_us__123EB7A3">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_actividades" EntitySet="tabla_actividades" />
           </AssociationSet>
@@ -1859,11 +1859,11 @@
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_actividades" EntitySet="tabla_actividades" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_pro__id_ca__10566F31" Association="Self.FK__tabla_pro__id_ca__10566F31">
+          <AssociationSet Name="FK__tabla_pro__id_ca__1AD3FDA4" Association="Self.FK__tabla_pro__id_ca__1AD3FDA4">
             <End Role="tabla_categorias" EntitySet="tabla_categorias" />
             <End Role="tabla_productos" EntitySet="tabla_productos" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_ven__id_cl__14270015" Association="Self.FK__tabla_ven__id_cl__14270015">
+          <AssociationSet Name="FK__tabla_ven__id_cl__1F98B2C1" Association="Self.FK__tabla_ven__id_cl__1F98B2C1">
             <End Role="tabla_clientes" EntitySet="tabla_clientes" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
@@ -1875,11 +1875,11 @@
             <End Role="tabla_costos_recetas" EntitySet="tabla_costos_recetas" />
             <End Role="tabla_precios_finales_sugeridos" EntitySet="tabla_precios_finales_sugeridos" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_det__id_pr__0C85DE4D" Association="Self.FK__tabla_det__id_pr__0C85DE4D">
+          <AssociationSet Name="FK__tabla_det__id_pr__151B244E" Association="Self.FK__tabla_det__id_pr__151B244E">
             <End Role="tabla_productos" EntitySet="tabla_productos" />
             <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_det__id_ve__0D7A0286" Association="Self.FK__tabla_det__id_ve__0D7A0286">
+          <AssociationSet Name="FK__tabla_det__id_ve__160F4887" Association="Self.FK__tabla_det__id_ve__160F4887">
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
             <End Role="tabla_detalle_venta" EntitySet="tabla_detalle_venta" />
           </AssociationSet>
@@ -1887,7 +1887,7 @@
             <End Role="tabla_estados_pedido" EntitySet="tabla_estados_pedido" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_hor__id_us__0E6E26BF" Association="Self.FK__tabla_hor__id_us__0E6E26BF">
+          <AssociationSet Name="FK__tabla_hor__id_us__17036CC0" Association="Self.FK__tabla_hor__id_us__17036CC0">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_horarios" EntitySet="tabla_horarios" />
           </AssociationSet>
@@ -1903,7 +1903,7 @@
             <End Role="tabla_productos" EntitySet="tabla_productos" />
             <End Role="tabla_recomendaciones" EntitySet="tabla_recomendaciones" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_usu__id_ro__1332DBDC" Association="Self.FK__tabla_usu__id_ro__1332DBDC">
+          <AssociationSet Name="FK__tabla_usu__id_ro__1DB06A4F" Association="Self.FK__tabla_usu__id_ro__1DB06A4F">
             <End Role="tabla_roles" EntitySet="tabla_roles" />
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
           </AssociationSet>
@@ -1911,7 +1911,7 @@
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_solicitudes_ausencias" EntitySet="tabla_solicitudes_ausencias" />
           </AssociationSet>
-          <AssociationSet Name="FK__tabla_ven__id_us__151B244E" Association="Self.FK__tabla_ven__id_us__151B244E">
+          <AssociationSet Name="FK__tabla_ven__id_us__208CD6FA" Association="Self.FK__tabla_ven__id_us__208CD6FA">
             <End Role="tabla_usuarios" EntitySet="tabla_usuarios" />
             <End Role="tabla_ventas" EntitySet="tabla_ventas" />
           </AssociationSet>
@@ -2940,7 +2940,7 @@
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

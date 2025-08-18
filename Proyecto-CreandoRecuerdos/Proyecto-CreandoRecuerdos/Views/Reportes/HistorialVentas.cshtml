@@ -17,27 +17,44 @@
     <div class="row">
         <div class="col">
             <label>Fecha Inicio:</label>
-            <input id="fi" type="text" name="fechaInicio" class="form-control datepicker" value="@ViewBag.FechaInicio" autocomplete="off" />
+            <div class="custom-datepicker" data-input="fi">
+                <div class="datepicker-input">
+                    <span class="datepicker-label">Seleccionar fecha de inicio</span>
+                    <i class="fas fa-calendar-days calendar-icon"></i>
+                </div>
+                <div class="datepicker-calendar"></div>
+            </div>
+            <input id="fi" type="hidden" name="fechaInicio" class="form-control" value="@ViewBag.FechaInicio" autocomplete="off" />
         </div>
+
         <div class="col">
             <label>Fecha Fin:</label>
-            <input id="ff" type="text" name="fechaFin" class="form-control datepicker" value="@ViewBag.FechaFin" autocomplete="off" />
+            <div class="custom-datepicker" data-input="ff">
+                <div class="datepicker-input">
+                    <span class="datepicker-label">Seleccionar fecha final</span>
+                    <i class="fas fa-calendar-days calendar-icon"></i>
+                </div>
+                <div class="datepicker-calendar"></div>
+            </div>
+            <input id="ff" type="hidden" name="fechaFin" class="form-control" value="@ViewBag.FechaFin" autocomplete="off" />
         </div>
+
         <div class="col d-flex align-items-end">
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </div>
+
     </div>
 </form>
 
 <div class="mb-3">
     <a href="@Url.Action("ExportarHistorialVentas", "Reportes", new { formato = "PDF", fechaInicio = ViewBag.FechaInicio, fechaFin = ViewBag.FechaFin })" class="btn btn-danger">Exportar PDF</a>
     <a href="@Url.Action("ExportarHistorialVentas", "Reportes", new { formato = "EXCEL", fechaInicio = ViewBag.FechaInicio, fechaFin = ViewBag.FechaFin })" class="btn btn-success">Exportar Excel</a>
-    <a href="@Url.Action("Index", "Reportes")" class="btn btn-secondary">Volver</a>
+    <a href="@Url.Action("ReportesIndex", "Reportes")" class="btn btn-secondary">Volver</a>
 </div>
 
 @if (Model != null && Model.Any())
 {
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped dataTable" data-page-length="23">
         <thead>
             <tr>
                 <th>ID Venta</th>

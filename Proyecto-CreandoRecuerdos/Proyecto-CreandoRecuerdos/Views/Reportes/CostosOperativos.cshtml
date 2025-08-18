@@ -16,10 +16,10 @@
 <div class="mb-3">
     <a href="@Url.Action("ExportarCostosOperativos", "Reportes", new { formato = "PDF" })" class="btn btn-danger">Exportar PDF</a>
     <a href="@Url.Action("ExportarCostosOperativos", "Reportes", new { formato = "EXCEL" })" class="btn btn-success">Exportar Excel</a>
-    <a href="@Url.Action("Index", "Reportes")" class="btn btn-secondary">Volver</a>
+    <a href="@Url.Action("ReportesIndex", "Reportes")" class="btn btn-secondary">Volver</a>
 </div>
 
-<table class="table table-bordered table-striped mt-3">
+<table class="table table-bordered table-striped mt-3 dataTable" data-page-length="23">
     <thead>
         <tr>
             <th>Tipo de Costo</th>

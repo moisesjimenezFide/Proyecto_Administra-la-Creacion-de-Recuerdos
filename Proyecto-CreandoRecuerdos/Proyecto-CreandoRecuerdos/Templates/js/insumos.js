@@ -1,79 +1,47 @@
-// =====================
-// CUSTOM DROPDOWNS PARA FORMULARIOS
-// =====================
+// Función utilitaria para agregar atributos data-* personalizados a los items del dropdown
+function agregarAtributosInsumos($option, $item) {
+    const text = $option.text();
 
-// Función para convertir dropdowns normales al estilo personalizado
-function convertToCustomDropdown(selectElement) {
-    const $select = $(selectElement);
-
-    // Si el select ya está dentro de un wrapper personalizado, no hacemos nada.
-    if ($select.closest('.custom-select').length) {
-        return;
+    // Materias Primas
+    const costoPorGramoMatch = text.match(/Costo por gramo con merma: ₡([\d\.,]+)/);
+    if (costoPorGramoMatch) {
+        const costo = parseFloat(costoPorGramoMatch[1].replace(/\./g, '').replace(',', '.')) || 0;
+        $item.attr('data-costo-por-gramo-con-merma', costo);
+    }
+    // Productos Preparados
+    const costoPorPesoMatch = text.match(/Costo por peso: ₡([\d\.,]+)/);
+    if (costoPorPesoMatch) {
+        const costo = parseFloat(costoPorPesoMatch[1].replace(/\./g, '').replace(',', '.')) || 0;
+        $item.attr('data-costo-por-peso', costo);
+    }
+    // Empaques, Implementos, Suministros
+    const costoPorCantidadMatch = text.match(/Costo por cantidad: ₡([\d\.,]+)/);
+    if (costoPorCantidadMatch) {
+        const costo = parseFloat(costoPorCantidadMatch[1].replace(/\./g, '').replace(',', '.')) || 0;
+        $item.attr('data-costo-por-cantidad', costo);
+    }
+    // Recetas (para Productos Finales)
+    const costoRecetaMatch = text.match(/Costo total:\s*₡([\d\.,]+)/);
+    if (costoRecetaMatch) {
+        const costo = parseFloat(costoRecetaMatch[1].replace(/\./g, '').replace(',', '.')) || 0;
+        $item.attr('data-costo-total', costo);
+    }
+    const porcionMatch = text.match(/Porción: ([\d\.,]+)/);
+    if (porcionMatch) {
+        const porcion = parseFloat(porcionMatch[1].replace(',', '.')) || 0;
+        $item.attr('data-porcion', porcion);
     }
 
-    const selectedText = $select.find('option:selected').text();
-    const $wrapper = $('<div class="custom-select"></div>');
-
-    $select.addClass('custom-hidden');
-    $select.wrap($wrapper);
-
-    const $button = $('<button type="button" class="form-control custom-select-button"></button>').text(selectedText);
-    const $menu = $('<div class="custom-select-menu"></div>');
-
-    $select.find('option').each(function () {
-        const $option = $(this);
-        const $item = $('<a class="dropdown-item custom-select-item" href="#"></a>');
-
-        // Esta es la parte clave: Extraemos los valores del texto y los ponemos en atributos data
-        const text = $option.text();
-
-        // Materias Primas
-        const costoPorGramoMatch = text.match(/Costo por gramo con merma: ₡([\d\.,]+)/);
-        if (costoPorGramoMatch) {
-            const costo = parseFloat(costoPorGramoMatch[1].replace(/\./g, '').replace(',', '.')) || 0;
-            $item.attr('data-costo-por-gramo-con-merma', costo);
-        }
-
-        // Productos Preparados
-        const costoPorPesoMatch = text.match(/Costo por peso: ₡([\d\.,]+)/);
-        if (costoPorPesoMatch) {
-            const costo = parseFloat(costoPorPesoMatch[1].replace(/\./g, '').replace(',', '.')) || 0;
-            $item.attr('data-costo-por-peso', costo);
-        }
-
-        // Empaques, Implementos, Suministros
-        const costoPorCantidadMatch = text.match(/Costo por cantidad: ₡([\d\.,]+)/);
-        if (costoPorCantidadMatch) {
-            const costo = parseFloat(costoPorCantidadMatch[1].replace(/\./g, '').replace(',', '.')) || 0;
-            $item.attr('data-costo-por-cantidad', costo);
-        }
-
-        // Recetas (para Productos Finales)
-        const costoRecetaMatch = text.match(/Costo total:\s*₡([\d\.,]+)/);
-        if (costoRecetaMatch) {
-            const costo = parseFloat(costoRecetaMatch[1].replace(/\./g, '').replace(',', '.')) || 0;
-            $item.attr('data-costo-total', costo);
-        }
-        const porcionMatch = text.match(/Porción: ([\d\.,]+)/);
-        if (porcionMatch) {
-            const porcion = parseFloat(porcionMatch[1].replace(',', '.')) || 0;
-            $item.attr('data-porcion', porcion);
-        }
-
-        // Esto mantiene la lógica original si hay otros atributos de datos
-        $.each($option.data(), function (key, value) {
-            $item.attr(`data-${key}`, value);
-        });
-
-        $item.attr('data-value', $option.val());
-        $item.text($option.text());
-        if ($option.is(':selected')) {
-            $item.addClass('active');
-        }
-        $menu.append($item);
+    // Otros atributos de datos
+    $.each($option.data(), function (key, value) {
+        $item.attr(`data-${key}`, value);
     });
 
-    $select.parent().append($button).append($menu);
+    $item.attr('data-value', $option.val());
+    $item.text($option.text());
+    if ($option.is(':selected')) {
+        $item.addClass('active');
+    }
 }
 
 // =====================
@@ -475,7 +443,7 @@ function eliminarFila(boton) {
 $(document).ready(function () {
 
     // Convertir todos los dropdowns con clase form-control al cargar la página
-    $('.form-control').each(function () {
+    /*$('.form-control').each(function () {
         if ($(this).is('select')) {
             convertToCustomDropdown(this);
         }
@@ -562,7 +530,7 @@ $(document).ready(function () {
     observer.observe(document.body, {
         childList: true,
         subtree: true
-    });
+    });*/
 
     // Botón eliminar con confirmación (Swal)
     $(document).on('click', '.btn-eliminar', function (e) {
@@ -656,7 +624,7 @@ $(document).ready(function () {
         calcularPrecioFinalProductoFinal();
     }
 
-    // =====================
+    /* =====================
     // DataTables y Exportaciones para todas las tablas de insumos
     // =====================
     if ($('#tabla_insumos').length) {
@@ -791,7 +759,7 @@ $(document).ready(function () {
             e.preventDefault();
             return false;
         });
-    }
+    }*/
 
 // Vaciar selects al darle cancelar
     const cancelButton = document.querySelector('button[type="reset"]');

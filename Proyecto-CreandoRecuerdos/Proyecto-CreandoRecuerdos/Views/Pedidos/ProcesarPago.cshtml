@@ -1,0 +1,48 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.PedidoPagoCompletoModel
+@{
+    ViewData["Title"] = "Procesar Pago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2><i class="fas fa-credit-card me-2"></i> Procesar Pago</h2>
+        </div>
+        <div class="card-body">
+            @Html.Partial("Pago", Model)
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // SCRIPTS HECHOS CON LA AYUDA DE IA
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('confirmarPago').addEventListener('click', function () {
+                const metodoPago = document.querySelector('#metodosPagoTab .nav-link.active').id.replace('-tab', '');
+                const pagoData = {
+                    MetodoPago: metodoPago,
+                    TelefonoSinpe: document.getElementById('telefonoSinpe')?.value,
+                };
+
+                fetch('/Pedidos/ProcesarPago', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(pagoData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = data.redirectUrl;
+                        } else {
+                            alert(data.message);
+                        }
+                    });
+            });
+
+        });
+    </script>
+}

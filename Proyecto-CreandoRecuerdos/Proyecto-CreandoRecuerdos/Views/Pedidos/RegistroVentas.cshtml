@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Proyecto_CreandoRecuerdos.base_de_datos.sp_mostrar_ventas_web_Result>
+
+@{
+    ViewData["Title"] = "Gestión de Pedidos Web";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container my-5 text-center">
+    <h2 class="mb-4" style="font-family: 'Sono';">
+        <i class="fas fa-users me-2"></i> Gestión de Ventas Web
+    </h2>
+</div>
+
+<div class="container">
+    <div class="table-responsive">
+        <table id="tabla_ventas_web" class="table table-bordered table-striped table-sm text-center dataTable" data-page-length="16">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Tiempo Estimado</th>
+                    <th>Método Pago</th>
+                    <th>N° Pedido</th>
+                    <th>Teléfono</th>
+                    <th>Teléfono Sinpe</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pedido in Model)
+                {
+                    <tr>
+                        <td>@pedido.id_venta</td>
+                        <td>@pedido.nombre_cliente</td>
+                        <td>@pedido.fecha_corta?.ToString("yyyy-MM-dd")</td>
+                        <td>@pedido.estado_pedido</td>
+                        <td>@pedido.tiempo_estimado</td>
+                        <td>@pedido.metodo_pago</td>
+                        <td>@pedido.numero_pedido</td>
+                        <td>@pedido.telefono</td>
+                        <td>@pedido.telefono_sinpe</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

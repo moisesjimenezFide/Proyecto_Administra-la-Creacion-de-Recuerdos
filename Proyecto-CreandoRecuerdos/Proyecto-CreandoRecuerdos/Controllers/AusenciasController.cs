@@ -32,7 +32,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             {
                 solicitud.estado = "Aprobado";
                 db.SaveChanges();
-                TempData["Mensaje"] = "Solicitud aprobada correctamente.";
+                TempData["SuccessMessage"] = "Solicitud aprobada correctamente.";
             }
             return RedirectToAction("GestionSolicitudesAusencias");
         }
@@ -46,7 +46,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             {
                 solicitud.estado = "Rechazado";
                 db.SaveChanges();
-                TempData["Mensaje"] = "Solicitud rechazada correctamente.";
+                TempData["SuccessMessage"] = "Solicitud rechazada correctamente.";
             }
             return RedirectToAction("GestionSolicitudesAusencias");
         }
@@ -91,7 +91,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 db.tabla_solicitudes_ausencias.Add(entidad);
                 db.SaveChanges();
 
-                TempData["Mensaje"] = "Solicitud enviada correctamente.";
+                TempData["SuccessMessage"] = "Solicitud enviada correctamente.";
                 return RedirectToAction("SolicitudAusencia");
             }
 

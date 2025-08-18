@@ -23,7 +23,8 @@
     <div class="card shadow-sm" style="border-radius: 15px; border: none;">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0 usuarios-table">
+
+                <table id="tabla_usuarios" class="table table-hover mb-0 usuarios-table dataTable" data-page-length="11">
                     <thead class="encabezado-rosado">
                         <tr>
                             <th>ID</th>
@@ -78,13 +79,9 @@
 
                                         @if (usuario.activo)
                                         {
-
-                                            // este es mi codigo
                                             <button type="button" class="btn btn-sm btn-inactivar inactivar-btn" title="Inactivar" data-id="@usuario.id">
                                                 <i class="fas fa-user-slash"></i>
                                             </button>
-                                            // este es mi codigo
-
                                         }
                                         else
                                         {
@@ -97,15 +94,12 @@
                             </tr>
                         }
                     </tbody>
-
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
         $('.inactivar-btn').click(function () {

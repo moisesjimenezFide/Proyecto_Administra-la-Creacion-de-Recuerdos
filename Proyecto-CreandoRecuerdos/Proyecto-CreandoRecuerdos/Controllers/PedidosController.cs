@@ -1387,7 +1387,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         }
 
         [HttpGet]
-        public ActionResult registro_vetas()
+        public ActionResult RegistroVentas()
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {

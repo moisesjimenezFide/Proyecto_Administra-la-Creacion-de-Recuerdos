@@ -370,7 +370,6 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PedidosController.cs" />
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
-    <Compile Include="Controllers\PresentacionController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -453,7 +452,9 @@
     <Content Include="Templates\css\estilos.css" />
     <Content Include="Templates\css\insumos.css" />
     <Content Include="Templates\css\menu.css" />
+    <Content Include="Templates\css\paginaciones_y_exportaciones.css" />
     <Content Include="Templates\css\pedidos.css" />
+    <Content Include="Templates\css\selects.css" />
     <Content Include="Templates\img\favicon.ico" />
     <Content Include="Templates\img\favicon.png" />
     <Content Include="Templates\img\logo.png" />
@@ -501,6 +502,7 @@
     <Content Include="Templates\img\menu\8.jpg" />
     <Content Include="Templates\img\menu\9.jpg" />
     <Content Include="Templates\img\Recuerdos.png" />
+    <Content Include="Templates\js\paginaciones_y_exportaciones.js" />
     <Content Include="Templates\js\empleados.js" />
     <Content Include="Templates\js\historialactividades.js" />
     <Content Include="Templates\js\historial_ventas.js" />
@@ -512,6 +514,7 @@
     <Content Include="Templates\js\registrar_usuario.js" />
     <Content Include="Templates\js\registro_ventas.js" />
     <Content Include="Templates\js\reportes.js" />
+    <Content Include="Templates\js\selects.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -523,22 +526,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Presentacion\admin_clientes.cshtml" />
-    <Content Include="Views\Presentacion\agregar_platillo.cshtml" />
-    <Content Include="Views\Presentacion\costos_recetas.cshtml" />
-    <Content Include="Views\Presentacion\empaques.cshtml" />
-    <Content Include="Views\Presentacion\historial_ventas.cshtml" />
-    <Content Include="Views\Presentacion\index.cshtml" />
-    <Content Include="Views\Presentacion\menu.cshtml" />
-    <Content Include="Views\Presentacion\menu_admin.cshtml" />
-    <Content Include="Views\Presentacion\pedidos.cshtml" />
-    <Content Include="Views\Presentacion\precio_final.cshtml" />
-    <Content Include="Views\Presentacion\productos_preparados.cshtml" />
-    <Content Include="Views\Presentacion\registro_usuarios.cshtml" />
-    <Content Include="Views\Presentacion\registro_ventas.cshtml" />
-    <Content Include="Views\Presentacion\reportes.cshtml" />
-    <Content Include="Views\Presentacion\suministros.cshtml" />
-    <Content Include="Views\Presentacion\materias_primas.cshtml" />
     <Content Include="Views\Inicio\inicio.cshtml" />
     <Content Include="Views\Registro_Usuarios\registro_usuarios.cshtml" />
     <Content Include="Views\Admin\HistorialActividades.cshtml" />
@@ -555,13 +542,13 @@
     <Content Include="Views\Pedidos\Gestionar.cshtml" />
     <Content Include="Views\Pedidos\DetallePedido.cshtml" />
     <Content Include="Views\Pedidos\ConfirmacionPedido.cshtml" />
-    <Content Include="Views\Pedidos\_Pago.cshtml" />
+    <Content Include="Views\Pedidos\Pago.cshtml" />
     <Content Include="Views\Pedidos\ValorarPedido.cshtml" />
     <Content Include="Views\Pedidos\Pedidos.cshtml" />
-    <Content Include="Views\Pedidos\Pago.cshtml" />
+    <Content Include="Views\Pedidos\ProcesarPago.cshtml" />
     <Content Include="Views\Pedidos\MisPedidos.cshtml" />
-    <Content Include="Views\Pedidos\registro_vetas.cshtml" />
-    <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\Pedidos\RegistroVentas.cshtml" />
+    <Content Include="Views\Reportes\ReportesIndex.cshtml" />
     <Content Include="Views\Reportes\HistorialVentas.cshtml" />
     <Content Include="Views\Reportes\VentasMensuales.cshtml" />
     <Content Include="Views\Reportes\EmpleadosDisponibles.cshtml" />

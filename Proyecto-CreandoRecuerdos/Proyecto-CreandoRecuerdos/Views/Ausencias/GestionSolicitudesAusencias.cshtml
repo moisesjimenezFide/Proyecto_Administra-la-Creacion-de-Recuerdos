@@ -11,12 +11,12 @@
         <i class="fas fa-user-cog me-2"></i> Gestión de Solicitudes de Ausencias
     </h2>
 
-    @if (TempData["Mensaje"] != null)
+    @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success">@TempData["Mensaje"]</div>
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
 
-    <table class="table table-bordered">
+    <table class="table table-bordered dataTable" data-page-length="25">
         <thead class="table-dark">
             <tr>
                 <th>Empleado (ID)</th>

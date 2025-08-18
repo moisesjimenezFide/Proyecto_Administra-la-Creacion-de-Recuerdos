@@ -22,12 +22,12 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             return Session["Rol"] != null && (int)Session["Rol"] == 1;
         }
 
-        public ActionResult Index()
+        public ActionResult ReportesIndex()
         {
             if (!UsuarioEsAdmin())
                 return RedirectToAction("registro_usuarios", "Registro_Usuarios");
 
-            return View();
+            return View("ReportesIndex");
         }
 
         public ActionResult HistorialVentas(string fechaInicio, string fechaFin)

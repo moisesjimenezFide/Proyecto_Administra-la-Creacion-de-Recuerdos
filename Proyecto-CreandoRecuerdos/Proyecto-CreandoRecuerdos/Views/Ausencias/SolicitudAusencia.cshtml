@@ -17,20 +17,38 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.FechaInicio, "Fecha de Inicio")
-            @Html.TextBoxFor(model => model.FechaInicio, new { @class = "form-control", type = "date" })
+            <div class="custom-datepicker" data-input="FechaInicio">
+                <div class="datepicker-input">
+                    Seleccionar fecha de inicio
+                    <i class="fas fa-calendar-days calendar-icon"></i>
+                </div>
+                <div class="datepicker-calendar"></div>
+            </div>
+            <input type="date" id="FechaInicio" name="FechaInicio" value="@Model.FechaInicio" class="form-control" style="display: none;" />
         </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.FechaFin, "Fecha Final")
-            @Html.TextBoxFor(model => model.FechaFin, new { @class = "form-control", type = "date" })
+            <div class="custom-datepicker" data-input="FechaFin">
+                <div class="datepicker-input">
+                    Seleccionar fecha final
+                    <i class="fas fa-calendar-days calendar-icon"></i>
+                </div>
+                <div class="datepicker-calendar"></div>
+            </div>
+            <input type="date" id="FechaFin" name="FechaFin" value="@Model.FechaFin" class="form-control" style="display: none;" />
         </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Tipo, "Tipo")
             @Html.DropDownListFor(model => model.Tipo, new SelectList(new[] { "Vacaciones", "Permiso" }), "Seleccione un tipo", new { @class = "form-control" })
         </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Motivo, "Motivo")
             @Html.TextAreaFor(model => model.Motivo, new { @class = "form-control", rows = 3 })
         </div>
+
         <br>
         <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
     }
@@ -39,7 +57,7 @@
     {
         <hr />
         <h4 class="mt-5 mb-3" style="font-family: 'Sono';">Historial de Solicitudes</h4>
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped dataTable" data-page-length="25">
             <thead class="table-dark">
                 <tr>
                     <th>Fecha de Inicio</th>
