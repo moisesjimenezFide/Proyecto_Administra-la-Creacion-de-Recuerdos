@@ -46,58 +46,56 @@
 
                 <div class="col-md-3">
                     <label class="form-label">Método Pago</label>
-                    <div class="custom-select" data-select="#metodoPago"></div>
-                    <select id="metodoPago" name="metodoPago" class="form-select">
+                    <select class="form-select" id="metodoPago">
                         <option value="">Todos</option>
                         <option value="Efectivo">Efectivo</option>
                         <option value="Tarjeta">Tarjeta</option>
                         <option value="Sinpe">Sinpe Móvil</option>
                     </select>
-                    </div>
+                </div>
 
                 <div class="col-md-3">
                     <label class="form-label">Items por página</label>
-                    <div class="custom-select" data-select="#pageSize"></div>
-                    <select id="pageSize" name="pageSize" class="form-select">
+                    <select class="form-select" id="pageSize">
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                     </select>
-                    </div>
+                </div>
+            </div>
+
+                <!-- Filtros rápidos por estado -->
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <button class="btn btn-sm btn-outline-secondary filter-btn active" data-estado="">Todos</button>
+                    <button class="btn btn-sm btn-outline-warning filter-btn" data-estado="Pendiente">Pendientes</button>
+                    <button class="btn btn-sm btn-outline-info filter-btn" data-estado="En preparación">En preparación</button>
+                    <button class="btn btn-sm btn-outline-success filter-btn" data-estado="Listo">Listos</button>
+                    <button class="btn btn-sm btn-outline-primary filter-btn" data-estado="Entregado">Entregados</button>
+                    <button class="btn btn-sm btn-outline-danger filter-btn" data-estado="Cancelado">Cancelados</button>
                 </div>
 
-            <!-- Filtros rápidos por estado -->
-            <div class="d-flex flex-wrap gap-2 mb-3">
-                <button class="btn btn-sm btn-outline-secondary filter-btn active" data-estado="">Todos</button>
-                <button class="btn btn-sm btn-outline-warning filter-btn" data-estado="Pendiente">Pendientes</button>
-                <button class="btn btn-sm btn-outline-info filter-btn" data-estado="En preparación">En preparación</button>
-                <button class="btn btn-sm btn-outline-success filter-btn" data-estado="Listo">Listos</button>
-                <button class="btn btn-sm btn-outline-primary filter-btn" data-estado="Entregado">Entregados</button>
-                <button class="btn btn-sm btn-outline-danger filter-btn" data-estado="Cancelado">Cancelados</button>
-            </div>
-
-            <!-- Tabla de pedidos -->
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <thead class="table-light">
-                        <tr>
-                            <th>N° Pedido</th>
-                            <th>ID Cliente</th>
-                            <th>Fecha Inicio</th>
-                            <th>Fecha Fin</th>
-                            <th>Productos</th>
-                            <th class="text-end">Total</th>
-                            <th>Estado</th>
-                            <th>Método Pago</th>
-                            <th>Para Llevar</th>
-                            <th>Tiempo</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pedidosBody">
-                    </tbody>
-                </table>
-            </div>
+                <!-- Tabla de pedidos -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>N° Pedido</th>
+                                <th>ID Cliente</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Productos</th>
+                                <th class="text-end">Total</th>
+                                <th>Estado</th>
+                                <th>Método Pago</th>
+                                <th>Para Llevar</th>
+                                <th>Tiempo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pedidosBody">
+                        </tbody>
+                    </table>
+                </div>
 
             <!-- Paginación -->
             <nav aria-label="Page navigation">

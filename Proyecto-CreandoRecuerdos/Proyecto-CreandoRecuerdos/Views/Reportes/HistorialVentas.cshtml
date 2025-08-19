@@ -91,22 +91,10 @@ else
 <h4>Ventas por Mes (año del filtro)</h4>
 <canvas id="ventasMesChart" height="110"></canvas>
 @section Scripts {
-    <!-- Bootstrap Datepicker -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.es.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" />
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Inicializar datepickers
-        $('.datepicker').datepicker({
-            format: 'dd-mm-yyyy',
-            language: 'es',
-            autoclose: true,
-            todayHighlight: true
-        });
 
         const urlMes = '@Url.Action("VentasPorMes","Reportes")';
         const urlDia = '@Url.Action("VentasPorDia","Reportes")';

@@ -250,6 +250,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         public ActionResult EmpleadosDisponibles()
         {
+
+            if (!UsuarioEsAdmin())
+                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 var empleados = db.tabla_usuarios

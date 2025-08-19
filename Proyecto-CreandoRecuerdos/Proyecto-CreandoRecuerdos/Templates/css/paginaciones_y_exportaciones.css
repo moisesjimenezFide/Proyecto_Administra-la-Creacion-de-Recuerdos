@@ -60,20 +60,19 @@ div.dt-buttons {
 
 .custom-length-dropdown {
     position: relative;
-    display: inline-block;
 }
 
 .custom-dropdown-button {
     border: 2px solid #E9ECEF;
     border-radius: 8px;
-    padding: 0.5rem 2rem 0.5rem 1rem;
+    padding: 0.5rem 1rem;
+    min-width: 50px;
     background-color: #F8F9FA;
     font-size: 14px;
     font-weight: 500;
     color: #495057;
     cursor: pointer;
     position: relative;
-    min-width: 80px;
     text-align: left;
     -webkit-touch-callout: none;
     -webkit-user-select: none;

@@ -12,9 +12,6 @@
 
 @section Styles {
     <link href="~/Templates/css/insumos.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
-
 }
 
 <div class="container my-5 text-center">
@@ -46,7 +43,7 @@
 
         if (ViewBag.Errores != null)
         {
-           @: <script>
+            @: <script>
            @:     $(function () {
            @:         Swal.fire({
            @:             icon: 'error',
@@ -183,86 +180,86 @@
 </div>
 
 
-            <!-- Listado -->
-            <div class="container">
-                <h4><strong>Listado de Materias Primas</strong></h4>
-                @if (Model.MateriasPrimas == null || Model.MateriasPrimas.Count == 0)
-                {
-                    <div class="alert alert-info text-center" style="margin: 1rem 0;">
-                        @if (!string.IsNullOrEmpty(ViewBag.Search as string))
-                        {
-                            <span>No se encontraron coincidencias.</span>
-                        }
-                        else
-                        {
-                            <span>No hay materias primas registradas.</span>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <div class="table-responsive">
-                        <table id="tabla_insumos" class="table table-bordered table-striped table-sm text-center dataTable con-exportaciones" data-page-length="3">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Marca</th>
-                                    <th>Presentación</th>
-                                    <th>Cantidad</th>
-                                    <th>Volumen de Porción de Presentación</th>
-                                    <th>Unidad de medida de Presentación</th>
-                                    <th>Volumen de Porción Convertido</th>
-                                    <th>Unidad de medida del Volumen de Porción Convertido</th>
-                                    <th>Proveedor</th>
-                                    <th>Costo (₡)</th>
-                                    <th>Peso</th>
-                                    <th>Unidad de Medida del Peso</th>
-                                    <th>Merma Total en Gramos (g)</th>
-                                    <th>Costo por gramo (₡/g)</th>
-                                    <th>Porcentaje de Merma (%)</th>
-                                    <th>Costo de Merma Total(₡)</th>
-                                    <th>Costo Total + Merma (₡)</th>
-                                    <th>Costo por gramo con merma (₡)</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var materia_prima in Model.MateriasPrimas)
-                                {
-                                    <tr>
-                                        <td>@materia_prima.id</td>
-                                        <td>@materia_prima.nombre</td>
-                                        <td>@materia_prima.marca</td>
-                                        <td>@materia_prima.presentacion</td>
-                                        <td>@materia_prima.cantidad</td>
-                                        <td>@(materia_prima.volumen_de_porcion_de_presentacion.HasValue ? materia_prima.volumen_de_porcion_de_presentacion.Value.ToString("N2"): "")</td>
-                                        <td>@materia_prima.unidad_de_medida_de_presentacion</td>
-                                        <td>@(materia_prima.volumen_de_porcion_convertido.HasValue ? materia_prima.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td>
-                                        <td>@materia_prima.unidad_de_medida_convertida</td>
-                                        <td>@materia_prima.proveedor</td>
-                                        <td>₡@(materia_prima.costo.ToString("N2"))</td>
-                                        <td>@(materia_prima.cantidad * materia_prima.volumen_de_porcion_convertido)</td>
-                                        <td>@materia_prima.unidad_de_medida_del_peso</td>
-                                        <td>@(materia_prima.merma_total_en_gramos.HasValue ? materia_prima.merma_total_en_gramos.Value.ToString("N2"): "")</td>
-                                        <td>@(materia_prima.costo_por_gramo.HasValue ? "₡" + materia_prima.costo_por_gramo.Value.ToString("N2") : "")</td>
-                                        <td>@(materia_prima.porcentaje_de_merma.HasValue ? materia_prima.porcentaje_de_merma.Value.ToString("N2") + "%": "")</td>
-                                        <td>@(materia_prima.costo_de_merma_total.HasValue ? "₡" + materia_prima.costo_de_merma_total.Value.ToString("N2"): "") </td>
-                                        <td>@(materia_prima.costo_total_mas_merma_total.HasValue ? "₡" + materia_prima.costo_total_mas_merma_total.Value.ToString("N2"): "")</td>
-                                        <td>@(materia_prima.costo_por_gramo_con_merma.HasValue ? "₡" + materia_prima.costo_por_gramo_con_merma.Value.ToString("N2"): "")</td>
-                                        <td>
-                                            <a href="@Url.Action("EditarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
-                                            <a href="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })"></a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                }
-            </div>
-
-            @section Scripts {
-                <script src="~/Templates/js/insumos.js"></script>
-                @Html.Partial("accion_exitosa")
+<!-- Listado -->
+<div class="container">
+    <h4><strong>Listado de Materias Primas</strong></h4>
+    @if (Model.MateriasPrimas == null || Model.MateriasPrimas.Count == 0)
+    {
+        <div class="alert alert-info text-center" style="margin: 1rem 0;">
+            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+            {
+                <span>No se encontraron coincidencias.</span>
             }
+            else
+            {
+                <span>No hay materias primas registradas.</span>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table id="tabla_insumos" class="table table-bordered table-striped table-sm text-center dataTable con-exportaciones" data-page-length="3">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Marca</th>
+                        <th>Presentación</th>
+                        <th>Cantidad</th>
+                        <th>Volumen de Porción de Presentación</th>
+                        <th>Unidad de medida de Presentación</th>
+                        <th>Volumen de Porción Convertido</th>
+                        <th>Unidad de medida del Volumen de Porción Convertido</th>
+                        <th>Proveedor</th>
+                        <th>Costo (₡)</th>
+                        <th>Peso</th>
+                        <th>Unidad de Medida del Peso</th>
+                        <th>Merma Total en Gramos (g)</th>
+                        <th>Costo por gramo (₡/g)</th>
+                        <th>Porcentaje de Merma (%)</th>
+                        <th>Costo de Merma Total(₡)</th>
+                        <th>Costo Total + Merma (₡)</th>
+                        <th>Costo por gramo con merma (₡)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var materia_prima in Model.MateriasPrimas)
+                    {
+                        <tr>
+                            <td>@materia_prima.id</td>
+                            <td>@materia_prima.nombre</td>
+                            <td>@materia_prima.marca</td>
+                            <td>@materia_prima.presentacion</td>
+                            <td>@materia_prima.cantidad</td>
+                            <td>@(materia_prima.volumen_de_porcion_de_presentacion.HasValue ? materia_prima.volumen_de_porcion_de_presentacion.Value.ToString("N2"): "")</td>
+                            <td>@materia_prima.unidad_de_medida_de_presentacion</td>
+                            <td>@(materia_prima.volumen_de_porcion_convertido.HasValue ? materia_prima.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td>
+                            <td>@materia_prima.unidad_de_medida_convertida</td>
+                            <td>@materia_prima.proveedor</td>
+                            <td>₡@(materia_prima.costo.ToString("N2"))</td>
+                            <td>@(materia_prima.cantidad * materia_prima.volumen_de_porcion_convertido)</td>
+                            <td>@materia_prima.unidad_de_medida_del_peso</td>
+                            <td>@(materia_prima.merma_total_en_gramos.HasValue ? materia_prima.merma_total_en_gramos.Value.ToString("N2"): "")</td>
+                            <td>@(materia_prima.costo_por_gramo.HasValue ? "₡" + materia_prima.costo_por_gramo.Value.ToString("N2") : "")</td>
+                            <td>@(materia_prima.porcentaje_de_merma.HasValue ? materia_prima.porcentaje_de_merma.Value.ToString("N2") + "%": "")</td>
+                            <td>@(materia_prima.costo_de_merma_total.HasValue ? "₡" + materia_prima.costo_de_merma_total.Value.ToString("N2"): "") </td>
+                            <td>@(materia_prima.costo_total_mas_merma_total.HasValue ? "₡" + materia_prima.costo_total_mas_merma_total.Value.ToString("N2"): "")</td>
+                            <td>@(materia_prima.costo_por_gramo_con_merma.HasValue ? "₡" + materia_prima.costo_por_gramo_con_merma.Value.ToString("N2"): "")</td>
+                            <td>
+                                <a href="@Url.Action("EditarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                <a href="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarMateriaPrima", "Insumos", new { id = materia_prima.id })"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/Templates/js/insumos.js"></script>
+    @Html.Partial("accion_exitosa")
+}

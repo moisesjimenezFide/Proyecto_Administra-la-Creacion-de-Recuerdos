@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-  $('.dataTable').each(function () {
+    $('.dataTable').each(function () {
         const tableElement = $(this);
         const tableId = '#' + tableElement.attr('id');
         const totalFilas = tableElement.find('tbody tr').length;
@@ -77,6 +77,10 @@
         // Inicializa DataTables
         const table = tableElement.DataTable(dataTableConfig);
 
+        // Llama a la función para crear el dropdown personalizado
+        createCustomLengthDropdown();
+    });
+
     function createCustomLengthDropdown() {
         var lengthContainer = tableElement.closest('.dataTables_wrapper').find('.dataTables_length');
         var originalSelect = lengthContainer.find('select');
@@ -114,13 +118,6 @@
         label.append(' registros por página');
     }
 
-      // Se llama a la función para cada tabla
-      setTimeout(function () {
-          createCustomLengthDropdown();
-      }, 100);
-
-  });
-
     // Eventos para el dropdown personalizado para la cantidad de registros por página
     $(document).on('click', '.custom-dropdown-button', function (e) {
         e.preventDefault();
@@ -156,5 +153,6 @@
     $(document).on('contextmenu selectstart dragstart', '.custom-length-dropdown, .custom-dropdown-button, .custom-dropdown-item', function (e) {
         e.preventDefault();
         return false;
-    });
+    }); 
+    
 });

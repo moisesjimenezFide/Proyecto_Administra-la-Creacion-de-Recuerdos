@@ -2,8 +2,14 @@
 function convertToCustomDropdown(selectElement) {
     const $select = $(selectElement);
 
-    if ($select.closest('.custom-select').length) {
+    // Si ya es un dropdown personalizado, evitamos volver a crearlo
+    if ($select.hasClass('custom-hidden')) {
         return;
+    }
+
+    // Si ya está envuelto en un custom-select, lo eliminamos para reconstruirlo
+    if ($select.closest('.custom-select').length) {
+        $select.unwrap();
     }
 
     const selectedText = $select.find('option:selected').text();
@@ -321,9 +327,14 @@ $(document).ready(function () {
         const text = $item.text();
 
         const $dropdown = $item.closest('.custom-select');
-        const $originalSelect = $dropdown.find('select.custom-hidden');
 
-        $originalSelect.val(value).trigger('change');
+        // Encuentra el elemento DOM nativo
+        const originalSelect = $dropdown.find('select.custom-hidden')[0];
+        // Si existe, actualiza su valor y dispara el evento
+        if (originalSelect) {
+            originalSelect.value = value;
+            originalSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        }
 
         const $button = $dropdown.find('.custom-select-button');
         $button.text(text);
