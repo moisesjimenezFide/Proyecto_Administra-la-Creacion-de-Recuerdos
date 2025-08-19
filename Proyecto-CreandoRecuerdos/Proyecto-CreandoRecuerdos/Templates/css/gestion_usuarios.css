@@ -5,16 +5,10 @@ body {
     background-color: #f8f9fa;
 }
 
-/* Encabezado rosado pastel */
-.encabezado-rosado {
-    background-color: var(--rosa-principal); 
-}
-
 .swal2-icon-custom {
     font-size: 35px;
     color: #E27AB0; 
 }
-
 
 .container {
     padding: 0 15px;
@@ -31,41 +25,6 @@ body {
     margin: 0 auto;
     width: 100%;
 }
-
-.usuarios-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    table-layout: fixed;
-}
-
-    .usuarios-table thead {
-        background: var(--rosa-principal);
-        color: white;
-    }
-
-    .usuarios-table th {
-        padding: 1rem;
-        font-weight: 600;
-        text-align: left;
-        position: sticky;
-        top: 0;
-    }
-
-    .usuarios-table td {
-        padding: 0.75rem 1rem;
-        vertical-align: middle;
-        border-bottom: 1px solid var(--rosa-claro);
-        word-wrap: break-word;
-    }
-
-    .usuarios-table tbody tr:last-child td {
-        border-bottom: none;
-    }
-
-    .usuarios-table tbody tr:hover {
-        background-color: var(--rosa-claro);
-    }
 
 /* Estilos para los badges */
 .badge {
@@ -148,15 +107,6 @@ body {
         background-color: #218838;
     }
 
-/* Ajustes responsivos */
-@media (max-width: 992px) {
-    .usuarios-table th,
-    .usuarios-table td {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.9rem;
-    }
-}
-
 @media (max-width: 768px) {
     .usuarios-container {
         padding: 0;
@@ -165,15 +115,10 @@ body {
     .card {
         border-radius: 0;
     }
-
-    .usuarios-table {
-        display: table;
-        width: 100%;
-    }
 }
 
 .btn-inactivar {
-    background-color: #dc3545; /* rojo */
+    background-color: #dc3545;
     color: white;
     border: none;
     padding: 6px 10px;

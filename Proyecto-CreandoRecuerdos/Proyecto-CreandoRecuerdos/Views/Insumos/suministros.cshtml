@@ -133,7 +133,7 @@
     else
     {
         <div class="table-responsive">
-            <table id="tabla_insumos" class="table table-bordered table-striped table-sm text-center dataTable con-exportaciones" data-page-length="3">
+            <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -148,7 +148,7 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="tabla-global">
                     @foreach (var suministro in Model.Suministros)
                     {
                         <tr>

@@ -33,14 +33,14 @@
 
 @if (Model != null && Model.Any())
 {
-    <table class="table table-bordered table-striped dataTable" data-page-length="23">
-        <thead>
+    <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="23">
+        <thead class="tabla-global">
             <tr>
                 <th>Mes</th>
                 <th>Total de Ventas</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="tabla-global">
             @foreach (var item in Model)
             {
                 <tr>

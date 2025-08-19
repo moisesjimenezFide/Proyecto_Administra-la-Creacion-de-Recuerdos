@@ -24,8 +24,8 @@
         <div class="card-body p-0">
             <div class="table-responsive">
 
-                <table id="tabla_usuarios" class="table table-hover mb-0 usuarios-table dataTable" data-page-length="11">
-                    <thead class="encabezado-rosado">
+                <table id="tabla_usuarios" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="10">
+                    <thead class="tabla-global">
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
@@ -36,7 +36,7 @@
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody class="table-light">
+                    <tbody class="tabla-global">
                         @foreach (var usuario in Model)
                         {
                             <tr>

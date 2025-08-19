@@ -4,8 +4,8 @@
 @if (Model != null && Model.Any())
 {
     <div class="table-responsive">
-        <table class="table table-striped table-hover dataTable" data-page-length="25">
-            <thead class="table-dark">
+        <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="13">
+            <thead class="tabla-global">
                 <tr>
                     <th>Fecha/Hora</th>
                     <th>Usuario</th>
@@ -14,7 +14,7 @@
 
                 </tr>
             </thead>
-            <tbody class="table-light">
+            <tbody class="tabla-global">
                 @foreach (var actividad in Model)
                 {
                     <tr>

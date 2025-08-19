@@ -14,8 +14,8 @@
 
 <div class="container">
     <div class="table-responsive">
-        <table id="tabla_ventas_web" class="table table-bordered table-striped table-sm text-center dataTable con-busqueda" data-page-length="16">
-            <thead>
+        <table id="tabla_ventas_web" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-busqueda" data-page-length="16">
+            <thead class="tabla-global">
                 <tr>
                     <th>ID</th>
                     <th>Cliente</th>
@@ -28,7 +28,7 @@
                     <th>Teléfono Sinpe</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="tabla-global">
                 @foreach (var pedido in Model)
                 {
                     <tr>

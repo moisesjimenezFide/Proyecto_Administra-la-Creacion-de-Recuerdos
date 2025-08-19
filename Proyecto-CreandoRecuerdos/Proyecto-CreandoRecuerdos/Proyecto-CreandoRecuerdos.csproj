@@ -444,7 +444,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Templates\css\a.css" />
     <Content Include="Templates\css\admin_cliente.css" />
     <Content Include="Templates\css\gestion_usuarios.css" />
     <Content Include="Templates\css\home.css" />
@@ -454,6 +453,7 @@
     <Content Include="Templates\css\paginaciones_y_exportaciones.css" />
     <Content Include="Templates\css\pedidos.css" />
     <Content Include="Templates\css\selects.css" />
+    <Content Include="Templates\css\tablas.css" />
     <Content Include="Templates\img\favicon.ico" />
     <Content Include="Templates\img\favicon.png" />
     <Content Include="Templates\img\logo.png" />

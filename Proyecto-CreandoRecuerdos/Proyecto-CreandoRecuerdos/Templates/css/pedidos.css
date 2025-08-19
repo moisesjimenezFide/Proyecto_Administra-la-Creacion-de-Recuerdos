@@ -1,10 +1,8 @@
 :root {
     --primary-pink: #FFC0CB;
     --deep-pink: #FF1493;
-    --hot-pink: #FF69B4;
     --lavender: #E6E6FA;
     --dark-violet: #9400D3;
-    --light-pink: #E27AB0;
     --indigo: #480082;
     --steel-blue: #4682B4;
     --sky-blue: #87CEEB;
@@ -14,11 +12,17 @@
     --pos-danger: #dc3545;
     --pos-warning: #ffc107;
     --pos-info: #17a2b8;
+    --rosa-claro: #FFE6EE; /* Rosa pastel muy claro */
+    --rosa-principal: #E27AB0; /* Rosa principal suave */
+    --rosa-oscuro: #FF8FAB; /* Rosa más intenso pero pastel */
+    --dorado: #E8C495; /* Dorado mantiene igual */
+    --beige: #FFF0F3; /* Beige rosado muy claro */
+    --texto-oscuro: #5A3E36; /* Texto mantiene igual */
+    --hover-rosa: #FFD1DC; /* Hover más suave */
 }
 
 /* Fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Arial&display=swap');
 
 body {
     font-family: 'Sono';
@@ -28,54 +32,6 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-.navbar {
-    background-color: var(--light-pink);
-    padding: 0.5rem 1rem;
-}
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    font-family: 'Sono';
-    font-weight: 800;
-    color: white !important;
-    font-size: 1.2rem;
-    margin-right: 0 !important;
-    flex-grow: 1;
-}
-
-.logo-navbar {
-    height: 40px;
-    margin-right: 10px;
-    background-color: white;
-    padding: 3px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-nav {
-    font-family: 'Sono';
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-}
-
-.nav-link {
-    color: white !important;
-    font-family: 'Sono';
-    font-weight: 800;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem !important;
-}
-
-.navbar-collapse {
-    flex-grow: 0 !important;
-}
-
-.navbar-toggler {
-    order: 2;
 }
 
 .container-fluid {
@@ -117,15 +73,15 @@ body {
     border: none;
     border-radius: 0;
     padding: 12px 15px;
-    font-family: 'Arial';
+    font-family: 'Sono';
     color: var(--pos-dark);
     border-left: 3px solid transparent;
 }
 
     .list-group-item.active {
         background-color: var(--lavender);
-        color: var(--light-pink);
-        border-left: 3px solid var(--light-pink);
+        color: var(--rosa-principal);
+        border-left: 3px solid var(--rosa-principal);
         font-weight: bold;
     }
 
@@ -265,7 +221,7 @@ body {
         margin: 0 5px;
         border: 1px solid #ddd;
         border-radius: 3px;
-        font-family: 'Arial';
+        font-family: 'Sono';
     }
 
 .quantity-display {
@@ -305,7 +261,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
-    font-family: 'Arial';
+    font-family: 'Sono';
 }
 
     .summary-row.total {
@@ -336,7 +292,7 @@ body {
 .form-label,
 .form-control,
 .form-check-label {
-    font-family: 'Arial';
+    font-family: 'Sono';
 }
 
 .payment-methods {
@@ -353,11 +309,11 @@ body {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s;
-    font-family: 'Arial';
+    font-family: 'Sono';
 }
 
     .payment-method.active {
-        border-color: var(--hot-pink);
+        border-color: var(--rosa-principal);
         background-color: rgba(255, 105, 180, 0.1);
     }
 
@@ -399,7 +355,7 @@ body {
     top: 50%;
     transform: translateY(-50%);
     z-index: 1000;
-    background-color: var(--hot-pink);
+    background-color: var(--rosa-principal);
     color: white;
     border: none;
     width: 40px;
@@ -444,7 +400,7 @@ body {
     .product-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        border-color: var(--hot-pink);
+        border-color: var(--rosa-principal);
     }
 
 .product-img {
@@ -467,15 +423,15 @@ body {
 }
 
 .product-description {
-    font-family: 'Arial';
+    font-family: 'Sono';
     font-size: 0.8rem;
     color: #6c757d;
     margin-bottom: 5px;
 }
 
 .product-price {
-    font-family: 'Arial';
-    color: var(--light-pink);
+    font-family: 'Sono';
+    color: var(--rosa-principal);
     font-weight: bold;
     font-size: 1rem;
 }
@@ -508,24 +464,12 @@ body {
 .status-delivered {
     background-color: var(--lavender);
     color: var(--indigo);
-    border: 1px solid var(--light-pink);
+    border: 1px solid var(--rosa-principal);
 }
 
 .status-canceled {
     background-color: var(--pos-danger);
     color: #fff;
-}
-
-.table-responsive {
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-.table th {
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 10;
 }
 
 .order-products-list {
@@ -547,9 +491,9 @@ body {
 }
 
 .filter-btn.active {
-    background-color: var(--hot-pink);
+    background-color: var(--rosa-principal);
     color: white;
-    border-color: var(--hot-pink);
+    border-color: var(--rosa-principal);
 }
 
 .rating-stars {
@@ -669,11 +613,11 @@ body {
 
 #orderStatusModal .modal-content {
     border-radius: 15px;
-    border: 2px solid var(--light-pink);
+    border: 2px solid var(--rosa-principal);
 }
 
 #orderStatusModal .modal-header {
-    background-color: var(--light-pink);
+    background-color: var(--rosa-principal);
     color: white;
     border-bottom: 2px solid var(--deep-pink);
 }
@@ -689,7 +633,7 @@ body {
 }
 
 #orderStatusModal .table {
-    font-family: 'Arial';
+    font-family: 'Sono';
 }
 
     #orderStatusModal .table thead th {
@@ -705,12 +649,12 @@ body {
     }
 
 #orderStatusModal .filter-btn {
-    border-color: var(--light-pink);
+    border-color: var(--rosa-principal);
     color: var(--indigo);
 }
 
     #orderStatusModal .filter-btn.active {
-        background-color: var(--light-pink);
+        background-color: var(--rosa-principal);
         color: white;
         border-color: var(--deep-pink);
     }
@@ -721,7 +665,7 @@ body {
     }
 
 #orderStatusModal .page-item.active .page-link {
-    background-color: var(--light-pink);
+    background-color: var(--rosa-principal);
     border-color: var(--deep-pink);
     color: white;
 }
@@ -731,7 +675,7 @@ body {
 }
 
 #orderStatusModal .form-select {
-    border-color: var(--light-pink);
+    border-color: var(--rosa-principal);
 }
 
     #orderStatusModal .form-select:focus {
@@ -770,13 +714,13 @@ body {
 }
 
     #orderStatusModal .input-group input {
-        border-color: var(--light-pink);
+        border-color: var(--rosa-principal);
     }
 
     #orderStatusModal .input-group button {
-        background-color: var(--light-pink);
+        background-color: var(--rosa-principal);
         color: white;
-        border-color: var(--light-pink);
+        border-color: var(--rosa-principal);
     }
 
         #orderStatusModal .input-group button:hover {

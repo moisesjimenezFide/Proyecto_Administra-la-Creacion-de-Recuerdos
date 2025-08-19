@@ -19,14 +19,14 @@
     <a href="@Url.Action("ReportesIndex", "Reportes")" class="btn btn-secondary">Volver</a>
 </div>
 
-<table class="table table-bordered table-striped mt-3 dataTable" data-page-length="23">
-    <thead>
+<table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="17">
+    <thead class="tabla-global">
         <tr>
             <th>Tipo de Costo</th>
             <th>Promedio</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="tabla-global">
         <tr>
             <td>Recetas (por porción)</td>
             <td>@Model.PromedioCostosRecetas.ToString("C", cr)</td>

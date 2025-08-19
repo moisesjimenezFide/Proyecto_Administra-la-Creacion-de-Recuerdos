@@ -5,6 +5,10 @@ function cargarActividades() {
         data: $('#filtroForm').serialize(),
         success: function (result) {
             $('#actividadesContainer').html(result);
+
+            if (window.inicializarDataTables) {
+                window.inicializarDataTables();
+            }
         },
         error: function (xhr, status, error) {
             alert('Error al cargar las actividades: ' + error);

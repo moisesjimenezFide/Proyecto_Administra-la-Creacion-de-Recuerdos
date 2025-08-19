@@ -273,8 +273,8 @@
     else
     {
         <div class="table-responsive">
-            <table id="tabla_insumos" class="table table-bordered table-striped table-sm text-center dataTable con-exportaciones" data-page-length="3">
-                <thead>
+            <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
+                <thead class="tabla-global">
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
@@ -288,7 +288,7 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="tabla-global table-light">
                     @foreach (var receta in Model.CostosRecetas)
                     {
                         <tr>

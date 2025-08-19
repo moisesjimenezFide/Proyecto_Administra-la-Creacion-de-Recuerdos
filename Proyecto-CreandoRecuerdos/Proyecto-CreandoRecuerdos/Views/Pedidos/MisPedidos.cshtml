@@ -30,7 +30,7 @@
     {
         <div class="container mt-4">
             <div class="card shadow">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4><i class="fas fa-history me-2"></i> Pedido Encontrado</h4>
                         <button id="refreshPedidosBtn" class="btn btn-sm btn-light">
@@ -40,8 +40,8 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover dataTable con-exportaciones" data-page-length="25">
-                            <thead class="table-light">
+                        <table class="table mb-0 table-bordered table-striped tabla-global text-center">
+                            <thead class="tabla-global">
                                 <tr>
                                     <th>N° Pedido</th>
                                     <th>Fecha</th>
@@ -51,7 +51,7 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="tabla-global">
                                 @foreach (var pedido in Model)
                                 {
                                     <tr>
@@ -119,7 +119,7 @@
 {
     <div class="container mt-4">
         <div class="card shadow">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4><i class="fas fa-history me-2"></i> Mis Pedidos</h4>
                     <button id="refreshPedidosBtn" class="btn btn-sm btn-light">
@@ -150,8 +150,8 @@
                 else
                 {
                     <div class="table-responsive">
-                        <table class="table table-hover dataTable" data-page-length="10">
-                            <thead class="table-light">
+                        <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="10">
+                            <thead class="tabla-global">
                                 <tr>
                                     <th>N° Pedido</th>
                                     <th>Fecha</th>
@@ -161,7 +161,7 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="tabla-global">
                                 @foreach (var pedido in Model)
                                 {
                                     <tr>
