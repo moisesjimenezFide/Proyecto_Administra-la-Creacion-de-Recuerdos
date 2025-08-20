@@ -24,7 +24,7 @@
                 </div>
                 <div class="datepicker-calendar"></div>
             </div>
-            <input type="date" id="FechaInicio" name="FechaInicio" value="@Model.FechaInicio" class="form-control" style="display: none;" />
+            <input type="text" id="FechaInicio" name="FechaInicio" value="@Model.FechaInicio" class="form-control" style="display: none;" />
         </div>
 
         <div class="form-group">
@@ -36,7 +36,7 @@
                 </div>
                 <div class="datepicker-calendar"></div>
             </div>
-            <input type="date" id="FechaFin" name="FechaFin" value="@Model.FechaFin" class="form-control" style="display: none;" />
+            <input type="text" id="FechaFin" name="FechaFin" value="@Model.FechaFin" class="form-control" style="display: none;" />
         </div>
 
         <div class="form-group">
@@ -57,8 +57,8 @@
     {
         <hr />
         <h4 class="mt-5 mb-3" style="font-family: 'Sono';">Historial de Solicitudes</h4>
-        <table class="table table-bordered table-striped dataTable" data-page-length="25">
-            <thead class="table-dark">
+        <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
+            <thead class="tabla-global">
                 <tr>
                     <th>Fecha de Inicio</th>
                     <th>Fecha Final</th>

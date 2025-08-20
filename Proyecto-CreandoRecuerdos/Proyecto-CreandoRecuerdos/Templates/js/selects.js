@@ -63,8 +63,18 @@ class CustomDatePicker {
         this.input.addEventListener('change', () => this.updateFromInput());
 
         if (this.input.value) {
-            this.selectedDate = new Date(this.input.value + 'T00:00:00');
-            this.currentDate = new Date(this.selectedDate);
+            // Parsear dd-MM-yyyy a Date
+            const partes = this.input.value.split('-');
+            if (partes.length === 3) {
+                const dia = parseInt(partes[0], 10);
+                const mes = parseInt(partes[1], 10) - 1;
+                const anio = parseInt(partes[2], 10);
+                const fecha = new Date(anio, mes, dia);
+                if (!isNaN(fecha.getTime())) {
+                    this.selectedDate = fecha;
+                    this.currentDate = new Date(fecha);
+                }
+            }
             this.updateButton();
         }
     }
@@ -243,13 +253,12 @@ class CustomDatePicker {
         this.selectedDate = date;
         this.currentDate = new Date(date);
 
-        const dateStr = date.getFullYear() + '-' +
+        const dateStr = String(date.getDate()).padStart(2, '0') + '-' +
             String(date.getMonth() + 1).padStart(2, '0') + '-' +
-            String(date.getDate()).padStart(2, '0');
+            date.getFullYear();
+
         this.input.value = dateStr;
-
         this.input.dispatchEvent(new Event('change'));
-
         this.updateButton();
         this.hideCalendar();
     }
@@ -273,8 +282,23 @@ class CustomDatePicker {
 
     updateFromInput() {
         if (this.input.value) {
-            this.selectedDate = new Date(this.input.value + 'T00:00:00');
-            this.currentDate = new Date(this.selectedDate);
+            // Parsear dd-MM-yyyy a Date
+            const partes = this.input.value.split('-');
+            if (partes.length === 3) {
+                // partes[0]=día, partes[1]=mes, partes[2]=año
+                const dia = parseInt(partes[0], 10);
+                const mes = parseInt(partes[1], 10) - 1; // JS: 0=enero
+                const anio = parseInt(partes[2], 10);
+                const fecha = new Date(anio, mes, dia);
+                if (!isNaN(fecha.getTime())) {
+                    this.selectedDate = fecha;
+                    this.currentDate = new Date(fecha);
+                } else {
+                    this.selectedDate = null;
+                }
+            } else {
+                this.selectedDate = null;
+            }
         } else {
             this.selectedDate = null;
         }

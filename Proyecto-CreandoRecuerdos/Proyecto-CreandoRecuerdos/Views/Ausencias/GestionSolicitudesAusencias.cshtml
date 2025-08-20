@@ -16,8 +16,8 @@
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
 
-    <table class="table table-bordered dataTable" data-page-length="25">
-        <thead class="table-dark">
+    <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="10">
+        <thead class="tabla-global">
             <tr>
                 <th>Empleado (ID)</th>
                 <th>Fecha Inicio</th>
@@ -28,7 +28,7 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody  class="table-light">
+        <tbody>
             @foreach (var item in Model)
             {
                 <tr>
