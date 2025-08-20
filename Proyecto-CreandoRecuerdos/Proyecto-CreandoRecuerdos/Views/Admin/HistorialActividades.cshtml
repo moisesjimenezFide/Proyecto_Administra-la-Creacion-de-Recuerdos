@@ -17,15 +17,15 @@
             display: none;
         }
 
-        /* Contenedor de la etiqueta */
+        /* Área clickeable */
         .custom-radio label {
             cursor: pointer;
             position: relative;
-            padding-left: 30px; /* espacio para el círculo con ícono */
+            padding-left: 30px;
             line-height: 20px;
         }
 
-            /* El círculo externo */
+            /* Círculo externo */
             .custom-radio label span {
                 position: absolute;
                 left: 0;
@@ -34,36 +34,33 @@
                 height: 20px;
                 border: 2px solid #ced4da;
                 border-radius: 50%;
-                background-color: #fff;
+                background: #fff;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                transition: border-color .3s ease, box-shadow .3s ease;
             }
 
-                /* Ícono Font Awesome oculto por defecto */
-                .custom-radio label span i.fas.fa-circle-dot {
-                    font-size: 12px;
-                    color: #E27AB0;
-                    opacity: 0;
-                    transition: opacity 0.2s ease;
+                /* Ícono (oculto inicialmente) */
+                .custom-radio label span i.fas.fa-circle {
+                    font-size: 10px; /* ajusta al gusto */
+                    color: #E27AB0; /* tu color */
+                    opacity: 0; /* oculto */
+                    transform: scale(0.3); /* pequeño */
+                    transition: opacity .25s ease, transform .25s ease;
                 }
 
-        /* Cuando el radio está seleccionado */
+        /* Seleccionado */
         .custom-radio input[type="radio"]:checked + label span {
-            border-color: #E27AB0;
-            box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
+            background-color: #E27AB0;
+            box-shadow: 0 0 0 .2rem rgba(226,122,176,.25);
         }
-
-            /* Mostrar ícono cuando está seleccionado */
-            .custom-radio input[type="radio"]:checked + label span i.fas.fa-circle-dot {
-                opacity: 1;
-            }
 
         /* Hover */
         .custom-radio label:hover span {
             border-color: #E27AB0;
         }
+
     </style>
 }
 <div class="container my-5 text-center">
@@ -163,14 +160,14 @@
                 <div class="form-check custom-radio">
                     <input class="form-check-input" type="radio" name="exportFormat" id="pdfFormat" value="PDF">
                     <label class="form-check-label" for="pdfFormat">
-                        <span><i class="fas fa-circle-dot"></i></span> PDF
+                        <span><i class="fas fa-circle"></i></span> PDF
                     </label>
                 </div>
 
                 <div class="form-check custom-radio">
                     <input class="form-check-input" type="radio" name="exportFormat" id="excelFormat" value="Excel">
                     <label class="form-check-label" for="excelFormat">
-                        <span><i class="fas fa-circle-dot"></i></span> Excel
+                        <span><i class="fas fa-circle"></i></span> Excel
                     </label>
                 </div>
             </div>
