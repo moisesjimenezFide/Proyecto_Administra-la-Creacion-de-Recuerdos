@@ -41,7 +41,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             var formato = "dd-MM-yyyy";
             var cultura = System.Globalization.CultureInfo.InvariantCulture;
 
-            // Parseo de fecha de inicio
             if (!string.IsNullOrWhiteSpace(fechaInicio) &&
                 DateTime.TryParseExact(fechaInicio, formato, cultura,
                                        System.Globalization.DateTimeStyles.None, out var fInicio))
@@ -54,12 +53,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 ViewBag.FechaInicio = "";
             }
 
-            // Parseo de fecha de fin
             if (!string.IsNullOrWhiteSpace(fechaFin) &&
                 DateTime.TryParseExact(fechaFin, formato, cultura,
                                        System.Globalization.DateTimeStyles.None, out var fFin))
             {
-                // fin del día inclusive
                 fin = fFin.Date.AddDays(1).AddTicks(-1);
                 ViewBag.FechaFin = fFin.ToString(formato);
             }
@@ -68,7 +65,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 ViewBag.FechaFin = "";
             }
 
-            // Si faltan fechas, no cargamos datos
             if (!inicio.HasValue || !fin.HasValue)
                 return View("HistorialVentas", new List<HistorialVentasViewModel>());
 
@@ -80,7 +76,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         join c in db.tabla_clientes on v.id_cliente equals c.id_cliente into clienteJoin
                         from cj in clienteJoin.DefaultIfEmpty()
                         where v.fecha >= inicio && v.fecha <= fin
-                        orderby v.fecha descending
+                        orderby v.fecha ascending   // 👈 ahora cronológico (más antiguo primero)
                         select new HistorialVentasViewModel
                         {
                             IdVenta = v.id_venta,
@@ -92,7 +88,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                 var lista = q.ToList();
 
-                // Forzar el formato dd-MM-yyyy en la vista
                 foreach (var item in lista)
                 {
                     if (item.Fecha != DateTime.MinValue)
@@ -102,6 +97,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return View("HistorialVentas", lista);
             }
         }
+
 
         public ActionResult ExportarHistorialVentas(string formato, DateTime? fechaInicio, DateTime? fechaFin)
         {
@@ -613,52 +609,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
-
         [HttpGet]
-        public ActionResult VentasPorMes(int? anio, string fechaInicio, string fechaFin)
-        {
-            if (!UsuarioEsAdmin()) return new HttpStatusCodeResult(401);
-
-            DateTime? inicio = null;
-            DateTime? fin = null;
-            string formato = "dd-MM-yyyy";
-
-            if (!string.IsNullOrWhiteSpace(fechaInicio) &&
-                DateTime.TryParseExact(fechaInicio, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fInicio))
-                inicio = fInicio.Date;
-
-            if (!string.IsNullOrWhiteSpace(fechaFin) &&
-                DateTime.TryParseExact(fechaFin, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fFin))
-                fin = fFin.Date.AddDays(1).AddTicks(-1);
-
-            if (!inicio.HasValue || !fin.HasValue)
-                return Json(new List<object>(), JsonRequestBehavior.AllowGet);
-
-            using (var db = new BD_CREANDO_RECUERDOSEntities())
-            {
-                var rows = (from v in db.tabla_ventas
-                            where v.fecha >= inicio && v.fecha <= fin
-                            group v by new { v.fecha.Value.Year, v.fecha.Value.Month } into g
-                            orderby g.Key.Year, g.Key.Month
-                            select new
-                            {
-                                y = g.Key.Year,
-                                m = g.Key.Month,
-                                total = g.Sum(x => (decimal?)x.total) ?? 0m
-                            }).ToList();
-
-                var data = rows.Select(x => new
-                {
-                    label = new DateTime(x.y, x.m, 1).ToString("MM-yyyy"),
-                    total = x.total
-                });
-
-                return Json(data, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult VentasPorDia(int anio, int mes, string fechaInicio, string fechaFin)
+        public ActionResult VentasPorDia(string fechaInicio, string fechaFin)
         {
             if (!UsuarioEsAdmin()) return new HttpStatusCodeResult(401);
 
@@ -698,5 +650,51 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpGet]
+        public ActionResult VentasPorMes(string fechaInicio, string fechaFin)
+        {
+            if (!UsuarioEsAdmin()) return new HttpStatusCodeResult(401);
+
+            DateTime? inicio = null;
+            DateTime? fin = null;
+            string formato = "dd-MM-yyyy";
+
+            if (!string.IsNullOrWhiteSpace(fechaInicio) &&
+                DateTime.TryParseExact(fechaInicio, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fInicio))
+                inicio = fInicio.Date;
+
+            if (!string.IsNullOrWhiteSpace(fechaFin) &&
+                DateTime.TryParseExact(fechaFin, formato, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fFin))
+                fin = fFin.Date.AddDays(1).AddTicks(-1);
+
+            if (!inicio.HasValue || !fin.HasValue)
+                return Json(new List<object>(), JsonRequestBehavior.AllowGet);
+
+            using (var db = new BD_CREANDO_RECUERDOSEntities())
+            {
+                var rows = (from v in db.tabla_ventas
+                            where v.fecha >= inicio && v.fecha <= fin
+                            group v by new { v.fecha.Value.Year, v.fecha.Value.Month } into g
+                            orderby g.Key.Year, g.Key.Month
+                            select new
+                            {
+                                y = g.Key.Year,
+                                m = g.Key.Month,
+                                total = g.Sum(x => (decimal?)x.total) ?? 0m
+                            }).ToList();
+
+                var data = rows.Select(x => new
+                {
+                    label = $"{x.y:D4}-{x.m:D2}",
+                    total = x.total
+                });
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
     }
 }

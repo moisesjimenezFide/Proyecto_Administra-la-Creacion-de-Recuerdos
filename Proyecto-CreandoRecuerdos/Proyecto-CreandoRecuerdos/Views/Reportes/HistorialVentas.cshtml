@@ -42,7 +42,6 @@
         <div class="col d-flex align-items-end">
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </div>
-
     </div>
 </form>
 
@@ -54,7 +53,7 @@
 
 @if (Model != null && Model.Any())
 {
-    <table class="table table-bordered table-striped dataTable" data-page-length="23">
+    <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-busqueda" data-page-length="3">
         <thead>
             <tr>
                 <th>ID Venta</th>
@@ -65,15 +64,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var v in Model)
+            @foreach (var v in Model.OrderBy(v => v.Fecha))
             {
-                <tr>
-                    <td>@v.IdVenta</td>
-                    <td>@v.Fecha.ToString("dd-MM-yyyy")</td>
-                    <td>@(v.Cliente ?? "N/A")</td>
-                    <td>@(v.Usuario ?? "N/A")</td>
-                    <td>@v.Total.ToString("C", cr)</td>
-                </tr>
+            <tr>
+                <td>@v.IdVenta</td>
+                <td>@v.Fecha.ToString("dd-MM-yyyy")</td>
+                <td>@v.Total.ToString("C", cr)</td>
+                <td>@(v.Cliente ?? "N/A")</td>
+                <td>@(v.Usuario ?? "N/A")</td>
+            </tr>
             }
         </tbody>
     </table>
@@ -88,14 +87,14 @@ else
 <canvas id="ventasDiaChart" height="110"></canvas>
 
 <hr class="my-4" />
-<h4>Ventas por Mes (año del filtro)</h4>
+<h4>Ventas por Mes (según filtro)</h4>
 <canvas id="ventasMesChart" height="110"></canvas>
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-
         const urlMes = '@Url.Action("VentasPorMes","Reportes")';
         const urlDia = '@Url.Action("VentasPorDia","Reportes")';
 
@@ -104,9 +103,6 @@ else
 
         const fiVal = $fi?.value || '';
         const ffVal = $ff?.value || '';
-        let baseDate = ffVal ? new Date(ffVal.split('-').reverse().join('-') + 'T00:00:00') : new Date();
-        let year = baseDate.getFullYear();
-        let month = baseDate.getMonth() + 1;
 
         const moneyCR = n => new Intl.NumberFormat('es-CR', {
             style: 'currency', currency: 'CRC', minimumFractionDigits: 2
@@ -115,45 +111,9 @@ else
         let chartMes = null;
         let chartDia = null;
 
-        // --- Ventas por mes ---
-        fetch(`${urlMes}?anio=${encodeURIComponent(year)}&fechaInicio=${encodeURIComponent(fiVal)}&fechaFin=${encodeURIComponent(ffVal)}`, { cache: 'no-store' })
-            .then(r => r.json())
-            .then(data => {
-                const labels = data.map(x => {
-                    const d = new Date(x.label + '-01T00:00:00');
-                    return d.toLocaleDateString('es-CR', { month: 'short' }).toUpperCase();
-                });
-                const values = data.map(x => x.total || 0);
-
-                const ctxMes = document.getElementById('ventasMesChart').getContext('2d');
-                if (chartMes) chartMes.destroy();
-                chartMes = new Chart(ctxMes, {
-                    type: 'bar',
-                    data: { labels, datasets: [{ label: `Ventas ${year}`, data: values, borderWidth: 2 }] },
-                    options: {
-                        animation: false,
-                        plugins: {
-                            tooltip: { callbacks: { label: c => `${c.dataset.label}: ${moneyCR(c.parsed.y)}` } },
-                            legend: { display: true }
-                        },
-                        scales: { y: { ticks: { callback: v => moneyCR(v) } } }
-                    }
-                });
-
-                document.getElementById('ventasMesChart').onclick = (evt) => {
-                    const points = chartMes.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
-                    if (!points.length) return;
-                    const idx = points[0].index;
-                    const yymm = data[idx].label.split('-');
-                    month = parseInt(yymm[1], 10);
-                    cargarDiario(year, month);
-                };
-            })
-            .catch(console.error);
-
         // --- Ventas por día ---
-        function cargarDiario(anio, mes) {
-            fetch(`${urlDia}?anio=${encodeURIComponent(anio)}&mes=${encodeURIComponent(mes)}&fechaInicio=${encodeURIComponent(fiVal)}&fechaFin=${encodeURIComponent(ffVal)}`, { cache: 'no-store' })
+        function cargarDiario() {
+            fetch(`${urlDia}?fechaInicio=${encodeURIComponent(fiVal)}&fechaFin=${encodeURIComponent(ffVal)}`, { cache: 'no-store' })
                 .then(r => r.json())
                 .then(data => {
                     const labels = data.map(x => {
@@ -166,7 +126,17 @@ else
                     if (chartDia) chartDia.destroy();
                     chartDia = new Chart(canvas.getContext('2d'), {
                         type: 'line',
-                        data: { labels, datasets: [{ label: `Ventas ${anio}-${String(mes).padStart(2,'0')}`, data: values, borderWidth: 2, tension: .25 }] },
+                        data: {
+                            labels,
+                            datasets: [{
+                                label: `Ventas por día`,
+                                data: values,
+                                borderWidth: 2,
+                                tension: .25,
+                                borderColor: '#E27AB0',
+                                backgroundColor: '#FFE6EE'
+                            }]
+                        },
                         options: {
                             animation: false,
                             plugins: {
@@ -180,8 +150,53 @@ else
                 .catch(console.error);
         }
 
-        cargarDiario(year, month);
+        // --- Ventas por mes ---
+        function cargarMensual() {
+            fetch(`${urlMes}?fechaInicio=${encodeURIComponent(fiVal)}&fechaFin=${encodeURIComponent(ffVal)}`, { cache: 'no-store' })
+                .then(r => r.json())
+                .then(data => {
+                    const labels = data.map(x => {
+                        const parts = x.label.split('-');
+                        const yearPart = parseInt(parts[0], 10);
+                        const monthPart = parseInt(parts[1], 10);
+                        const d = new Date(yearPart, monthPart - 1, 1);
+                        return d.toLocaleDateString('es-CR', { month: 'short' }).toUpperCase();
+                    });
+
+                    const values = data.map(x => x.total || 0);
+
+                    const ctxMes = document.getElementById('ventasMesChart').getContext('2d');
+                    if (chartMes) chartMes.destroy();
+                    chartMes = new Chart(ctxMes, {
+                        type: 'bar',
+                        data: {
+                            labels,
+                            datasets: [{
+                                label: `Ventas por mes`,
+                                data: values,
+                                borderWidth: 2,
+                                backgroundColor: '#FFE6EE',
+                                borderColor: '#FF8FAB'
+                            }]
+                        },
+                        options: {
+                            animation: false,
+                            plugins: {
+                                tooltip: { callbacks: { label: c => `${c.dataset.label}: ${moneyCR(c.parsed.y)}` } },
+                                legend: { display: true }
+                            },
+                            scales: { y: { ticks: { callback: v => moneyCR(v) } } }
+                        }
+                    });
+                })
+                .catch(console.error);
+        }
+
+        // --- Solo cargar gráficos si hay filtro aplicado ---
+        if (fiVal && ffVal) {
+            cargarDiario();
+            cargarMensual();
+        }
     });
     </script>
 }
-

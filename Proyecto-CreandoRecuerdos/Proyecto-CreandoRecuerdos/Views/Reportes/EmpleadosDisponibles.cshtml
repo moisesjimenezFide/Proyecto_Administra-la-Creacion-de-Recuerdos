@@ -15,7 +15,7 @@
 
 @if (Model != null && Model.Any())
 {
-    <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="17">
+    <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-busqueda" data-page-length="3">
         <thead class="tabla-global">
             <tr>
                 <th>Nombre</th>
@@ -29,7 +29,7 @@
             {
                 <tr>
                     <td>@e.NombreCompleto</td>
-                    <td>@e.Correo</td> <!-- ✅ Aquí el cambio -->
+                    <td>@e.Correo</td>
                     <td>@e.Rol</td>
                     <td>@e.Estado</td>
                 </tr>
@@ -41,3 +41,4 @@ else
 {
     <p>No se encontraron empleados disponibles.</p>
 }
+
