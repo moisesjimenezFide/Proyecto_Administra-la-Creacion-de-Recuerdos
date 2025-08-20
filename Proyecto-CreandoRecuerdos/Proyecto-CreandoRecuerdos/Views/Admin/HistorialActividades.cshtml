@@ -7,6 +7,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles {
+
+    <!-- Estilos para el radio button personalizado -->
+    <style>
+
+        /* Ocultar el radio nativo */
+        .custom-radio input[type="radio"] {
+            display: none;
+        }
+
+        /* Área clickeable */
+        .custom-radio label {
+            cursor: pointer;
+            position: relative;
+            padding-left: 30px;
+            line-height: 20px;
+        }
+
+            /* Círculo externo */
+            .custom-radio label span {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 20px;
+                height: 20px;
+                border: 2px solid #ced4da;
+                border-radius: 50%;
+                background: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: border-color .3s ease, box-shadow .3s ease;
+            }
+
+                /* Ícono (oculto inicialmente) */
+                .custom-radio label span i.fas.fa-circle {
+                    font-size: 10px; /* ajusta al gusto */
+                    color: #E27AB0; /* tu color */
+                    opacity: 0; /* oculto */
+                    transform: scale(0.3); /* pequeño */
+                    transition: opacity .25s ease, transform .25s ease;
+                }
+
+        /* Seleccionado */
+        .custom-radio input[type="radio"]:checked + label span {
+            background-color: #E27AB0;
+            box-shadow: 0 0 0 .2rem rgba(226,122,176,.25);
+        }
+
+        /* Hover */
+        .custom-radio label:hover span {
+            border-color: #E27AB0;
+        }
+
+    </style>
+}
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
         <i class="fas fa-user-cog me-2"></i> Historial de Actividades
@@ -93,25 +149,34 @@
 <div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+
             <div class="modal-header">
                 <h5 class="modal-title">Exportar Historial</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
                 <p>Seleccione el formato de exportación:</p>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exportFormat" id="pdfFormat" value="PDF" checked>
-                    <label class="form-check-label" for="pdfFormat">PDF</label>
+                <div class="form-check custom-radio">
+                    <input class="form-check-input" type="radio" name="exportFormat" id="pdfFormat" value="PDF">
+                    <label class="form-check-label" for="pdfFormat">
+                        <span><i class="fas fa-circle"></i></span> PDF
+                    </label>
                 </div>
-                <div class="form-check">
+
+                <div class="form-check custom-radio">
                     <input class="form-check-input" type="radio" name="exportFormat" id="excelFormat" value="Excel">
-                    <label class="form-check-label" for="excelFormat">Excel</label>
+                    <label class="form-check-label" for="excelFormat">
+                        <span><i class="fas fa-circle"></i></span> Excel
+                    </label>
                 </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" id="confirmExport" class="btn btn-primary">Exportar</button>
             </div>
+
         </div>
     </div>
 </div>
