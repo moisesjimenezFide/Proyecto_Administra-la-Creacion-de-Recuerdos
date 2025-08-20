@@ -2,7 +2,6 @@
     width: auto;
     border-collapse: separate;
     border-spacing: 0;
-    table-layout: fixed;
 }
 
     .tabla-global thead {
@@ -11,7 +10,6 @@
     }
 
     .tabla-global th {
-        padding: 1rem;
         font-weight: 600;
         text-align: center;
         position: sticky;
@@ -19,10 +17,15 @@
     }
 
     .tabla-global td {
-        padding: 0.75rem 1rem;
-        vertical-align: middle;
         border-bottom: 1px solid var(--rosa-claro);
-        word-wrap: break-word;
+    }
+
+    .tabla-global th,
+    .tabla-global td {
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: middle;
+        padding: 0.5rem;
     }
 
     .tabla-global tbody tr {
@@ -45,7 +48,7 @@
 
 @media (max-width: 992px) {
     .tabla-global th, .tabla-global td {
-        padding: 0.75rem 0.5rem;
+        padding: 0.5rem;
         font-size: 0.9rem;
     }
 }

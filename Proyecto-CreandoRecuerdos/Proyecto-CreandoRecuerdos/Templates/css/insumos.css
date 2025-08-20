@@ -1,4 +1,7 @@
-﻿
+﻿label.form-label {
+    font-weight: bold;
+}
+
 .btn-sm {
     font-size: 0.8rem;
     padding: 0.3rem 0.6rem;

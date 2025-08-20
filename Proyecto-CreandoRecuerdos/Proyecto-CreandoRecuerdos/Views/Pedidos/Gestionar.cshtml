@@ -6,8 +6,8 @@
     <link href="~/Templates/css/pedidos.css" rel="stylesheet" />
 }
 
-<div class="container-fluid mt-4">
-    <div class="card shadow">
+<div class="container-fluid">
+    <div class="card shadow p-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h4><i class="fas fa-clipboard-list me-2"></i> Gestionar Pedidos</h4>
@@ -20,49 +20,51 @@
         </div>
 
         <div class="card-body">
-            <!-- Filtros avanzados -->
-            <div class="row mb-3 g-3">
-                <div class="col-md-3">
-                    <label class="form-label">Fecha Inicio</label>
-                    <div class="custom-datepicker" data-input="fechaInicio">
-                        <div class="datepicker-input">
-                            <i class="fas fa-calendar-days calendar-icon"></i>
+            <div class="px-3">
+                <!-- Filtros avanzados -->
+                <div class="row mb-3 g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Fecha Inicio</label>
+                        <div class="custom-datepicker" data-input="fechaInicio">
+                            <div class="datepicker-input">
+                                <i class="fas fa-calendar-days calendar-icon"></i>
+                            </div>
+                            <div class="datepicker-calendar"></div>
                         </div>
-                        <div class="datepicker-calendar"></div>
+                        <input type="date" class="form-control" id="fechaInicio" style="display:none;">
                     </div>
-                    <input type="date" class="form-control" id="fechaInicio" style="display:none;">
-                </div>
 
-                <div class="col-md-3">
-                    <label class="form-label">Fecha Fin</label>
-                    <div class="custom-datepicker" data-input="fechaFin">
-                        <div class="datepicker-input">
-                            <i class="fas fa-calendar-days calendar-icon"></i>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Fecha Fin</label>
+                        <div class="custom-datepicker" data-input="fechaFin">
+                            <div class="datepicker-input">
+                                <i class="fas fa-calendar-days calendar-icon"></i>
+                            </div>
+                            <div class="datepicker-calendar"></div>
                         </div>
-                        <div class="datepicker-calendar"></div>
+                        <input type="date" class="form-control" id="fechaFin" style="display:none;">
                     </div>
-                    <input type="date" class="form-control" id="fechaFin" style="display:none;">
-                </div>
 
-                <div class="col-md-3">
-                    <label class="form-label">Método Pago</label>
-                    <select class="form-select" id="metodoPago">
-                        <option value="">Todos</option>
-                        <option value="Efectivo">Efectivo</option>
-                        <option value="Tarjeta">Tarjeta</option>
-                        <option value="Sinpe">Sinpe Móvil</option>
-                    </select>
-                </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Método Pago</label>
+                        <select class="form-select" id="metodoPago">
+                            <option value="">Todos</option>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Tarjeta">Tarjeta</option>
+                            <option value="Sinpe">Sinpe Móvil</option>
+                        </select>
+                    </div>
 
-                <div class="col-md-3">
-                    <label class="form-label">Items por página</label>
-                    <select class="form-select" id="pageSize">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                    </select>
+                    <div class="col-md-3">
+                        <label class="form-label">Items por página</label>
+                        <select class="form-select" id="pageSize">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
 
                 <!-- Filtros rápidos por estado -->
                 <div class="d-flex flex-wrap gap-2 mb-3">
@@ -74,38 +76,42 @@
                     <button class="btn btn-sm btn-outline-danger filter-btn" data-estado="Cancelado">Cancelados</button>
                 </div>
 
-                <!-- Tabla de pedidos -->
-                <div class="table-responsive">
-                    <table class="table mb-0 table-bordered table-striped tabla-global text-center">
-                        <thead class="tabla-global">
-                            <tr>
-                                <th>N° Pedido</th>
-                                <th>ID Cliente</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>
-                                <th>Productos</th>
-                                <th class="text-end">Total</th>
-                                <th>Estado</th>
-                                <th>Método Pago</th>
-                                <th>Para Llevar</th>
-                                <th>Tiempo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pedidosBody" class="tabla-global">
-                        </tbody>
-                    </table>
-                </div>
+            </div>
 
-            <!-- Paginación -->
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center mt-3" id="pagination">
-                    <!-- La paginación se generará dinámicamente -->
-                </ul>
-            </nav>
         </div>
+
+        <!-- Tabla de pedidos -->
+        <div class="table-responsive">
+            <table class="table mb-0 table-bordered table-striped tabla-global text-center w-100">
+                <thead class="tabla-global">
+                    <tr>
+                        <th>N° Pedido</th>
+                        <th>ID Cliente</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Productos</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Método Pago</th>
+                        <th>Para Llevar</th>
+                        <th>Tiempo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="pedidosBody" class="tabla-global">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-3" id="pagination">
+                <!-- La paginación se generará dinámicamente -->
+            </ul>
+        </nav>
     </div>
 </div>
+
 
 @section Scripts {
     <script src="~/Templates/js/gestionPedidos.js"></script>

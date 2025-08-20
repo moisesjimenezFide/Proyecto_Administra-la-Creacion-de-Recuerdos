@@ -1377,7 +1377,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             {
                 return Convert.ToInt32(Session["IdUsuario"]);
             }
-            throw new Exception("Usuario no autenticado");
+            // Redirigir al login si no está autenticado
+            Response.Redirect("~/Registro_Usuarios/registro_usuarios");
+            return -1; // Opcional, nunca se ejecuta si hay redirección
+
         }
 
         // Calcular tiempo estimado basado en cantidad de productos

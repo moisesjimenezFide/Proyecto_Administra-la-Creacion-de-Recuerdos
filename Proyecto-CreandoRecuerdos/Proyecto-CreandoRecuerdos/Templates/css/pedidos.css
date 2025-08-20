@@ -39,6 +39,31 @@ body {
     padding-right: 15px;
 }
 
+#pagination .page-item.active .page-link {
+    background-color: #E27AB0 !important;
+    border-color: #E27AB0 !important;
+    color: #FFFFFF !important;
+}
+
+#pagination .page-item .page-link {
+    color: #E27AB0 !important;
+    border-color: #E27AB0 !important;
+}
+
+    #pagination .page-item .page-link:hover {
+        background-color: #F8E5ED !important;
+        color: #E27AB0 !important;
+        border-color: #E27AB0 !important;
+    }
+
+#pagination .page-link {
+    border: none !important;
+}
+
+#pagination .page-item.active .page-link:focus {
+    box-shadow: none !important;
+}
+
 .page-title {
     font-family: 'Sono';
     font-size: 2rem;
