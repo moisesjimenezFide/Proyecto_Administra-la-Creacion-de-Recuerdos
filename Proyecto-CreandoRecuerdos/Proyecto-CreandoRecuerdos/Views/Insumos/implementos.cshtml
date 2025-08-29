@@ -113,69 +113,71 @@
     }
 </div>
 
-<!-- Listado -->
-<div class="container">
-    <h4><strong>Listado de Implementos</strong></h4>
-    @if (Model.Implementos == null || Model.Implementos.Count == 0)
-    {
-        <div class="alert alert-info text-center" style="margin: 1rem 0;">
-            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
-            {
-                <span>No se encontraron coincidencias.</span>
-            }
-            else
-            {
-                <span>No hay implementos registrados.</span>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
-                <thead>
-                    <tr>
-                        <td>ID</td>
-                        <th>Nombre</th>
-                        <th>Marca</th>
-                        <th>Presentación</th>
-                        <th>Proveedor</th>
-                        <th>Costo (₡)</th>
-                        <th>Cantidad</th>
-                        <th>Unidad de Medida</th>
-                        <th>Costo por Cantidad (₡)</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="tabla-global">
-                    @foreach (var implemento in Model.Implementos)
-                    {
+@section ListadoInsumos {
+    <!-- Listado -->
+    <div class="tabla_insumos_container">
+        <h4><strong>Listado de Implementos</strong></h4>
+        @if (Model.Implementos == null || Model.Implementos.Count == 0)
+        {
+            <div class="alert alert-info text-center" style="margin: 1rem 0;">
+                @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                {
+                    <span>No se encontraron coincidencias.</span>
+                }
+                else
+                {
+                    <span>No hay implementos registrados.</span>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
+                    <thead>
                         <tr>
-                            <td>@implemento.id</td>
-                            <td>@implemento.nombre</td>
-                            <td>@implemento.marca</td>
-                            <td>@implemento.presentacion</td>
-                            <td>@implemento.proveedor</td>
-                            <td>₡@(implemento.costo.ToString("N2"))</td>
-                            <td>@implemento.cantidad</td>
-                            <td>@implemento.unidad_de_medida</td>
-                            <td>
-                                @(implemento.costo_por_cantidad.HasValue
-                                ? "₡" + implemento.costo_por_cantidad.Value.ToString("N2"): "")
-                            </td>
-                            <td>
-                                <a href="@Url.Action("EditarImplemento", "Insumos", new { id = implemento.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
-                                <a href="@Url.Action("EliminarImplemento", "Insumos", new { id = implemento.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarImplemento", "Insumos", new { id = implemento.id })"></a>
-                            </td>
+                            <td>ID</td>
+                            <th>Nombre</th>
+                            <th>Marca</th>
+                            <th>Presentación</th>
+                            <th>Proveedor</th>
+                            <th>Costo (₡)</th>
+                            <th>Cantidad</th>
+                            <th>Unidad de Medida</th>
+                            <th>Costo por Cantidad (₡)</th>
+                            <th>Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-</div>
-
-@section Scripts {
-    <script src="~/Templates/js/insumos.js"></script>
-    @Html.Partial("accion_exitosa")
+                    </thead>
+                    <tbody class="tabla-global">
+                        @foreach (var implemento in Model.Implementos)
+                        {
+                            <tr>
+                                <td>@implemento.id</td>
+                                <td>@implemento.nombre</td>
+                                <td>@implemento.marca</td>
+                                <td>@implemento.presentacion</td>
+                                <td>@implemento.proveedor</td>
+                                <td>₡@(implemento.costo.ToString("N2"))</td>
+                                <td>@implemento.cantidad</td>
+                                <td>@implemento.unidad_de_medida</td>
+                                <td>
+                                    @(implemento.costo_por_cantidad.HasValue
+                                ? "₡" + implemento.costo_por_cantidad.Value.ToString("N2"): "")
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("EditarImplemento", "Insumos", new { id = implemento.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                    <a href="@Url.Action("EliminarImplemento", "Insumos", new { id = implemento.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarImplemento", "Insumos", new { id = implemento.id })"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
 }
+
+    @section Scripts {
+        <script src="~/Templates/js/insumos.js"></script>
+        @Html.Partial("accion_exitosa")
+    }

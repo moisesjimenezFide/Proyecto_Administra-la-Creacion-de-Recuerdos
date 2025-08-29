@@ -1,5 +1,5 @@
 ﻿window.inicializarDataTables = function () {
-    $('.dataTable').each(function () {
+  $('.dataTable').each(function () {
         const tableElement = $(this);
         const tableId = '#' + tableElement.attr('id');
         const totalFilas = tableElement.find('tbody tr').length;
@@ -61,50 +61,50 @@
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 paginate: {
                     first: "Primer página",
+                    previous: "Página anterior",
+                    next: "Siguiente página",
                     last: "Última página",
-                    previous: false,
-                    next: false,
                 }
             }
         };
 
-        // Añade los botones y el 'dom' si la tabla tiene la clase 'con-exportaciones'
-        if (hasExportButtons) {
-            dataTableConfig.dom = "<'dt-buttons mb-2'B><'d-flex justify-content-between align-items-center mb-3'<'dt-length'l><'dataTables_filter'f>>rtip";
-            dataTableConfig.buttons = exportButtons;
+      // DOM dinámico según si hay botones de exportación
+      if (hasExportButtons) {
+          dataTableConfig.dom = "<'dt-toolbar d-flex align-items-center'B l f>rt<'dt-info-bar' i><'dt-paginate-bar' p>";
+          dataTableConfig.buttons = exportButtons;
+      } else {
+          dataTableConfig.dom = "<'dt-toolbar d-flex align-items-center'l f>rt<'dt-info-bar' i><'dt-paginate-bar' p>";
+      }
+
+      // Destruir instancia previa si existe
+      if ($.fn.DataTable.isDataTable(tableElement)) {
+          tableElement.DataTable().destroy();
+      }
+
+      // Inicializa DataTables
+      const table = tableElement.DataTable(dataTableConfig);
+
+    function createCustomLengthDropdown() {
+        var lengthContainer = tableElement.closest('.dataTables_wrapper').find('.dataTables_length');
+        var originalSelect = lengthContainer.find('select');
+        // Elimina el select original antes de agregar el dropdown personalizado
+        if (originalSelect.length > 0) {
+            originalSelect.remove();
+        }
+        if (lengthContainer.find('.custom-length-dropdown').length > 0) {
+            return;
         }
 
-        // Destruir instancia previa si existe
-        if ($.fn.DataTable.isDataTable(tableElement)) {
-            tableElement.DataTable().destroy();
+        // Crear HTML del dropdown personalizado para la cantidad de registros por página
+        var dropdownItems = '';
+        for (let i = 0; i < valoresNumericos.length; i++) {
+            const value = valoresNumericos[i];
+            const text = valoresVisibles[i];
+            const activeClass = value === 3 ? 'active' : '';
+            dropdownItems += `<div class="custom-dropdown-item ${activeClass}" data-value="${value}">${text}</div>`;
         }
 
-        // Inicializa DataTables
-        const table = tableElement.DataTable(dataTableConfig);
-
-        // Llama a la función para crear el dropdown personalizado
-        createCustomLengthDropdown(tableElement, valoresNumericos, valoresVisibles, pageLength);
-    });
-};
-
-function createCustomLengthDropdown(tableElement, valoresNumericos, valoresVisibles, pageLength) {
-    var lengthContainer = tableElement.closest('.dataTables_wrapper').find('.dataTables_length');
-    var originalSelect = lengthContainer.find('select');
-
-    if (originalSelect.length === 0 || lengthContainer.find('.custom-length-dropdown').length > 0) {
-        return;
-    }
-
-    // Crear HTML del dropdown personalizado para la cantidad de registros por página
-    var dropdownItems = '';
-    for (let i = 0; i < valoresNumericos.length; i++) {
-        const value = valoresNumericos[i];
-        const text = valoresVisibles[i];
-        const activeClass = value === 3 ? 'active' : '';
-        dropdownItems += `<div class="custom-dropdown-item ${activeClass}" data-value="${value}">${text}</div>`;
-    }
-
-    var customDropdown = $(`
+        var customDropdown = $(`
                 <div class="custom-length-dropdown">
                     <div class="custom-dropdown-button" id="lengthDropdownBtn">${pageLength}</div>
                     <div class="custom-dropdown-menu" id="lengthDropdownMenu">
@@ -113,17 +113,29 @@ function createCustomLengthDropdown(tableElement, valoresNumericos, valoresVisib
                 </div>
             `);
 
-    // Reemplazar el select por el dropdown personalizado para la cantidad de registros por página
-    originalSelect.after(customDropdown);
+        // Reemplazar el select por el dropdown personalizado para la cantidad de registros por página
+        lengthContainer.append(customDropdown);
 
-    // Actualizar el texto del label
-    var label = lengthContainer.find('label');
-    label.contents().filter(function () {
-        return this.nodeType === 3;
-    }).remove();
-    label.prepend('Mostrar ');
-    label.append(' registros por página');
+        var label = lengthContainer.find('label');
+        label.contents().filter(function () {
+            return this.nodeType === 3;
+        }).remove();
+        label.prepend('Mostrar ');
+        label.append(' registros por página');
     }
+
+      // Llama a la función cada vez que la tabla se dibuja
+        table.on('draw', function () {
+            createCustomLengthDropdown();
+        });
+
+        // Llama la primera vez
+        createCustomLengthDropdown();
+  });
+};
+
+$(document).ready(function () {
+    window.inicializarDataTables();
 
     // Eventos para el dropdown personalizado para la cantidad de registros por página
     $(document).on('click', '.custom-dropdown-button', function (e) {
@@ -160,8 +172,5 @@ function createCustomLengthDropdown(tableElement, valoresNumericos, valoresVisib
     $(document).on('contextmenu selectstart dragstart', '.custom-length-dropdown, .custom-dropdown-button, .custom-dropdown-item', function (e) {
         e.preventDefault();
         return false;
-    }); 
-
-    $(document).ready(function () {
-        window.inicializarDataTables();
     });
+});

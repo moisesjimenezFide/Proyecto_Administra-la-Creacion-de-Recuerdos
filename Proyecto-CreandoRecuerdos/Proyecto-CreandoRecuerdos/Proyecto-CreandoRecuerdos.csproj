@@ -501,14 +501,14 @@
     <Content Include="Templates\img\menu\8.jpg" />
     <Content Include="Templates\img\menu\9.jpg" />
     <Content Include="Templates\img\Recuerdos.png" />
-    <Content Include="Templates\js\paginaciones_y_exportaciones.js" />
     <Content Include="Templates\js\empleados.js" />
+    <Content Include="Templates\js\gestionPedidos.js" />
     <Content Include="Templates\js\historialactividades.js" />
     <Content Include="Templates\js\historial_ventas.js" />
     <Content Include="Templates\js\insumos.js" />
     <Content Include="Templates\js\menu.js" />
     <Content Include="Templates\js\menu_admin.js" />
-    <Content Include="Templates\js\gestionPedidos.js" />
+    <Content Include="Templates\js\paginaciones_y_exportaciones.js" />
     <Content Include="Templates\js\pedidos.js" />
     <Content Include="Templates\js\registrar_usuario.js" />
     <Content Include="Templates\js\registro_ventas.js" />
@@ -524,11 +524,8 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Inicio\inicio.cshtml" />
     <Content Include="Views\Registro_Usuarios\registro_usuarios.cshtml" />
-    <Content Include="Views\Admin\HistorialActividades.cshtml" />
-    <Content Include="Views\Admin\_Actividades.cshtml" />
     <Content Include="Views\Empleados\Empleados.cshtml" />
     <Content Include="Views\Ausencias\SolicitudAusencia.cshtml" />
     <Content Include="Views\Ausencias\GestionSolicitudesAusencias.cshtml" />
@@ -537,7 +534,6 @@
     <Content Include="Views\Registro_Usuarios\editar_usuario.cshtml" />
     <Content Include="Views\Menu\menu.cshtml" />
     <Content Include="Views\Menu\menu_admin.cshtml" />
-    <Content Include="Views\Insumos\accion_exitosa.cshtml" />
     <Content Include="Views\Pedidos\Gestionar.cshtml" />
     <Content Include="Views\Pedidos\DetallePedido.cshtml" />
     <Content Include="Views\Pedidos\ConfirmacionPedido.cshtml" />
@@ -553,14 +549,18 @@
     <Content Include="Views\Reportes\EmpleadosDisponibles.cshtml" />
     <Content Include="Views\Reportes\ProductosDisponibles.cshtml" />
     <Content Include="Views\Reportes\CostosOperativos.cshtml" />
+    <Content Include="Views\Registro_Usuarios\recuperar_contrasenna.cshtml" />
+    <Content Include="Views\Admin\HistorialActividades.cshtml" />
+    <Content Include="Views\Admin\_Actividades.cshtml" />
+    <Content Include="Views\Insumos\accion_exitosa.cshtml" />
+    <Content Include="Views\Insumos\costos_recetas.cshtml" />
     <Content Include="Views\Insumos\empaques_decoraciones.cshtml" />
     <Content Include="Views\Insumos\implementos.cshtml" />
     <Content Include="Views\Insumos\materias_primas.cshtml" />
+    <Content Include="Views\Insumos\precios_finales_sugeridos.cshtml" />
     <Content Include="Views\Insumos\productos_preparados.cshtml" />
     <Content Include="Views\Insumos\suministros.cshtml" />
-    <Content Include="Views\Registro_Usuarios\recuperar_contrasenna.cshtml" />
-    <Content Include="Views\Insumos\costos_recetas.cshtml" />
-    <Content Include="Views\Insumos\precios_finales_sugeridos.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

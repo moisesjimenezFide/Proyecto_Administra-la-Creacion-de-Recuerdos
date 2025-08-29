@@ -28,6 +28,19 @@
     border-color: #ced4da;
 }
 
+body .tabla_insumos_container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#tabla_insumos {
+    width: 100% !important;
+}
+
 /* Estilos para los inputs con símbolos a la izquierda y derecha */
 .input-symbol-left {
     color: #495057;

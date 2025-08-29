@@ -70,20 +70,14 @@ let ventas = [
   }
   
   function filtrarVentas() {
-      const fechaInicio = document.getElementById("fi").value;
-      const fechaFin = document.getElementById("ff").value;
-      const todasLasVentas = JSON.parse(sessionStorage.getItem("ventas")) || [];
-      let filtradas = todasLasVentas;
-
-      if (fechaInicio && fechaFin) {
-          filtradas = todasLasVentas.filter(v => v.fecha >= fechaInicio && v.fecha <= fechaFin);
-      } else if (fechaInicio) {
-          filtradas = todasLasVentas.filter(v => v.fecha >= fechaInicio);
-      } else if (fechaFin) {
-          filtradas = todasLasVentas.filter(v => v.fecha <= fechaFin);
-      }
-
+    const fecha = document.getElementById("filtroFecha").value;
+    const todasLasVentas = JSON.parse(sessionStorage.getItem("ventas")) || [];
+    if (!fecha) {
+      renderizarVentas(todasLasVentas);
+    } else {
+      const filtradas = todasLasVentas.filter(v => v.fecha === fecha);
       renderizarVentas(filtradas);
+    }
   }
   
   function editarVenta(index) {

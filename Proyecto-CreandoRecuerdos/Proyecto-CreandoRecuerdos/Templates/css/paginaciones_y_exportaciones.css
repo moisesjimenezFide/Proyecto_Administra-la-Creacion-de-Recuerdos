@@ -68,15 +68,7 @@ div.dt-buttons {
     display: none !important;
 }
 
-.dataTables_filter {
-    margin-left: 0;
-}
-
 /* Estilos personalizados para el dropdown de menú de longitud (LengthMenu) del DataTable */
-
-.custom-length-dropdown {
-    position: relative;
-}
 
 .custom-dropdown-button {
     border: 2px solid #E9ECEF;
@@ -156,3 +148,115 @@ div.dt-buttons {
         background-color: #E27AB0;
         color: white;
     }
+
+/* Fijar los componentes de DataTable al hacer scroll horizontal */
+
+.dataTables_wrapper {
+    overflow-x: auto;
+    width: 100%;
+    position: relative;
+}
+
+/* Agrupa los controles en una sola fila horizontal superior */
+.dt-toolbar {
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 30;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+.dt-info-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    left: 0;
+    bottom: 3.5rem;
+    z-index: 40;
+    width: 100%;
+    padding: 0.5rem 0 0.25rem 0;
+    box-sizing: border-box;
+}
+
+    .dt-info-bar .dataTables_info {
+        position: sticky;
+        left: 0;
+        z-index: 41;
+        display: block;
+        margin-left: 0;
+        margin-right: 0;
+        text-align: center;
+        width: auto;
+    }
+
+.dt-paginate-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    left: 0;
+    bottom: 0;
+    z-index: 41;
+    width: 100%;
+    padding: 0.25rem 0 0.5rem 0;
+    box-sizing: border-box;
+}
+
+    .dt-paginate-bar .dataTables_paginate {
+        position: sticky;
+        left: 0;
+        z-index: 42;
+        display: block;
+        margin-left: 0;
+        margin-right: 0;
+        text-align: center;
+        width: auto;
+    }
+
+    /* Todos los controles superiores con sticky horizontal */
+    .dataTables_wrapper .dt-buttons,
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .custom-length-dropdown,
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_paginate {
+        position: sticky;
+        left: 0;
+        z-index: 20;
+        top: 0; /* Si quieres que también sean sticky verticalmente */
+    }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .custom-length-dropdown {
+            display: block;
+        }
+
+        .table-responsive {
+            overflow-x: unset !important;
+        }
+
+/* Flechas de ordenamiento para DataTables */
+th.sorting::after,
+th.sorting_asc::after,
+th.sorting_desc::after {
+    font-family: "Font Awesome 6 Free", "Arial", sans-serif;
+    font-weight: 900;
+    margin-left: 8px;
+    font-size: 0.8em;
+    color:lightgray;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+th.sorting::after {
+    content: "\f0dc"; /* fa-sort (FontAwesome) o usa "⇅" si no tienes FontAwesome */
+}
+
+th.sorting_asc::after {
+    content: "\f0de"; /* fa-sort-up (FontAwesome) o usa "↑" */
+}
+
+th.sorting_desc::after {
+    content: "\f0dd"; /* fa-sort-down (FontAwesome) o usa "↓" */
+}

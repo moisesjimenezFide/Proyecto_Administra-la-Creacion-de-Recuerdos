@@ -442,6 +442,96 @@ function eliminarFila(boton) {
 // =====================
 $(document).ready(function () {
 
+    // Convertir todos los dropdowns con clase form-control al cargar la página
+    /*$('.form-control').each(function () {
+        if ($(this).is('select')) {
+            convertToCustomDropdown(this);
+        }
+    });
+
+    // Botones de agregar y eliminar filas
+    $(document).on('click', '.btn-agregar-fila', function () {
+        const containerId = $(this).data('container');
+        const templateClass = $(this).data('template');
+        agregarFila(containerId, templateClass);
+    });
+
+    $(document).on('click', '.btn-eliminar-fila', function () {
+        eliminarFila(this);
+    });
+
+    // Manejar clicks en el botón del dropdown de formularios
+    $(document).on('click', '.custom-select-button', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        $('.custom-select-menu').not($(this).siblings('.custom-select-menu')).removeClass('show');
+        $(this).siblings('.custom-select-menu').toggleClass('show');
+    });
+
+    // Manejar selección de items en formularios
+    $(document).on('click', '.custom-select-item', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const $item = $(this);
+        const value = $item.attr('data-value');
+        const text = $item.text();
+
+        const $dropdown = $item.closest('.custom-select');
+        const $originalSelect = $dropdown.find('select.custom-hidden');
+
+        $originalSelect.val(value).trigger('change');
+
+        const $button = $dropdown.find('.custom-select-button');
+        $button.text(text);
+
+        $dropdown.find('.custom-select-item').removeClass('active');
+        $item.addClass('active');
+
+        $dropdown.find('.custom-select-menu').removeClass('show');
+
+        // Llama a las funciones de cálculo de las vistas que correspondan al seleccionar una opción
+        if (typeof calcularCostosReceta === 'function') {
+            calcularCostosReceta();
+        }
+        if (typeof calcularPrecioFinalProductoFinal === 'function') {
+            calcularPrecioFinalProductoFinal();
+        }
+    });
+
+    // Cerrar dropdowns al hacer click fuera
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('.custom-select').length) {
+            $('.custom-select-menu').removeClass('show');
+        }
+    });
+
+    // Prevenir menús contextuales en los dropdowns personalizados
+    $(document).on('contextmenu selectstart dragstart', '.custom-select, .custom-select-button, .custom-select-item', function (e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Observar cambios en el DOM para dropdowns agregados dinámicamente
+    const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            if (mutation.type === 'childList') {
+                $(mutation.addedNodes).find('select.form-control').each(function () {
+                    if (!$(this).hasClass('custom-hidden')) {
+                        convertToCustomDropdown(this);
+                    }
+                });
+            }
+        });
+    });
+
+    // Iniciar observación
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });*/
+
     // Botón eliminar con confirmación (Swal)
     $(document).on('click', '.btn-eliminar', function (e) {
         e.preventDefault();
@@ -533,6 +623,143 @@ $(document).ready(function () {
     if (typeof calcularPrecioFinalProductoFinal === 'function') {
         calcularPrecioFinalProductoFinal();
     }
+
+    /* =====================
+    // DataTables y Exportaciones para todas las tablas de insumos
+    // =====================
+    if ($('#tabla_insumos').length) {
+        const totalFilas = $('#tabla_insumos tbody tr').length;
+
+        // Opciones de cantidad
+        let opciones = [];
+        for (let i = 5; i <= totalFilas; i += 5) {
+            opciones.push(i);
+        }
+        const ultimoMultiplo = Math.floor(totalFilas / 5) * 5;
+        const siguienteValor = totalFilas !== ultimoMultiplo ? totalFilas - 1 : null;
+        if (siguienteValor && !opciones.includes(siguienteValor)) {
+            opciones.push(siguienteValor);
+        }
+        opciones.sort((a, b) => a - b);
+        const valoresNumericos = [...opciones, -1];
+        const valoresVisibles = [...opciones.map(n => n.toString()), "Todos"];
+
+        var table = $('#tabla_insumos').DataTable({
+            pageLength: 3,
+            searching: false,
+            pagingType: "full_numbers",
+            lengthMenu: [valoresNumericos, valoresVisibles],
+            dom: "<'dt-buttons mb-2'B><'d-flex justify-content-between align-items-center mb-3'<'dt-length'l><'dataTables_filter'f>>rtip",
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: 'Copiar',
+                    className: 'btn btn-custom-pink btn-sm'
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: 'Exportar a Excel',
+                    className: 'btn btn-custom-pink btn-sm'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: 'Exportar a PDF',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    className: 'btn btn-custom-pink btn-sm'
+                },
+                {
+                    extend: 'print',
+                    text: 'Imprimir',
+                    className: 'btn btn-custom-pink btn-sm'
+                }
+            ],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                infoEmpty: "No hay registros disponibles",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                paginate: {
+                    first: "Primer página",
+                    last: "Última página",
+                    previous: false,
+                    next: false,
+                }
+            }
+        });
+
+        // Dropdown personalizado para la cantidad de registros por página 
+        setTimeout(function () {
+            createCustomLengthDropdown();
+        }, 100);
+
+        function createCustomLengthDropdown() {
+            var lengthContainer = $('.dataTables_length');
+            var originalSelect = lengthContainer.find('select');
+
+            // Crear HTML del dropdown personalizado para la cantidad de registros por página
+            var dropdownItems = '';
+            for (let i = 0; i < valoresNumericos.length; i++) {
+                const value = valoresNumericos[i];
+                const text = valoresVisibles[i];
+                const activeClass = value === 3 ? 'active' : '';
+                dropdownItems += `<div class="custom-dropdown-item ${activeClass}" data-value="${value}">${text}</div>`;
+            }
+
+            var customDropdown = $(`
+                <div class="custom-length-dropdown">
+                    <div class="custom-dropdown-button" id="lengthDropdownBtn">3</div>
+                    <div class="custom-dropdown-menu" id="lengthDropdownMenu">
+                        ${dropdownItems}
+                    </div>
+                </div>
+            `);
+
+            // Reemplazar el select por el dropdown personalizado para la cantidad de registros por página
+            originalSelect.after(customDropdown);
+
+            // Actualizar el texto del label
+            var label = lengthContainer.find('label');
+            label.contents().filter(function () {
+                return this.nodeType === 3;
+            }).remove();
+            label.prepend('Mostrar ');
+            label.append(' registros por página');
+        }
+
+        // Eventos para el dropdown personalizado para la cantidad de registros por página
+        $(document).on('click', '.custom-dropdown-button', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $('.custom-dropdown-menu').toggleClass('show');
+        });
+
+        $(document).on('click', '.custom-dropdown-item', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var value = $(this).data('value');
+            var text = $(this).text();
+
+            $('.custom-dropdown-button').text(text);
+            $('.custom-dropdown-item').removeClass('active');
+            $(this).addClass('active');
+            $('.custom-dropdown-menu').removeClass('show');
+            table.page.len(value).draw();
+        });
+
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('.custom-length-dropdown').length) {
+                $('.custom-dropdown-menu').removeClass('show');
+            }
+        });
+
+        $(document).on('contextmenu selectstart dragstart', '.custom-length-dropdown, .custom-dropdown-button, .custom-dropdown-item', function (e) {
+            e.preventDefault();
+            return false;
+        });
+    }*/
 
 // Vaciar selects al darle cancelar
     const cancelButton = document.querySelector('button[type="reset"]');

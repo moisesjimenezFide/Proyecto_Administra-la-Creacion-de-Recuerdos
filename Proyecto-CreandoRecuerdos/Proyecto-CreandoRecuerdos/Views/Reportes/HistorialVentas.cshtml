@@ -1,4 +1,4 @@
-﻿@model List<Proyecto_CreandoRecuerdos.ViewModels.HistorialVentasViewModel>
+﻿﻿@model List<Proyecto_CreandoRecuerdos.ViewModels.HistorialVentasViewModel>
 
 @{
     ViewData["Title"] = "Historial de Ventas";
@@ -66,13 +66,13 @@
         <tbody>
             @foreach (var v in Model.OrderBy(v => v.Fecha))
             {
-            <tr>
-                <td>@v.IdVenta</td>
-                <td>@v.Fecha.ToString("dd-MM-yyyy")</td>
-                <td>@v.Total.ToString("C", cr)</td>
-                <td>@(v.Cliente ?? "N/A")</td>
-                <td>@(v.Usuario ?? "N/A")</td>
-            </tr>
+                <tr>
+                    <td>@v.IdVenta</td>
+                    <td>@v.Fecha.ToString("dd-MM-yyyy")</td>
+                    <td>@v.Total.ToString("C", cr)</td>
+                    <td>@(v.Cliente ?? "N/A")</td>
+                    <td>@(v.Usuario ?? "N/A")</td>
+                </tr>
             }
         </tbody>
     </table>

@@ -11,7 +11,8 @@
 }
 
 @section Styles {
-    <link href="~/Templates/css/insumos.css" rel="stylesheet" />}
+    <link href="~/Templates/css/insumos.css" rel="stylesheet" />
+}
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
@@ -112,69 +113,71 @@
     }
 </div>
 
-<!-- Listado -->
-<div class="container">
-    <h4><strong>Listado de Empaques y/o Decoraciones</strong></h4>
-    @if (Model.EmpaquesDecoraciones == null || Model.EmpaquesDecoraciones.Count == 0)
-    {
-        <div class="alert alert-info text-center" style="margin: 1rem 0;">
-            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
-            {
-                <span>No se encontraron coincidencias.</span>
-            }
-            else
-            {
-                <span>No hay empaques y/o decoraciones registrados(as).</span>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
-                <thead class="tabla-global">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Marca</th>
-                        <th>Presentación</th>
-                        <th>Proveedor</th>
-                        <th>Costo (₡)</th>
-                        <th>Cantidad</th>
-                        <th>Unidad de Medida</th>
-                        <th>Costo por Cantidad (₡)</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="tabla-global">
-                    @foreach (var empaque_decoracion in Model.EmpaquesDecoraciones)
-                    {
+@section ListadoInsumos {
+    <!-- Listado -->
+    <div class="tabla_insumos_container">
+        <h4><strong>Listado de Empaques y/o Decoraciones</strong></h4>
+        @if (Model.EmpaquesDecoraciones == null || Model.EmpaquesDecoraciones.Count == 0)
+        {
+            <div class="alert alert-info text-center" style="margin: 1rem 0;">
+                @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                {
+                    <span>No se encontraron coincidencias.</span>
+                }
+                else
+                {
+                    <span>No hay empaques y/o decoraciones registrados(as).</span>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
+                    <thead class="tabla-global">
                         <tr>
-                            <td>@empaque_decoracion.id</td>
-                            <td>@empaque_decoracion.nombre</td>
-                            <td>@empaque_decoracion.marca</td>
-                            <td>@empaque_decoracion.presentacion</td>
-                            <td>@empaque_decoracion.proveedor</td>
-                            <td>₡@(empaque_decoracion.costo.ToString("N2"))</td>
-                            <td>@empaque_decoracion.cantidad</td>
-                            <td>@empaque_decoracion.unidad_de_medida</td>
-                            <td>
-                                @(empaque_decoracion.costo_por_cantidad.HasValue
-                                ? "₡" + empaque_decoracion.costo_por_cantidad.Value.ToString("N2"): "")
-                            </td>
-                            <td>
-                                <a href="@Url.Action("EditarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
-                                <a href="@Url.Action("EliminarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })"></a>
-                            </td>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Marca</th>
+                            <th>Presentación</th>
+                            <th>Proveedor</th>
+                            <th>Costo (₡)</th>
+                            <th>Cantidad</th>
+                            <th>Unidad de Medida</th>
+                            <th>Costo por Cantidad (₡)</th>
+                            <th>Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-</div>
-
-@section Scripts {
-    <script src="~/Templates/js/insumos.js"></script>
-    @Html.Partial("accion_exitosa")
+                    </thead>
+                    <tbody class="tabla-global">
+                        @foreach (var empaque_decoracion in Model.EmpaquesDecoraciones)
+                        {
+                            <tr>
+                                <td>@empaque_decoracion.id</td>
+                                <td>@empaque_decoracion.nombre</td>
+                                <td>@empaque_decoracion.marca</td>
+                                <td>@empaque_decoracion.presentacion</td>
+                                <td>@empaque_decoracion.proveedor</td>
+                                <td>₡@(empaque_decoracion.costo.ToString("N2"))</td>
+                                <td>@empaque_decoracion.cantidad</td>
+                                <td>@empaque_decoracion.unidad_de_medida</td>
+                                <td>
+                                    @(empaque_decoracion.costo_por_cantidad.HasValue
+                                ? "₡" + empaque_decoracion.costo_por_cantidad.Value.ToString("N2"): "")
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("EditarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                    <a href="@Url.Action("EliminarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarEmpaqueDecoracion", "Insumos", new { id = empaque_decoracion.id })"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
 }
+
+    @section Scripts {
+        <script src="~/Templates/js/insumos.js"></script>
+        @Html.Partial("accion_exitosa")
+    }

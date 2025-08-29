@@ -11,7 +11,8 @@
 }
 
 @section Styles {
-    <link href="~/Templates/css/insumos.css" rel="stylesheet" />}
+    <link href="~/Templates/css/insumos.css" rel="stylesheet" />
+}
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
@@ -150,83 +151,85 @@
     }
 </div>
 
-<!-- Listado -->
-<div class="container">
-    <h4><strong>Listado de Productos Preparados</strong></h4>
-    @if (Model.ProductosPreparados == null || Model.ProductosPreparados.Count == 0)
-    {
-        <div class="alert alert-info text-center" style="margin: 1rem 0;">
-            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
-            {
-                <span>No se encontraron coincidencias.</span>
-            }
-            else
-            {
-                <span>No hay productos preparados registrados.</span>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tipo</th>
-                        <th>Nombre</th>
-                        <th>Marca</th>
-                        <th>Presentación</th>
-                        <th>Cantidad</th>
-                        <th>Volumen de Porción de Presentación</th>
-                        <th>Unidad de medida de Presentación</th>
-                        <th>Volumen de Porción Convertido</th>
-                        <th>Unidad de medida del Volumen de Porción Convertido</th>
-                        <th>Proveedor</th>
-                        <th>Costo (₡)</th>
-                        <th>Peso</th>
-                        <th>Unidad de medida del Peso</th>
-                        <th>Costo por Peso (₡)</th>
-                        <th>Costo por Porción con Merma (₡)</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="tabla-global">
-                    @foreach (var producto_preparado in Model.ProductosPreparados)
-                    {
+@section ListadoInsumos {
+    <!-- Listado -->
+    <div class="tabla_insumos_container">
+        <h4><strong>Listado de Productos Preparados</strong></h4>
+        @if (Model.ProductosPreparados == null || Model.ProductosPreparados.Count == 0)
+        {
+            <div class="alert alert-info text-center" style="margin: 1rem 0;">
+                @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                {
+                    <span>No se encontraron coincidencias.</span>
+                }
+                else
+                {
+                    <span>No hay productos preparados registrados.</span>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
+                    <thead>
                         <tr>
-                            <td>@producto_preparado.id</td>
-                            <td>@producto_preparado.tipo</td>
-                            <td>@producto_preparado.nombre</td>
-                            <td>@producto_preparado.marca</td>
-                            <td>@producto_preparado.presentacion</td>
-                            <td>@producto_preparado.cantidad</td>
-                            <td>
-                                @(producto_preparado.volumen_de_porcion_de_presentacion.HasValue
-                                ? producto_preparado.volumen_de_porcion_de_presentacion.Value.ToString("N2"): "")
-                            </td>
-                            <td>@producto_preparado.unidad_de_medida_de_presentacion</td>
-                            <td>@(producto_preparado.volumen_de_porcion_convertido.HasValue ? producto_preparado.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td>
-                            <td>@producto_preparado.unidad_de_medida_convertida</td>
-                            <td>@producto_preparado.proveedor</td>
-                            <td>₡@(producto_preparado.costo.ToString("N2"))</td>
-                            <td>@(producto_preparado.cantidad * producto_preparado.volumen_de_porcion_convertido)</td>
-                            <td>@producto_preparado.unidad_de_medida_del_peso</td>
-                            <td>@(producto_preparado.costo_por_peso.HasValue ? "₡" + producto_preparado.costo_por_peso.Value.ToString("N2"): "")</td>
-                            <td>@(producto_preparado.costo_por_porcion_con_merma.HasValue ? "₡" + producto_preparado.costo_por_porcion_con_merma.Value.ToString("N2"): "")</td>
-                            <td>
-                                <a href="@Url.Action("EditarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
-                                <a href="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })"></a>
-                            </td>
+                            <th>ID</th>
+                            <th>Tipo</th>
+                            <th>Nombre</th>
+                            <th>Marca</th>
+                            <th>Presentación</th>
+                            <th>Cantidad</th>
+                            <th>Volumen de Porción de Presentación</th>
+                            <th>Unidad de medida de Presentación</th>
+                            <th>Volumen de Porción Convertido</th>
+                            <th>Unidad de medida del Volumen de Porción Convertido</th>
+                            <th>Proveedor</th>
+                            <th>Costo (₡)</th>
+                            <th>Peso</th>
+                            <th>Unidad de medida del Peso</th>
+                            <th>Costo por Peso (₡)</th>
+                            <th>Costo por Porción con Merma (₡)</th>
+                            <th>Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-</div>
-
-@section Scripts {
-    <script src="~/Templates/js/insumos.js"></script>
-    @Html.Partial("accion_exitosa")
+                    </thead>
+                    <tbody class="tabla-global">
+                        @foreach (var producto_preparado in Model.ProductosPreparados)
+                        {
+                            <tr>
+                                <td>@producto_preparado.id</td>
+                                <td>@producto_preparado.tipo</td>
+                                <td>@producto_preparado.nombre</td>
+                                <td>@producto_preparado.marca</td>
+                                <td>@producto_preparado.presentacion</td>
+                                <td>@producto_preparado.cantidad</td>
+                                <td>
+                                    @(producto_preparado.volumen_de_porcion_de_presentacion.HasValue
+                                ? producto_preparado.volumen_de_porcion_de_presentacion.Value.ToString("N2"): "")
+                                </td>
+                                <td>@producto_preparado.unidad_de_medida_de_presentacion</td>
+                                <td>@(producto_preparado.volumen_de_porcion_convertido.HasValue ? producto_preparado.volumen_de_porcion_convertido.Value.ToString("N2") : "")</td>
+                                <td>@producto_preparado.unidad_de_medida_convertida</td>
+                                <td>@producto_preparado.proveedor</td>
+                                <td>₡@(producto_preparado.costo.ToString("N2"))</td>
+                                <td>@(producto_preparado.cantidad * producto_preparado.volumen_de_porcion_convertido)</td>
+                                <td>@producto_preparado.unidad_de_medida_del_peso</td>
+                                <td>@(producto_preparado.costo_por_peso.HasValue ? "₡" + producto_preparado.costo_por_peso.Value.ToString("N2"): "")</td>
+                                <td>@(producto_preparado.costo_por_porcion_con_merma.HasValue ? "₡" + producto_preparado.costo_por_porcion_con_merma.Value.ToString("N2"): "")</td>
+                                <td>
+                                    <a href="@Url.Action("EditarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                    <a href="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoPreparado", "Insumos", new { id = producto_preparado.id })"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
 }
+
+    @section Scripts {
+        <script src="~/Templates/js/insumos.js"></script>
+        @Html.Partial("accion_exitosa")
+    }

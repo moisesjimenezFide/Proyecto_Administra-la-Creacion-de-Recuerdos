@@ -1,16 +1,3 @@
-function agregarAtributosPedidos($option, $item) {
-    // Otros atributos de datos
-    $.each($option.data(), function (key, value) {
-        $item.attr(`data-${key}`, value);
-    });
-
-    $item.attr('data-value', $option.val());
-    $item.text($option.text());
-    if ($option.is(':selected')) {
-        $item.addClass('active');
-    }
-}
-
 class GestionPedidos {
     // ARCHIVO JS HECHO CON LA AYUDA DE IA
     constructor() {

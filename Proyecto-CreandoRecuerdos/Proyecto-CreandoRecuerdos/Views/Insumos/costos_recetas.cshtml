@@ -11,7 +11,8 @@
 }
 
 @section Styles {
-    <link href="~/Templates/css/insumos.css" rel="stylesheet" />}
+    <link href="~/Templates/css/insumos.css" rel="stylesheet" />
+}
 
 <div class="container my-5 text-center">
     <h2 class="mb-4" style="font-family: 'Sono';">
@@ -254,133 +255,135 @@
     }
 </div>
 
-<!-- Listado -->
-<div class="container">
-    <h4><strong>Listado de Recetas</strong></h4>
-    @if (Model.CostosRecetas == null || Model.CostosRecetas.Count == 0)
-    {
-        <div class="alert alert-info text-center" style="margin: 1rem 0;">
-            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
-            {
-                <span>No se encontraron coincidencias.</span>
-            }
-            else
-            {
-                <span>No hay recetas registradas.</span>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
-                <thead class="tabla-global">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Porción</th>
-                        <th>Materias Primas Utilizadas</th>
-                        <th>Productos Preparados Utilizados</th>
-                        <th>Costo por cantidad(₡)</th>
-                        <th>Total Costo (₡)</th>
-                        <th>Costo Total de Receta (₡)</th>
-                        <th>Costo por porción (₡)</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="tabla-global table-light">
-                    @foreach (var receta in Model.CostosRecetas)
-                    {
+@section ListadoInsumos {
+    <!-- Listado -->
+    <div class="tabla_insumos_container">
+        <h4><strong>Listado de Recetas</strong></h4>
+        @if (Model.CostosRecetas == null || Model.CostosRecetas.Count == 0)
+        {
+            <div class="alert alert-info text-center" style="margin: 1rem 0;">
+                @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                {
+                    <span>No se encontraron coincidencias.</span>
+                }
+                else
+                {
+                    <span>No hay recetas registradas.</span>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
+                    <thead class="tabla-global">
                         <tr>
-                            <td>@receta.id</td>
-                            <td>@receta.nombre</td>
-
-                            <td>@receta.porcion</td>
-
-                            <td>
-                                @if (receta.MateriasPrimasUtilizadas != null && receta.MateriasPrimasUtilizadas.Any())
-                                {
-                                    foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
-                                    {
-                                        <div>@materia_prima.nombre (@materia_prima.cantidad @materia_prima.unidad_de_medida)</div>
-                                    }
-                                }
-
-                                else
-                                {
-                                    <div><em>Ninguna</em></div>
-                                }
-                            </td>
-
-                            <td>
-                                @if (receta.ProductosPreparadosUtilizados != null && receta.ProductosPreparadosUtilizados.Any())
-                                {
-                                    foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
-                                    {
-                                        <div>@producto_preparado.nombre (@producto_preparado.cantidad @producto_preparado.unidad_de_medida)</div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div><em>Ninguno</em></div>
-                                }
-                            </td>
-
-                            <td>
-                                @if (receta.MateriasPrimasUtilizadas != null && receta.MateriasPrimasUtilizadas.Any())
-                                {
-                                    foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
-                                    {
-                                        <div>₡@materia_prima.costo_por_cantidad.ToString("N2")</div>
-                                    }
-                                }
-
-                                @if (receta.ProductosPreparadosUtilizados != null && receta.ProductosPreparadosUtilizados.Any())
-                                {
-                                    foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
-                                    {
-                                        <div>₡@producto_preparado.costo_por_cantidad.ToString("N2")</div>
-                                    }
-                                }
-                            </td>
-
-                            <td>
-                                @if (receta.MateriasPrimasUtilizadas != null && receta.MateriasPrimasUtilizadas.Any())
-                                {
-                                    foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
-                                    {
-                                        var totalcostoMateriaprima = materia_prima.cantidad * materia_prima.costo_por_cantidad;
-                                        <div>Total Costo Materia Prima: ₡@totalcostoMateriaprima.ToString("N2")</div>
-                                    }
-                                }
-
-                                @if (receta.ProductosPreparadosUtilizados != null && receta.ProductosPreparadosUtilizados.Any())
-                                {
-                                    foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
-                                    {
-                                        var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_cantidad;
-                                        <div>Total Costo Producto Preparado: ₡@totalcostoProductopreparado.ToString("N2")</div>
-                                    }
-                                }
-                            </td>
-
-                            <td>₡@receta.costo_total_receta.ToString("N2")</td>
-                            <td>₡@receta.costo_por_porcion.ToString("N2")</td>
-
-                            <td>
-                                <a href="@Url.Action("EditarReceta", "Insumos", new { id = receta.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
-                                <a href="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })"></a>
-                            </td>
-
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Porción</th>
+                            <th>Materias Primas Utilizadas</th>
+                            <th>Productos Preparados Utilizados</th>
+                            <th>Costo por cantidad(₡)</th>
+                            <th>Total Costo (₡)</th>
+                            <th>Costo Total de Receta (₡)</th>
+                            <th>Costo por porción (₡)</th>
+                            <th>Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-</div>
+                    </thead>
+                    <tbody class="tabla-global table-light">
+                        @foreach (var receta in Model.CostosRecetas)
+                        {
+                            <tr>
+                                <td>@receta.id</td>
+                                <td>@receta.nombre</td>
 
-@section Scripts {
-    <script src="~/Templates/js/insumos.js"></script>
-    @Html.Partial("accion_exitosa")
+                                <td>@receta.porcion</td>
+
+                                <td>
+                                    @if (receta.MateriasPrimasUtilizadas != null && receta.MateriasPrimasUtilizadas.Any())
+                                    {
+                                        foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                        {
+                                            <div>@materia_prima.nombre (@materia_prima.cantidad @materia_prima.unidad_de_medida)</div>
+                                        }
+                                    }
+
+                                    else
+                                    {
+                                        <div><em>Ninguna</em></div>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (receta.ProductosPreparadosUtilizados != null && receta.ProductosPreparadosUtilizados.Any())
+                                    {
+                                        foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                        {
+                                            <div>@producto_preparado.nombre (@producto_preparado.cantidad @producto_preparado.unidad_de_medida)</div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div><em>Ninguno</em></div>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (receta.MateriasPrimasUtilizadas != null && receta.MateriasPrimasUtilizadas.Any())
+                                    {
+                                        foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                        {
+                                            <div>₡@materia_prima.costo_por_cantidad.ToString("N2")</div>
+                                        }
+                                    }
+
+                                    @if (receta.ProductosPreparadosUtilizados != null && receta.ProductosPreparadosUtilizados.Any())
+                                    {
+                                        foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                        {
+                                            <div>₡@producto_preparado.costo_por_cantidad.ToString("N2")</div>
+                                        }
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (receta.MateriasPrimasUtilizadas != null && receta.MateriasPrimasUtilizadas.Any())
+                                    {
+                                        foreach (var materia_prima in receta.MateriasPrimasUtilizadas)
+                                        {
+                                            var totalcostoMateriaprima = materia_prima.cantidad * materia_prima.costo_por_cantidad;
+                                            <div>Total Costo Materia Prima: ₡@totalcostoMateriaprima.ToString("N2")</div>
+                                        }
+                                    }
+
+                                    @if (receta.ProductosPreparadosUtilizados != null && receta.ProductosPreparadosUtilizados.Any())
+                                    {
+                                        foreach (var producto_preparado in receta.ProductosPreparadosUtilizados)
+                                        {
+                                            var totalcostoProductopreparado = producto_preparado.cantidad * producto_preparado.costo_por_cantidad;
+                                            <div>Total Costo Producto Preparado: ₡@totalcostoProductopreparado.ToString("N2")</div>
+                                        }
+                                    }
+                                </td>
+
+                                <td>₡@receta.costo_total_receta.ToString("N2")</td>
+                                <td>₡@receta.costo_por_porcion.ToString("N2")</td>
+
+                                <td>
+                                    <a href="@Url.Action("EditarReceta", "Insumos", new { id = receta.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                    <a href="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarReceta", "Insumos", new { id = receta.id })"></a>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
 }
+
+    @section Scripts {
+        <script src="~/Templates/js/insumos.js"></script>
+        @Html.Partial("accion_exitosa")
+    }

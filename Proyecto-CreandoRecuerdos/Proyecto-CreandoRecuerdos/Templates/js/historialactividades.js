@@ -5,7 +5,6 @@ function cargarActividades() {
         data: $('#filtroForm').serialize(),
         success: function (result) {
             $('#actividadesContainer').html(result);
-
             if (window.inicializarDataTables) {
                 window.inicializarDataTables();
             }

@@ -565,205 +565,207 @@
     }
 </div>
 
-<!-- Listado -->
-<div class="container">
-    <h4><strong>Listado de Productos Finales</strong></h4>
-    @if (Model.ProductosFinales == null || Model.ProductosFinales.Count == 0)
-    {
-        <div class="alert alert-info text-center" style="margin: 1rem 0;">
-            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
-            {
-                <span>No se encontraron coincidencias.</span>
-            }
-            else
-            {
-                <span>No hay productos finales registradas.</span>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre de Receta</th>
-                        <th>Costo Total de Receta (₡)</th>
-                        <th>Margen de Utilidad (%)</th>
-                        <th>Costo sin Margen de Utilidad (%)</th>
-                        <th>Costo con Margen de Utilidad (₡)</th>
-                        <th>Empaques y/o Decoraciones Utilizados(as)</th>
-                        <th>Costo por cantidad (₡)</th>
-                        <th>Costo Empaques y/o Decoraciones (₡)</th>
-                        <th>Implementos utilizados</th>
-                        <th>Costo por cantidad (₡)</th>
-                        <th>Costo Implementos (₡)</th>
-                        <th>Suministros Utilizados</th>
-                        <th>Costo por cantidad (₡)</th>
-                        <th>Costo Suministros (₡)</th>
-                        <th>Costo Total Insumos (₡)</th>
-                        <th>Costo de Impresión Factura por Insumo (₡)</th>
-                        <th>Costo Total de Impresión de Factura (₡)</th>
-                        <th>Factura por Insumo (₡)</th>
-                        <th>Factura Total (₡)</th>
-                        <th>Total Insumos por Porcentaje de Ganancia (₡)</th>
-                        <th>Porcentaje de IVA (%)</th>
-                        <th>Porcentaje de Servicio (%)</th>
-                        <th>Costo con IVA (₡)</th>
-                        <th>Costo con Servicio (₡)</th>
-                        <th>Plataforma de Envío</th>
-                        <th>Envío (₡)</th>
-                        <th>Precio Final (₡)</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="tabla-global">
-                    @foreach (var productofinal in Model.ProductosFinales)
-                    {
+@section ListadoInsumos {
+    <!-- Listado -->
+    <div class="tabla_insumos_container">
+        <h4><strong>Listado de Productos Finales</strong></h4>
+        @if (Model.ProductosFinales == null || Model.ProductosFinales.Count == 0)
+        {
+            <div class="alert alert-info text-center" style="margin: 1rem 0;">
+                @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+                {
+                    <span>No se encontraron coincidencias.</span>
+                }
+                else
+                {
+                    <span>No hay productos finales registradas.</span>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3">
+                    <thead>
                         <tr>
-                            <td>@productofinal.id</td>
-
-                            <td>
-                                @{
-                                    var receta = Model.CostosRecetas?.FirstOrDefault(r => r.nombre == productofinal.nombre_receta);
-                                }
-                                @productofinal.nombre_receta
-                            </td>
-
-                            <td>
-                                ₡@productofinal.costo_total_receta.ToString("N2")
-                            </td>
-
-                            <td>@productofinal.margen_de_utilidad%</td>
-                            <td>@(100 - productofinal.margen_de_utilidad)%</td>
-                            <td>₡@productofinal.costo_con_margen_de_utilidad.ToString("N2")</td>
-
-                            <!-- Empaques y/o Decoraciones -->
-                            <td>
-                                @if (productofinal.EmpaquesDecoracionesUtilizados != null && productofinal.EmpaquesDecoracionesUtilizados.Any())
-                                {
-                                    foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
-                                    {
-                                        <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div><em>Ninguno</em></div>
-                                }
-                            </td>
-                            <td>
-                                @if (productofinal.EmpaquesDecoracionesUtilizados != null && productofinal.EmpaquesDecoracionesUtilizados.Any())
-                                {
-                                    foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
-                                    {
-                                        <div>₡@((item.costo_por_cantidad * item.cantidad).ToString("N2"))</div>
-                                    }
-                                }
-                            </td>
-                            <td>
-                                ₡@productofinal.costo_empaque_decoracion_utilizado.ToString("N2")
-                            </td>
-
-                            <!-- Implementos -->
-                            <td>
-                                @if (productofinal.ImplementosUtilizados != null && productofinal.ImplementosUtilizados.Any())
-                                {
-                                    foreach (var item in productofinal.ImplementosUtilizados)
-                                    {
-                                        <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div><em>Ninguno</em></div>
-                                }
-                            </td>
-                            <td>
-                                @if (productofinal.ImplementosUtilizados != null && productofinal.ImplementosUtilizados.Any())
-                                {
-                                    foreach (var item in productofinal.ImplementosUtilizados)
-                                    {
-                                        <div>₡@((item.costo_por_cantidad * item.cantidad).ToString("N2"))</div>
-                                    }
-                                }
-                            </td>
-                            <td>
-                                ₡@productofinal.costo_implemento_utilizado.ToString("N2")
-                            </td>
-
-                            <!-- Suministros -->
-                            <td>
-                                @if (productofinal.SuministrosUtilizados != null && productofinal.SuministrosUtilizados.Any())
-                                {
-                                    foreach (var item in productofinal.SuministrosUtilizados)
-                                    {
-                                        <div>
-                                            @item.nombre (@item.cantidad @item.unidad_de_medida)
-                                            @if (item.es_impresion_de_facturas)
-                                            {
-                                                <span>(Sí es un suministro de impresión de facturas)</span>
-                                            }
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div><em>Ninguno</em></div>
-                                }
-                            </td>
-                            <td>
-                                @if (productofinal.SuministrosUtilizados != null && productofinal.SuministrosUtilizados.Any())
-                                {
-                                    foreach (var item in productofinal.SuministrosUtilizados)
-                                    {
-                                        <div>₡@((item.costo_por_cantidad * item.cantidad).ToString("N2"))</div>
-                                    }
-                                }
-                            </td>
-                            <td>
-                                ₡@productofinal.costo_suministro_utilizado.ToString("N2")
-                            </td>
-
-                            <td>₡@productofinal.costo_total_insumos.ToString("N2")</td>
-
-                            <td>₡@productofinal.costo_de_impresion_de_factura_por_insumo.ToString("N2")</td>
-                            <td>₡@productofinal.costo_total_de_impresion_de_factura.ToString("N2")</td>
-                            <td>₡@productofinal.factura_por_insumo.ToString("N2")</td>
-                            <td>₡@productofinal.factura_total.ToString("N2")</td>
-                            <td>₡@productofinal.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia.ToString("N2")</td>
-                            <td>₡@productofinal.porcentaje_de_iva.ToString("N2")</td>
-                            <td>₡@productofinal.porcentaje_de_servicio.ToString("N2")</td>
-                            <td>₡@productofinal.costo_con_iva.ToString("N2")</td>
-                            <td>₡@productofinal.costo_con_servicio.ToString("N2")</td>
-                            <td>@productofinal.plataforma_de_envio</td>
-                            <td>₡@productofinal.envio.ToString("N2")</td>
-                            <td><strong>₡@productofinal.precio_final_sugerido.ToString("N2")</strong></td>
-
-                            <td>
-                                <a href="@Url.Action("EditarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
-                                <a href="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })"></a>
-                            </td>
+                            <th>ID</th>
+                            <th>Nombre de Receta</th>
+                            <th>Costo Total de Receta (₡)</th>
+                            <th>Margen de Utilidad (%)</th>
+                            <th>Costo sin Margen de Utilidad (%)</th>
+                            <th>Costo con Margen de Utilidad (₡)</th>
+                            <th>Empaques y/o Decoraciones Utilizados(as)</th>
+                            <th>Costo por cantidad (₡)</th>
+                            <th>Costo Empaques y/o Decoraciones (₡)</th>
+                            <th>Implementos utilizados</th>
+                            <th>Costo por cantidad (₡)</th>
+                            <th>Costo Implementos (₡)</th>
+                            <th>Suministros Utilizados</th>
+                            <th>Costo por cantidad (₡)</th>
+                            <th>Costo Suministros (₡)</th>
+                            <th>Costo Total Insumos (₡)</th>
+                            <th>Costo de Impresión Factura por Insumo (₡)</th>
+                            <th>Costo Total de Impresión de Factura (₡)</th>
+                            <th>Factura por Insumo (₡)</th>
+                            <th>Factura Total (₡)</th>
+                            <th>Total Insumos por Porcentaje de Ganancia (₡)</th>
+                            <th>Porcentaje de IVA (%)</th>
+                            <th>Porcentaje de Servicio (%)</th>
+                            <th>Costo con IVA (₡)</th>
+                            <th>Costo con Servicio (₡)</th>
+                            <th>Plataforma de Envío</th>
+                            <th>Envío (₡)</th>
+                            <th>Precio Final (₡)</th>
+                            <th>Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-</div>
+                    </thead>
+                    <tbody class="tabla-global">
+                        @foreach (var productofinal in Model.ProductosFinales)
+                        {
+                            <tr>
+                                <td>@productofinal.id</td>
 
-@section Scripts {
-    <script src="~/Templates/js/insumos.js"></script>
-    @Html.Partial("accion_exitosa")
-    <script>
-        // JavaScript para personalizar los estilos y colores del checkbox de suministros utilizados
-        document.addEventListener('DOMContentLoaded', function () {
-            const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');
-            checkboxes.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
+                                <td>
+                                    @{
+                                        var receta = Model.CostosRecetas?.FirstOrDefault(r => r.nombre == productofinal.nombre_receta);
+                                    }
+                                    @productofinal.nombre_receta
+                                </td>
+
+                                <td>
+                                    ₡@productofinal.costo_total_receta.ToString("N2")
+                                </td>
+
+                                <td>@productofinal.margen_de_utilidad%</td>
+                                <td>@(100 - productofinal.margen_de_utilidad)%</td>
+                                <td>₡@productofinal.costo_con_margen_de_utilidad.ToString("N2")</td>
+
+                                <!-- Empaques y/o Decoraciones -->
+                                <td>
+                                    @if (productofinal.EmpaquesDecoracionesUtilizados != null && productofinal.EmpaquesDecoracionesUtilizados.Any())
+                                    {
+                                        foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
+                                        {
+                                            <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div><em>Ninguno</em></div>
+                                    }
+                                </td>
+                                <td>
+                                    @if (productofinal.EmpaquesDecoracionesUtilizados != null && productofinal.EmpaquesDecoracionesUtilizados.Any())
+                                    {
+                                        foreach (var item in productofinal.EmpaquesDecoracionesUtilizados)
+                                        {
+                                            <div>₡@((item.costo_por_cantidad * item.cantidad).ToString("N2"))</div>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    ₡@productofinal.costo_empaque_decoracion_utilizado.ToString("N2")
+                                </td>
+
+                                <!-- Implementos -->
+                                <td>
+                                    @if (productofinal.ImplementosUtilizados != null && productofinal.ImplementosUtilizados.Any())
+                                    {
+                                        foreach (var item in productofinal.ImplementosUtilizados)
+                                        {
+                                            <div>@item.nombre (@item.cantidad @item.unidad_de_medida)</div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div><em>Ninguno</em></div>
+                                    }
+                                </td>
+                                <td>
+                                    @if (productofinal.ImplementosUtilizados != null && productofinal.ImplementosUtilizados.Any())
+                                    {
+                                        foreach (var item in productofinal.ImplementosUtilizados)
+                                        {
+                                            <div>₡@((item.costo_por_cantidad * item.cantidad).ToString("N2"))</div>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    ₡@productofinal.costo_implemento_utilizado.ToString("N2")
+                                </td>
+
+                                <!-- Suministros -->
+                                <td>
+                                    @if (productofinal.SuministrosUtilizados != null && productofinal.SuministrosUtilizados.Any())
+                                    {
+                                        foreach (var item in productofinal.SuministrosUtilizados)
+                                        {
+                                            <div>
+                                                @item.nombre (@item.cantidad @item.unidad_de_medida)
+                                                @if (item.es_impresion_de_facturas)
+                                                {
+                                                    <span>(Sí es un suministro de impresión de facturas)</span>
+                                                }
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div><em>Ninguno</em></div>
+                                    }
+                                </td>
+                                <td>
+                                    @if (productofinal.SuministrosUtilizados != null && productofinal.SuministrosUtilizados.Any())
+                                    {
+                                        foreach (var item in productofinal.SuministrosUtilizados)
+                                        {
+                                            <div>₡@((item.costo_por_cantidad * item.cantidad).ToString("N2"))</div>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    ₡@productofinal.costo_suministro_utilizado.ToString("N2")
+                                </td>
+
+                                <td>₡@productofinal.costo_total_insumos.ToString("N2")</td>
+
+                                <td>₡@productofinal.costo_de_impresion_de_factura_por_insumo.ToString("N2")</td>
+                                <td>₡@productofinal.costo_total_de_impresion_de_factura.ToString("N2")</td>
+                                <td>₡@productofinal.factura_por_insumo.ToString("N2")</td>
+                                <td>₡@productofinal.factura_total.ToString("N2")</td>
+                                <td>₡@productofinal.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia.ToString("N2")</td>
+                                <td>₡@productofinal.porcentaje_de_iva.ToString("N2")</td>
+                                <td>₡@productofinal.porcentaje_de_servicio.ToString("N2")</td>
+                                <td>₡@productofinal.costo_con_iva.ToString("N2")</td>
+                                <td>₡@productofinal.costo_con_servicio.ToString("N2")</td>
+                                <td>@productofinal.plataforma_de_envio</td>
+                                <td>₡@productofinal.envio.ToString("N2")</td>
+                                <td><strong>₡@productofinal.precio_final_sugerido.ToString("N2")</strong></td>
+
+                                <td>
+                                    <a href="@Url.Action("EditarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-custom-pink btn-sm fas fa-pencil" title="Editar"></a>
+                                    <a href="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })" class="btn btn-danger btn-sm btn-eliminar fas fa-trash" title="Eliminar" data-url="@Url.Action("EliminarProductoFinal", "Insumos", new { id = productofinal.id })"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}
+
+    @section Scripts {
+        <script src="~/Templates/js/insumos.js"></script>
+        @Html.Partial("accion_exitosa")
+        <script>
+            // JavaScript para personalizar los estilos y colores del checkbox de suministros utilizados
+            document.addEventListener('DOMContentLoaded', function () {
+                const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.addEventListener('change', function () {
+                    });
                 });
             });
-        });
-    </script>
-}
+        </script>
+    }
