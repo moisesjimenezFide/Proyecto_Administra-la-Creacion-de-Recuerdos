@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.util;
 using System.Web.Mvc;
+using Proyecto_CreandoRecuerdos.Filters;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
@@ -98,6 +99,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             return RedirectToAction("registro_usuarios", "Registro_Usuarios");
         }
 
+        [AutorizacionFilter(1)]
+        //1.Admin
+        //2.Trabajador
+        //3.Cliente
+        //[AutorizacionFilter(1, 2)] 
 
         [HttpGet]
         public ActionResult gestion_usuarios()

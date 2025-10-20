@@ -371,6 +371,7 @@
     <Compile Include="Controllers\PedidosController.cs" />
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
+    <Compile Include="Filters\AutorizacionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -561,6 +562,7 @@
     <Content Include="Views\Insumos\productos_preparados.cshtml" />
     <Content Include="Views\Insumos\suministros.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Inicio\AccesoDenegado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
