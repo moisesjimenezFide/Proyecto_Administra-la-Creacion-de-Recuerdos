@@ -508,7 +508,6 @@
     <Content Include="Templates\js\historial_ventas.js" />
     <Content Include="Templates\js\insumos.js" />
     <Content Include="Templates\js\menu.js" />
-    <Content Include="Templates\js\menu_admin.js" />
     <Content Include="Templates\js\paginaciones_y_exportaciones.js" />
     <Content Include="Templates\js\pedidos.js" />
     <Content Include="Templates\js\registrar_usuario.js" />

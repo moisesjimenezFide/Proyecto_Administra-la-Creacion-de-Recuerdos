@@ -4,7 +4,7 @@ $(document).ready(function () {
             icon: icon,
             title: title,
             text: text,
-            confirmButtonColor: '#E27AB0'
+            confirmButtonColor: '#B54885'
         });
     }
 
@@ -15,8 +15,8 @@ $(document).ready(function () {
             text: text,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#E27AB0',
-            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#B54885',
+            cancelButtonColor: '#6C757D',
             confirmButtonText: 'Si, continuar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {

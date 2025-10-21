@@ -7,7 +7,7 @@
 }
 
 <div class="container mt-5" style="max-width: 400px;">
-    <h2 class="text-center mb-4" style="color: #E27AB0;">Recuperar Contraseña</h2>
+    <h2 class="text-center mb-4" style="color: #B54885;">Recuperar Contraseña</h2>
 
     @if (!string.IsNullOrEmpty(errorMessage))
     {
@@ -27,7 +27,7 @@
             @Html.ValidationMessageFor(m => m.correo, "", new { @class = "text-danger" })
         </div>
 
-        <button type="submit" class="btn btn-primary w-100" style="background-color: #E27AB0; border: none;">
+        <button type="submit" class="btn btn-primary w-100" style="background-color: #BA6892; border: none;">
             Enviar instrucciones
         </button>
     }

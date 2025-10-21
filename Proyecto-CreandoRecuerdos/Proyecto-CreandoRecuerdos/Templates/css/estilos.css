@@ -1,12 +1,13 @@
 ﻿/* Variables globales con nueva paleta pastel */
 :root {
-    --rosa-claro: #FFE6EE; /* Rosa pastel muy claro */
-    --rosa-principal: #E27AB0; /* Rosa principal suave */
-    --rosa-oscuro: #FF8FAB; /* Rosa más intenso pero pastel */
-    --dorado: #E8C495; /* Dorado mantiene igual */
-    --beige: #FFF0F3; /* Beige rosado muy claro */
-    --texto-oscuro: #5A3E36; /* Texto mantiene igual */
-    --hover-rosa: #FFD1DC; /* Hover más suave */
+    --color-principal-hover: #BA6892; /* Rosa de marca */
+    --color-principal-oscuro: #B54885; /* Rosa oscuro (hover/navbar) */
+    --color-acento: #FFD6EB; /* Rosa pastel claro */
+    --color-dorado: #E8C495; /* Acento dorado */
+    --color-fondo: #FFF8F9; /* Fondo casi blanco cálido */
+    --color-texto-oscuro: #2C2C2C; /* Texto principal oscuro */
+    --color-texto-claro: #FFFFFF; /* Texto claro */
+    --sombra-suave: rgba(0, 0, 0, 0.15);
 }
 
 /* Estructura base - Manteniendo fuente Sono */
@@ -19,9 +20,9 @@ html, body {
     display: flex;
     box-sizing: border-box;
     flex-direction: column;
-    font-family: 'Sono'; /* Fuente original */
-    background-color: var(--beige);
-    color: var(--texto-oscuro);
+    font-family: 'Sono', sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
 }
 
 #container-wrap2 {
@@ -48,7 +49,6 @@ html, body {
     box-sizing: border-box;
 }
 
-/* Navbar con nuevos tonos pastel */
 #container-wrap, .navbar .navbar-expand-lg.navbar-dark {
     padding: 0.5rem 1rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -63,7 +63,8 @@ html, body {
 }
 
 .navbar {
-    background: var(--rosa-principal);
+    background: var(--color-principal-oscuro);
+    box-shadow: 0 2px 10px var(--sombra-suave);
     padding: 0.5rem 1rem;
     position: relative;
     z-index: 1000;
@@ -75,9 +76,9 @@ html, body {
 .navbar-brand {
     display: flex;
     align-items: center;
-    font-family: 'Sono';
+    font-family: 'Sono', sans-serif;
     font-weight: 800;
-    color: white;
+    color: var(--color-texto-claro) !important;
     font-size: 1.2rem;
     margin-right: 0 !important;
     transition: margin-left 0.3s ease-in-out;
@@ -102,7 +103,7 @@ html, body {
     flex-grow: 1;
     flex-wrap: wrap;
     justify-content: flex-end;
-    font-family: 'Sono';
+    font-family: 'Sono', sans-serif;
     font-weight: 800;
     top: 10px;
     right: 10px;
@@ -114,12 +115,13 @@ html, body {
 }
 
     .navbar-nav .nav-link {
+        color: var(--color-texto-claro) !important;
+        transition: color 0.3s ease;
         text-transform: uppercase;
         color: white !important;
         padding: 0.5rem 1rem;
         font-weight: 500;
         letter-spacing: 1px;
-        transition: all 0.3s ease;
     }
 
 .navbar-toggler {
@@ -136,32 +138,31 @@ html, body {
 
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
-    color: var(--dorado) !important;
+    color: var(--color-dorado) !important;
 }
 
-/* Dropdowns con nuevos colores */
 .dropdown-menu {
-    background-color: white;
+    background: var(--color-texto-claro);
     border: none;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px var(--sombra-suave);
     border-radius: 8px;
 }
 
 .dropdown-item {
-    color: var(--texto-oscuro) !important;
+    color: var(--color-texto) !important;
     transition: all 0.2s;
     padding: 0.5rem 1.5rem;
 }
 
     .dropdown-item:hover {
-        background-color: var(--rosa-claro) !important;
-        color: var(--rosa-oscuro) !important;
+        background: var(--color-principal-hover) !important;
+        color: var(--color-texto-claro) !important;
     }
 
 /* Footer con nueva paleta */
 .footer, #footer {
-    background: var(--rosa-principal);
-    color: white;
+    background: var(--color-principal-oscuro);
+    color: var(--color-texto-claro);
     padding: 3rem 0;
     height: auto;
     min-height: 310px;
@@ -184,17 +185,27 @@ html, body {
         left: 0;
         right: 0;
         height: 10px;
-        background: var(--dorado);
+        background: var(--color-dorado);
+    }
+
+    .navbar::before {
+        content: "";
+        position: absolute;
+        top: 63px;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background: var(--color-dorado);
     }
 
     .footer a {
-        color: white;
+        color: var(--color-texto-claro);
         text-decoration: none;
         transition: all 0.3s;
     }
 
         .footer a:hover {
-            color: var(--dorado);
+            color: var(--color-dorado);
         }
 
 .social-icons a {
@@ -210,26 +221,34 @@ html, body {
 }
 
     .social-icons a:hover {
-        background-color: var(--dorado);
+        background-color: var(--color-dorado);
+    }
+
+        .social-icons a:hover i {
+            color: var(--color-texto-oscuro)
+        }
+
+    .social-icons i:hover {
+        color: var(--color-texto-oscuro);
     }
 
 /* Botones */
 .btn-primary {
-    background-color: var(--rosa-principal);
-    border-color: var(--rosa-principal);
+    background-color: var(--color-principal-oscuro);
+    border-color: var(--color-principal-oscuro);
     color: white;
 }
 
     .btn-primary:hover {
-        background-color: var(--rosa-oscuro);
-        border-color: var(--rosa-oscuro);
+        background-color: var(--color-principal-hover);
+        border-color: var(--color-principal);
     }
 
 /* Responsive */
 @media (max-width: 992px) {
     .navbar-collapse {
         padding-top: 1rem;
-        background-color: var(--rosa-oscuro);
+        background-color: var(--color-principal-oscuro);
         border-radius: 0 0 10px 10px;
     }
 

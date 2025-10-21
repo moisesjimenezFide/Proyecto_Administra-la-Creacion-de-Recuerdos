@@ -22,13 +22,13 @@ div.dt-buttons {
 }
 
 .btn-custom-pink {
-    background-color: #E27AB0 !important;
-    color: #fff !important;
+    background-color: #B54885 !important;
+    color: #FFFFFF !important;
     border: none !important;
 }
 
     .btn-custom-pink:hover {
-        background-color: #d66da3 !important;
+        background-color: #BA6892 !important;
         color: white !important;
     }
 
@@ -40,20 +40,20 @@ div.dt-buttons {
 /* Estilos personalizados para DataTables */
 
 .dataTables_wrapper .pagination .page-item.active .page-link {
-    background-color: #E27AB0 !important;
-    border-color: #E27AB0 !important;
+    background-color: #B54885 !important;
+    border-color: #B54885 !important;
     color: #FFFFFF !important;
 }
 
 .dataTables_wrapper .pagination .page-item .page-link {
-    color: #E27AB0 !important;
-    border-color: #E27AB0 !important;
+    color: #B54885 !important;
+    border-color: #B54885 !important;
 }
 
     .dataTables_wrapper .pagination .page-item .page-link:hover {
         background-color: #F8E5ED !important;
-        color: #E27AB0 !important;
-        border-color: #E27AB0 !important;
+        color: #BA6892 !important;
+        border-color: #BA6892 !important;
     }
 
 .dataTables_wrapper .pagination .page-link {
@@ -99,7 +99,7 @@ div.dt-buttons {
     }
 
     .custom-dropdown-button:hover {
-        border-color: #E27AB0;
+        border-color: #BA6892;
         box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
     }
 
@@ -109,7 +109,7 @@ div.dt-buttons {
     left: 0;
     right: 0;
     background: white;
-    border: 2px solid #E27AB0;
+    border: 2px solid #B54885;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     z-index: 1000;
@@ -141,11 +141,11 @@ div.dt-buttons {
 
     .custom-dropdown-item:hover {
         background-color: #F8E5ED;
-        color: #E27AB0;
+        color: #B54885;
     }
 
     .custom-dropdown-item.active {
-        background-color: #E27AB0;
+        background-color: #B54885;
         color: white;
     }
 

@@ -34,7 +34,7 @@
                 height: 20px;
                 border: 2px solid #ced4da;
                 border-radius: 50%;
-                background: #fff;
+                background: var(--color-texto-claro);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -44,7 +44,7 @@
                 /* Ícono (oculto inicialmente) */
                 .custom-radio label span i.fas.fa-circle {
                     font-size: 10px; /* ajusta al gusto */
-                    color: #E27AB0; /* tu color */
+                    color: var(--color-principal-oscuro); /* tu color */
                     opacity: 0; /* oculto */
                     transform: scale(0.3); /* pequeño */
                     transition: opacity .25s ease, transform .25s ease;
@@ -52,13 +52,40 @@
 
         /* Seleccionado */
         .custom-radio input[type="radio"]:checked + label span {
-            background-color: #E27AB0;
+            background-color: var(--color-principal-oscuro);
             box-shadow: 0 0 0 .2rem rgba(226,122,176,.25);
         }
 
         /* Hover */
         .custom-radio label:hover span {
-            border-color: #E27AB0;
+            border-color: var(--color-principal);
+        }
+
+        /* Ajuste del modal para mejor contraste */
+        .modal-content {
+            background-color: var(--color-fondo); /* fondo cálido y suave */
+            color: var(--color-texto);
+            border-radius: 8px;
+            border: 1px solid var(--color-acento);
+        }
+
+        .modal-header {
+            background-color: var(--color-principal-oscuro);
+            color: var(--color-texto-claro);
+            border-bottom: none;
+        }
+
+        .modal-footer {
+            border-top: none;
+        }
+
+        .card-header {
+            background-color: var(--color-principal-oscuro);
+            color: var(--color-texto-claro);
+        }
+
+        .card-body {
+            background-color: var(--color-texto-claro);
         }
 
     </style>
@@ -173,7 +200,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" id="confirmExport" class="btn btn-primary">Exportar</button>
             </div>
 

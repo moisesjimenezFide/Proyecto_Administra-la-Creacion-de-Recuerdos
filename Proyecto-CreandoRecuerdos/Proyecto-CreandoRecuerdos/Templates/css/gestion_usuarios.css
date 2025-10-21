@@ -1,13 +1,23 @@
-﻿
+﻿:root {
+    --color-principal-hover: #BA6892; /* Rosa de marca */
+    --color-principal-oscuro: #B54885; /* Rosa oscuro (hover/navbar) */
+    --color-acento: #FFD6EB; /* Rosa pastel claro */
+    --color-dorado: #E8C495; /* Acento dorado */
+    --color-fondo: #FFF8F9; /* Fondo casi blanco cálido */
+    --color-texto-oscuro: #2C2C2C; /* Texto principal oscuro */
+    --color-texto-claro: #FFFFFF; /* Texto claro */
+    --sombra-suave: rgba(0, 0, 0, 0.15);
+}
+
 /* Estilos base */
 body {
-    font-family: 'Sono';
-    background-color: #f8f9fa;
+    font-family: 'Sono', sans-serif;
+    background-color: var(--color-fondo);
 }
 
 .swal2-icon-custom {
     font-size: 35px;
-    color: #E27AB0; 
+    color: var(--color-principal-oscuro);
 }
 
 .container {
@@ -15,8 +25,8 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--rosa-principal);
-    border-color: var(--rosa-principal);
+    background-color: var(--color-principal-oscuro);
+    border-color: var(--color-principal-oscuro);
 }
 
 /* Estilos para la tabla */
@@ -37,12 +47,12 @@ body {
 }
 
 .bg-admin {
-    background-color: var(--rosa-principal);
+    background-color: var(--color-principal-oscuro);
     color: white;
 }
 
 .bg-trabajador {
-    background-color: var(--dorado);
+    background-color: var(--color-dorado);
     color: var(--texto-oscuro);
 }
 
@@ -53,7 +63,7 @@ body {
 
 .bg-usuario {
     background-color: coral;
-    color: var(--texto-oscuro);
+    color: var(--color-texto);
 }
 
 
@@ -80,12 +90,12 @@ body {
     }
 
 .btn-modificar {
-    background-color: var(--rosa-principal);
+    background-color: var(--color-principal-oscuro);
     color: white;
 }
 
     .btn-modificar:hover {
-        background-color: var(--rosa-principal);
+        background-color: var(--color-principal);
         color: white;
     }
 

@@ -52,7 +52,7 @@ async function showSweetAlert(icon, title, text) {
         icon: icon,
         title: title,
         text: text,
-        confirmButtonColor: '#E27AB0'
+        confirmButtonColor: '#BA6892'
     });
 }
 

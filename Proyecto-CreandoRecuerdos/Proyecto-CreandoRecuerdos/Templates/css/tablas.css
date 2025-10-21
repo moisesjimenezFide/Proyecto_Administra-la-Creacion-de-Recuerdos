@@ -1,12 +1,23 @@
-﻿.tabla-global {
+﻿:root {
+    --color-principal-hover: #BA6892; /* Rosa de marca */
+    --color-principal-oscuro: #B54885; /* Rosa oscuro (hover/navbar) */
+    --color-acento: #FFD6EB; /* Rosa pastel claro */
+    --color-dorado: #E8C495; /* Acento dorado */
+    --color-fondo: #FFF8F9; /* Fondo casi blanco cálido */
+    --color-texto-oscuro: #2C2C2C; /* Texto principal oscuro */
+    --color-texto-claro: #FFFFFF; /* Texto claro */
+    --sombra-suave: rgba(0, 0, 0, 0.15);
+}
+
+.tabla-global {
     width: auto;
     border-collapse: separate;
     border-spacing: 0;
 }
 
     .tabla-global thead {
-        background: var(--rosa-principal);
-        color: white;
+        background: var(--color-principal-oscuro);
+        color: var(--color-texto-claro);
     }
 
     .tabla-global th {
@@ -17,7 +28,7 @@
     }
 
     .tabla-global td {
-        border-bottom: 1px solid var(--rosa-claro);
+        border-bottom: 1px solid var(--color-principal);
     }
 
     .tabla-global th,
@@ -29,16 +40,16 @@
     }
 
     .tabla-global tbody tr {
-        background-color: #ffff;
+        background-color: var(--color-texto-claro);
     }
 
     .tabla-global tbody tr:last-child td {
         border-bottom: none;
     }
 
-    .tabla-global tbody tr:hover {
-        background-color: var(--rosa-claro);
-    }
+        .tabla-global tbody tr:hover {
+            background-color: var(--color-principal);
+        }
 
 .container .tabla-global {
     width: auto;

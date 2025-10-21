@@ -213,7 +213,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         context.SaveChanges();
 
                         string mensaje = $"Hola {info.nombre}, por favor utilice el siguiente código para ingresar al sistema: {codigoTemporal}";
-                        var notificacion = util.EnviarCorreo(info.correo, mensaje, "Acceso a DataGym");
+                        var notificacion = util.EnviarCorreo(info.correo, mensaje, "Acceso a Creando Recuerdos");
 
                         if (notificacion)
                             return RedirectToAction("Login", "Usuario");

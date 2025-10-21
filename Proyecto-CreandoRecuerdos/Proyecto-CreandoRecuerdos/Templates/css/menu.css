@@ -1,14 +1,16 @@
 :root {
-    --dark-violet: #9400D3;
-    /* Para precios/botones */
-    --hot-pink: #FF69B4;
-    /* Para hovers/bordes */
-    --lavender: #E6E6FA;
-    /* Para fondos activos */
+    --color-principal-hover: #BA6892; /* Rosa de marca */
+    --color-principal-oscuro: #B54885; /* Rosa oscuro (hover/navbar) */
+    --color-acento: #FFD6EB; /* Rosa pastel claro */
+    --color-dorado: #E8C495; /* Acento dorado */
+    --color-fondo: #FFF8F9; /* Fondo casi blanco cálido */
+    --color-texto-oscuro: #2C2C2C; /* Texto principal oscuro */
+    --color-texto-claro: #FFFFFF; /* Texto claro */
+    --sombra-suave: rgba(0, 0, 0, 0.15);
 }
 
 .pos-products {
-    background-color: #f8f9fa;
+    background-color: var(--color-fondo);
     padding: 15px;
     height: 100%;
     overflow-y: auto;
@@ -16,10 +18,10 @@
 }
 
 .product-card {
-    background: white;
+    background: var(--color-texto-claro);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--sombra-suave);
     transition: all 0.3s;
     margin-bottom: 15px;
     cursor: pointer;
@@ -27,29 +29,28 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(148, 0, 211, 0.1);
-    /* Borde sutil morado */
+    border: 1px solid var(--color-acento); /* borde sutil acorde a la paleta */
 }
 
-.product-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    border-color: var(--hot-pink);
-    /* Efecto al pasar el mouse */
-}
+    .product-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 10px var(--sombra-suave);
+        border-color: var(--color-principal);
+        /* Efecto al pasar el mouse */
+    }
 
-.product-card:hover::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg,
-            rgba(255, 255, 255, 0.3) 0%,
-            rgba(148, 0, 211, 0.05) 100%);
-    pointer-events: none;
-}
+        .product-card:hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.3) 0%, 
+            rgba(226, 122, 176, 0.05) 100%); /* mantiene brillo sutil (no variable) */
+            pointer-events: none;
+        }
 
 .product-img-container {
     height: 120px;
@@ -58,7 +59,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #f8f9fa;
+    background: var(--color-fondo);
 }
 
 .product-img {
@@ -83,14 +84,14 @@
 }
 
 .product-description {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Sono', sans-serif;
     font-size: 0.8rem;
-    color: #6c757d;
+    color: var(--color-texto);
     /* Texto secundario */
 }
 
 .product-price {
-    color: var(--dark-violet);
+    color: var(--color-principal-oscuro);
     /* Morado oscuro */
     font-weight: bold;
 }
@@ -119,8 +120,8 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    background: #f8f9fa;
-    border-bottom: 1px solid #eee;
+    background: var(--color-fondo);
+    border-bottom: 1px solid var(--color-acento);
     /* Línea divisora opcional */
 }
 
@@ -148,19 +149,20 @@
     margin-top: auto;
     /* Empuja hacia abajo */
 }
-.btn-outline-light-pink {
-    color: #E27AB0;
-    border-color: #E27AB0;
+
+.btn-outline-dark-pink {
+    color: var(--color-principal-oscuro);
+    border-color: var(--color-principal-oscuro);
 }
 
-    .btn-outline-light-pink:hover {
-        background-color: #E27AB0;
-        color: white;
+    .btn-outline-dark-pink:hover {
+        background-color: var(--color-principal);
+        color: var(--color-texto-claro);
     }
 
-    .btn-outline-light-pink.active {
-        background-color: #E27AB0 !important;
-        color: white !important;
+    .btn-outline-dark-pink.active {
+        background-color: var(--color-principal-oscuro) !important;
+        color: var(--color-texto-claro) !important;
     }
 
 .pos-products {
