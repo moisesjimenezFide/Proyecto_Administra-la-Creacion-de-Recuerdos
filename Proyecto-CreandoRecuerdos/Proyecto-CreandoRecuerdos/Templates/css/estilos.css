@@ -180,7 +180,7 @@ html, body {
 
     .footer::before {
         content: "";
-        position: absolute;
+        position: relative;
         top: 0;
         left: 0;
         right: 0;
@@ -190,7 +190,7 @@ html, body {
 
     .navbar::before {
         content: "";
-        position: absolute;
+        position: relative;
         top: 63px;
         left: 0;
         right: 0;
