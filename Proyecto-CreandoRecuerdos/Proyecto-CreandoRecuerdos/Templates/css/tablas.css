@@ -49,6 +49,7 @@
 
         .tabla-global tbody tr:hover {
             background-color: var(--color-principal-hover);
+color: var(--color-texto-claro
         }
 
 .container .tabla-global {
