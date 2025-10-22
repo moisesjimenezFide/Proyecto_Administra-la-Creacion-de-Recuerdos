@@ -36,7 +36,7 @@
         }
 
         .custom-select .custom-select-button:hover {
-            border-color: #BA6892 !important;
+            border-color: #B82873 !important;
             box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25) !important;
         }
 
@@ -78,7 +78,7 @@
 
         .custom-select .custom-select-item:hover {
             background-color: #F8E5ED;
-            color: #BA6892;
+            color: #B82873;
         }
 
         .custom-select .custom-select-item.active {
@@ -205,7 +205,7 @@ select.form-select.custom-hidden {
     /* Efecto hover en las partes del título */
     .calendar-title-part:hover {
         background-color: #F8E5ED;
-        color: #BA6892;
+        color: #B82873;
     }
 
 /* Menús desplegables (dropdowns) */
@@ -241,7 +241,7 @@ select.form-select.custom-hidden {
     /* Efecto hover en items del dropdown */
     .calendar-dropdown-item:hover {
         background-color: #F8E5ED;
-        color: #BA6892;
+        color: #B82873;
     }
 
     /* Item seleccionado en el dropdown */
@@ -286,7 +286,7 @@ select.form-select.custom-hidden {
     /* Efecto hover en los días */
     .calendar-day:hover {
         background-color: #F8E5ED;
-        color: #BA6892;
+        color: #B82873;
     }
 
     /* Días de otros meses (grises) */

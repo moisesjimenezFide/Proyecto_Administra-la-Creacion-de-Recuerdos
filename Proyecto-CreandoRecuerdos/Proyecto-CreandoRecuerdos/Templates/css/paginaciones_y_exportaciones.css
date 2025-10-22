@@ -28,7 +28,7 @@ div.dt-buttons {
 }
 
     .btn-custom-pink:hover {
-        background-color: #BA6892 !important;
+        background-color: #B82873 !important;
         color: white !important;
     }
 
@@ -52,8 +52,8 @@ div.dt-buttons {
 
     .dataTables_wrapper .pagination .page-item .page-link:hover {
         background-color: #F8E5ED !important;
-        color: #BA6892 !important;
-        border-color: #BA6892 !important;
+        color: #B82873 !important;
+        border-color: #B82873 !important;
     }
 
 .dataTables_wrapper .pagination .page-link {
@@ -99,7 +99,7 @@ div.dt-buttons {
     }
 
     .custom-dropdown-button:hover {
-        border-color: #BA6892;
+        border-color: #B82873;
         box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
     }
 
