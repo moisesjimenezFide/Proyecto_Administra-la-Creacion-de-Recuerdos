@@ -1,12 +1,12 @@
 ﻿/* Variables globales con nueva paleta pastel */
 :root {
-    --color-principal-oscuro: #B54885; /* Color principal rosa oscuro hover de marca */
+    --color-principal-hover: #B82873; /* Color principal rosa oscuro hover de marca */
     --color-principal-oscuro: #B54885; /* Color principal rosa oscuro de marca */
-    --color-acento: #FAD1E3; /* Rosa claro, pero un poco más saturado */
+    --color-acento: #FFD6EB; /* Rosa pastel claro */
     --color-dorado: #E8C495; /* Acento dorado */
-    --color-fondo: #FFF5F7; /* Fondo ligeramente más cálido */
+    --color-fondo: #FFF8F9; /* Fondo casi blanco cálido */
     --color-texto-oscuro: #2C2C2C; /* Texto principal oscuro */
-    --color-texto-claro: #FAFAFA; /* Texto claro (ligeramente gris para contraste) */
+    --color-texto-claro: #FFFFFF; /* Texto claro */
     --sombra-suave: rgba(0, 0, 0, 0.15);
 }
 
