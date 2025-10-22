@@ -58,7 +58,7 @@ let ventas = [
     <button class="btn btn-sm btn-danger text-white" onclick="eliminarVenta(${index})" style="white-space: nowrap; font-size: 0.8rem; padding: 0.3rem 0.6rem;">
       <i class="fas fa-trash-alt me-1"></i>Eliminar
     </button>
-    <button class="btn btn-sm text-white" style="background-color: #B82873; white-space: nowrap; font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="editarVenta(${index})">
+    <button class="btn btn-sm text-white" style="background-color: #BA6892; white-space: nowrap; font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="editarVenta(${index})">
       <i class="fas fa-edit me-1"></i>Editar
     </button>
   </div>
