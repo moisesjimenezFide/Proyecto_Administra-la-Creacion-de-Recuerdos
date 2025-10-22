@@ -20,7 +20,8 @@
 }
 
 .features-section {
-    background: var(--color-fondo);
+    background-color: var(--color-acento);
+    color: var(--color-texto-oscuro);
     padding: 5rem 0;
 }
 
