@@ -241,7 +241,7 @@ html, body {
 
     .btn-primary:hover {
         background-color: var(--color-principal-hover);
-        border-color: var(--color-principal);
+        border-color: var(--color-principal-hover);
     }
 
 /* Responsive */

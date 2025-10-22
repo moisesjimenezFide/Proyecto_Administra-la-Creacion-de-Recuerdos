@@ -95,7 +95,7 @@ body {
 }
 
     .btn-modificar:hover {
-        background-color: var(--color-principal);
+        background-color: var(--color-principal-hover);
         color: white;
     }
 

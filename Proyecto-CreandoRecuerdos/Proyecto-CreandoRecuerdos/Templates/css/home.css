@@ -128,8 +128,8 @@
     --bs-btn-color: var(--color-principal-oscuro);
     --bs-btn-border-color: var(--color-principal-oscuro);
     --bs-btn-hover-color: white;
-    --bs-btn-hover-bg: var(--color-principal);
-    --bs-btn-hover-border-color: var(--color-principal);
+    --bs-btn-hover-bg: var(--color-principal-hover);
+    --bs-btn-hover-border-color: var(--color-principal-hover);
     --bs-btn-active-bg: var(--color-principal-oscuro);
     --bs-btn-active-border-color: var(--color-principal-oscuro);
 

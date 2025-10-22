@@ -426,7 +426,7 @@ body {
     .product-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        border-color: var(--color-principal);
+        border-color: var(--color-principal-hover);
     }
 
 .product-img {
@@ -687,7 +687,7 @@ body {
 
     #orderStatusModal .filter-btn:hover:not(.active) {
         background-color: rgba(226, 122, 176, 0.2);
-        border-color: var(--color-principal);
+        border-color: var(--color-principal-hover);
     }
 
 #orderStatusModal .page-item.active .page-link {
@@ -750,6 +750,6 @@ body {
     }
 
         #orderStatusModal .input-group button:hover {
-            background-color: var(--color-principal);
-            border-color: var(--color-principal);
+            background-color: var(--color-principal-hover);
+            border-color: var(--color-principal-hover);
         }

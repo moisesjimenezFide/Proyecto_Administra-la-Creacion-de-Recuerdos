@@ -35,7 +35,7 @@
     .product-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 5px 10px var(--sombra-suave);
-        border-color: var(--color-principal);
+        border-color: var(--color-principal-hover);
         /* Efecto al pasar el mouse */
     }
 
@@ -156,7 +156,7 @@
 }
 
     .btn-outline-dark-pink:hover {
-        background-color: var(--color-principal);
+        background-color: var(--color-principal-hover);
         color: var(--color-texto-claro);
     }
 
