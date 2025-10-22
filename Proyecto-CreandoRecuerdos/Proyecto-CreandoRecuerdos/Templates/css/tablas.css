@@ -47,7 +47,8 @@
         border-bottom: none;
     }
 
-        .tabla-global tbody tr:hover {
+        .tabla-global tbody tr:hover,
+        .tabla-global tbody tr:hover td {
             background-color: var(--color-principal-hover);
             color: var(--color-texto-claro);
         }
