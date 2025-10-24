@@ -17,7 +17,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.FechaInicio, "Fecha de Inicio")
-            <div class="custom-datepicker" data-input="FechaInicio">
+            <div class="custom-datepicker" data-input="FechaInicio" data-min-today="true">
                 <div class="datepicker-input">
                     Seleccionar fecha de inicio
                     <i class="fas fa-calendar-days calendar-icon"></i>
@@ -29,7 +29,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.FechaFin, "Fecha Final")
-            <div class="custom-datepicker" data-input="FechaFin">
+            <div class="custom-datepicker" data-input="FechaFin" data-min-today="true">
                 <div class="datepicker-input">
                     Seleccionar fecha final
                     <i class="fas fa-calendar-days calendar-icon"></i>

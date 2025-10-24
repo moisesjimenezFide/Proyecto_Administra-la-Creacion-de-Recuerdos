@@ -186,7 +186,8 @@ class CustomDatePicker {
             });
         });
 
-        this.menu.querySelectorAll('.calendar-day[data-date]').forEach(day => {
+        // Solo días no deshabilitados pueden ser seleccionados
+        this.menu.querySelectorAll('.calendar-day[data-date]:not(.disabled)').forEach(day => {
             day.addEventListener('click', () => {
                 const dateStr = day.dataset.date;
                 this.selectDate(new Date(dateStr + 'T00:00:00'));
@@ -216,6 +217,9 @@ class CustomDatePicker {
         const days = [];
         const today = new Date();
 
+        // Detectar si se debe restringir a fechas futuras
+        const minToday = this.container.hasAttribute('data-min-today');
+
         for (let i = 0; i < 42; i++) {
             const date = new Date(startDate);
             date.setDate(startDate.getDate() + i);
@@ -228,6 +232,13 @@ class CustomDatePicker {
             if (!isCurrentMonth) classes.push('other-month');
             if (isToday) classes.push('today');
             if (isSelected) classes.push('selected');
+
+            // Solo deshabilitar días pasados si minToday está activo
+            let disabled = false;
+            if (minToday && date < today) {
+                classes.push('disabled');
+                disabled = true;
+            }
 
             const dateStr = date.getFullYear() + '-' +
                 String(date.getMonth() + 1).padStart(2, '0') + '-' +
