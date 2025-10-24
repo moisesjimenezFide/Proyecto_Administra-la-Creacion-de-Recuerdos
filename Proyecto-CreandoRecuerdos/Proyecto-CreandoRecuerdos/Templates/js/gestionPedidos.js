@@ -43,14 +43,14 @@ class GestionPedidos {
             this.cargarPedidos();
         });
 
-        document.getElementById('metodoPago')?.addEventListener('change', (e) => {
+        $('#metodoPago').on('change', (e) => {
             this.filtros.metodoPago = e.target.value;
             this.paginaActual = 1;
             this.cargarPedidos();
         });
 
-        // Tamaño de página
-        document.getElementById('pageSize')?.addEventListener('change', (e) => {
+        // Tamaño de página usando jQuery
+        $('#pageSize').on('change', (e) => {
             this.tamanoPagina = parseInt(e.target.value);
             this.paginaActual = 1;
             this.cargarPedidos();
@@ -411,11 +411,3 @@ class GestionPedidos {
         pagination.appendChild(liNext);
     }
 }
-
-// Inicialización cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-    // Verificar que estamos en la página correcta
-    if (document.getElementById('pedidosBody')) {
-        window.gestionPedidos = new GestionPedidos();
-    }
-});

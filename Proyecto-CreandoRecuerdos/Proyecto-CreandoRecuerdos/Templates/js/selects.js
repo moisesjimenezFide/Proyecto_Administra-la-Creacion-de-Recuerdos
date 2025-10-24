@@ -397,4 +397,9 @@ $(document).ready(function () {
         childList: true,
         subtree: true
     });
+
+    // Inicializar GestionPedidos después de convertir los selects personalizados
+    if (document.getElementById('pedidosBody')) {
+        window.gestionPedidos = new GestionPedidos();
+    }
 });
