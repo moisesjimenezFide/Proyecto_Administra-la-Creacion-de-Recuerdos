@@ -1,42 +1,36 @@
 ﻿<!DOCTYPE html>
 <html lang="es-CR">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Creando Recuerdos@((ViewData["Title"] != null ? " - " + ViewData["Title"] : ""))</title>
+
+    <!-- Conexiones anticipadas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sono:wght@400;600&display=swap" />
+
+    <!-- Fuentes y estilos globales -->
+    <link href="https://fonts.googleapis.com/css2?family=Sono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/estilos.css")" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Seguridad y compatibilidad -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Creando Recuerdos" />
+
+    <!-- SEO -->
     <link rel="shortcut icon" href="~/Templates/img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="~/Templates/img/favicon.png" type="image/png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Sono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/Templates/css/estilos.css" />
-    <link rel="stylesheet" href="~/Templates/css/tablas.css" />
-    <link rel="stylesheet" href="~/Templates/css/selects.css" />
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="~/Templates/js/selects.js"></script>
+    <meta name="theme-color" content="#ffffff" />
 
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- DataTables-->
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-    <!-- Botones de exportación -->
-    <link rel="stylesheet" href="~/Templates/css/paginaciones_y_exportaciones.css" />
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
-    <script src="~/Templates/js/paginaciones_y_exportaciones.js"></script>
+    <!-- ================= PLACEHOLDER PARA ESTILOS DE VISTAS ================= -->
+    @RenderSection("Styles", required: false)
 </head>
+
 <body data-error-message="@ViewBag.ErrorMessage" data-success-message="@TempData["SuccessMessage"]">
 
     @{
@@ -51,8 +45,8 @@
         <nav id="navbar" class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="@Url.Action("Inicio", "inicio")">
-                    <img src="~/Templates/img/logo.png" alt="Logo" class="logo-navbar">
-                    <span style="font-family: 'Sono';">Creando Recuerdos</span>
+                    <img src="@Url.Content("~/Templates/img/logo.webp")" alt="Logo" class="logo-navbar">
+                    <span style="font-family: 'Sono', sans-serif;">Creando Recuerdos</span>
                 </a>
 
                 <button class="navbar-toggler" id="navbarToggler" type="button" data-bs-toggle="collapse"
@@ -146,7 +140,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="userDropdown" style="min-width: 200px;">
                                     <li>
-                                        <a class="dropdown-item" >Perfil: @nombre</a>
+                                        <a class="dropdown-item">Perfil: @nombre</a>
                                     </li>
                                     <li>
                                         <hr class="dropdown-divider">
@@ -190,7 +184,7 @@
                         </ul>
                     </div>
                     <div class="col-md-4 text-center">
-                        <h5 class="text-uppercase mb-4" style="font-family: 'Sono';">
+                        <h5 class="text-uppercase mb-4" style="font-family: 'Sono', sans-serif;">
                             <i class="fas fa-hashtag me-2 dark-pink"></i> Síguenos
                         </h5>
                         <div class="social-icons">
@@ -199,12 +193,12 @@
                             <a href="#" class="text-white mx-2"><i class="fab fa-whatsapp fa-lg dark-pink"></i></a>
                         </div>
                         <div class="mt-4">
-                            <img src="~/Templates/img/logo.png" alt="Logo" style="max-height: 80px; width: auto; background-color: white; border-radius: 8px;">
+                            <img src="@Url.Content("~/Templates/img/logo.webp")" alt="Logo" style="max-height: 80px; width: auto; background-color: white; border-radius: 8px;">
                         </div>
 
                     </div>
                     <div class="col-md-4">
-                        <h5 class="text-uppercase mb-4" style="font-family: 'Sono';">
+                        <h5 class="text-uppercase mb-4" style="font-family: 'Sono', sans-serif;">
                             <i class="fas fa-link me-2 dark-pink"></i> Enlaces
                         </h5>
                         <ul class="list-unstyled">
@@ -229,9 +223,6 @@
         </footer>
     </div>
 
-    @RenderSection("Scripts", required: false)
-    @RenderSection("Styles", required: false)
-
     @if (TempData["SweetAlert"] != null)
     {
         <script>
@@ -249,5 +240,16 @@
             });
         </script>
     }
+
+    <!-- Scripts globales -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+
+    <!-- ================= SCRIPTS DE VISTAS ESPECÍFICAS ================= -->
+    @RenderSection("Scripts", required: false)
+
 </body>
 </html>

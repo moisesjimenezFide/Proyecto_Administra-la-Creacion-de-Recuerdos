@@ -142,14 +142,15 @@ html, body {
 }
 
 .dropdown-menu {
-    background: var(--color-texto-claro);
+    background: var(--color-principal-oscuro);
+    color: var(--color-texto-claro);
     border: none;
     box-shadow: 0 5px 15px var(--sombra-suave);
     border-radius: 8px;
 }
 
 .dropdown-item {
-    color: var(--color-texto) !important;
+    color: var(--color-texto-claro) !important;
     transition: all 0.2s;
     padding: 0.5rem 1.5rem;
 }

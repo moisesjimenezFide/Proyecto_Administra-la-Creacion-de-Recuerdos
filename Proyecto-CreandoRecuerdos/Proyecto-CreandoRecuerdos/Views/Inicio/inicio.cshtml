@@ -1,16 +1,16 @@
-﻿<link rel="stylesheet" href="~/Templates/css/home.css" />
+﻿<link href="@Url.Content("~/Templates/css/home.css")" rel="stylesheet"/>
 
 <div class="hero-section">
     <div class="floral-decoration floral-top-left"></div>
     <div class="floral-decoration floral-bottom-right"></div>
     <div class="container text-center py-5">
         <div class="logo-container">
-            <img src="~/Templates/img/Recuerdos.png" alt="Creando Recuerdos" class="img-fluid">
+            <img src="@Url.Content("/Templates/img/Recuerdos.webp")" alt="Creando Recuerdos" class="img-fluid" fetchpriority="high" width="220" height="140" decoding="async" loading="eager">
         </div>
-        <h1 class="display-5 fw-light mb-4" style="color: var(--color-texto); font-family: 'Sono', sans-serif;">
+        <h1 class="display-5 fw-light mb-4" style="color: #2C2C2C; font-family: 'Sono', sans-serif;">
             Creando Recuerdos Inolvidables
         </h1>
-        <p class="lead mx-auto" style="max-width: 600px; color: var(--color-texto);">
+        <p class="lead mx-auto" style="max-width: 600px; color: #2C2C2C; font-family: 'Sono', sans-serif;">
             Delicias artesanales hechas con amor y los mejores ingredientes
         </p>
     </div>

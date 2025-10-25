@@ -3,7 +3,12 @@
     ViewData["Title"] = "Edición de Usuarios";
 }
 
-@using (Html.BeginForm("editar_usuario", "Registro_Usuarios", FormMethod.Post)) {
+@section Styles {
+    <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
+}
+
+@using (Html.BeginForm("editar_usuario", "Registro_Usuarios", FormMethod.Post))
+{
     @Html.HiddenFor(m => m.id)
 
     <div class="form-group">
@@ -24,4 +29,8 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
- }
+}
+
+@section Scripts {
+    <script src="~/Templates/js/selects.js" defer></script>
+}

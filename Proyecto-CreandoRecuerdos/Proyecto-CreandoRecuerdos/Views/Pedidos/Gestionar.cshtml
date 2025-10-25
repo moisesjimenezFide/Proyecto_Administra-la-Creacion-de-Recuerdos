@@ -3,7 +3,10 @@
 }
 
 @section Styles {
-    <link href="~/Templates/css/pedidos.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/pedidos.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/tablas.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/paginaciones_y_exportaciones.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
 }
 
 <div class="container-fluid">
@@ -114,5 +117,6 @@
 
 
 @section Scripts {
+    <script src="~/Templates/js/selects.js" defer></script>
     <script src="~/Templates/js/gestionPedidos.js"></script>
 }

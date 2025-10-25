@@ -7,7 +7,7 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
     <style>
         .form-container {
             display: none;
@@ -29,12 +29,12 @@
 
             .btn-outline-dark-pink:hover {
                 background-color: #CC8FAE;
-                color: var(--color-texto-claro);
+                color: #FFFFFF;
             }
 
             .btn-outline-dark-pink.active {
                 background-color: #B54885 !important;
-                color: var(--color-texto-claro) !important;
+                color: #FFFFFF !important;
             }
 
         .card {
@@ -146,120 +146,132 @@
     </style>
 }
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow-sm">
-                    <div class="card-body p-4">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
 
-                        <!-- Agrega este div para mostrar mensajes -->
-                        @if (!string.IsNullOrEmpty(errorMessage))
-                        {
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1000; max-width: 400px;">
-                                <i class="fas fa-exclamation-circle me-2"></i>
-                                @errorMessage
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        }
-
-                        @if (!string.IsNullOrEmpty(successMessage))
-                        {
-                            <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1000; max-width: 400px;">
-                                <i class="fas fa-check-circle me-2"></i>
-                                @successMessage
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        }
-
-
-                        <!-- Switch -->
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="btn-group" role="group">
-                                <input type="radio" class="btn-check" name="formSwitch" id="loginSwitch" autocomplete="off" checked>
-                                <label class="btn btn-outline-dark-pink switch-label active" for="loginSwitch">Iniciar Sesión</label>
-
-                                <input type="radio" class="btn-check" name="formSwitch" id="registerSwitch" autocomplete="off">
-                                <label class="btn btn-outline-dark-pink switch-label" for="registerSwitch">Registrarse</label>
-                            </div>
+                    <!-- Agrega este div para mostrar mensajes -->
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1000; max-width: 400px;">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            @errorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <!-- Formulario de iniciar sesión -->
-                        @using (Html.BeginForm("iniciar_sesion", "Registro_Usuarios", FormMethod.Post, new { @id = "loginForm", @class = "form-container active-form" }))
-                        {
-                            <div class="form-header">
-                                <h2 class="text-center" style="font-family: 'Sono', sans-serif; color: #B54885;">Bienvenid❀ de nuevo</h2>
-                                <p class="text-center mb-0">Ingresa a tu cuenta para continuar</p>
-                            </div>
+                    }
 
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Correo Electrónico</label>
-                                @Html.TextBoxFor(x => x.correo, new { @class = "form-control", @id = "login-username", @placeholder = "correo@ejemplo.com", @type = "email", @required = "true" })
-                                @Html.ValidationMessageFor(x => x.correo, "", new { @class = "text-danger" })
-                            </div>
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1000; max-width: 400px;">
+                            <i class="fas fa-check-circle me-2"></i>
+                            @successMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
 
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Contraseña</label>
-                                @Html.TextBoxFor(x => x.contrasenna, new { @class = "form-control", @type = "password", @id = "Password", @placeholder = "**********", @required = "true" })
-                                @Html.ValidationMessageFor(x => x.contrasenna, "", new { @class = "text-danger" })
-                            </div>
 
-                            <div class="d-grid mb-3">
-                                <button type="submit" class="btn submit-btn text-white w-100">Ingresar</button>
-                            </div>
+                    <!-- Switch -->
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="formSwitch" id="loginSwitch" autocomplete="off" checked>
+                            <label class="btn btn-outline-dark-pink switch-label active" for="loginSwitch">Iniciar Sesión</label>
 
-                            <div class="form-footer text-center">
-                                <p class="mb-0"><a href="@Url.Action("recuperar_contrasenna", "Registro_Usuarios")" class="text-decoration-none" style="color: #B54885;">¿Olvidaste tu contraseña?</a></p>
-                            </div>
-                        }
-
-                        <!-- Formulario de Registro -->
-                        @using (Html.BeginForm("crear_cuenta", "Registro_Usuarios", FormMethod.Post, new { @id = "registerForm", @class = "form-container" }))
-                        {
-                            <div class="form-header">
-                                <h2 class="text-center" style="font-family: 'Sono', sans-serif; color: #B54885;">Únete a nuestra comunidad</h2>
-                                <p class="text-center mb-0">Crea tu cuenta para disfrutar de todas las ventajas</p>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Nombre</label>
-                                @Html.TextBoxFor(x => x.nombre, new { @class = "form-control", @placeholder = "Tu nombre completo", @required = "true" })
-                                @Html.ValidationMessageFor(x => x.nombre, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Correo Electrónico</label>
-                                @Html.TextBoxFor(x => x.correo, new { @class = "form-control", @type = "email", @placeholder = "correo@ejemplo.com", @required = "true" })
-                                @Html.ValidationMessageFor(x => x.correo, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Contraseña</label>
-                                @Html.Password("password", null, new { @class = "form-control", @id = "password", @placeholder = "Mínimo 8 caracteres", @required = "true" })
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Confirmar Contraseña</label>
-                                @Html.TextBoxFor(x => x.contrasenna, new { @class = "form-control", @type = "password", @id = "confirmPassword", @placeholder = "Repetir cotraseña", @required = "true" })
-                                @Html.ValidationMessageFor(x => x.contrasenna, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="d-grid gap-2 mb-3">
-                                <button type="submit" class="btn submit-btn text-white w-100">Crear Cuenta</button>
-                            </div>
-
-                            <div class="form-footer text-center">
-                                <p class="mb-0">
-                                    Al registrarte, aceptas nuestros
-                                    <a href="#" class="text-decoration-none" style="color: #B54885;">Términos</a> y
-                                    <a href="#" class="text-decoration-none" style="color: #B54885;">Privacidad</a>
-                                </p>
-                            </div>
-                        }
+                            <input type="radio" class="btn-check" name="formSwitch" id="registerSwitch" autocomplete="off">
+                            <label class="btn btn-outline-dark-pink switch-label" for="registerSwitch">Registrarse</label>
+                        </div>
                     </div>
+                    <!-- Formulario de iniciar sesión -->
+                    @using (Html.BeginForm("iniciar_sesion", "Registro_Usuarios", FormMethod.Post, new { @id = "loginForm", @class = "form-container active-form" }))
+                    {
+                        <div class="form-header">
+                            <h2 class="text-center" style="font-family: 'Sono', sans-serif; color: #B54885;">Bienvenid❀ de nuevo</h2>
+                            <p class="text-center mb-0">Ingresa a tu cuenta para continuar</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Correo Electrónico</label>
+                            @Html.TextBoxFor(x => x.correo, new { @class = "form-control", @id = "login-username", @placeholder = "correo@ejemplo.com", @type = "email", @required = "true" })
+                            @Html.ValidationMessageFor(x => x.correo, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Contraseña</label>
+                            @Html.TextBoxFor(x => x.contrasenna, new { @class = "form-control", @type = "password", @id = "Password", @placeholder = "**********", @required = "true" })
+                            @Html.ValidationMessageFor(x => x.contrasenna, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn submit-btn text-white w-100">Ingresar</button>
+                        </div>
+
+                        <div class="form-footer text-center">
+                            <p class="mb-0"><a href="@Url.Action("recuperar_contrasenna", "Registro_Usuarios")" class="text-decoration-none" style="color: #B54885;">¿Olvidaste tu contraseña?</a></p>
+                        </div>
+                    }
+
+                    <!-- Formulario de Registro -->
+                    @using (Html.BeginForm("crear_cuenta", "Registro_Usuarios", FormMethod.Post, new { @id = "registerForm", @class = "form-container" }))
+                    {
+                        <div class="form-header">
+                            <h2 class="text-center" style="font-family: 'Sono', sans-serif; color: #B54885;">Únete a nuestra comunidad</h2>
+                            <p class="text-center mb-0">Crea tu cuenta para disfrutar de todas las ventajas</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Nombre</label>
+                            @Html.TextBoxFor(x => x.nombre, new { @class = "form-control", @placeholder = "Tu nombre completo", @required = "true" })
+                            @Html.ValidationMessageFor(x => x.nombre, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Correo Electrónico</label>
+                            @Html.TextBoxFor(x => x.correo, new { @class = "form-control", @type = "email", @placeholder = "correo@ejemplo.com", @required = "true" })
+                            @Html.ValidationMessageFor(x => x.correo, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Contraseña</label>
+                            @Html.Password("password", null, new { @class = "form-control", @id = "password", @placeholder = "Mínimo 8 caracteres", @required = "true" })
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Confirmar Contraseña</label>
+                            @Html.TextBoxFor(x => x.contrasenna, new { @class = "form-control", @type = "password", @id = "confirmPassword", @placeholder = "Repetir cotraseña", @required = "true" })
+                            @Html.ValidationMessageFor(x => x.contrasenna, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn submit-btn text-white w-100">Crear Cuenta</button>
+                        </div>
+
+                        <div class="form-footer text-center">
+                            <p class="mb-0">
+                                Al registrarte, aceptas nuestros
+                                <a href="#" class="text-decoration-none" style="color: #B54885;">Términos</a> y
+                                <a href="#" class="text-decoration-none" style="color: #B54885;">Privacidad</a>
+                            </p>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts {
-        <script src="~/Templates/js/registrar_usuario.js"></script>
-    }
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js" defer></script>
+    <script src="~/Templates/js/paginaciones_y_exportaciones.js" defer></script>
+    <script src="~/Templates/js/selects.js" defer></script>
+    <script src="~/Templates/js/registrar_usuario.js"></script>
+}

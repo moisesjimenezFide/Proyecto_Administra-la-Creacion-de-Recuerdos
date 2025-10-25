@@ -43,7 +43,7 @@ body .tabla_insumos_container {
 
 /* Estilos para los inputs con símbolos a la izquierda y derecha */
 .input-symbol-left {
-    color: #495057;
+    color: #2C2C2C;
     font-size: 1rem;
     margin-right: 0.5em;
     position: static;
@@ -69,11 +69,11 @@ body .tabla_insumos_container {
     padding: 0;
     line-height: 38px;
     font-weight: 500;
-    color: #495057;
+    color: #2C2C2C;
 }
 
 .input-symbol-right {
-    color: #495057;
+    color: #2C2C2C;
     font-size: 1rem;
     margin-left: 0.25em;
     margin-right: 0.25em;

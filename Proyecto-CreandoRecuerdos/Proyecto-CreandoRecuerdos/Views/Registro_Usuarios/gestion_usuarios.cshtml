@@ -4,12 +4,14 @@
     ViewData["Title"] = "Gestión de Usuarios";
 }
 
-<link rel="stylesheet" href="~/Templates/css/gestion_usuarios.css" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-
+@section Styles {
+    <link rel="stylesheet" href="@Url.Content("~/Templates/css/gestion_usuarios.css")" />
+    <link href="@Url.Content("~/Templates/css/tablas.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/paginaciones_y_exportaciones.css")" rel="stylesheet" />
+}
 
 <div class="container usuarios-container py-5">
-    
+
     <div class="input-group mb-3">
         <input type="text" class="form-control" id="filtroUsuarios" placeholder="Buscar usuario..." style="border: none; background-color: var(--beige); color: var(--texto-oscuro);">
     </div>
@@ -100,46 +102,49 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('.inactivar-btn').click(function () {
-            var id_usuario = $(this).data('id');
+@section Scripts {
+    <script src="~/Templates/js/paginaciones_y_exportaciones.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.inactivar-btn').click(function () {
+                var id_usuario = $(this).data('id');
 
-            $.ajax({
-                url: '@Url.Action("inactivar_usuarios", "Registro_Usuarios")',
-                type: 'POST',
-                data: { id: id_usuario },
-                success: function (response) {
-                    if (response.success) {
-                        Swal.fire({
+                $.ajax({
+                    url: '@Url.Action("inactivar_usuarios", "Registro_Usuarios")',
+                    type: 'POST',
+                    data: { id: id_usuario },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
                             iconHtml: '<i class="fas fa-lock"></i>',
                             customClass: {
                                 icon: 'swal2-icon-custom'
                             },
                             title: '¡Usuario inactivado!',
                             text: 'Se inactivó el usuario correctamente.',
-                            confirmButtonColor: '#CC8FAE', // rosa principal
+                                confirmButtonColor: '#B54885', // rosa principal oscuro
                             showConfirmButton: true
                         }).then(() => {
                             location.reload();
                         });
-                    } else {
-                        Swal.fire({
+                        } else {
+                            Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: 'Ocurrió un error al inactivar el usuario.'
-                        });
-                    }
-                },
-                error: function () {
-                    Swal.fire({
+                                text: 'Ocurrió un error al inactivar el usuario.'
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Error en la solicitud AJAX.'
-                    });
-                }
+                            text: 'Error en la solicitud AJAX.'
+                        });
+                    }
+                });
             });
-        });
+
         //Activar
         $('.activar-btn').click(function () {
             var id_usuario = $(this).data('id');
@@ -191,6 +196,6 @@
             });
         });
     });
-</script>
-
+    </script>
+}
 

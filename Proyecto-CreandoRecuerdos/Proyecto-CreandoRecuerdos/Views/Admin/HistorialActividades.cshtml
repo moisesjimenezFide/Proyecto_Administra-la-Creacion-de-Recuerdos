@@ -8,6 +8,9 @@
 }
 
 @section Styles {
+    <link href="@Url.Content("~/Templates/css/tablas.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/paginaciones_y_exportaciones.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
 
     <!-- Estilos para el radio button personalizado -->
     <style>
@@ -32,9 +35,9 @@
                 top: 0;
                 width: 20px;
                 height: 20px;
-                border: 2px solid #ced4da;
+                border: 2px solid white;
                 border-radius: 50%;
-                background: var(--color-texto-claro);
+                background: white;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -44,7 +47,7 @@
                 /* Ícono (oculto inicialmente) */
                 .custom-radio label span i.fas.fa-circle {
                     font-size: 10px; /* ajusta al gusto */
-                    color: var(--color-principal-oscuro); /* tu color */
+                    color: #B54885; /* tu color */
                     opacity: 0; /* oculto */
                     transform: scale(0.3); /* pequeño */
                     transition: opacity .25s ease, transform .25s ease;
@@ -52,25 +55,25 @@
 
         /* Seleccionado */
         .custom-radio input[type="radio"]:checked + label span {
-            background-color: var(--color-principal-oscuro);
+            background-color: #B54885;
             box-shadow: 0 0 0 .2rem rgba(226,122,176,.25);
         }
 
         /* Hover */
         .custom-radio label:hover span {
-            border-color: var(--color-principal-hover);
+            border-color: #CC8FAE;
         }
 
         /* Ajuste del modal para mejor contraste */
         .modal-content {
-            background-color: var(--color-fondo); /* fondo cálido y suave */
-            color: var(--color-texto);
+            background-color: #FFF8F9;
+            color: white;
             border-radius: 8px;
-            border: 1px solid var(--color-acento);
+            border: 1px solid #FFD6EB;
         }
 
         .modal-header {
-            background-color: var(--color-principal-oscuro);
+            background-color: #B54885;
             color: var(--color-texto-claro);
             border-bottom: none;
         }
@@ -80,14 +83,13 @@
         }
 
         .card-header {
-            background-color: var(--color-principal-oscuro);
-            color: var(--color-texto-claro);
+            background-color: #B54885;
+            color: white
         }
 
         .card-body {
-            background-color: var(--color-texto-claro);
+            background-color: white;
         }
-
     </style>
 }
 <div class="container my-5 text-center">
@@ -211,4 +213,16 @@
 
 @section Scripts {
     <script src="~/Templates/js/historialactividades.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js" defer></script>
+        <script src="~/Templates/js/paginaciones_y_exportaciones.js"></script>
+        <script src="~/Templates/js/selects.js" defer></script>
 }

@@ -7,6 +7,10 @@
     var rol = Session["Rol"]?.ToString();
 }
 
+@section Styles {
+    <link href="@Url.Content("~/Templates/css/tablas.css")" rel="stylesheet" />
+}
+
 <div class="container mt-4">
     <div class="card shadow">
         <div class="card-header bg-primary text-white">

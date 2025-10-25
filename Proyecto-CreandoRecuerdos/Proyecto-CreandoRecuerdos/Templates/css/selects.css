@@ -6,6 +6,7 @@
     width: 100%;
 }
 
+
     .custom-select .custom-select-button {
         border: 2px solid #E9ECEF;
         border-radius: 8px;
@@ -13,7 +14,7 @@
         background-color: #F8F9FA;
         font-size: 14px;
         font-weight: 500;
-        color: #495057;
+        color: #2C2C2C !important;
         cursor: pointer;
         position: relative;
         min-width: 80px;
@@ -32,7 +33,7 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 10px;
-            color: #495057;
+            color: #2C2C2C;
         }
 
         .custom-select .custom-select-button:hover {
@@ -46,6 +47,7 @@
         left: 0;
         right: 0;
         background: white;
+        color: #2C2C2C;
         border: 2px solid #B54885;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -64,7 +66,7 @@
         cursor: pointer;
         font-size: 14px;
         font-weight: 500;
-        color: #495057;
+        color: #2C2C2C !important;
         border-bottom: 1px solid #F8F9FA;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -77,13 +79,13 @@
         }
 
         .custom-select .custom-select-item:hover {
-            background-color: #F8E5ED;
-            color: #CC8FAE;
+            background-color: #CC8FAE;
+            color: white !important;
         }
 
         .custom-select .custom-select-item.active {
             background-color: #B54885;
-            color: white;
+            color: white !important;
         }
 
 /* Ocultar los selects originales*/
@@ -114,7 +116,7 @@ select.form-select.custom-hidden {
         background-color: #F8F9FA;
         font-size: 14px;
         font-weight: 500;
-        color: #495057;
+        color: #2C2C2C;
         cursor: pointer;
         position: relative;
         min-width: 80px;
@@ -134,7 +136,7 @@ select.form-select.custom-hidden {
         /* Icono del calendario dentro del botón */
         .custom-datepicker .datepicker-input .calendar-icon {
             font-size: 16px;
-            color: #495057;
+            color: #2C2C2C;
             pointer-events: none;
             transition: color 0.3s ease;
         }
@@ -194,7 +196,7 @@ select.form-select.custom-hidden {
 /* Cada parte del título (mes o año) */
 .calendar-title-part {
     font-weight: 600;
-    color: #333;
+    color: #2C2C2C;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
@@ -204,8 +206,8 @@ select.form-select.custom-hidden {
 
     /* Efecto hover en las partes del título */
     .calendar-title-part:hover {
-        background-color: #F8E5ED;
-        color: #CC8FAE;
+        background-color: #CC8FAE;
+        color: white;
     }
 
 /* Menús desplegables (dropdowns) */
@@ -234,14 +236,14 @@ select.form-select.custom-hidden {
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-size: 14px;
-    color: #495057;
+    color: #2C2C2C;
     transition: all 0.3s ease;
 }
 
     /* Efecto hover en items del dropdown */
     .calendar-dropdown-item:hover {
-        background-color: #F8E5ED;
-        color: #CC8FAE;
+        background-color: #CC8FAE;
+        color: white;
     }
 
     /* Item seleccionado en el dropdown */
@@ -285,8 +287,8 @@ select.form-select.custom-hidden {
 
     /* Efecto hover en los días */
     .calendar-day:hover {
-        background-color: #F8E5ED;
-        color: #CC8FAE;
+        background-color: #CC8FAE;
+        color: white;
     }
 
     /* Días de otros meses (grises) */
@@ -303,7 +305,7 @@ select.form-select.custom-hidden {
     /* Día actual */
     .calendar-day.today {
         background-color: #E9ECEF !important;
-        color: #333 !important;
+        color: #2C2C2C !important;
         font-weight: 600;
         border: 2px solid #DEE2E6;
         box-shadow: 0 2px 4px rgba(233, 236, 239, 0.5);
