@@ -46,7 +46,20 @@
     <div id="container-wrap2">
         <div id="iconElement" class="icon-class"></div>
 
-        <nav id="navbar" class="navbar navbar-expand-lg navbar-dark">
+        <!-- Navbar -->
+        @{
+            string navClass = "navbar navbar-expand-lg navbar-dark";
+            if (rol == "1")
+            {
+                navClass += " admin-session";
+            }
+
+            if (rol == "2")
+            {
+                navClass += " empleado-session";
+            }
+        }
+        <nav id="navbar" class="@navClass">
             <div class="container-fluid">
                 <a class="navbar-brand" href="@Url.Action("Inicio", "inicio")">
                     <img src="@Url.Content("~/Templates/img/logo.webp")" alt="Logo" width="80" height="80" decoding="async" loading="lazy" style="max-height:80px;width:auto;border-radius:8px;background-color:white;" class="logo-navbar">
@@ -78,8 +91,10 @@
                                 <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("MisPedidos", "Pedidos")" asp-action="MisPedidos">Mis Pedidos</a></li>
                             </ul>
                         </li>
+
                         @if (rol == "1")
                         {
+                            <!-- Botones visibles solo para admin -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-uppercase" href="#" id="dropdownInsumos" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
@@ -116,10 +131,10 @@
                                     <li><a class="dropdown-item" href="@Url.Action("menu_admin", "Menu")">Menú Admin</a></li>
                                 </ul>
                             </li>
-                            <!-- Boton visible solo para admin -->
+                            <!-- Botones visibles solo para admin -->
                         }
 
-                        <!-- Boton visible solo para empleados -->
+                        <!-- Botones visibles solo para empleados -->
                         @if (rol == "2")
                         {
                             <li class="nav-item">
@@ -128,7 +143,7 @@
                                 </a>
                             </li>
                         }
-                        <!-- Boton visible solo para empleados -->
+                        <!-- Botones visibles solo para empleados -->
 
                         @if (rol == null)
                         {
@@ -244,6 +259,15 @@
             });
         </script>
     }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".navbar");
+        const collapse = document.querySelector(".navbar-collapse");
+        collapse.addEventListener("show.bs.collapse", () => navbar.classList.add("menu-abierto"));
+        collapse.addEventListener("hide.bs.collapse", () => navbar.classList.remove("menu-abierto"));
+    });
+</script>
 
     <!-- Scripts globales -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" defer></script>

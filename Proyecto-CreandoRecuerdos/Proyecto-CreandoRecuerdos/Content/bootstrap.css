@@ -3200,19 +3200,22 @@ textarea.form-control-lg {
 }
 
 .collapse:not(.show) {
-  display: none;
+    display: none;
+    transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important
 }
 
 .collapsing {
-  height: 0;
-  overflow: hidden;
-  transition: height 0.35s ease;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important
 }
+
 @media (prefers-reduced-motion: reduce) {
   .collapsing {
     transition: none;
   }
 }
+
 .collapsing.collapse-horizontal {
   width: 0;
   height: auto;
@@ -3847,9 +3850,10 @@ textarea.form-control-lg {
 }
 
 .navbar-collapse {
-  flex-basis: 100%;
-  flex-grow: 1;
-  align-items: center;
+    flex-basis: 100%;
+    flex-grow: 1;
+    align-items: center;
+    transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .navbar-toggler {

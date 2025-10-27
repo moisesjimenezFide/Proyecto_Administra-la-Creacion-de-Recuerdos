@@ -34,6 +34,7 @@
 
 .hero-section img {
     display: block;
+    margin: 0 auto;
     /* La siguiente línea evita saltos por carga diferida de imágenes */
     aspect-ratio: attr(width) / attr(height);
     height: auto;
@@ -197,5 +198,12 @@
 
     .floral-decoration {
         display: none;
+    }
+}
+
+/* Asegura centrado también en pantallas pequeñas */
+@media (max-width: 600px) {
+    .hero-section img {
+        max-height: 240px;
     }
 }

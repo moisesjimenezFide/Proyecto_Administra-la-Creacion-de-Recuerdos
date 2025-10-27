@@ -65,6 +65,7 @@ html, body {
 /* Asegura estabilidad en imágenes del layout (logo, banner, etc.) */
 .container img {
     display: block;
+    margin: 0 auto;
     /* La siguiente línea evita saltos por carga diferida de imágenes */
     aspect-ratio: attr(width) / attr(height);
     height: auto;
@@ -222,6 +223,21 @@ html, body {
             color: var(--color-dorado);
         }
 
+.footer img,
+.navbar img {
+    aspect-ratio: auto;
+}
+
+/* Centra el logo en el footer */
+.footer .mt-4 img {
+    display: block;
+    margin: 0 auto; /* Centra horizontalmente */
+    height: auto;
+    max-width: 80px;
+    border-radius: 8px;
+    background-color: white;
+}
+
 .social-icons a {
     display: inline-flex;
     align-items: center;
@@ -273,15 +289,18 @@ html, body {
     .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
-}
-/* dropdown-menu */
-@media (min-width: 992px) {
+
     .navbar-nav .dropdown-menu {
         position: absolute;
     }
 
     .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
         display: block;
+    }
+
+    .navbar::before {
+        top: 88px;
+        height: 8px;
     }
 
     #dropdownAdmin + .dropdown-menu {
@@ -295,3 +314,39 @@ html, body {
     overflow-x: hidden;
 }
 
+@media (min-width: 50px) and (max-width: 991px) {
+    .navbar::before {
+        top: 66px;
+        height: 8px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .navbar.menu-abierto::before {
+        top: 218px; /* mueve la barra debajo del menú abierto */
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está CERRADO (Admin) */
+    .admin-session.navbar::before {
+        top: 66px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está ABIERTO (Admin) */
+    .admin-session.navbar.menu-abierto::before {
+        top: 298px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está CERRADO (Empleado) */
+    .empleado-session.navbar::before {
+        top: 66px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
+    .empleado-session.navbar.menu-abierto::before {
+        top: 258px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+}
