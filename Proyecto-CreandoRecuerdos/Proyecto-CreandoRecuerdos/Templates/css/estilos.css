@@ -95,9 +95,20 @@ html, body {
 }
 
 .logo-navbar {
-    height: 40px;
-    width: auto;
+    width: 80px;
+    height: 80px;
     margin-right: 10px;
+    background-color: white;
+    object-fit: contain;
+    padding: 3px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.logo-navbar {
+    width: 80px;
+    height: 80px;
     background-color: white;
     object-fit: contain;
     padding: 3px;
@@ -282,7 +293,7 @@ html, body {
     }
 
     .navbar::before {
-        top: 88px;
+        top: 98px;
         height: 8px;
     }
 
@@ -299,37 +310,37 @@ html, body {
 
 @media (min-width: 50px) and (max-width: 991px) {
     .navbar::before {
-        top: 66px;
+        top: 106px;
         height: 8px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     .navbar.menu-abierto::before {
-        top: 218px; /* mueve la barra debajo del menú abierto */
+        top: 258px; /* mueve la barra debajo del menú abierto */
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     /* La posición de la barra cuando el menú está CERRADO (Admin) */
     .admin-session.navbar::before {
-        top: 66px;
+        top: 106px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     /* La posición de la barra cuando el menú está ABIERTO (Admin) */
     .admin-session.navbar.menu-abierto::before {
-        top: 298px;
+        top: 330px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     /* La posición de la barra cuando el menú está CERRADO (Empleado) */
     .empleado-session.navbar::before {
-        top: 66px;
+        top: 106px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
     .empleado-session.navbar.menu-abierto::before {
-        top: 258px;
+        top: 298px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 }
