@@ -5,7 +5,15 @@
     <div class="floral-decoration floral-bottom-right"></div>
     <div class="container text-center py-5">
         <div class="logo-container">
-            <img src="@Url.Content("/Templates/img/Recuerdos.webp")" alt="Creando Recuerdos" width="540" height="344" decoding="async" loading="eager" fetchpriority="high" />
+            <img 
+                 src="@Url.Content("/Templates/img/Recuerdos-540x344.webp")" 
+                 srcset="@Url.Content("/Templates/img/Recuerdos-320x204.webp")" 320w, 
+                 "@Url.Content("/Templates/img/Recuerdos-540x344.webp")" 540w"
+                 sizes="(max-width: 600px) 320px, 540px"
+                 alt="Creando Recuerdos" 
+                 width="540" height="344" 
+                 decoding="async" loading="eager" fetchpriority="high" 
+            />
         </div>
         <h1 class="display-5 fw-light mb-4" style="color: #2C2C2C; font-family: 'Sono', sans-serif;">
             Creando Recuerdos Inolvidables
