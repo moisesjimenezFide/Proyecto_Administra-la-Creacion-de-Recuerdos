@@ -126,16 +126,11 @@ html, body {
 
     .navbar-nav .nav-link {
         color: var(--color-texto-claro) !important;
-        transition: color 0.3s ease;
+        transition: background-color 0.2s ease, color 0.2s ease;
         text-transform: uppercase;
-        color: white !important;
         padding: 0.5rem 1rem;
         font-weight: 500;
         letter-spacing: 1px;
-    }
-
-    .navbar-nav a.nav-link {
-        transition: background-color 0.2s ease, color 0.2s ease;
     }
 
 .navbar-toggler {
@@ -260,18 +255,6 @@ html, body {
 
     .social-icons i:hover {
         color: var(--color-texto-oscuro);
-    }
-
-/* Botones */
-.btn-primary {
-    background-color: var(--color-principal-oscuro);
-    border-color: var(--color-principal-oscuro);
-    color: white;
-}
-
-    .btn-primary:hover {
-        background-color: var(--color-principal-hover);
-        border-color: var(--color-principal-hover);
     }
 
 /* Responsive */

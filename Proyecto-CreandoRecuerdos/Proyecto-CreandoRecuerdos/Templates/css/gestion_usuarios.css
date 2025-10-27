@@ -24,11 +24,6 @@ body {
     padding: 0 15px;
 }
 
-.btn-primary {
-    background-color: var(--color-principal-oscuro);
-    border-color: var(--color-principal-oscuro);
-}
-
 /* Estilos para la tabla */
 .usuarios-container {
     max-width: 1200px;
@@ -87,34 +82,6 @@ body {
         border-radius: 50%;
         transition: all 0.3s ease;
         border: none;
-    }
-
-.btn-modificar {
-    background-color: var(--color-principal-oscuro);
-    color: white;
-}
-
-    .btn-modificar:hover {
-        background-color: var(--color-principal-hover);
-        color: white;
-    }
-
-.btn-inactivar {
-    background-color: #dc3545;
-    color: white;
-}
-
-    .btn-inactivar:hover {
-        background-color: #bb2d3b;
-    }
-
-.btn-activar {
-    background-color: #28a745;
-    color: white;
-}
-
-    .btn-activar:hover {
-        background-color: #218838;
     }
 
 @media (max-width: 768px) {

@@ -22,24 +22,6 @@
     --sombra-suave: rgba(0, 0, 0, 0.15);
 }
 
-/* Fuentes */
-@import url('https://fonts.googleapis.com/css2?family=Sono:wght@800&display=swap');
-
-body {
-    font-family: 'Sono', sans-serif;
-    background-color: #F5F5F5;
-    color: #2C2C2C2C2C2C;
-    overflow-x: hidden;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.container-fluid {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
 #pagination .page-item.active .page-link {
     background-color: var(--color-principal-oscuro) !important;
     border-color: var(--color-principal-oscuro) !important;
@@ -132,7 +114,7 @@ body {
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease;
-    width: 33.2C2C2C2C2C2C%;
+    width: 33.333333%;
     position: relative;
     overflow-y: auto;
 }
@@ -146,7 +128,7 @@ body {
     }
 
         .pos-order-panel.collapsed ~ .pos-products {
-            width: calc(83.2C2C2C2C2C2C% - 15px);
+            width: calc(83.333333% - 15px);
             margin-right: 15px;
         }
 
@@ -580,25 +562,6 @@ body {
         margin-right: 0;
     }
 
-    .navbar-brand span {
-        display: none;
-    }
-
-    .navbar-collapse {
-        flex-basis: 100%;
-        order: 3;
-    }
-
-    .navbar-nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .nav-item {
-        padding: 0.2rem;
-    }
-
     .toggle-order-panel {
         display: none;
     }
@@ -613,19 +576,10 @@ body {
         margin-bottom: 10px;
     }
 
-    .navbar-nav {
-        flex-direction: column;
-    }
-
     .filter-btn {
         padding: 0.25rem 0.5rem;
         font-size: 0.8rem;
     }
-}
-
-.navbar-dark .navbar-nav .nav-link:hover,
-.navbar-dark .navbar-nav .nav-link:focus {
-    color: rgba(255, 255, 255, 0.75) !important;
 }
 
 .fa-blender:before {

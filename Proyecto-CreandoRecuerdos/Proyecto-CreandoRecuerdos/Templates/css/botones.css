@@ -1,0 +1,102 @@
+﻿:root {
+    --color-principal-hover: #CC8FAE; /* Color principal rosa oscuro hover de marca */
+    --color-principal-oscuro: #B54885; /* Color principal rosa oscuro de marca */
+    --color-acento: #FFD6EB; /* Rosa pastel claro */
+    --color-dorado: #E8C495; /* Acento dorado */
+    --color-fondo: #FFF8F9; /* Fondo casi blanco cálido */
+    --color-texto-oscuro: #2C2C2C; /* Texto principal oscuro */
+    --color-texto-claro: #FFFFFF; /* Texto claro */
+    --sombra-suave: rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background-color: var(--color-principal-oscuro);
+    border-color: var(--color-principal-oscuro);
+}
+
+.btn-modificar {
+    background-color: var(--color-principal-oscuro);
+    color: white;
+}
+
+    .btn-modificar:hover {
+        background-color: var(--color-principal-hover);
+        color: white;
+    }
+
+.btn-inactivar {
+    background-color: #dc3545;
+    color: white;
+}
+
+    .btn-inactivar:hover {
+        background-color: #bb2d3b;
+    }
+
+.btn-activar {
+    background-color: #28a745; /* verde */
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+    .btn-activar:hover {
+        background-color: #218838;
+    }
+
+/* Botones refinados */
+.btn-outline-dark-pink {
+    --bs-btn-color: var(--color-principal-oscuro);
+    --bs-btn-border-color: var(--color-principal-oscuro);
+    --bs-btn-hover-color: white;
+    --bs-btn-hover-bg: var(--color-principal-hover);
+    --bs-btn-hover-border-color: var(--color-principal-hover);
+    --bs-btn-active-bg: var(--color-principal-oscuro);
+    --bs-btn-active-border-color: var(--color-principal-oscuro);
+    border: 2px solid var(--color-principal-oscuro);
+    color: var(--color-principal-oscuro);
+    border-radius: 30px;
+    padding: 10px 25px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-width: 2px;
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-dark-pink:hover {
+        background: var(--color-principal-oscuro);
+        color: var(--color-texto-claro);
+        box-shadow: 0 5px 15px rgba(255, 179, 198, 0.3);
+        transform: translateY(-3px);
+    }
+
+    .btn-outline-dark-pink.active {
+        background-color: var(--color-principal-oscuro) !important;
+        color: var(--color-texto-claro) !important;
+    }
+
+.btn-sm {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+}
+
+.btn {
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.btn-custom-pink {
+    background-color: #B54885;
+    color: white;
+    border: none;
+}
+
+    .btn-custom-pink:hover {
+        background-color: #CC8FAE;
+        color: white;
+    }
+
+
+

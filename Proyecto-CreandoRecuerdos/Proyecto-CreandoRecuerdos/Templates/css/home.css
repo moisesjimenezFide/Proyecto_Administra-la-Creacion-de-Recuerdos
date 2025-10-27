@@ -128,34 +128,6 @@
     transform: scale(1.1);
     color: var(--color-principal-oscuro) !important;
 }
-
-/* Botones refinados */
-.btn-outline-dark-pink {
-    --bs-btn-color: var(--color-principal-oscuro);
-    --bs-btn-border-color: var(--color-principal-oscuro);
-    --bs-btn-hover-color: white;
-    --bs-btn-hover-bg: var(--color-principal-hover);
-    --bs-btn-hover-border-color: var(--color-principal-hover);
-    --bs-btn-active-bg: var(--color-principal-oscuro);
-    --bs-btn-active-border-color: var(--color-principal-oscuro);
-
-    border: 2px solid var(--color-principal-oscuro);
-    color: var(--color-principal-oscuro);
-    border-radius: 30px;
-    padding: 10px 25px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    border-width: 2px;
-    transition: all 0.3s ease;
-}
-
-    .btn-outline-dark-pink:hover {
-        background: var(--color-principal-oscuro);
-        color: var(--color-texto-claro);
-        box-shadow: 0 5px 15px rgba(255, 179, 198, 0.3);
-        transform: translateY(-3px);
-    }
-
 /* Decoraciones florales sutiles */
 .floral-decoration {
     position: absolute;

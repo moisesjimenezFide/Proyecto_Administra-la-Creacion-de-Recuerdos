@@ -150,21 +150,6 @@
     /* Empuja hacia abajo */
 }
 
-.btn-outline-dark-pink {
-    color: var(--color-principal-oscuro);
-    border-color: var(--color-principal-oscuro);
-}
-
-    .btn-outline-dark-pink:hover {
-        background-color: var(--color-principal-hover);
-        color: var(--color-texto-claro);
-    }
-
-    .btn-outline-dark-pink.active {
-        background-color: var(--color-principal-oscuro) !important;
-        color: var(--color-texto-claro) !important;
-    }
-
 .pos-products {
     padding: 20px;
 }
