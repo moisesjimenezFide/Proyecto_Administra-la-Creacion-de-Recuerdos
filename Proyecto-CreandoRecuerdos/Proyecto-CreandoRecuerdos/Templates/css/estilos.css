@@ -106,17 +106,6 @@ html, body {
     transition: margin-left 0.3s ease-in-out;
 }
 
-.logo-navbar {
-    width: 80px;
-    height: 80px;
-    background-color: white;
-    object-fit: contain;
-    padding: 3px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: margin-left 0.3s ease-in-out;
-}
-
 .navbar-nav {
     display: flex;
     flex-direction: column;
@@ -237,9 +226,10 @@ html, body {
 /* Centra el logo en el footer */
 .footer .mt-4 img {
     display: block;
-    margin: 0 auto; /* Centra horizontalmente */
-    height: auto;
-    max-width: 80px;
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+    max-width: none;
     border-radius: 8px;
     background-color: white;
 }
