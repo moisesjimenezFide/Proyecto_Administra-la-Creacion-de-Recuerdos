@@ -563,6 +563,7 @@
     <Content Include="Views\Inicio\AccesoDenegado.cshtml" />
     <Content Include="Templates\img\logo.webp" />
     <Content Include="Templates\img\Recuerdos-320x204.webp" />
+    <Content Include="Templates\img\Recuerdos-450x287.webp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

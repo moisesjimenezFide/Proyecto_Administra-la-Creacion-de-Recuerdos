@@ -201,7 +201,7 @@ html, body {
     .navbar::before {
         content: "";
         position: absolute;
-        top: 63px;
+        top: 98px;
         left: 0;
         right: 0;
         height: 10px;
