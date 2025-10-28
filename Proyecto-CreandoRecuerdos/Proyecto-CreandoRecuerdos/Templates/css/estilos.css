@@ -243,11 +243,12 @@ html, body {
     background-color: rgba(255,255,255,0.2);
     border-radius: 50%;
     margin: 0 8px;
-    transition: all 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
     .social-icons a:hover {
         background-color: var(--color-dorado);
+        transform: scale(1.1);
     }
 
         .social-icons a:hover i {
@@ -280,11 +281,6 @@ html, body {
 
     .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
         display: block;
-    }
-
-    .navbar::before {
-        top: 98px;
-        height: 8px;
     }
 
     #dropdownAdmin + .dropdown-menu {
