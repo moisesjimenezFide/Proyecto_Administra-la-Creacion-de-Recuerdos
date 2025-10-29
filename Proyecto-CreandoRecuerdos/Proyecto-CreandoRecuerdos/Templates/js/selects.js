@@ -52,18 +52,31 @@ class CustomDatePicker {
     }
 
     init() {
-        this.button.addEventListener('click', () => this.toggleCalendar());
+        if (this.button) {
+            this.button.addEventListener('click', () => this.toggleCalendar());
+        }
+        if (this.input) {
+            this.input.addEventListener('change', () => this.updateFromInput());
+        }
         document.addEventListener('click', (e) => this.handleOutsideClick(e));
-        this.input.addEventListener('change', () => this.updateFromInput());
 
-        if (this.input.value) {
-            // Parsear dd-MM-yyyy a Date
+        if (this.input && this.input.value) {
             const partes = this.input.value.split('-');
+            let fecha = null;
             if (partes.length === 3) {
-                const dia = parseInt(partes[0], 10);
-                const mes = parseInt(partes[1], 10) - 1;
-                const anio = parseInt(partes[2], 10);
-                const fecha = new Date(anio, mes, dia);
+                if (partes[0].length === 4) {
+                    // yyyy-MM-dd
+                    const anio = parseInt(partes[0], 10);
+                    const mes = parseInt(partes[1], 10) - 1;
+                    const dia = parseInt(partes[2], 10);
+                    fecha = new Date(anio, mes, dia);
+                } else {
+                    // dd-MM-yyyy
+                    const dia = parseInt(partes[0], 10);
+                    const mes = parseInt(partes[1], 10) - 1;
+                    const anio = parseInt(partes[2], 10);
+                    fecha = new Date(anio, mes, dia);
+                }
                 if (!isNaN(fecha.getTime())) {
                     this.selectedDate = fecha;
                     this.currentDate = new Date(fecha);
@@ -74,6 +87,7 @@ class CustomDatePicker {
     }
 
     toggleCalendar() {
+        if (!this.menu) return;
         if (this.menu.classList.contains('show')) {
             this.hideCalendar();
         } else {
@@ -82,11 +96,13 @@ class CustomDatePicker {
     }
 
     showCalendar() {
+        if (!this.menu) return;
         this.menu.classList.add('show');
         this.renderCalendar();
     }
 
     hideCalendar() {
+        if (!this.menu) return;
         this.menu.classList.remove('show');
     }
 
@@ -97,6 +113,7 @@ class CustomDatePicker {
     }
 
     renderCalendar() {
+        if (!this.menu) return;
         const year = this.currentDate.getFullYear();
         const month = this.currentDate.getMonth();
 
@@ -156,6 +173,7 @@ class CustomDatePicker {
     }
 
     attachCalendarEvents() {
+        if (!this.menu) return;
         this.menu.querySelectorAll('.calendar-title-part').forEach(titlePart => {
             const dropdown = titlePart.querySelector('.calendar-dropdown');
 
@@ -186,9 +204,8 @@ class CustomDatePicker {
             });
         });
 
-        // Solo días no deshabilitados pueden ser seleccionados
         this.menu.querySelectorAll('.calendar-day[data-date]:not(.disabled)').forEach(day => {
-            day.addEventListener('click', () => {
+            day.addEventListener('click', (e) => {
                 const dateStr = day.dataset.date;
                 this.selectDate(new Date(dateStr + 'T00:00:00'));
             });
@@ -210,14 +227,12 @@ class CustomDatePicker {
         const year = this.currentDate.getFullYear();
         const month = this.currentDate.getMonth();
         const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
 
         const days = [];
         const today = new Date();
 
-        // Detectar si se debe restringir a fechas futuras
         const minToday = this.container.hasAttribute('data-min-today');
 
         for (let i = 0; i < 42; i++) {
@@ -233,11 +248,8 @@ class CustomDatePicker {
             if (isToday) classes.push('today');
             if (isSelected) classes.push('selected');
 
-            // Solo deshabilitar días pasados si minToday está activo
-            let disabled = false;
             if (minToday && date < today) {
                 classes.push('disabled');
-                disabled = true;
             }
 
             const dateStr = date.getFullYear() + '-' +
@@ -258,43 +270,34 @@ class CustomDatePicker {
         this.selectedDate = date;
         this.currentDate = new Date(date);
 
-        const dateStr = String(date.getDate()).padStart(2, '0') + '-' +
+        const dateStr = date.getFullYear() + '-' +
             String(date.getMonth() + 1).padStart(2, '0') + '-' +
-            date.getFullYear();
+            String(date.getDate()).padStart(2, '0');
 
-        this.input.value = dateStr;
-        this.input.dispatchEvent(new Event('change'));
+        if (this.input) {
+            this.input.value = dateStr;
+            this.input.dispatchEvent(new Event('change'));
+        }
         this.updateButton();
         this.hideCalendar();
     }
 
-    updateButton() {
-        const iconHtml = '<i class="fas fa-calendar-days calendar-icon"></i>';
-
-        if (this.selectedDate) {
-            const formattedDate = this.selectedDate.toLocaleDateString(this.locale, {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-            const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-            this.button.innerHTML = `${capitalizedDate}${iconHtml}`;
-        } else {
-            const defaultText = this.inputId === 'FechaInicio' ? 'Seleccionar fecha de inicio' : 'Seleccionar fecha final';
-            this.button.innerHTML = `${defaultText}${iconHtml}`;
-        }
-    }
-
     updateFromInput() {
-        if (this.input.value) {
-            // Parsear dd-MM-yyyy a Date
+        if (this.input && this.input.value) {
             const partes = this.input.value.split('-');
+            let fecha = null;
             if (partes.length === 3) {
-                // partes[0]=día, partes[1]=mes, partes[2]=año
-                const dia = parseInt(partes[0], 10);
-                const mes = parseInt(partes[1], 10) - 1; // JS: 0=enero
-                const anio = parseInt(partes[2], 10);
-                const fecha = new Date(anio, mes, dia);
+                if (partes[0].length === 4) {
+                    const anio = parseInt(partes[0], 10);
+                    const mes = parseInt(partes[1], 10) - 1;
+                    const dia = parseInt(partes[2], 10);
+                    fecha = new Date(anio, mes, dia);
+                } else {
+                    const dia = parseInt(partes[0], 10);
+                    const mes = parseInt(partes[1], 10) - 1;
+                    const anio = parseInt(partes[2], 10);
+                    fecha = new Date(anio, mes, dia);
+                }
                 if (!isNaN(fecha.getTime())) {
                     this.selectedDate = fecha;
                     this.currentDate = new Date(fecha);
@@ -308,6 +311,18 @@ class CustomDatePicker {
             this.selectedDate = null;
         }
         this.updateButton();
+    }
+
+    updateButton() {
+        if (!this.button) return;
+        if (this.selectedDate) {
+            const dateStr = this.selectedDate.getFullYear() + '-' +
+                String(this.selectedDate.getMonth() + 1).padStart(2, '0') + '-' +
+                String(this.selectedDate.getDate()).padStart(2, '0');
+            this.button.innerHTML = `${dateStr} <i class="fas fa-calendar-alt"></i>`;
+        } else {
+            this.button.innerHTML = 'Seleccionar fecha <i class="fas fa-calendar-alt"></i>';
+        }
     }
 }
 

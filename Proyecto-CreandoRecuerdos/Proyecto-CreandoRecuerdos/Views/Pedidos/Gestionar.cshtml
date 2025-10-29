@@ -60,14 +60,6 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3">
-                        <label class="form-label">Items por página</label>
-                        <select class="form-select" id="pageSize">
-                            <option value="10">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                        </select>
-                    </div>
                 </div>
 
                 <!-- Filtros rápidos por estado -->
@@ -86,7 +78,7 @@
 
         <!-- Tabla de pedidos -->
         <div class="table-responsive">
-            <table class="table mb-0 table-bordered table-striped tabla-global text-center w-100">
+            <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="5">
                 <thead class="tabla-global">
                     <tr>
                         <th>N° Pedido</th>
@@ -106,18 +98,22 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- Paginación -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center mt-3" id="pagination">
-                <!-- La paginación se generará dinámicamente -->
-            </ul>
-        </nav>
     </div>
 </div>
 
 
 @section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js" defer></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js" defer></script>
+    <script src="~/Templates/js/paginaciones_y_exportaciones.js" defer></script>
     <script src="~/Templates/js/selects.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script src="~/Templates/js/gestionPedidos.js"></script>

@@ -38,15 +38,14 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             DateTime? inicio = null;
             DateTime? fin = null;
 
-            var formato = "dd-MM-yyyy";
+            var formatos = new[] { "dd-MM-yyyy", "yyyy-MM-dd" };
             var cultura = System.Globalization.CultureInfo.InvariantCulture;
 
             if (!string.IsNullOrWhiteSpace(fechaInicio) &&
-                DateTime.TryParseExact(fechaInicio, formato, cultura,
-                                       System.Globalization.DateTimeStyles.None, out var fInicio))
+                DateTime.TryParseExact(fechaInicio, formatos, cultura, System.Globalization.DateTimeStyles.None, out var fInicio))
             {
                 inicio = fInicio.Date;
-                ViewBag.FechaInicio = fInicio.ToString(formato);
+                ViewBag.FechaInicio = fInicio.ToString("dd-MM-yyyy");
             }
             else
             {
@@ -54,11 +53,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
 
             if (!string.IsNullOrWhiteSpace(fechaFin) &&
-                DateTime.TryParseExact(fechaFin, formato, cultura,
-                                       System.Globalization.DateTimeStyles.None, out var fFin))
+                DateTime.TryParseExact(fechaFin, formatos, cultura, System.Globalization.DateTimeStyles.None, out var fFin))
             {
                 fin = fFin.Date.AddDays(1).AddTicks(-1);
-                ViewBag.FechaFin = fFin.ToString(formato);
+                ViewBag.FechaFin = fFin.ToString("dd-MM-yyyy");
             }
             else
             {
@@ -76,7 +74,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         join c in db.tabla_clientes on v.id_cliente equals c.id_cliente into clienteJoin
                         from cj in clienteJoin.DefaultIfEmpty()
                         where v.fecha >= inicio && v.fecha <= fin
-                        orderby v.fecha ascending   // 👈 ahora cronológico (más antiguo primero)
+                        orderby v.fecha ascending
                         select new HistorialVentasViewModel
                         {
                             IdVenta = v.id_venta,
@@ -91,7 +89,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 foreach (var item in lista)
                 {
                     if (item.Fecha != DateTime.MinValue)
-                        item.Fecha = DateTime.ParseExact(item.Fecha.ToString(formato), formato, cultura);
+                        item.Fecha = DateTime.ParseExact(item.Fecha.ToString("dd-MM-yyyy"), "dd-MM-yyyy", cultura);
                 }
 
                 return View("HistorialVentas", lista);

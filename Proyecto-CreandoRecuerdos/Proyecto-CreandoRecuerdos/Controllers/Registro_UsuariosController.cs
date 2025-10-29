@@ -106,13 +106,12 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         //[AutorizacionFilter(1, 2)] 
 
         [HttpGet]
-        public ActionResult gestion_usuarios()
+        public ActionResult gestion_usuarios(string search = null, string fecha = null)
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
                 var usuarios = context.sp_obtener_usuarios().ToList();
 
-                // Mapear los datos manualmente
                 var listaUsuarios = usuarios.Select(u => new UsuarioModel
                 {
                     id = u.id_usuario,
@@ -124,10 +123,36 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     contrasenna = u.contrasenna
                 }).ToList();
 
+                // Filtrar por búsqueda si se proporciona
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    var filtro = search.ToLower();
+                    listaUsuarios = listaUsuarios.Where(u =>
+                        u.nombre.ToLower().Contains(filtro) ||
+                        u.correo.ToLower().Contains(filtro) ||
+                        u.id.ToString().Contains(filtro) ||
+                        (u.activo ? "activo" : "inactivo").Contains(filtro)
+                    ).ToList();
+                }
+
+                // Filtrar por fecha si se proporciona
+                if (!string.IsNullOrWhiteSpace(fecha))
+                {
+                    DateTime fechaBuscada;
+                    var formatos = new[] { "yyyy-MM-dd", "dd/MM/yyyy", "dd-MM-yyyy" };
+                    if (DateTime.TryParseExact(fecha, formatos, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out fechaBuscada))
+                    {
+                        listaUsuarios = listaUsuarios
+                            .Where(u => u.fecha_creacion.Date.Equals(fechaBuscada.Date))
+                            .ToList();
+                    }
+                }
+
+                ViewBag.Search = search;
+                ViewBag.Fecha = fecha;
                 return View(listaUsuarios);
             }
         }
-
 
         [HttpPost]
         public ActionResult inactivar_usuarios(int id)

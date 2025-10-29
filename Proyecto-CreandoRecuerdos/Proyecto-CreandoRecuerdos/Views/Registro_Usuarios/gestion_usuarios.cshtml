@@ -8,14 +8,31 @@
     <link rel="stylesheet" href="@Url.Content("~/Templates/css/gestion_usuarios.css")" />
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/tablas.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/paginaciones_y_exportaciones.css")" rel="stylesheet" />
 }
 
 <div class="container usuarios-container py-5">
 
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" id="filtroUsuarios" placeholder="Buscar usuario..." style="border: none; background-color: var(--beige); color: var(--texto-oscuro);">
-    </div>
+    <h4><strong>Búsqueda de Usuarios</strong></h4>
+    <form method="get" action="@Url.Action("gestion_usuarios", "Registro_Usuarios")" class="mt-4">
+        <div class="input-group mb-4">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
+            <div class="form-group mb-0" style="width: 220px;">
+                @Html.Label("Fecha de Creación")
+                <div class="custom-datepicker" data-input="FechaBusqueda">
+                    <div class="datepicker-input">
+                        Seleccionar fecha
+                        <i class="fas fa-calendar-days calendar-icon"></i>
+                    </div>
+                    <div class="datepicker-calendar"></div>
+                </div>
+                <input type="hidden" id="FechaBusqueda" name="fecha" value="@ViewBag.Fecha" class="form-control" />
+            </div>
+            <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink" title="Buscar"></button>
+        </div>
+    </form>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0" style="color: var(--texto-oscuro);">Gestión de Usuarios</h2>
         <a href="@Url.Action("registro_usuarios", "Registro_Usuarios")" class="btn btn-primary">
@@ -107,6 +124,7 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" defer></script>
     <script src="~/Templates/js/paginaciones_y_exportaciones.js" defer></script>
+    <script src="~/Templates/js/selects.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script>
         $(document).ready(function () {
@@ -187,18 +205,7 @@
                     });
                 }
             });
-        });
-
-
-        document.getElementById('filtroUsuarios').addEventListener('keyup', function () {
-            var filtro = this.value.toLowerCase();
-            var filas = document.querySelectorAll('.usuarios-table tbody tr');
-
-            filas.forEach(function (fila) {
-                var textoFila = fila.innerText.toLowerCase();
-                fila.style.display = textoFila.includes(filtro) ? '' : 'none';
-            });
-        });
+        }); 
     });
     </script>
 }

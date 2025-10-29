@@ -54,11 +54,12 @@
             pagingType: "full_numbers",
             lengthMenu: [valoresNumericos, valoresVisibles],
             language: {
-                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json",
                 lengthMenu: "Mostrar _MENU_ registros por página",
                 info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
                 infoEmpty: "No hay registros disponibles",
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
+                emptyTable: "",
+                zeroRecords: "",
                 paginate: {
                     first: "Primer página",
                     previous: "Página anterior",
@@ -159,7 +160,6 @@ $(document).on('draw.dt', function () {
 });
 
 $(document).ready(function () {
-    window.inicializarDataTables();
 
     // Estiliza los botones de texto largo en la paginación
     formatearBotonesPaginacion();

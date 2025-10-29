@@ -21,22 +21,6 @@ div.dt-buttons {
     gap: 0.5rem;
 }
 
-.btn-custom-pink {
-    background-color: #B54885 !important;
-    color: #FFFFFF !important;
-    border: none !important;
-}
-
-    .btn-custom-pink:hover {
-        background-color: #CC8FAE !important;
-        color: white !important;
-    }
-
-.btn-sm {
-    font-size: 0.85rem !important;
-    padding: 0.3rem 0.7rem !important;
-}
-
 /* Estilos personalizados para DataTables */
 
 .dataTables_wrapper .pagination .page-link {

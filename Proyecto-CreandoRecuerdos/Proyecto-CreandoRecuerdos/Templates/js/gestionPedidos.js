@@ -1,8 +1,6 @@
 class GestionPedidos {
     // ARCHIVO JS HECHO CON LA AYUDA DE IA
     constructor() {
-        this.paginaActual = 1;
-        this.tamanoPagina = 10;
         this.filtros = {
             estado: '',
             fechaInicio: '',
@@ -25,7 +23,6 @@ class GestionPedidos {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 this.filtros.estado = btn.dataset.estado;
-                this.paginaActual = 1;
                 this.cargarPedidos();
             });
         });
@@ -33,26 +30,16 @@ class GestionPedidos {
         // Filtros por fecha y método de pago
         document.getElementById('fechaInicio')?.addEventListener('change', (e) => {
             this.filtros.fechaInicio = e.target.value;
-            this.paginaActual = 1;
             this.cargarPedidos();
         });
 
         document.getElementById('fechaFin')?.addEventListener('change', (e) => {
             this.filtros.fechaFin = e.target.value;
-            this.paginaActual = 1;
             this.cargarPedidos();
         });
 
         $('#metodoPago').on('change', (e) => {
             this.filtros.metodoPago = e.target.value;
-            this.paginaActual = 1;
-            this.cargarPedidos();
-        });
-
-        // Tamaño de página usando jQuery
-        $('#pageSize').on('change', (e) => {
-            this.tamanoPagina = parseInt(e.target.value);
-            this.paginaActual = 1;
             this.cargarPedidos();
         });
 
@@ -185,8 +172,6 @@ class GestionPedidos {
         params.append('fechaInicio', this.filtros.fechaInicio);
         params.append('fechaFin', this.filtros.fechaFin);
         params.append('metodoPago', this.filtros.metodoPago);
-        params.append('pagina', this.paginaActual);
-        params.append('tamanoPagina', this.tamanoPagina);
 
         // Mostrar loading
         const tbody = document.getElementById('pedidosBody');
@@ -215,7 +200,6 @@ class GestionPedidos {
                     throw new Error(data.error);
                 }
                 this.renderizarPedidos(data.pedidos);
-                this.renderizarPaginacion(data.totalRegistros);
             })
             .catch(error => {
                 console.error('Error al cargar pedidos:', error);
@@ -294,6 +278,8 @@ class GestionPedidos {
             </td>
         </tr>
     `).join('');
+
+        window.inicializarDataTables();
     }
 
     obtenerClaseEstado(estado) {
@@ -305,109 +291,5 @@ class GestionPedidos {
             'Cancelado': 'bg-danger text-white'
         };
         return clases[estado] || 'bg-light text-dark';
-    }
-
-    renderizarPaginacion(totalRegistros) {
-        const pagination = document.getElementById('pagination');
-        if (!pagination) return;
-
-        const totalPaginas = Math.ceil(totalRegistros / this.tamanoPagina);
-        pagination.innerHTML = '';
-
-        // Botón Anterior
-        const liPrev = document.createElement('li');
-        liPrev.className = `page-item ${this.paginaActual === 1 ? 'disabled' : ''}`;
-        liPrev.innerHTML = `
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        `;
-        liPrev.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (this.paginaActual > 1) {
-                this.paginaActual--;
-                this.cargarPedidos();
-            }
-        });
-        pagination.appendChild(liPrev);
-
-        // Números de página
-        const maxPaginasVisibles = 5;
-        let inicio = Math.max(1, this.paginaActual - Math.floor(maxPaginasVisibles / 2));
-        let fin = Math.min(totalPaginas, inicio + maxPaginasVisibles - 1);
-
-        if (fin - inicio + 1 < maxPaginasVisibles) {
-            inicio = Math.max(1, fin - maxPaginasVisibles + 1);
-        }
-
-        // Mostrar primera página si no está visible
-        if (inicio > 1) {
-            const li = document.createElement('li');
-            li.className = 'page-item';
-            li.innerHTML = `<a class="page-link" href="#">1</a>`;
-            li.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.paginaActual = 1;
-                this.cargarPedidos();
-            });
-            pagination.appendChild(li);
-
-            if (inicio > 2) {
-                const liEllipsis = document.createElement('li');
-                liEllipsis.className = 'page-item disabled';
-                liEllipsis.innerHTML = `<span class="page-link">...</span>`;
-                pagination.appendChild(liEllipsis);
-            }
-        }
-
-        // Paginas visibles
-        for (let i = inicio; i <= fin; i++) {
-            const li = document.createElement('li');
-            li.className = `page-item ${i === this.paginaActual ? 'active' : ''}`;
-            li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-            li.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.paginaActual = i;
-                this.cargarPedidos();
-            });
-            pagination.appendChild(li);
-        }
-
-        // Mostrar última página si no está visible
-        if (fin < totalPaginas) {
-            if (fin < totalPaginas - 1) {
-                const liEllipsis = document.createElement('li');
-                liEllipsis.className = 'page-item disabled';
-                liEllipsis.innerHTML = `<span class="page-link">...</span>`;
-                pagination.appendChild(liEllipsis);
-            }
-
-            const li = document.createElement('li');
-            li.className = 'page-item';
-            li.innerHTML = `<a class="page-link" href="#">${totalPaginas}</a>`;
-            li.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.paginaActual = totalPaginas;
-                this.cargarPedidos();
-            });
-            pagination.appendChild(li);
-        }
-
-        // Botón Siguiente
-        const liNext = document.createElement('li');
-        liNext.className = `page-item ${this.paginaActual === totalPaginas ? 'disabled' : ''}`;
-        liNext.innerHTML = `
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        `;
-        liNext.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (this.paginaActual < totalPaginas) {
-                this.paginaActual++;
-                this.cargarPedidos();
-            }
-        });
-        pagination.appendChild(liNext);
     }
 }

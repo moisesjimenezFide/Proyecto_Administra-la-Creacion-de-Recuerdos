@@ -161,7 +161,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         // Obtener pedidos con filtros y paginación
         [HttpGet]
         public JsonResult ObtenerPedidos(string estado = null, string fechaInicio = null, string fechaFin = null,
-    string metodoPago = null, int pagina = 1, int tamanoPagina = 10)
+    string metodoPago = null)
         {
             try
             {
@@ -210,42 +210,40 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                     var pedidosIds = query
                         .OrderByDescending(p => p.fecha)
-                        .Skip((pagina - 1) * tamanoPagina)
-                        .Take(tamanoPagina)
                         .Select(p => p.id_venta)
                         .ToList();
 
-                    // Obtener datos completos de los pedidos paginados
-                    var pedidos = db.tabla_ventas
-                       .Where(v => pedidosIds.Contains(v.id_venta))
-                       .Include(v => v.tabla_clientes)
-                       .Include(v => v.tabla_estados_pedido)
-                       .Include(v => v.tabla_detalle_venta)
-                       .AsEnumerable()
-                       .Select(p => new {
-                           id_pedido = p.id_venta,
-                           id_cliente = p.id_cliente,
-                           numero_pedido = p.numero_pedido ?? $"ORD-{p.fecha.Value.Year}-{p.id_venta.ToString().PadLeft(4, '0')}",
-                           nombre_cliente = (p.id_usuario == null && !string.IsNullOrEmpty(p.nombre_cliente)) ? p.nombre_cliente : p.tabla_clientes.nombre + " " + p.tabla_clientes.apellido,
-                           telefono = p.tabla_clientes.telefono ?? "N/A",
-                           cantidad_productos = p.tabla_detalle_venta.Count,
-                           fecha = p.fecha?.ToString("yyyy-MM-dd HH:mm") ?? "N/A",
-                           fecha_fin = (p.tabla_estados_pedido.nombre == "Entregado" && p.fecha_actualizacion != null) ?
-                        p.fecha_actualizacion.Value.ToString("yyyy-MM-dd HH:mm") : null,
-                           total = p.total,
-                           estado = p.tabla_estados_pedido.nombre,
-                           metodo_pago = p.metodo_pago ?? "N/A",
-                           para_llevar = p.para_llevar,
-                           pin = p.pin,
-                           tiempo_estimado = p.tiempo_estimado ?? 20,
-                           minutos_transcurridos = (int)(DateTime.Now - (p.fecha ?? DateTime.Now)).TotalMinutes
-                       })
-                       .ToList();
+                    // Obtener todos los pedidos filtrados y ordenados
+                    var pedidos = query
+                        .OrderByDescending(p => p.fecha)
+                        .Include(p => p.tabla_clientes)
+                        .Include(p => p.tabla_estados_pedido)
+                        .Include(p => p.tabla_detalle_venta)
+                        .AsEnumerable()
+                        .Select(p => new {
+                            id_pedido = p.id_venta,
+                            id_cliente = p.id_cliente,
+                            numero_pedido = p.numero_pedido ?? $"ORD-{p.fecha.Value.Year}-{p.id_venta.ToString().PadLeft(4, '0')}",
+                            nombre_cliente = (p.id_usuario == null && !string.IsNullOrEmpty(p.nombre_cliente)) ? p.nombre_cliente : p.tabla_clientes.nombre + " " + p.tabla_clientes.apellido,
+                            telefono = p.tabla_clientes.telefono ?? "N/A",
+                            cantidad_productos = p.tabla_detalle_venta.Count,
+                            fecha = p.fecha?.ToString("yyyy-MM-dd HH:mm") ?? "N/A",
+                            fecha_fin = (p.tabla_estados_pedido.nombre == "Entregado" && p.fecha_actualizacion != null) ?
+                                p.fecha_actualizacion.Value.ToString("yyyy-MM-dd HH:mm") : null,
+                            total = p.total,
+                            estado = p.tabla_estados_pedido.nombre,
+                            metodo_pago = p.metodo_pago ?? "N/A",
+                            para_llevar = p.para_llevar,
+                            pin = p.pin,
+                            tiempo_estimado = p.tiempo_estimado ?? 20,
+                            minutos_transcurridos = (int)(DateTime.Now - (p.fecha ?? DateTime.Now)).TotalMinutes
+                        })
+                        .ToList();
 
                     return Json(new
                     {
                         pedidos = pedidos,
-                        totalRegistros = totalRegistros
+                        totalRegistros = pedidos.Count
                     }, JsonRequestBehavior.AllowGet);
                 }
             }
