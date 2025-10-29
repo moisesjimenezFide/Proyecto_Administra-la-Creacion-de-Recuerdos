@@ -35,6 +35,14 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public ActionResult GuardarHorario(int id_usuario, string[] dias_semana, TimeSpan hora_entrada, TimeSpan hora_salida)
         {
+
+            if (dias_semana == null)
+            {
+                ModelState.AddModelError("", "Debe seleccionar al menos un día de la semana.");
+                // Puedes retornar la vista de horarios, pasando los datos necesarios si lo requieres
+                return RedirectToAction("Horarios");
+            }
+
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
                 foreach (var dia in dias_semana)

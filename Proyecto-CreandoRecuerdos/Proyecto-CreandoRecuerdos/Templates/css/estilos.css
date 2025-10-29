@@ -95,8 +95,8 @@ html, body {
 }
 
 .logo-navbar {
-    width: 80px;
-    height: 80px;
+    height: 40px;
+    width: auto;
     margin-right: 10px;
     background-color: white;
     object-fit: contain;
@@ -201,7 +201,7 @@ html, body {
     .navbar::before {
         content: "";
         position: absolute;
-        top: 98px;
+        top: 68px;
         left: 0;
         right: 0;
         height: 10px;
@@ -221,17 +221,6 @@ html, body {
 .footer img,
 .navbar img {
     aspect-ratio: auto;
-}
-
-/* Centra el logo en el footer */
-.footer .mt-4 img {
-    display: block;
-    margin: 0 auto;
-    width: 80px;
-    height: 80px;
-    max-width: none;
-    border-radius: 8px;
-    background-color: white;
 }
 
 .social-icons a {
@@ -294,9 +283,9 @@ html, body {
     overflow-x: hidden;
 }
 
-@media (min-width: 50px) and (max-width: 991px) {
+@media (min-width: 50px) and (max-width: 333px) {
     .navbar::before {
-        top: 106px;
+        top: 114px;
         height: 8px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
@@ -308,25 +297,64 @@ html, body {
 
     /* La posición de la barra cuando el menú está CERRADO (Admin) */
     .admin-session.navbar::before {
-        top: 106px;
+        top: 114px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     /* La posición de la barra cuando el menú está ABIERTO (Admin) */
     .admin-session.navbar.menu-abierto::before {
-        top: 330px;
+        top: 346px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     /* La posición de la barra cuando el menú está CERRADO (Empleado) */
     .empleado-session.navbar::before {
-        top: 106px;
+        top: 114px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
     .empleado-session.navbar.menu-abierto::before {
-        top: 298px;
+        top: 330px;
         transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 }
+
+@media (min-width: 334px) and (max-width: 991px) {
+    .navbar::before {
+        top: 66px;
+        height: 8px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .navbar.menu-abierto::before {
+        top: 218px; /* mueve la barra debajo del menú abierto */
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está CERRADO (Admin) */
+    .admin-session.navbar::before {
+        top: 66px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está ABIERTO (Admin) */
+    .admin-session.navbar.menu-abierto::before {
+        top: 296px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está CERRADO (Empleado) */
+    .empleado-session.navbar::before {
+        top: 66px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
+    .empleado-session.navbar.menu-abierto::before {
+        top: 256px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+}
+
+

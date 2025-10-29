@@ -1,4 +1,4 @@
-﻿/* Botones de exportación */
+﻿﻿ /* Botones de exportación */
 .dt-buttons {
     text-align: left;
 }
@@ -39,10 +39,8 @@ div.dt-buttons {
 
 /* Estilos personalizados para DataTables */
 
-.dataTables_wrapper .pagination .page-item.active .page-link {
-    background-color: #B54885 !important;
-    border-color: #B54885 !important;
-    color: #FFFFFF !important;
+.dataTables_wrapper .pagination .page-link {
+    border: none !important;
 }
 
 .dataTables_wrapper .pagination .page-item .page-link {
@@ -50,25 +48,112 @@ div.dt-buttons {
     border-color: #B54885 !important;
 }
 
+.dataTables_wrapper .pagination .page-item.active .page-link {
+    background-color: #B54885 !important;
+    border-color: #B54885 !important;
+    color: #FFFFFF !important;
+}
+
     .dataTables_wrapper .pagination .page-item .page-link:hover {
-        background-color: #F8E5ED !important;
-        color: #CC8FAE !important;
+        background-color: #CC8FAE !important;
+        color: #FFFFFF !important;
         border-color: #CC8FAE !important;
     }
-
-.dataTables_wrapper .pagination .page-link {
-    border: none !important;
-}
 
 .dataTables_wrapper .pagination .page-item.active .page-link:focus {
     box-shadow: none !important;
 }
 
-.dataTables_wrapper .dataTables_length select {
-    display: none !important;
+.dataTables_wrapper .dataTables_paginate {
+    display: flex;
+    flex-wrap: nowrap; /* No permite que los botones salten de línea */
+    justify-content: center;
+    align-items: center;
+    gap: 0; /* Elimina el espacio entre botones */
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 0;
+    overflow-x: auto;
+}
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        min-width: 80px; /* Aumenta el ancho mínimo */
+        max-width: 110px; /* Aumenta el ancho máximo */
+        padding: 6px 10px;
+        margin: 0;
+        font-size: 0.95em;
+        border-radius: 4px;
+        word-break: keep-all;
+        text-align: center;
+        box-sizing: border-box;
+        transition: background 0.2s;
+        color: #B54885 !important;
+        font-family: "Sono", sans-serif;
+        font-weight: 500;
+    }
+
+        /* SOLO para los botones de texto largo, permite salto de línea */
+        .dataTables_wrapper .dataTables_paginate .paginate_button.btn-paginacion-larga {
+            white-space: normal !important;
+            word-break: normal !important; /* Evita cortar palabras */
+            line-height: 1.1;
+            min-width: 120px; /* Aumenta el ancho mínimo */
+            max-width: 140px; /* Aumenta el ancho máximo */
+            font-size: 0.95em;
+            padding: 6px 10px;
+        }
+
+         /* Activo */
+            .dataTables_wrapper .dataTables_paginate .paginate_button.btn-paginacion-larga.current,
+            .dataTables_wrapper .dataTables_paginate .paginate_button.btn-paginacion-larga.active {
+                background-color: #B54885 !important;
+                border-color: #B54885 !important;
+                color: #FFFFFF !important;
+            }
+
+        /* Hover */
+            .dataTables_wrapper .dataTables_paginate .paginate_button.btn-paginacion-larga:hover {
+                background-color: #CC8FAE !important;
+                color: #FFFFFF !important;
+                border-color: #CC8FAE !important;
+            }
+
+            /* Botones de paginación deshabilitados (texto largo y números) */
+            .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+            .dataTables_wrapper .dataTables_paginate .paginate_button.btn-paginacion-larga.disabled {
+                background-color: #E9ECEF !important; /* Gris claro */
+                color: #B0B0B0 !important; /* Gris medio para el texto */
+                border-color: #E9ECEF !important;
+                cursor: not-allowed !important;
+                pointer-events: none !important;
+                opacity: 1 !important;
+            }
+
+@media (max-width: 600px) {
+    .dataTables_wrapper .dataTables_paginate {
+        font-size: 0.95em;
+        gap: 2px;
+        padding: 4px 0;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            font-size: 0.90em;
+            padding: 4px 6px;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.btn-paginacion-larga {
+                min-width: 110px; /* Más ancho en móviles */
+                max-width: 130px;
+                font-size: 0.90em;
+                padding: 4px 6px;
+            }
 }
 
 /* Estilos personalizados para el dropdown de menú de longitud (LengthMenu) del DataTable */
+
+.dataTables_wrapper .dataTables_length select {
+    display: none !important;
+}
 
 .custom-dropdown-button {
     border: 2px solid #E9ECEF;
@@ -215,26 +300,26 @@ div.dt-buttons {
         width: auto;
     }
 
-    /* Todos los controles superiores con sticky horizontal */
-    .dataTables_wrapper .dt-buttons,
-    .dataTables_wrapper .dataTables_length,
-    .dataTables_wrapper .custom-length-dropdown,
-    .dataTables_wrapper .dataTables_filter,
-    .dataTables_wrapper .dataTables_paginate {
-        position: sticky;
-        left: 0;
-        z-index: 20;
-        top: 0; /* Si quieres que también sean sticky verticalmente */
-    }
+/* Todos los controles superiores con sticky horizontal */
+.dataTables_wrapper .dt-buttons,
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .custom-length-dropdown,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_paginate {
+    position: sticky;
+    left: 0;
+    z-index: 20;
+    top: 0; /* Si quieres que también sean sticky verticalmente */
+}
 
-        .dataTables_wrapper .dataTables_length,
-        .dataTables_wrapper .custom-length-dropdown {
-            display: block;
-        }
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .custom-length-dropdown {
+    display: block;
+}
 
-        .table-responsive {
-            overflow-x: unset !important;
-        }
+.table-responsive {
+    overflow-x: unset !important;
+}
 
 /* Flechas de ordenamiento para DataTables */
 th.sorting::after,
@@ -244,7 +329,7 @@ th.sorting_desc::after {
     font-weight: 900;
     margin-left: 8px;
     font-size: 0.8em;
-    color:lightgray;
+    color: lightgray;
     vertical-align: middle;
     display: inline-block;
 }

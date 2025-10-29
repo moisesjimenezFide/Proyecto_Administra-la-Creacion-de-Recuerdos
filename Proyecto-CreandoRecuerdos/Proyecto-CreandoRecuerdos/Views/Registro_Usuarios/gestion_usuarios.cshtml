@@ -27,7 +27,7 @@
         <div class="card-body p-0">
             <div class="table-responsive">
 
-                <table id="tabla_usuarios" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="10">
+                <table id="tabla_usuarios" class="table usuarios-table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="8">
                     <thead class="tabla-global">
                         <tr>
                             <th>ID</th>
@@ -104,7 +104,9 @@
 </div>
 
 @section Scripts {
-    <script src="~/Templates/js/paginaciones_y_exportaciones.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" defer></script>
+    <script src="~/Templates/js/paginaciones_y_exportaciones.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script>
         $(document).ready(function () {

@@ -458,6 +458,7 @@
     <Content Include="Templates\css\tablas.css" />
     <Content Include="Templates\img\favicon.ico" />
     <Content Include="Templates\img\favicon.png" />
+    <Content Include="Templates\img\logo.png" />
     <Content Include="Templates\img\menu\1.jpg" />
     <Content Include="Templates\img\menu\10.jpg" />
     <Content Include="Templates\img\menu\11.jpg" />
@@ -501,6 +502,7 @@
     <Content Include="Templates\img\menu\7.jpg" />
     <Content Include="Templates\img\menu\8.jpg" />
     <Content Include="Templates\img\menu\9.jpg" />
+    <Content Include="Templates\img\Recuerdos.png" />
     <Content Include="Templates\js\empleados.js" />
     <Content Include="Templates\js\gestionPedidos.js" />
     <Content Include="Templates\js\historialactividades.js" />
@@ -561,9 +563,6 @@
     <Content Include="Views\Insumos\suministros.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Inicio\AccesoDenegado.cshtml" />
-    <Content Include="Templates\img\logo.webp" />
-    <Content Include="Templates\img\Recuerdos-320x204.webp" />
-    <Content Include="Templates\img\Recuerdos-450x287.webp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

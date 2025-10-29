@@ -62,7 +62,7 @@
                 paginate: {
                     first: "Primer página",
                     previous: "Página anterior",
-                    next: "Siguiente página",
+                    next: "Siguiente Página",
                     last: "Última página",
                 }
             }
@@ -134,8 +134,56 @@
   });
 };
 
+function formatearBotonesPaginacion() {
+    $('.dataTables_paginate .paginate_button').each(function () {
+        var txt = $(this).text().trim();
+        if (txt === "Primer página") {
+            $(this).html('Primer<br>página');
+            $(this).addClass('btn-paginacion-larga');
+        } else if (txt === "Página anterior") {
+            $(this).html('Página<br>anterior');
+            $(this).addClass('btn-paginacion-larga');
+        } else if (txt === "Siguiente Página" || txt === "Siguiente página") {
+            $(this).html('Siguiente<br>página');
+            $(this).addClass('btn-paginacion-larga');
+        } else if (txt === "Última página") {
+            $(this).html('Última<br>página');
+            $(this).addClass('btn-paginacion-larga');
+        }
+    });
+}
+
+// Ejecuta cada vez que se dibuja la tabla
+$(document).on('draw.dt', function () {
+    formatearBotonesPaginacion();
+});
+
 $(document).ready(function () {
     window.inicializarDataTables();
+
+    // Estiliza los botones de texto largo en la paginación
+    formatearBotonesPaginacion();
+    function estilizarBotonesPaginacion() {
+        $('.dataTables_paginate .paginate_button').each(function () {
+            var txt = $(this).text().trim();
+            if (
+                txt === "Primer página" ||
+                txt === "Página anterior" ||
+                txt === "Siguiente página" ||
+                txt === "Última página"
+            ) {
+                $(this).addClass('btn-paginacion-larga');
+            }
+        });
+    }
+
+    // Llama la función cada vez que se dibuja la tabla
+    $(document).on('draw.dt', function () {
+        estilizarBotonesPaginacion();
+    });
+
+    // Llama la primera vez
+    estilizarBotonesPaginacion();
 
     // Eventos para el dropdown personalizado para la cantidad de registros por página
     $(document).on('click', '.custom-dropdown-button', function (e) {

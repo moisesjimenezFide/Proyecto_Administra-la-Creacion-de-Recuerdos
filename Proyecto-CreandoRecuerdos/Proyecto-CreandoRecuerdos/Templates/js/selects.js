@@ -311,13 +311,335 @@ class CustomDatePicker {
     }
 }
 
+// CLASE PRINCIPAL QUE MANEJA CADA SELECTOR DE HORA
+class CustomTimePicker {
+    constructor(container) {
+        this.container = container;
+        this.inputId = container.dataset.input;
+        this.input = document.getElementById(this.inputId);
+        this.button = container.querySelector('.timepicker-input');
+        this.menu = container.querySelector('.timepicker-selector');
+
+        this.selectedHour = null;
+        this.selectedMinute = null;
+        this.currentHour = new Date().getHours();
+        this.currentMinute = new Date().getMinutes();
+
+        this.init();
+    }
+
+    init() {
+        this.button.addEventListener('click', () => this.toggleSelector());
+        document.addEventListener('click', (e) => this.handleOutsideClick(e));
+        this.input.addEventListener('change', () => this.updateFromInput());
+
+        if (this.input.value) {
+            // Parsear HH:MM
+            const partes = this.input.value.split(':');
+            if (partes.length === 2) {
+                const hora = parseInt(partes[0], 10);
+                const minuto = parseInt(partes[1], 10);
+                if (!isNaN(hora) && !isNaN(minuto) && hora >= 0 && hora <= 23 && minuto >= 0 && minuto <= 59) {
+                    this.selectedHour = hora;
+                    this.selectedMinute = minuto;
+                    this.currentHour = hora;
+                    this.currentMinute = minuto;
+                }
+            }
+            this.updateButton();
+        }
+    }
+
+    toggleSelector() {
+        if (this.menu.classList.contains('show')) {
+            this.hideSelector();
+        } else {
+            this.showSelector();
+        }
+    }
+
+    showSelector() {
+        this.menu.classList.add('show');
+        this.renderSelector();
+    }
+
+    hideSelector() {
+        this.menu.classList.remove('show');
+    }
+
+    handleOutsideClick(e) {
+        if (!this.container.contains(e.target)) {
+            this.hideSelector();
+        }
+    }
+
+    renderSelector() {
+        const displayHour = this.selectedHour !== null ? String(this.selectedHour).padStart(2, '0') : String(this.currentHour).padStart(2, '0');
+        const displayMinute = this.selectedMinute !== null ? String(this.selectedMinute).padStart(2, '0') : String(this.currentMinute).padStart(2, '0');
+
+        this.menu.innerHTML = `
+                    <div class="selector-header">
+                        <div class="selector-title">
+                            <div class="selector-title-part" data-type="hour">
+                                ${displayHour} ▼
+                                <div class="selector-dropdown" data-dropdown="hour">
+                                    ${this.renderHourDropdown()}
+                                </div>
+                            </div>
+                            <span style="font-weight: 600; color: #2C2C2C;">:</span>
+                            <div class="selector-title-part" data-type="minute">
+                                ${displayMinute} ▼
+                                <div class="selector-dropdown" data-dropdown="minute">
+                                    ${this.renderMinuteDropdown()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="time-confirm-btn">
+                        <i class="fas fa-check"></i> Confirmar Hora
+                    </button>
+                `;
+
+        // Guardar referencia para el botón
+        this.menu.timePicker = this;
+        this.attachSelectorEvents();
+    }
+
+    renderHourDropdown() {
+        let hours = '';
+        const currentHour = this.selectedHour !== null ? this.selectedHour : this.currentHour;
+
+        for (let i = 0; i < 24; i++) {
+            const hourStr = String(i).padStart(2, '0');
+            hours += `<div class="selector-dropdown-item ${i === currentHour ? 'selected' : ''}" data-hour="${i}">
+                        ${hourStr}
+                    </div>`;
+        }
+        return hours;
+    }
+
+    renderMinuteDropdown() {
+        let minutes = '';
+        const currentMinute = this.selectedMinute !== null ? this.selectedMinute : this.currentMinute;
+
+        for (let i = 0; i < 60; i++) {
+            const minuteStr = String(i).padStart(2, '0');
+            minutes += `<div class="selector-dropdown-item ${i === currentMinute ? 'selected' : ''}" data-minute="${i}">
+                        :${minuteStr}
+                    </div>`;
+        }
+        return minutes;
+    }
+
+    attachSelectorEvents() {
+        this.menu.querySelectorAll('.selector-title-part').forEach(titlePart => {
+            const dropdown = titlePart.querySelector('.selector-dropdown');
+
+            titlePart.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.menu.querySelectorAll('.selector-dropdown').forEach(dd => {
+                    if (dd !== dropdown) dd.classList.remove('show');
+                });
+                dropdown.classList.toggle('show');
+            });
+        });
+
+        this.menu.querySelectorAll('[data-dropdown="hour"] .selector-dropdown-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const hour = parseInt(item.dataset.hour);
+                this.currentHour = hour;
+                this.selectedHour = hour;
+                this.renderSelector(); // Solo actualiza la vista, NO confirma ni cierra
+            });
+        });
+
+        this.menu.querySelectorAll('[data-dropdown="minute"] .selector-dropdown-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const minute = parseInt(item.dataset.minute);
+                this.currentMinute = minute;
+                this.selectedMinute = minute;
+                this.renderSelector(); // Solo actualiza la vista, NO confirma ni cierra
+            });
+        });
+
+        // Evita el submit del formulario al confirmar la hora
+        this.menu.querySelector('.time-confirm-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.confirmSelection();
+        });
+    }
+
+    confirmSelection() {
+        this.selectedHour = this.currentHour;
+        this.selectedMinute = this.currentMinute;
+
+        const timeStr = String(this.selectedHour).padStart(2, '0') + ':' +
+            String(this.selectedMinute).padStart(2, '0');
+
+        this.input.value = timeStr;
+        this.input.dispatchEvent(new Event('change'));
+        this.updateButton();
+        this.hideSelector();
+    }
+
+    updateButton() {
+        const iconHtml = '<i class="fas fa-clock clock-icon"></i>';
+
+        if (this.selectedHour !== null && this.selectedMinute !== null) {
+            const timeStr = String(this.selectedHour).padStart(2, '0') + ':' +
+                String(this.selectedMinute).padStart(2, '0');
+            this.button.innerHTML = `${timeStr}${iconHtml}`;
+        } else {
+            const defaultText = this.inputId === 'HoraInicio' ? 'Seleccionar hora de inicio' : 'Seleccionar hora final';
+            this.button.innerHTML = `${defaultText}${iconHtml}`;
+        }
+    }
+
+    updateFromInput() {
+        if (this.input.value) {
+            // Parsear HH:MM
+            const partes = this.input.value.split(':');
+            if (partes.length === 2) {
+                const hora = parseInt(partes[0], 10);
+                const minuto = parseInt(partes[1], 10);
+                if (!isNaN(hora) && !isNaN(minuto) && hora >= 0 && hora <= 23 && minuto >= 0 && minuto <= 59) {
+                    this.selectedHour = hora;
+                    this.selectedMinute = minuto;
+                    this.currentHour = hora;
+                    this.currentMinute = minuto;
+                } else {
+                    this.selectedHour = null;
+                    this.selectedMinute = null;
+                }
+            } else {
+                this.selectedHour = null;
+                this.selectedMinute = null;
+            }
+        } else {
+            this.selectedHour = null;
+            this.selectedMinute = null;
+        }
+        this.updateButton();
+    }
+}
+
 // INICIALIZACIÓN CUANDO CARGA LA PÁGINA
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.custom-datepicker[data-input]').forEach(container => {
         new CustomDatePicker(container);
     });
+
+    document.querySelectorAll('.custom-timepicker[data-input]').forEach(container => {
+        new CustomTimePicker(container);
+    });
+
+    // Evento submit del formulario
+    const form = document.getElementById('horarioForm');
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            // Forzar confirmación de hora si el selector está abierto
+            document.querySelectorAll('.custom-timepicker').forEach(picker => {
+                const menu = picker.querySelector('.timepicker-selector');
+                if (menu.classList.contains('show') && menu.timePicker) {
+                    menu.timePicker.confirmSelection();
+                }
+            });
+        });
+    }
 });
 
+// Variable para generar IDs únicos
+let contadorId = 6;
+
+// Función para guardar horario
+function guardarHorario() {
+    const empleadoSelect = document.getElementById('empleadoSelect');
+    const horaEntrada = document.getElementById('hora_entrada').value;
+    const horaSalida = document.getElementById('hora_salida').value;
+
+    // Obtener días seleccionados
+    const diasSeleccionados = [];
+    document.querySelectorAll('input[name="dias_semana"]:checked').forEach(checkbox => {
+        diasSeleccionados.push(checkbox.value);
+    });
+
+    // Validar que todos los campos estén completos
+    if (!empleadoSelect.value || diasSeleccionados.length === 0 || !horaEntrada || !horaSalida) {
+        mostrarMensaje('Por favor complete todos los campos', 'error');
+        return;
+    }
+
+    const empleadoNombre = empleadoSelect.selectedOptions[0].text;
+    const tablaBody = document.getElementById('tablaHorarios');
+
+    // Crear una fila por cada día seleccionado
+    diasSeleccionados.forEach(dia => {
+        const nuevaFila = document.createElement('tr');
+        nuevaFila.innerHTML = `
+                    <td>${empleadoNombre}</td>
+                    <td>${dia}</td>
+                    <td>${horaEntrada}</td>
+                    <td>${horaSalida}</td>
+                    <td>
+                        <form method="post" action="#" style="display:inline;">
+                            <input type="hidden" name="id" value="${contadorId}" />
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmarEliminacion(event)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                `;
+        tablaBody.appendChild(nuevaFila);
+        contadorId++;
+    });
+
+    // Limpiar formulario
+    document.getElementById('horarioForm').reset();
+
+    // Resetear selectores de hora (solo el texto del botón)
+    document.querySelectorAll('.custom-timepicker').forEach(picker => {
+        const button = picker.querySelector('.timepicker-input');
+        if (picker.dataset.input === 'hora_entrada') {
+            button.innerHTML = 'Seleccionar hora entrada <i class="fas fa-clock clock-icon"></i>';
+        } else {
+            button.innerHTML = 'Seleccionar hora salida <i class="fas fa-clock clock-icon"></i>';
+        }
+    });
+}
+
+// Función para mostrar mensajes
+function mostrarMensaje(mensaje, tipo) {
+    const color = tipo === 'success' ? '#28a745' : '#dc3545';
+    const icono = tipo === 'success' ? 'check-circle' : 'exclamation-triangle';
+
+    const mensajeDiv = document.createElement('div');
+    mensajeDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${color};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 10001;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                max-width: 300px;
+            `;
+    mensajeDiv.innerHTML = `
+                <i class="fas fa-${icono}"></i> ${mensaje}
+            `;
+
+    document.body.appendChild(mensajeDiv);
+
+    // Remover mensaje después de 3 segundos
+    setTimeout(() => {
+        mensajeDiv.remove();
+    }, 3000);
+}
+
+// JQuery para selects personalizados y otros eventos
 $(document).ready(function () {
     // Convertir todos los selects a dropdown personalizados con la clase form-control al cargar la página
     $('select.form-select, select.form-control').each(function () {
