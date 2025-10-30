@@ -49,7 +49,9 @@ div.dt-buttons {
 }
 
 .dataTables_wrapper .dataTables_paginate {
-    display: flex;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     flex-wrap: nowrap; /* No permite que los botones salten de línea */
     justify-content: center;
     align-items: center;

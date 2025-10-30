@@ -11,8 +11,15 @@
 
 .btn-primary {
     background-color: var(--color-principal-oscuro);
+    color: white;
     border-color: var(--color-principal-oscuro);
 }
+
+    .btn-primary:hover {
+        background-color: var(--color-principal-hover);
+        color: white;
+        border-color: var(--color-principal-hover);
+    }
 
 .btn-modificar {
     background-color: var(--color-principal-oscuro);
@@ -31,6 +38,7 @@
 
     .btn-inactivar:hover {
         background-color: #bb2d3b;
+        color: white;
     }
 
 .btn-activar {
@@ -44,6 +52,7 @@
 
     .btn-activar:hover {
         background-color: #218838;
+        color: white;
     }
 
 /* Botones refinados */

@@ -222,3 +222,10 @@ $(document).ready(function () {
         return false;
     });
 });
+
+// Inicialización global automática SOLO si hay tablas .dataTable en la vista
+document.addEventListener('DOMContentLoaded', function () {
+    if (window.inicializarDataTables) {
+        $('.dataTable').not('.no-auto-dt').length && window.inicializarDataTables();
+    }
+});

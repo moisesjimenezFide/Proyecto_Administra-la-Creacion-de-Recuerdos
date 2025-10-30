@@ -22,40 +22,6 @@
     --sombra-suave: rgba(0, 0, 0, 0.15);
 }
 
-#pagination .page-item.active .page-link {
-    background-color: var(--color-principal-oscuro) !important;
-    border-color: var(--color-principal-oscuro) !important;
-    color: #FFFFFF !important;
-}
-
-#pagination .page-item .page-link {
-    color: var(--color-principal-oscuro) !important;
-    border-color: var(--color-principal-oscuro) !important;
-}
-
-    #pagination .page-item .page-link:hover {
-        background-color: var(--color-principal) !important;
-        color: var(--color-principal-oscuro) !important;
-        border-color: var(--color-principal-oscuro) !important;
-    }
-
-#pagination .page-link {
-    border: none !important;
-}
-
-#pagination .page-item.active .page-link:focus {
-    box-shadow: none !important;
-}
-
-.page-title {
-    font-family: 'Sono', sans-serif;
-    font-size: 2rem;
-    color: white;
-    margin: 0;
-    padding: 5px 0;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-}
-
 .pos-container {
     padding: 0;
     height: calc(100vh - 150px);

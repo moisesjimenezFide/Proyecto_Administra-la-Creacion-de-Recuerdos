@@ -16,10 +16,9 @@
 
     <h4><strong>Búsqueda de Usuarios</strong></h4>
     <form method="get" action="@Url.Action("gestion_usuarios", "Registro_Usuarios")" class="mt-4">
-        <div class="input-group mb-4">
-            <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
-            <div class="form-group mb-0" style="width: 220px;">
-                @Html.Label("Fecha de Creación")
+        <div class="d-flex align-items-center mb-4" style="gap: 12px;">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" style="max-width: 60%;" />
+            <div class="d-flex align-items-center" style="min-width: 320px;">
                 <div class="custom-datepicker" data-input="FechaBusqueda">
                     <div class="datepicker-input">
                         Seleccionar fecha
@@ -29,7 +28,7 @@
                 </div>
                 <input type="hidden" id="FechaBusqueda" name="fecha" value="@ViewBag.Fecha" class="form-control" />
             </div>
-            <button type="submit" class="fas fa-search ms-1 btn btn-custom-pink" title="Buscar"></button>
+            <button type="submit" class="fas fa-search btn btn-custom-pink" title="Buscar" style="height: 40px;"></button>
         </div>
     </form>
 
