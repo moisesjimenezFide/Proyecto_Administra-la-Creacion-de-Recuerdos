@@ -5,6 +5,7 @@
 
 @section Styles {
     <link href="@Url.Content("~/Templates/css/tablas.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/paginaciones_y_exportaciones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
     <style>
@@ -51,7 +52,7 @@
                     border: 1px solid #CED4DA;
                     border-radius: 4px;
                     box-sizing: border-box;
-                    background-color: white;
+                    background-color: #FFFFFF;
                 }
 
             .custom-checkbox input[type="checkbox"]:checked + span::before {
@@ -66,7 +67,7 @@
                 top: 2px;
                 width: 8px;
                 height: 14px;
-                border: solid white;
+                border: solid #FFFFFF;
                 border-width: 0 3px 3px 0;
                 opacity: 0;
                 transform: rotate(45deg);
@@ -198,19 +199,18 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" defer></script>
     <script src="~/Templates/js/paginaciones_y_exportaciones.js" defer></script>
     <script src="~/Templates/js/selects.js" defer></script>
     <script src="~/Templates/js/empleados.js" defer></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');
-        checkboxes.forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                });
             });
         });
-    });
-</script>
+    </script>
 }

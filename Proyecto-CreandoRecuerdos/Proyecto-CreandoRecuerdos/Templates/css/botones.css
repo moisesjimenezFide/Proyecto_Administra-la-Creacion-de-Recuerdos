@@ -11,39 +11,39 @@
 
 .btn-primary {
     background-color: var(--color-principal-oscuro);
-    color: white;
+    color: #FFFFFF;
     border-color: var(--color-principal-oscuro);
 }
 
     .btn-primary:hover {
         background-color: var(--color-principal-hover);
-        color: white;
+        color: #FFFFFF;
         border-color: var(--color-principal-hover);
     }
 
 .btn-modificar {
     background-color: var(--color-principal-oscuro);
-    color: white;
+    color: #FFFFFF;
 }
 
     .btn-modificar:hover {
         background-color: var(--color-principal-hover);
-        color: white;
+        color: #FFFFFF;
     }
 
 .btn-inactivar {
-    background-color: #dc3545;
-    color: white;
+    background-color: #DC3545;
+    color: #FFFFFF;
 }
 
     .btn-inactivar:hover {
-        background-color: #bb2d3b;
-        color: white;
+        background-color: #BB2D3B;
+        color: #FFFFFF;
     }
 
 .btn-activar {
-    background-color: #28a745; /* verde */
-    color: white;
+    background-color: #28A745; /* verde */
+    color: #FFFFFF;
     border: none;
     padding: 6px 10px;
     border-radius: 4px;
@@ -52,14 +52,14 @@
 
     .btn-activar:hover {
         background-color: #218838;
-        color: white;
+        color: #FFFFFF;
     }
 
 /* Botones refinados */
 .btn-outline-dark-pink {
     --bs-btn-color: var(--color-principal-oscuro);
     --bs-btn-border-color: var(--color-principal-oscuro);
-    --bs-btn-hover-color: white;
+    --bs-btn-hover-color: #FFFFFF;
     --bs-btn-hover-bg: var(--color-principal-hover);
     --bs-btn-hover-border-color: var(--color-principal-hover);
     --bs-btn-active-bg: var(--color-principal-oscuro);
@@ -98,14 +98,52 @@
 
 .btn-custom-pink {
     background-color: #B54885;
-    color: white;
+    color: #FFFFFF;
     border: none;
 }
 
     .btn-custom-pink:hover {
         background-color: #CC8FAE;
-        color: white;
+        color: #FFFFFF;
     }
 
+.btn-group {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    gap: 8px;
+}
+
+.switch-label {
+    flex: 1 1 0;
+    text-align: center;
+    min-width: 0;
+    white-space: nowrap;
+    font-size: 1rem;
+    padding: 0.5rem 0.8rem;
+    min-height: 48px;
+}
+
+@media (max-width: 480px) {
+    .btn-group {
+        gap: 4px;
+    }
+
+    .switch-label {
+        font-size: 0.95rem;
+        padding: 0.4rem 0.5rem;
+    }
+}
+
+.switch-label[for="registerSwitch"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 48px;
+    white-space: normal;
+}
 
 

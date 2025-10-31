@@ -626,8 +626,8 @@ window.Modernizr = (function( window, document, undefined ) {
          */
 
         var str1 = 'background-image:',
-            str2 = 'gradient(linear,left top,right bottom,from(#9f9),to(white));',
-            str3 = 'linear-gradient(left top,#9f9, white);';
+            str2 = 'gradient(linear,left top,right bottom,from(#9f9),to(#FFFFFF));',
+            str3 = 'linear-gradient(left top,#9f9, #FFFFFF);';
 
         setCss(
              // legacy webkit syntax (FIXME: remove when syntax not in use anymore)

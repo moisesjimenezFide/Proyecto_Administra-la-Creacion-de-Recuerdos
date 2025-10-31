@@ -80,7 +80,7 @@ div.dt-buttons {
 
         /* SOLO para los botones de texto largo, permite salto de línea */
         .dataTables_wrapper .dataTables_paginate .paginate_button.btn-paginacion-larga {
-            white-space: normal !important;
+            #FFFFFF-space: normal !important;
             word-break: normal !important; /* Evita cortar palabras */
             line-height: 1.1;
             min-width: 120px; /* Aumenta el ancho mínimo */
@@ -179,7 +179,7 @@ div.dt-buttons {
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
+    background: #FFFFFF;
     border: 2px solid #B54885;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -212,12 +212,12 @@ div.dt-buttons {
 
     .custom-dropdown-item:hover {
         background-color: #CC8FAE;
-        color: white;
+        color: #FFFFFF;
     }
 
     .custom-dropdown-item.active {
         background-color: #B54885;
-        color: white;
+        color: #FFFFFF;
     }
 
 /* Fijar los componentes de DataTable al hacer scroll horizontal */

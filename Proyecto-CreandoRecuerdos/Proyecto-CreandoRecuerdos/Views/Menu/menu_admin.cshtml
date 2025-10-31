@@ -132,358 +132,356 @@
     </div>
 </div>
 
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="~/Templates/js/footer_visibility_content_zoom_out.js"></script>
-<script src="~/Templates/js/menu.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const productContainer = document.getElementById('product-container');
-        const crearBtn = document.getElementById('crear_producto');
-        if (crearBtn) {
-            crearBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                crear_funcion();
-            });
-        }
-        productContainer.addEventListener('click', function (e) {
-            // se genera un triger para saber cuando se pulsa un boton
-            const target = e.target;
-            const editar_btn = target.closest('a.btn.btn-primary[data-id_edit]');
-            const eliminar_btn = target.closest('a.btn.btn-danger[data-id_eliminar]');
-
-            if (editar_btn) {
-                //Validar boton editar
-                e.preventDefault();
-                editar_funcion(editar_btn);
-            } else if (eliminar_btn) {
-                //Validar boton eliminar
-                e.preventDefault();
-                eliminar_funcion(eliminar_btn)
-            }
-        });
-    });
-
-    //Mis funciones
-    const categoryMap = {
-        'desayunos': 1,
-        'panini': 2,
-        'crepes': 3,
-        'pasta': 4,
-        'arroz': 5,
-        'tentaciones': 6,
-        'postres': 7,
-        'bebidas-calientes': 8,
-        'bebidas-frias': 9,
-        'especiales': 10
-    };
-
-    function editar_funcion(btn) {
-
-        // Tomar datos
-        const id = btn.getAttribute('data-id_edit');
-        const nombre = btn.getAttribute('data-nombre');
-        const descripcion = btn.getAttribute('data-descripcion');
-        const precio = btn.getAttribute('data-precio');
-        const img = btn.getAttribute('data-img');
-        const idCategoriaActual = btn.getAttribute('data-category') || '';
-
-        // Dropdown
-        let optionsHtml = '<select id="swal-categoria" class="swal2-select"><option value="">Seleccione una categoría</option>';
-        for (const [nombreCat, catId] of Object.entries(categoryMap)) {
-            const selected = catId.toString() === idCategoriaActual.toString() ? 'selected' : '';
-            optionsHtml += `<option value="${catId}" ${selected}>${nombreCat.charAt(0).toUpperCase() + nombreCat.slice(1).replace('-', ' ')}</option>`;
-        }
-
-        optionsHtml += '</select>';
-        // Código Swal.fire...
-        Swal.fire({
-            title: `Editar Producto: ${nombre}`,
-            html:
-                `<label for="swal-nombre">Nombre:</label>` +
-                `<input id="swal-nombre" class="swal2-input" value="${nombre}">` +
-
-                `<input id="swal-id" type="hidden" value="${id}">` +
-
-                `<label for="swal-descripcion">Descripción:</label>` +
-                `<textarea id="swal-descripcion" class="swal2-textarea">${descripcion}</textarea>` +
-
-                `<label for="swal-precio">Precio:</label>` +
-                `<input id="swal-precio" class="swal2-input" value="${precio}" inputmode="decimal" pattern="^\\d*\\.?\\d*$" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">` +
-
-                `<label for="swal-categoria" class="mt-2">Categoría:</label>` +
-                optionsHtml +
-
-                `<p class="mt-2">Imagen actual:</p>` +
-                `<img src="/Templates/img/menu/${img}?v=${new Date().getTime()}" class="swal2-image" style="max-height:100px;">` +
-
-                `<p class="mt-2">Cargar nueva imagen:</p>` +
-                `<input type="file" id="swal-img" class="swal2-file">`,
-            focusConfirm: false,
-            showCancelButton: true,
-            confirmButtonText: 'Guardar',
-            preConfirm: () => {
-                const nombreVal = document.getElementById('swal-nombre').value.trim();
-                const descripcionVal = document.getElementById('swal-descripcion').value.trim();
-                const precioStr = document.getElementById('swal-precio').value.trim();
-                const categoriaVal = document.getElementById('swal-categoria').value;
-
-                if (!nombreVal || !descripcionVal || !precioStr || !categoriaVal) {
-                    Swal.showValidationMessage('Todos los campos son obligatorios.');
-                    return false;
-                }
-
-                // Validar que precio sea float válido
-                const precioVal = parseFloat(precioStr);
-                if (isNaN(precioVal) || precioVal <= 0) {
-                    Swal.showValidationMessage('El precio debe ser un número válido mayor que cero.');
-                    return false;
-                }
-
-                return {
-                    id: document.getElementById('swal-id').value,
-                    nombre: nombreVal,
-                    descripcion: descripcionVal,
-                    precio: precioVal,
-                    categoria: categoriaVal,
-                    imagen: document.getElementById('swal-img').files[0],
-                    imagenActual: img
-                };
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const datos = result.value;
-                const formData = new FormData();
-                formData.append('Id', datos.id);
-                formData.append('Nombre', datos.nombre);
-                formData.append('Descripcion', datos.descripcion);
-                formData.append('Precio', datos.precio);
-                formData.append('IdCategoria', datos.categoria);
-                formData.append('ImagenActual', datos.imagenActual);
-                if (datos.imagen) {
-                    formData.append('Imagen', datos.imagen);
-                }
-
-                $.ajax({
-                    url: '/Menu/menu_admin',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function () {
-                        Swal.fire('¡Guardado!', 'El producto fue actualizado.', 'success').then(() => {
-                            location.reload();
-                        });
-                    },
-                    error: function () {
-                        Swal.fire('Error', 'Ocurrió un problema al actualizar.', 'error');
-                    }
+@section Scripts {
+    <script src="~/Templates/js/menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productContainer = document.getElementById('product-container');
+            const crearBtn = document.getElementById('crear_producto');
+            if (crearBtn) {
+                crearBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    crear_funcion();
                 });
             }
-        });
-    }
+            productContainer.addEventListener('click', function (e) {
+                // se genera un triger para saber cuando se pulsa un boton
+                const target = e.target;
+                const editar_btn = target.closest('a.btn.btn-primary[data-id_edit]');
+                const eliminar_btn = target.closest('a.btn.btn-danger[data-id_eliminar]');
 
-    function eliminar_funcion(btn) {
-        const id = btn.getAttribute('data-id_eliminar');
-
-        Swal.fire({
-            title: '¿Estás seguro?',
-            html: 'Esta acción eliminará el producto.<br>Escribe <strong>CONFIRMAR</strong> para continuar.',
-            input: 'text',
-            inputPlaceholder: 'Escribe CONFIRMAR',
-            showCancelButton: true,
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-            preConfirm: (valor) => {
-                if (valor !== 'CONFIRMAR') {
-                    Swal.showValidationMessage('Debes escribir CONFIRMAR exactamente.');
-                    return false;
+                if (editar_btn) {
+                    //Validar boton editar
+                    e.preventDefault();
+                    editar_funcion(editar_btn);
+                } else if (eliminar_btn) {
+                    //Validar boton eliminar
+                    e.preventDefault();
+                    eliminar_funcion(eliminar_btn)
                 }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Enviar AJAX para eliminar
-                $.ajax({
-                    url: '/Menu/eliminar_producto', // Ajusta la URL según tu controlador
-                    type: 'POST',
-                    data: { id: id },
-                    success: function () {
-                        Swal.fire('Eliminado', 'El producto fue eliminado exitosamente.', 'success')
-                            .then(() => location.reload());
-                    },
-                    error: function () {
-                        Swal.fire('Error', 'Ocurrió un problema al eliminar el producto.', 'error');
-                    }
-                });
-            }
-        });
-    }
-
-    function crear_funcion() {
-        // Generar opciones del dropdown
-        let optionsHtml = '<select id="swal-categoria" class="swal2-select"><option value="">Seleccione una categoría</option>';
-        for (const [nombre, id] of Object.entries(categoryMap)) {
-            optionsHtml += `<option value="${id}">${nombre.charAt(0).toUpperCase() + nombre.slice(1).replace('-', ' ')}</option>`;
-        }
-        optionsHtml += '</select>';
-
-        Swal.fire({
-            title: 'Crear nuevo producto',
-            html:
-                `<label for="swal-nombre">Nombre:</label>` +
-                `<input id="swal-nombre" class="swal2-input">` +
-
-                `<label for="swal-descripcion">Descripción:</label>` +
-                `<textarea id="swal-descripcion" class="swal2-textarea"></textarea>` +
-
-                `<label for="swal-precio">Precio:</label>` +
-                `<input id="swal-precio" class="swal2-input" inputmode="decimal" pattern="^\\d*\\.?\\d*$" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">` +
-
-                `<label for="swal-categoria">Categoría:</label>` +
-                optionsHtml +
-
-                `<p class="mt-2">Cargar imagen:</p>` +
-                `<input type="file" id="swal-img" class="swal2-file">`,
-            focusConfirm: false,
-            showCancelButton: true,
-            confirmButtonText: 'Crear',
-            preConfirm: () => {
-                const nombre = document.getElementById('swal-nombre').value.trim();
-                const descripcion = document.getElementById('swal-descripcion').value.trim();
-                const precioStr = document.getElementById('swal-precio').value.trim();
-                const categoria = document.getElementById('swal-categoria').value;
-                const imagen = document.getElementById('swal-img').files[0];
-
-                if (!nombre || !descripcion || !precioStr || !imagen || !categoria) {
-                    Swal.showValidationMessage('Todos los campos son obligatorios.');
-                    return false;
-                }
-
-                // Validar que precio sea un float positivo válido
-                const precio = parseFloat(precioStr);
-                if (isNaN(precio) || precio <= 0) {
-                    Swal.showValidationMessage('El precio debe ser un número válido mayor que cero.');
-                    return false;
-                }
-
-                return { nombre, descripcion, precio, categoria, imagen };
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const datos = result.value;
-                const formData = new FormData();
-                formData.append('Nombre', datos.nombre);
-                formData.append('Descripcion', datos.descripcion);
-                formData.append('Precio', datos.precio);
-                formData.append('IdCategoria', datos.categoria);
-                formData.append('Imagen', datos.imagen);
-
-                $.ajax({
-                    url: '/Menu/crear_producto',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function () {
-                        Swal.fire('¡Creado!', 'El producto fue registrado exitosamente.', 'success')
-                            .then(() => location.reload());
-                    },
-                    error: function () {
-                        Swal.fire('Error', 'No se pudo crear el producto.', 'error');
-                    }
-                });
-            }
-        });
-    }
-</script>
-
-<script>
-    $(document).ready(function () {
-        // Opción 1: Crear recomendación (abre SweetAlert con formulario)
-        $('#crearRecomendacionOpcion').click(function (e) {
-            e.preventDefault();
-            abrirFormularioRecomendacion();
-        });
-
-        // Opción 2: Quitar recomendación (abre SweetAlert con select)
-        $('#quitarRecomendacionOpcion').click(function (e) {
-            e.preventDefault();
-            $.get('/Menu/RecomendacionesAjax', function (productos) {
-                let selectHtml = `<label for="eliminarRecomendacion">Quitar recomendación existente:</label>
-                    <select id="eliminarRecomendacion" class="swal2-select">
-                        <option value="">Seleccione una recomendación</option>`;
-                productos.forEach(prod => {
-                    selectHtml += `<option value="${prod.id_producto}">${prod.nombre}</option>`;
-                });
-                selectHtml += `</select>`;
-
-                Swal.fire({
-                    title: 'Quitar recomendación',
-                    html: selectHtml,
-                    showCancelButton: true,
-                    confirmButtonText: 'Eliminar',
-                    preConfirm: () => {
-                        const id = document.getElementById('eliminarRecomendacion').value;
-                        if (!id) {
-                            Swal.showValidationMessage('Debes seleccionar una recomendación.');
-                            return false;
-                        }
-                        return id;
-                    }
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        $.post('/Menu/EliminarRecomendacion', { id: result.value }, function () {
-                            Swal.fire('Eliminado', 'La recomendación fue quitada.', 'success')
-                                .then(() => location.reload());
-                        }).fail(() => {
-                            Swal.fire('Error', 'No se pudo quitar la recomendación.', 'error');
-                        });
-                    }
-                });
             });
         });
-    });
 
-    function abrirFormularioRecomendacion() {
-        $.get('/Menu/ObtenerProductosDisponibles', function (productos) {
-            let selectHtml = '<label for="productoRecomendado">Seleccionar producto:</label>' +
-                '<select id="productoRecomendado" class="swal2-select">' +
-                '<option value="">Seleccione un producto</option>';
-            productos.forEach(p => {
-                selectHtml += `<option value="${p.id_producto}">${p.nombre}</option>`;
-            });
-            selectHtml += '</select>';
+        //Mis funciones
+        const categoryMap = {
+            'desayunos': 1,
+            'panini': 2,
+            'crepes': 3,
+            'pasta': 4,
+            'arroz': 5,
+            'tentaciones': 6,
+            'postres': 7,
+            'bebidas-calientes': 8,
+            'bebidas-frias': 9,
+            'especiales': 10
+        };
 
+        function editar_funcion(btn) {
+
+            // Tomar datos
+            const id = btn.getAttribute('data-id_edit');
+            const nombre = btn.getAttribute('data-nombre');
+            const descripcion = btn.getAttribute('data-descripcion');
+            const precio = btn.getAttribute('data-precio');
+            const img = btn.getAttribute('data-img');
+            const idCategoriaActual = btn.getAttribute('data-category') || '';
+
+            // Dropdown
+            let optionsHtml = '<select id="swal-categoria" class="swal2-select"><option value="">Seleccione una categoría</option>';
+            for (const [nombreCat, catId] of Object.entries(categoryMap)) {
+                const selected = catId.toString() === idCategoriaActual.toString() ? 'selected' : '';
+                optionsHtml += `<option value="${catId}" ${selected}>${nombreCat.charAt(0).toUpperCase() + nombreCat.slice(1).replace('-', ' ')}</option>`;
+            }
+
+            optionsHtml += '</select>';
+            // Código Swal.fire...
             Swal.fire({
-                title: 'Crear recomendación',
-                html: selectHtml +
-                    '<label for="motivo">Motivo:</label>' +
-                    '<textarea id="motivo" class="swal2-textarea" placeholder="Ej: Producto más vendido, alta demanda, etc."></textarea>',
-                showCancelButton: true,
-                confirmButtonText: 'Crear',
-                preConfirm: () => {
-                    const idProducto = document.getElementById('productoRecomendado').value;
-                    const motivo = document.getElementById('motivo').value.trim();
+                title: `Editar Producto: ${nombre}`,
+                html:
+                    `<label for="swal-nombre">Nombre:</label>` +
+                    `<input id="swal-nombre" class="swal2-input" value="${nombre}">` +
 
-                    if (!idProducto || !motivo) {
-                        Swal.showValidationMessage('Debés seleccionar un producto y escribir un motivo.');
+                    `<input id="swal-id" type="hidden" value="${id}">` +
+
+                    `<label for="swal-descripcion">Descripción:</label>` +
+                    `<textarea id="swal-descripcion" class="swal2-textarea">${descripcion}</textarea>` +
+
+                    `<label for="swal-precio">Precio:</label>` +
+                    `<input id="swal-precio" class="swal2-input" value="${precio}" inputmode="decimal" pattern="^\\d*\\.?\\d*$" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">` +
+
+                    `<label for="swal-categoria" class="mt-2">Categoría:</label>` +
+                    optionsHtml +
+
+                    `<p class="mt-2">Imagen actual:</p>` +
+                    `<img src="/Templates/img/menu/${img}?v=${new Date().getTime()}" class="swal2-image" style="max-height:100px;">` +
+
+                    `<p class="mt-2">Cargar nueva imagen:</p>` +
+                    `<input type="file" id="swal-img" class="swal2-file">`,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                preConfirm: () => {
+                    const nombreVal = document.getElementById('swal-nombre').value.trim();
+                    const descripcionVal = document.getElementById('swal-descripcion').value.trim();
+                    const precioStr = document.getElementById('swal-precio').value.trim();
+                    const categoriaVal = document.getElementById('swal-categoria').value;
+
+                    if (!nombreVal || !descripcionVal || !precioStr || !categoriaVal) {
+                        Swal.showValidationMessage('Todos los campos son obligatorios.');
                         return false;
                     }
 
-                    return { productoId: idProducto, motivo: motivo };
+                    // Validar que precio sea float válido
+                    const precioVal = parseFloat(precioStr);
+                    if (isNaN(precioVal) || precioVal <= 0) {
+                        Swal.showValidationMessage('El precio debe ser un número válido mayor que cero.');
+                        return false;
+                    }
 
+                    return {
+                        id: document.getElementById('swal-id').value,
+                        nombre: nombreVal,
+                        descripcion: descripcionVal,
+                        precio: precioVal,
+                        categoria: categoriaVal,
+                        imagen: document.getElementById('swal-img').files[0],
+                        imagenActual: img
+                    };
                 }
-            }).then(result => {
+            }).then((result) => {
                 if (result.isConfirmed) {
-                    $.post('/Menu/GuardarRecomendacion', result.value, function () {
-                        Swal.fire('¡Listo!', 'Recomendación creada con éxito.', 'success')
-                            .then(() => location.reload());
-                    }).fail(() => {
-                        Swal.fire('Error', 'No se pudo crear la recomendación.', 'error');
+                    const datos = result.value;
+                    const formData = new FormData();
+                    formData.append('Id', datos.id);
+                    formData.append('Nombre', datos.nombre);
+                    formData.append('Descripcion', datos.descripcion);
+                    formData.append('Precio', datos.precio);
+                    formData.append('IdCategoria', datos.categoria);
+                    formData.append('ImagenActual', datos.imagenActual);
+                    if (datos.imagen) {
+                        formData.append('Imagen', datos.imagen);
+                    }
+
+                    $.ajax({
+                        url: '/Menu/menu_admin',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            Swal.fire('¡Guardado!', 'El producto fue actualizado.', 'success').then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function () {
+                            Swal.fire('Error', 'Ocurrió un problema al actualizar.', 'error');
+                        }
                     });
                 }
             });
+        }
+
+        function eliminar_funcion(btn) {
+            const id = btn.getAttribute('data-id_eliminar');
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                html: 'Esta acción eliminará el producto.<br>Escribe <strong>CONFIRMAR</strong> para continuar.',
+                input: 'text',
+                inputPlaceholder: 'Escribe CONFIRMAR',
+                showCancelButton: true,
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+                preConfirm: (valor) => {
+                    if (valor !== 'CONFIRMAR') {
+                        Swal.showValidationMessage('Debes escribir CONFIRMAR exactamente.');
+                        return false;
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Enviar AJAX para eliminar
+                    $.ajax({
+                        url: '/Menu/eliminar_producto', // Ajusta la URL según tu controlador
+                        type: 'POST',
+                        data: { id: id },
+                        success: function () {
+                            Swal.fire('Eliminado', 'El producto fue eliminado exitosamente.', 'success')
+                                .then(() => location.reload());
+                        },
+                        error: function () {
+                            Swal.fire('Error', 'Ocurrió un problema al eliminar el producto.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+        function crear_funcion() {
+            // Generar opciones del dropdown
+            let optionsHtml = '<select id="swal-categoria" class="swal2-select"><option value="">Seleccione una categoría</option>';
+            for (const [nombre, id] of Object.entries(categoryMap)) {
+                optionsHtml += `<option value="${id}">${nombre.charAt(0).toUpperCase() + nombre.slice(1).replace('-', ' ')}</option>`;
+            }
+            optionsHtml += '</select>';
+
+            Swal.fire({
+                title: 'Crear nuevo producto',
+                html:
+                    `<label for="swal-nombre">Nombre:</label>` +
+                    `<input id="swal-nombre" class="swal2-input">` +
+
+                    `<label for="swal-descripcion">Descripción:</label>` +
+                    `<textarea id="swal-descripcion" class="swal2-textarea"></textarea>` +
+
+                    `<label for="swal-precio">Precio:</label>` +
+                    `<input id="swal-precio" class="swal2-input" inputmode="decimal" pattern="^\\d*\\.?\\d*$" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">` +
+
+                    `<label for="swal-categoria">Categoría:</label>` +
+                    optionsHtml +
+
+                    `<p class="mt-2">Cargar imagen:</p>` +
+                    `<input type="file" id="swal-img" class="swal2-file">`,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Crear',
+                preConfirm: () => {
+                    const nombre = document.getElementById('swal-nombre').value.trim();
+                    const descripcion = document.getElementById('swal-descripcion').value.trim();
+                    const precioStr = document.getElementById('swal-precio').value.trim();
+                    const categoria = document.getElementById('swal-categoria').value;
+                    const imagen = document.getElementById('swal-img').files[0];
+
+                    if (!nombre || !descripcion || !precioStr || !imagen || !categoria) {
+                        Swal.showValidationMessage('Todos los campos son obligatorios.');
+                        return false;
+                    }
+
+                    // Validar que precio sea un float positivo válido
+                    const precio = parseFloat(precioStr);
+                    if (isNaN(precio) || precio <= 0) {
+                        Swal.showValidationMessage('El precio debe ser un número válido mayor que cero.');
+                        return false;
+                    }
+
+                    return { nombre, descripcion, precio, categoria, imagen };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const datos = result.value;
+                    const formData = new FormData();
+                    formData.append('Nombre', datos.nombre);
+                    formData.append('Descripcion', datos.descripcion);
+                    formData.append('Precio', datos.precio);
+                    formData.append('IdCategoria', datos.categoria);
+                    formData.append('Imagen', datos.imagen);
+
+                    $.ajax({
+                        url: '/Menu/crear_producto',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            Swal.fire('¡Creado!', 'El producto fue registrado exitosamente.', 'success')
+                                .then(() => location.reload());
+                        },
+                        error: function () {
+                            Swal.fire('Error', 'No se pudo crear el producto.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Opción 1: Crear recomendación (abre SweetAlert con formulario)
+            $('#crearRecomendacionOpcion').click(function (e) {
+                e.preventDefault();
+                abrirFormularioRecomendacion();
+            });
+
+            // Opción 2: Quitar recomendación (abre SweetAlert con select)
+            $('#quitarRecomendacionOpcion').click(function (e) {
+                e.preventDefault();
+                $.get('/Menu/RecomendacionesAjax', function (productos) {
+                    let selectHtml = `<label for="eliminarRecomendacion">Quitar recomendación existente:</label>
+                        <select id="eliminarRecomendacion" class="swal2-select">
+                            <option value="">Seleccione una recomendación</option>`;
+                    productos.forEach(prod => {
+                        selectHtml += `<option value="${prod.id_producto}">${prod.nombre}</option>`;
+                    });
+                    selectHtml += `</select>`;
+
+                    Swal.fire({
+                        title: 'Quitar recomendación',
+                        html: selectHtml,
+                        showCancelButton: true,
+                        confirmButtonText: 'Eliminar',
+                        preConfirm: () => {
+                            const id = document.getElementById('eliminarRecomendacion').value;
+                            if (!id) {
+                                Swal.showValidationMessage('Debes seleccionar una recomendación.');
+                                return false;
+                            }
+                            return id;
+                        }
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            $.post('/Menu/EliminarRecomendacion', { id: result.value }, function () {
+                                Swal.fire('Eliminado', 'La recomendación fue quitada.', 'success')
+                                    .then(() => location.reload());
+                            }).fail(() => {
+                                Swal.fire('Error', 'No se pudo quitar la recomendación.', 'error');
+                            });
+                        }
+                    });
+                });
+            });
         });
-    }
-</script>
+
+        function abrirFormularioRecomendacion() {
+            $.get('/Menu/ObtenerProductosDisponibles', function (productos) {
+                let selectHtml = '<label for="productoRecomendado">Seleccionar producto:</label>' +
+                    '<select id="productoRecomendado" class="swal2-select">' +
+                    '<option value="">Seleccione un producto</option>';
+                productos.forEach(p => {
+                    selectHtml += `<option value="${p.id_producto}">${p.nombre}</option>`;
+                });
+                selectHtml += '</select>';
+
+                Swal.fire({
+                    title: 'Crear recomendación',
+                    html: selectHtml +
+                        '<label for="motivo">Motivo:</label>' +
+                        '<textarea id="motivo" class="swal2-textarea" placeholder="Ej: Producto más vendido, alta demanda, etc."></textarea>',
+                    showCancelButton: true,
+                    confirmButtonText: 'Crear',
+                    preConfirm: () => {
+                        const idProducto = document.getElementById('productoRecomendado').value;
+                        const motivo = document.getElementById('motivo').value.trim();
+
+                        if (!idProducto || !motivo) {
+                            Swal.showValidationMessage('Debés seleccionar un producto y escribir un motivo.');
+                            return false;
+                        }
+
+                        return { productoId: idProducto, motivo: motivo };
+
+                    }
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        $.post('/Menu/GuardarRecomendacion', result.value, function () {
+                            Swal.fire('¡Listo!', 'Recomendación creada con éxito.', 'success')
+                                .then(() => location.reload());
+                        }).fail(() => {
+                            Swal.fire('Error', 'No se pudo crear la recomendación.', 'error');
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+}

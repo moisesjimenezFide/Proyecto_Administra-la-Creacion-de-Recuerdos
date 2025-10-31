@@ -46,7 +46,7 @@
         top: 100%;
         left: 0;
         right: 0;
-        background: white;
+        background: #FFFFFF;
         color: #2C2C2C;
         border: 2px solid #B54885;
         border-radius: 8px;
@@ -80,12 +80,12 @@
 
         .custom-select .custom-select-item:hover {
             background-color: #CC8FAE;
-            color: white !important;
+            color: #FFFFFF !important;
         }
 
         .custom-select .custom-select-item.active {
             background-color: #B54885;
-            color: white !important;
+            color: #FFFFFF !important;
         }
 
 /* Ocultar los selects originales*/
@@ -157,7 +157,7 @@ select.form-select.custom-hidden {
         top: 100%;
         left: 0;
         right: 0;
-        background: white;
+        background: #FFFFFF;
         border: 2px solid #B54885;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -207,7 +207,7 @@ select.form-select.custom-hidden {
     /* Efecto hover en las partes del título */
     .calendar-title-part:hover {
         background-color: #CC8FAE;
-        color: white;
+        color: #FFFFFF;
     }
 
 /* Menús desplegables (dropdowns) */
@@ -215,7 +215,7 @@ select.form-select.custom-hidden {
     position: absolute;
     top: 100%;
     left: 0;
-    background: white;
+    background: #FFFFFF;
     border: 1px solid #B54885;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -243,13 +243,13 @@ select.form-select.custom-hidden {
     /* Efecto hover en items del dropdown */
     .calendar-dropdown-item:hover {
         background-color: #CC8FAE;
-        color: white;
+        color: #FFFFFF;
     }
 
     /* Item seleccionado en el dropdown */
     .calendar-dropdown-item.selected {
         background-color: #B54885;
-        color: white;
+        color: #FFFFFF;
     }
 
 /* Grilla del calendario (7 columnas para los días) */
@@ -276,7 +276,7 @@ select.form-select.custom-hidden {
     padding: 0.5rem;
     text-align: center;
     cursor: pointer;
-    background-color: white;
+    background-color: #FFFFFF;
     font-size: 14px;
     min-height: 35px;
     display: flex;
@@ -288,7 +288,7 @@ select.form-select.custom-hidden {
     /* Efecto hover en los días */
     .calendar-day:hover {
         background-color: #CC8FAE;
-        color: white;
+        color: #FFFFFF;
     }
 
     /* Días de otros meses (grises) */
@@ -299,7 +299,7 @@ select.form-select.custom-hidden {
     /* Día seleccionado */
     .calendar-day.selected {
         background-color: #B54885;
-        color: white;
+        color: #FFFFFF;
     }
 
     /* Día actual */
@@ -339,7 +339,7 @@ select.form-select.custom-hidden {
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
+    background: #FFFFFF;
     border: 2px solid #B54885;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -416,7 +416,7 @@ select.form-select.custom-hidden {
         top: 100%;
         left: 0;
         right: 0;
-        background: white;
+        background: #FFFFFF;
         border: 2px solid #B54885;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -470,7 +470,7 @@ select.form-select.custom-hidden {
     /* Efecto hover en las partes del título */
     .selector-title-part:hover {
         background-color: #CC8FAE;
-        color: white;
+        color: #FFFFFF;
     }
 
 /* Menús desplegables (dropdowns) */
@@ -478,7 +478,7 @@ select.form-select.custom-hidden {
     position: absolute;
     top: 100%;
     left: 0;
-    background: white;
+    background: #FFFFFF;
     border: 1px solid #B54885;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -506,13 +506,13 @@ select.form-select.custom-hidden {
     /* Efecto hover en items del dropdown */
     .selector-dropdown-item:hover {
         background-color: #CC8FAE;
-        color: white;
+        color: #FFFFFF;
     }
 
     /* Item seleccionado en el dropdown */
     .selector-dropdown-item.selected {
         background-color: #B54885;
-        color: white;
+        color: #FFFFFF;
     }
 
 /* Botón de confirmación */
@@ -520,7 +520,7 @@ select.form-select.custom-hidden {
     width: 100%;
     padding: 0.75rem;
     background-color: #B54885;
-    color: white;
+    color: #FFFFFF;
     border: none;
     border-radius: 0 0 6px 6px;
     font-weight: 600;

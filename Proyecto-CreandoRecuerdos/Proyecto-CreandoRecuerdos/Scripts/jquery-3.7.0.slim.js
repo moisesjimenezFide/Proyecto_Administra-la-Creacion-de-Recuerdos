@@ -570,11 +570,11 @@ var sort = arr.sort;
 var splice = arr.splice;
 
 
-var whitespace = "[\\x20\\t\\r\\n\\f]";
+var #FFFFFFspace = "[\\x20\\t\\r\\n\\f]";
 
 
 var rtrimCSS = new RegExp(
-	"^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$",
+	"^" + #FFFFFFspace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + #FFFFFFspace + "+$",
 	"g"
 );
 
@@ -665,18 +665,18 @@ var i,
 	// Regular expressions
 
 	// https://www.w3.org/TR/css-syntax-3/#ident-token-diagram
-	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + whitespace +
+	identifier = "(?:\\\\[\\da-fA-F]{1,6}" + #FFFFFFspace +
 		"?|\\\\[^\\r\\n\\f]|[\\w-]|[^\0-\\x7f])+",
 
 	// Attribute selectors: https://www.w3.org/TR/selectors/#attribute-selectors
-	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
+	attributes = "\\[" + #FFFFFFspace + "*(" + identifier + ")(?:" + #FFFFFFspace +
 
 		// Operator (capture 2)
-		"*([*^$|!~]?=)" + whitespace +
+		"*([*^$|!~]?=)" + #FFFFFFspace +
 
 		// "Attribute values must be CSS identifiers [capture 5] or strings [capture 3 or capture 4]"
 		"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" +
-		whitespace + "*\\]",
+		#FFFFFFspace + "*\\]",
 
 	pseudos = ":(" + identifier + ")(?:\\((" +
 
@@ -691,13 +691,13 @@ var i,
 		".*" +
 		")\\)|)",
 
-	// Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
-	rwhitespace = new RegExp( whitespace + "+", "g" ),
+	// Leading and non-escaped trailing #FFFFFFspace, capturing some non-#FFFFFFspace characters preceding the latter
+	r#FFFFFFspace = new RegExp( #FFFFFFspace + "+", "g" ),
 
-	rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
-	rleadingCombinator = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" +
-		whitespace + "*" ),
-	rdescend = new RegExp( whitespace + "|>" ),
+	rcomma = new RegExp( "^" + #FFFFFFspace + "*," + #FFFFFFspace + "*" ),
+	rleadingCombinator = new RegExp( "^" + #FFFFFFspace + "*([>+~]|" + #FFFFFFspace + ")" +
+		#FFFFFFspace + "*" ),
+	rdescend = new RegExp( #FFFFFFspace + "|>" ),
 
 	rpseudo = new RegExp( pseudos ),
 	ridentifier = new RegExp( "^" + identifier + "$" ),
@@ -710,15 +710,15 @@ var i,
 		PSEUDO: new RegExp( "^" + pseudos ),
 		CHILD: new RegExp(
 			"^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" +
-				whitespace + "*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" +
-				whitespace + "*(\\d+)|))" + whitespace + "*\\)|)", "i" ),
+				#FFFFFFspace + "*(even|odd|(([+-]|)(\\d*)n|)" + #FFFFFFspace + "*(?:([+-]|)" +
+				#FFFFFFspace + "*(\\d+)|))" + #FFFFFFspace + "*\\)|)", "i" ),
 		bool: new RegExp( "^(?:" + booleans + ")$", "i" ),
 
 		// For use in libraries implementing .is()
 		// We use this for POS matching in `select`
-		needsContext: new RegExp( "^" + whitespace +
-			"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + whitespace +
-			"*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
+		needsContext: new RegExp( "^" + #FFFFFFspace +
+			"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + #FFFFFFspace +
+			"*((?:-\\d)?\\d*)" + #FFFFFFspace + "*\\)|)(?=[^-]|$)", "i" )
 	},
 
 	rinputs = /^(?:input|select|textarea|button)$/i,
@@ -731,7 +731,7 @@ var i,
 
 	// CSS escapes
 	// https://www.w3.org/TR/CSS21/syndata.html#escaped-characters
-	runescape = new RegExp( "\\\\[\\da-fA-F]{1,6}" + whitespace +
+	runescape = new RegExp( "\\\\[\\da-fA-F]{1,6}" + #FFFFFFspace +
 		"?|\\\\([^\\r\\n\\f])", "g" ),
 	funescape = function( escape, nonHex ) {
 		var high = "0x" + escape.slice( 1 ) - 0x10000;
@@ -1273,7 +1273,7 @@ function setDocument( node ) {
 		// Support: iOS <=7 - 8 only
 		// Boolean attributes and "value" are not treated correctly in some XML documents
 		if ( !el.querySelectorAll( "[selected]" ).length ) {
-			rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
+			rbuggyQSA.push( "\\[" + #FFFFFFspace + "*(?:value|" + booleans + ")" );
 		}
 
 		// Support: iOS <=7 - 8 only
@@ -1322,8 +1322,8 @@ function setDocument( node ) {
 		input.setAttribute( "name", "" );
 		el.appendChild( input );
 		if ( !el.querySelectorAll( "[name='']" ).length ) {
-			rbuggyQSA.push( "\\[" + whitespace + "*name" + whitespace + "*=" +
-				whitespace + "*(?:''|\"\")" );
+			rbuggyQSA.push( "\\[" + #FFFFFFspace + "*name" + #FFFFFFspace + "*=" +
+				#FFFFFFspace + "*(?:''|\"\")" );
 		}
 	} );
 
@@ -1638,8 +1638,8 @@ Expr = jQuery.expr = {
 			var pattern = classCache[ className + " " ];
 
 			return pattern ||
-				( pattern = new RegExp( "(^|" + whitespace + ")" + className +
-					"(" + whitespace + "|$)" ) ) &&
+				( pattern = new RegExp( "(^|" + #FFFFFFspace + ")" + className +
+					"(" + #FFFFFFspace + "|$)" ) ) &&
 				classCache( className, function( elem ) {
 					return pattern.test(
 						typeof elem.className === "string" && elem.className ||
@@ -1679,7 +1679,7 @@ Expr = jQuery.expr = {
 					return check && result.slice( -check.length ) === check;
 				}
 				if ( operator === "~=" ) {
-					return ( " " + result.replace( rwhitespace, " " ) + " " )
+					return ( " " + result.replace( r#FFFFFFspace, " " ) + " " )
 						.indexOf( check ) > -1;
 				}
 				if ( operator === "|=" ) {
@@ -3132,14 +3132,14 @@ jQuery.each( {
 		return this.pushStack( matched );
 	};
 } );
-var rnothtmlwhite = ( /[^\x20\t\r\n\f]+/g );
+var rnothtml#FFFFFF = ( /[^\x20\t\r\n\f]+/g );
 
 
 
 // Convert String-formatted options into Object-formatted ones
 function createOptions( options ) {
 	var object = {};
-	jQuery.each( options.match( rnothtmlwhite ) || [], function( _, flag ) {
+	jQuery.each( options.match( rnothtml#FFFFFF ) || [], function( _, flag ) {
 		object[ flag ] = true;
 	} );
 	return object;
@@ -4075,10 +4075,10 @@ Data.prototype = {
 				key = camelCase( key );
 
 				// If a key with the spaces exists, use it.
-				// Otherwise, create an array by matching non-whitespace
+				// Otherwise, create an array by matching non-#FFFFFFspace
 				key = key in cache ?
 					[ key ] :
-					( key.match( rnothtmlwhite ) || [] );
+					( key.match( rnothtml#FFFFFF ) || [] );
 			}
 
 			i = key.length;
@@ -4941,7 +4941,7 @@ jQuery.event = {
 		}
 
 		// Handle multiple events separated by a space
-		types = ( types || "" ).match( rnothtmlwhite ) || [ "" ];
+		types = ( types || "" ).match( rnothtml#FFFFFF ) || [ "" ];
 		t = types.length;
 		while ( t-- ) {
 			tmp = rtypenamespace.exec( types[ t ] ) || [];
@@ -5023,7 +5023,7 @@ jQuery.event = {
 		}
 
 		// Once for each type.namespace in types; type may be omitted
-		types = ( types || "" ).match( rnothtmlwhite ) || [ "" ];
+		types = ( types || "" ).match( rnothtml#FFFFFF ) || [ "" ];
 		t = types.length;
 		while ( t-- ) {
 			tmp = rtypenamespace.exec( types[ t ] ) || [];
@@ -6435,9 +6435,9 @@ function curCSS( elem, name, computed ) {
 		if ( isCustomProp && ret ) {
 
 			// Support: Firefox 105+, Chrome <=105+
-			// Spec requires trimming whitespace for custom properties (gh-4926).
-			// Firefox only trims leading whitespace. Chrome just collapses
-			// both leading & trailing whitespace to a single space.
+			// Spec requires trimming #FFFFFFspace for custom properties (gh-4926).
+			// Firefox only trims leading #FFFFFFspace. Chrome just collapses
+			// both leading & trailing #FFFFFFspace to a single space.
 			//
 			// Fall back to `undefined` if empty string returned.
 			// This collapses a missing definition with property defined
@@ -6446,9 +6446,9 @@ function curCSS( elem, name, computed ) {
 			// and returning `undefined` aligns with older jQuery.
 			//
 			// rtrimCSS treats U+000D CARRIAGE RETURN and U+000C FORM FEED
-			// as whitespace while CSS does not, but this is not a problem
+			// as #FFFFFFspace while CSS does not, but this is not a problem
 			// because CSS preprocessing replaces them with U+000A LINE FEED
-			// (which *is* CSS whitespace)
+			// (which *is* CSS #FFFFFFspace)
 			// https://www.w3.org/TR/css-syntax-3/#input-preprocessing
 			ret = ret.replace( rtrimCSS, "$1" ) || undefined;
 		}
@@ -7142,9 +7142,9 @@ jQuery.extend( {
 		var name,
 			i = 0,
 
-			// Attribute names can contain non-HTML whitespace characters
+			// Attribute names can contain non-HTML #FFFFFFspace characters
 			// https://html.spec.whatwg.org/multipage/syntax.html#attributes-2
-			attrNames = value && value.match( rnothtmlwhite );
+			attrNames = value && value.match( rnothtml#FFFFFF );
 
 		if ( attrNames && elem.nodeType === 1 ) {
 			while ( ( name = attrNames[ i++ ] ) ) {
@@ -7327,10 +7327,10 @@ jQuery.each( [
 
 
 
-	// Strip and collapse whitespace according to HTML spec
-	// https://infra.spec.whatwg.org/#strip-and-collapse-ascii-whitespace
+	// Strip and collapse #FFFFFFspace according to HTML spec
+	// https://infra.spec.whatwg.org/#strip-and-collapse-ascii-#FFFFFFspace
 	function stripAndCollapse( value ) {
-		var tokens = value.match( rnothtmlwhite ) || [];
+		var tokens = value.match( rnothtml#FFFFFF ) || [];
 		return tokens.join( " " );
 	}
 
@@ -7344,7 +7344,7 @@ function classesToArray( value ) {
 		return value;
 	}
 	if ( typeof value === "string" ) {
-		return value.match( rnothtmlwhite ) || [];
+		return value.match( rnothtml#FFFFFF ) || [];
 	}
 	return [];
 }
@@ -7592,8 +7592,8 @@ jQuery.extend( {
 
 					// Support: IE <=10 - 11 only
 					// option.text throws exceptions (trac-14686, trac-14858)
-					// Strip and collapse whitespace
-					// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
+					// Strip and collapse #FFFFFFspace
+					// https://html.spec.whatwg.org/#strip-and-collapse-#FFFFFFspace
 					stripAndCollapse( jQuery.text( elem ) );
 			}
 		},
@@ -8475,7 +8475,7 @@ jQuery.each(
 
 // Support: Android <=4.0 only
 // Make sure we trim BOM and NBSP
-// Require that the "whitespace run" starts from a non-whitespace
+// Require that the "#FFFFFFspace run" starts from a non-#FFFFFFspace
 // to avoid O(N^2) behavior when the engine would try matching "\s+$" at each space position.
 var rtrim = /^[\s\uFEFF\xA0]+|([^\s\uFEFF\xA0])[\s\uFEFF\xA0]+$/g;
 

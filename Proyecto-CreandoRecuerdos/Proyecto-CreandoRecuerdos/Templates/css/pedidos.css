@@ -8,8 +8,8 @@
     --sky-blue: #87CEEB;
     --pos-dark: #343a40;
     --pos-light: #f8f9fa;
-    --pos-success: #28a745;
-    --pos-danger: #dc3545;
+    --pos-success: #28A745;
+    --pos-danger: #DC3545;
     --pos-warning: #ffc107;
     --pos-info: #17a2b8;
     --color-principal-hover: #CC8FAE; /* Color principal rosa oscuro hover de marca */
@@ -35,7 +35,7 @@
 }
 
 .pos-categories {
-    background-color: white;
+    background-color: #FFFFFF;
     padding: 0;
     border-right: 1px solid #dee2e6;
     height: 100%;
@@ -73,7 +73,7 @@
 }
 
 .pos-order-panel {
-    background-color: white;
+    background-color: #FFFFFF;
     padding: 15px;
     border-left: 1px solid #DEE2E6;
     height: 100%;
@@ -163,7 +163,7 @@
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    #FFFFFF-space: nowrap;
 }
 
 .item-quantity-controls {
@@ -330,7 +330,7 @@
     transform: translateY(-50%);
     z-index: 1000;
     background-color: var(--color-principal-oscuro);
-    color: white;
+    color: #FFFFFF;
     border: none;
     width: 40px;
     height: 40px;
@@ -361,7 +361,7 @@
         }
 
 .product-card {
-    background: white;
+    background: #FFFFFF;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -466,7 +466,7 @@
 
 .filter-btn.active {
     background-color: var(--color-principal-oscuro);
-    color: white;
+    color: #FFFFFF;
     border-color: var(--color-principal-oscuro);
 }
 
@@ -564,14 +564,14 @@
 
 #orderStatusModal .modal-header {
     background-color: var(--color-principal-oscuro);
-    color: white;
+    color: #FFFFFF;
     border-bottom: 2px solid var(--color-principal-oscuro);
 }
 
 #orderStatusModal .modal-title {
     font-family: 'Sono', sans-serif;
     font-weight: 800;
-    color: white;
+    color: #FFFFFF;
 }
 
 #orderStatusModal .btn-close {
@@ -601,7 +601,7 @@
 
     #orderStatusModal .filter-btn.active {
         background-color: var(--color-principal-oscuro);
-        color: white;
+        color: #FFFFFF;
         border-color: var(--color-principal-oscuro);
     }
 
@@ -613,7 +613,7 @@
 #orderStatusModal .page-item.active .page-link {
     background-color: var(--color-principal-oscuro);
     border-color: var(--color-principal-oscuro);
-    color: white;
+    color: #FFFFFF;
 }
 
 #orderStatusModal .page-link {
@@ -665,7 +665,7 @@
 
     #orderStatusModal .input-group button {
         background-color: var(--color-principal-oscuro);
-        color: white;
+        color: #FFFFFF;
         border-color: var(--color-principal-oscuro);
     }
 

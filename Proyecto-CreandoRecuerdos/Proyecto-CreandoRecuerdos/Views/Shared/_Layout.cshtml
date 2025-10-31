@@ -64,10 +64,9 @@
         <nav id="navbar" class="@navClass">
             <div class="container-fluid">
                 <a class="navbar-brand" href="@Url.Action("Inicio", "inicio")">
-                    <img src="@Url.Content("~/Templates/img/logo.png")" 
-                         alt="Logo" 
-                         class="logo-navbar"
-                    >
+                    <img src="@Url.Content("~/Templates/img/logo.png")"
+                         alt="Logo"
+                         class="logo-navbar">
                     <span style="font-family: 'Sono', sans-serif;">Creando Recuerdos</span>
                 </a>
 
@@ -218,9 +217,8 @@
                         </div>
                         <div class="mt-4">
                             <img src="@Url.Content("~/Templates/img/logo.png")"
-                                 alt="Logo" 
-                                 style="max-height: 80px; width: auto; background-color: white; border-radius: 8px;"
-                            >
+                                 alt="Logo"
+                                 style="max-height: 80px; width: auto; background-color: #FFFFFF; border-radius: 8px;">
                         </div>
 
                     </div>
@@ -252,7 +250,6 @@
 
     @if (TempData["SweetAlert"] != null)
     {
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
         <script>
             $(document).ready(function () {
                 var alertData = @Html.Raw(TempData["SweetAlert"]);
@@ -273,8 +270,55 @@
         document.addEventListener("DOMContentLoaded", function () {
             const navbar = document.querySelector(".navbar");
             const collapse = document.querySelector(".navbar-collapse");
+
             collapse.addEventListener("show.bs.collapse", () => navbar.classList.add("menu-abierto"));
             collapse.addEventListener("hide.bs.collapse", () => navbar.classList.remove("menu-abierto"));
+
+            const dropdownMap = {
+                "dropdownClientes": "clientes-section",
+                "dropdownInsumos": "insumos-section",
+                "dropdownAdmin": "admin-section",
+                "userDropdown": "profile-section"
+            };
+
+            function updateBarraTop() {
+                // Busca el dropdown actualmente abierto
+                const openDropdown = document.querySelector('.navbar .dropdown-menu.show');
+                // Elimina todas las clases de sección previas
+                Object.values(dropdownMap).forEach(cls => navbar.classList.remove(cls));
+                if (openDropdown && window.innerWidth <= 992 && navbar.classList.contains("menu-abierto")) {
+                    navbar.classList.add('dropdown-abierto');
+                    // Añade la clase de sección correspondiente
+                    const parentDropdown = openDropdown.closest('.dropdown');
+                    const toggle = parentDropdown ? parentDropdown.querySelector('.dropdown-toggle') : null;
+                    if (toggle && dropdownMap[toggle.id]) {
+                        navbar.classList.add(dropdownMap[toggle.id]);
+                    }
+                    // Calcula la posición de la barra
+                    const rect = openDropdown.getBoundingClientRect();
+                    const offset = rect.bottom - navbar.getBoundingClientRect().top;
+                    navbar.style.setProperty('--barra-top', offset + 'px');
+                } else {
+                    navbar.classList.remove('dropdown-abierto');
+                    navbar.style.removeProperty('--barra-top');
+                }
+            }
+
+            // Escucha ambos eventos en todos los dropdowns
+            document.querySelectorAll('.navbar .dropdown').forEach(function (dropdown) {
+                dropdown.addEventListener('shown.bs.dropdown', updateBarraTop);
+                dropdown.addEventListener('hidden.bs.dropdown', updateBarraTop);
+            });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 992) {
+                    navbar.classList.remove('dropdown-abierto');
+                    Object.values(dropdownMap).forEach(cls => navbar.classList.remove(cls));
+                    navbar.style.removeProperty('--barra-top');
+                } else {
+                    updateBarraTop();
+                }
+            });
         });
     </script>
 
@@ -283,6 +327,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 
     <!-- ================= SCRIPTS DE VISTAS ESPECÍFICAS ================= -->
     @RenderSection("Scripts", required: false)

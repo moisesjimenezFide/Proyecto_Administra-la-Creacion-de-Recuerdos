@@ -55,10 +55,10 @@ let ventas = [
         <td>₡${venta.totalVenta.toFixed(2)}</td>
         <td>
   <div class="d-flex justify-content-center gap-2">
-    <button class="btn btn-sm btn-danger text-white" onclick="eliminarVenta(${index})" style="white-space: nowrap; font-size: 0.8rem; padding: 0.3rem 0.6rem;">
+    <button class="btn btn-sm btn-danger text-white" onclick="eliminarVenta(${index})" style="#FFFFFF-space: nowrap; font-size: 0.8rem; padding: 0.3rem 0.6rem;">
       <i class="fas fa-trash-alt me-1"></i>Eliminar
     </button>
-    <button class="btn btn-sm text-white" style="background-color: #CC8FAE; white-space: nowrap; font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="editarVenta(${index})">
+    <button class="btn btn-sm text-white" style="background-color: #CC8FAE; #FFFFFF-space: nowrap; font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="editarVenta(${index})">
       <i class="fas fa-edit me-1"></i>Editar
     </button>
   </div>

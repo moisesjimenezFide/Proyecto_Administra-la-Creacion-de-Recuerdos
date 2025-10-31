@@ -43,7 +43,7 @@ body {
 
 .bg-admin {
     background-color: var(--color-principal-oscuro);
-    color: white;
+    color: #FFFFFF;
 }
 
 .bg-trabajador {
@@ -52,8 +52,8 @@ body {
 }
 
 .bg-activo {
-    background-color: #28a745;
-    color: white;
+    background-color: #28A745;
+    color: #FFFFFF;
 }
 
 .bg-usuario {
@@ -64,7 +64,7 @@ body {
 
 .bg-inactivo {
     background-color: #6c757d;
-    color: white;
+    color: #FFFFFF;
 }
 
 /* Estilos para los botones de acción */
@@ -95,8 +95,8 @@ body {
 }
 
 .btn-inactivar {
-    background-color: #dc3545;
-    color: white;
+    background-color: #DC3545;
+    color: #FFFFFF;
     border: none;
     padding: 6px 10px;
     border-radius: 4px;
@@ -104,12 +104,12 @@ body {
 }
 
     .btn-inactivar:hover {
-        background-color: #bb2d3b;
+        background-color: #BB2D3B;
     }
 
 .btn-activar {
-    background-color: #28a745; /* verde */
-    color: white;
+    background-color: #28A745; /* verde */
+    color: #FFFFFF;
     border: none;
     padding: 6px 10px;
     border-radius: 4px;

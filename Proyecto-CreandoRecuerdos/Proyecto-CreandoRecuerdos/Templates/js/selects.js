@@ -626,7 +626,7 @@ function guardarHorario() {
 
 // Función para mostrar mensajes
 function mostrarMensaje(mensaje, tipo) {
-    const color = tipo === 'success' ? '#28a745' : '#dc3545';
+    const color = tipo === 'success' ? '#28A745' : '#DC3545';
     const icono = tipo === 'success' ? 'check-circle' : 'exclamation-triangle';
 
     const mensajeDiv = document.createElement('div');
@@ -635,7 +635,7 @@ function mostrarMensaje(mensaje, tipo) {
                 top: 20px;
                 right: 20px;
                 background: ${color};
-                color: white;
+                color: #FFFFFF;
                 padding: 1rem 1.5rem;
                 border-radius: 8px;
                 z-index: 10001;
