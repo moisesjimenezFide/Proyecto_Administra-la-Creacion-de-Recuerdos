@@ -94,29 +94,4 @@ body {
     }
 }
 
-.btn-inactivar {
-    background-color: #DC3545;
-    color: #FFFFFF;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 4px;
-    transition: 0.3s;
-}
-
-    .btn-inactivar:hover {
-        background-color: #BB2D3B;
-    }
-
-.btn-activar {
-    background-color: #28A745; /* verde */
-    color: #FFFFFF;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 4px;
-    transition: 0.3s;
-}
-
-    .btn-activar:hover {
-        background-color: #218838;
-    }
 

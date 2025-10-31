@@ -1,5 +1,5 @@
 ﻿:root {
-    --color-principal-hover: #CC8FAE; /* Color principal rosa oscuro hover de marca */
+    --color-principal-hover-botones: #A04077; /* Color principal rosa oscuro hover botones de marca */
     --color-principal-oscuro: #B54885; /* Color principal rosa oscuro de marca */
     --color-acento: #FFD6EB; /* Rosa pastel claro */
     --color-dorado: #E8C495; /* Acento dorado */
@@ -11,39 +11,39 @@
 
 .btn-primary {
     background-color: var(--color-principal-oscuro);
-    color: #FFFFFF;
+    color: var(--color-texto-claro);
     border-color: var(--color-principal-oscuro);
 }
 
     .btn-primary:hover {
-        background-color: var(--color-principal-hover);
-        color: #FFFFFF;
-        border-color: var(--color-principal-hover);
+        background-color: var(--color-principal-hover-botones);
+        color: var(--color-texto-claro);
+        border-color: var(--color-principal-hover-botones);
     }
 
 .btn-modificar {
     background-color: var(--color-principal-oscuro);
-    color: #FFFFFF;
+    color: var(--color-texto-claro);
 }
 
     .btn-modificar:hover {
-        background-color: var(--color-principal-hover);
-        color: #FFFFFF;
+        background-color: var(--color-principal-hover-botones);
+        color: var(--color-texto-claro);
     }
 
 .btn-inactivar {
     background-color: #DC3545;
-    color: #FFFFFF;
+    color: var(--color-texto-claro);
 }
 
     .btn-inactivar:hover {
         background-color: #BB2D3B;
-        color: #FFFFFF;
+        color: var(--color-texto-claro);
     }
 
 .btn-activar {
     background-color: #28A745; /* verde */
-    color: #FFFFFF;
+    color: var(--color-texto-claro);
     border: none;
     padding: 6px 10px;
     border-radius: 4px;
@@ -52,16 +52,16 @@
 
     .btn-activar:hover {
         background-color: #218838;
-        color: #FFFFFF;
+        color: var(--color-texto-claro);
     }
 
 /* Botones refinados */
 .btn-outline-dark-pink {
     --bs-btn-color: var(--color-principal-oscuro);
     --bs-btn-border-color: var(--color-principal-oscuro);
-    --bs-btn-hover-color: #FFFFFF;
-    --bs-btn-hover-bg: var(--color-principal-hover);
-    --bs-btn-hover-border-color: var(--color-principal-hover);
+    --bs-btn-hover-color: var(--color-texto-claro);
+    --bs-btn-hover-bg: var(--color-principal-hover-botones);
+    --bs-btn-hover-border-color: var(--color-principal-hover-botones);
     --bs-btn-active-bg: var(--color-principal-oscuro);
     --bs-btn-active-border-color: var(--color-principal-oscuro);
     border: 2px solid var(--color-principal-oscuro);
@@ -75,7 +75,7 @@
 }
 
     .btn-outline-dark-pink:hover {
-        background: var(--color-principal-oscuro);
+        background: var(--color-principal-hover-botones);
         color: var(--color-texto-claro);
         box-shadow: 0 5px 15px rgba(255, 179, 198, 0.3);
         transform: translateY(-3px);
@@ -97,14 +97,14 @@
 }
 
 .btn-custom-pink {
-    background-color: #B54885;
-    color: #FFFFFF;
+    background-color: var(--color-principal-oscuro);
+    color: var(--color-texto-claro);
     border: none;
 }
 
     .btn-custom-pink:hover {
-        background-color: #CC8FAE;
-        color: #FFFFFF;
+        background-color: var(--color-principal-hover-botones);
+        color: var(--color-texto-claro);
     }
 
 .btn-group {
