@@ -80,7 +80,7 @@ div.dt-buttons {
 
         /* SOLO para los botones de texto largo, permite salto de línea */
         .dataTables_wrapper .dataTables_paginate .paginate_button.btn-paginacion-larga {
-            #FFFFFF-space: normal !important;
+            white-space: normal !important;
             word-break: normal !important; /* Evita cortar palabras */
             line-height: 1.1;
             min-width: 120px; /* Aumenta el ancho mínimo */
@@ -169,9 +169,12 @@ div.dt-buttons {
         color: #2C2C2C;
     }
 
-    .custom-dropdown-button:hover {
-        border-color: #CC8FAE;
-        box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
+    .custom-dropdown-button:hover,
+    .custom-dropdown-button:focus,
+    .custom-dropdown-button.open {
+        border-color: #B54885 !important;
+        border-width: 2px !important;
+        box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25) !important;
     }
 
 .custom-dropdown-menu {

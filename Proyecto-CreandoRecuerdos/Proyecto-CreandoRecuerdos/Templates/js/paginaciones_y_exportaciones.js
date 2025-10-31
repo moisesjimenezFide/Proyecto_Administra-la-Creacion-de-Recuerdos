@@ -189,8 +189,17 @@ $(document).ready(function () {
     $(document).on('click', '.custom-dropdown-button', function (e) {
         e.preventDefault();
         e.stopPropagation();
+        // Cierra otros menús y quita la clase .open de otros botones
         $('.custom-dropdown-menu').not($(this).siblings('.custom-dropdown-menu')).removeClass('show');
+        $('.custom-dropdown-button').not(this).removeClass('open');
+        // Alterna el menú actual
         $(this).siblings('.custom-dropdown-menu').toggleClass('show');
+        // Si el menú está abierto, agrega la clase .open al botón
+        if ($(this).siblings('.custom-dropdown-menu').hasClass('show')) {
+            $(this).addClass('open');
+        } else {
+            $(this).removeClass('open');
+        }
     });
 
     $(document).on('click', '.custom-dropdown-item', function (e) {
@@ -214,6 +223,7 @@ $(document).ready(function () {
     $(document).on('click', function (e) {
         if (!$(e.target).closest('.custom-length-dropdown').length) {
             $('.custom-dropdown-menu').removeClass('show');
+            $('.custom-dropdown-button').removeClass('open');
         }
     });
 

@@ -163,7 +163,7 @@
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
-    #FFFFFF-space: nowrap;
+    white-space: nowrap;
 }
 
 .item-quantity-controls {

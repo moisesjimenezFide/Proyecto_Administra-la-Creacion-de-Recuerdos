@@ -98,12 +98,14 @@ class CustomDatePicker {
     showCalendar() {
         if (!this.menu) return;
         this.menu.classList.add('show');
+        if (this.button) this.button.classList.add('open');
         this.renderCalendar();
     }
 
     hideCalendar() {
         if (!this.menu) return;
         this.menu.classList.remove('show');
+        if (this.button) this.button.classList.remove('open');
     }
 
     handleOutsideClick(e) {
@@ -375,11 +377,13 @@ class CustomTimePicker {
 
     showSelector() {
         this.menu.classList.add('show');
+        if (this.button) this.button.classList.add('open');
         this.renderSelector();
     }
 
     hideSelector() {
         this.menu.classList.remove('show');
+        if (this.button) this.button.classList.remove('open');
     }
 
     handleOutsideClick(e) {

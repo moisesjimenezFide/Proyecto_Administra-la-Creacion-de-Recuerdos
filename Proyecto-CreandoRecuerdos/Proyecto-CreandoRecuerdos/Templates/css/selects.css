@@ -6,20 +6,24 @@
     width: 100%;
 }
 
-
     .custom-select .custom-select-button {
         border: 2px solid #E9ECEF;
         border-radius: 8px;
-        padding: 0.5rem 2rem 0.5rem 1rem;
+        padding: 0.75rem 2rem 0.75rem 1rem;
         background-color: #F8F9FA;
         font-size: 14px;
         font-weight: 500;
-        color: #2C2C2C !important;
+        color: #2C2C2C;
         cursor: pointer;
         position: relative;
-        min-width: 80px;
-        width: 100%;
         text-align: left;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.3s ease;
+        min-height: 43px;
+        max-height: 43px;
+        width: 100%;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         user-select: none;
@@ -36,8 +40,11 @@
             color: #2C2C2C;
         }
 
-        .custom-select .custom-select-button:hover {
-            border-color: #CC8FAE !important;
+        .custom-select .custom-select-button:hover,
+        .custom-select .custom-select-button:focus,
+        .custom-select .custom-select-button.open {
+            border-color: #B54885 !important;
+            border-width: 2px !important;
             box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25) !important;
         }
 
@@ -53,7 +60,7 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         z-index: 1000;
         display: none;
-        max-height: 200px;
+        max-height: 250px;
         overflow-y: auto;
     }
 
@@ -62,12 +69,13 @@
         }
 
     .custom-select .custom-select-item {
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1rem;
         cursor: pointer;
+        transition: all 0.2s ease;
         font-size: 14px;
         font-weight: 500;
         color: #2C2C2C !important;
-        border-bottom: 1px solid #F8F9FA;
+        border-bottom: 1px solid #E9ECEF;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         user-select: none;
@@ -142,9 +150,12 @@ select.form-select.custom-hidden {
         }
 
         /* Efecto hover del botón */
-        .custom-datepicker .datepicker-input:hover {
-            border-color: #B54885;
-            box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
+        .custom-datepicker .datepicker-input:hover,
+        .custom-datepicker .datepicker-input:focus,
+        .custom-datepicker .datepicker-input.open{
+            border-color: #B54885 !important;
+            border-width: 2px !important;
+            box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25) !important;
         }
 
             .custom-datepicker .datepicker-input:hover .calendar-icon {
@@ -328,9 +339,12 @@ select.form-select.custom-hidden {
     transition: none !important;
 }
 
-    .form-control:not(.custom-datepicker, .datepicker-input):focus {
-        border-color: #80BDFF !important;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    .form-control:not(.custom-datepicker, .datepicker-input):focus
+    .form-control:not(.custom-datepicker, .datepicker-input):hover,
+    .form-control:not(.custom-datepicker, .datepicker-input).open {
+        border-color: #B54885 !important;
+        border-width: 2px !important;
+        box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25) !important;
     }
 
 /* El calendario flotante */
@@ -400,10 +414,12 @@ select.form-select.custom-hidden {
             transition: color 0.3s ease;
         }
 
-        /* Efecto hover del botón */
-        .custom-timepicker .timepicker-input:hover {
-            border-color: #B54885;
-            box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25);
+        .custom-timepicker .timepicker-input:hover
+        .custom-timepicker .timepicker-input:focus,
+        .custom-timepicker .timepicker-input.open {
+            border-color: #B54885 !important;
+            border-width: 2px !important;
+            box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25) !important;
         }
 
             .custom-timepicker .timepicker-input:hover .clock-icon {

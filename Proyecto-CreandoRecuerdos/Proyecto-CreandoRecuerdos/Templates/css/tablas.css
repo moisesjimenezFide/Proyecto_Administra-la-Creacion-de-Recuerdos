@@ -33,7 +33,7 @@
 
     .tabla-global th,
     .tabla-global td {
-        #FFFFFF-space: nowrap;
+        white-space: nowrap;
         overflow: hidden;
         vertical-align: middle;
         padding: 0.5rem;
