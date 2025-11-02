@@ -39,11 +39,24 @@
 
 <body data-error-message="@ViewBag.ErrorMessage" data-success-message="@TempData["SuccessMessage"]">
 
+    @using System.Security.Claims
     @{
-        var rol = Session["Rol"]?.ToString();
-        var nombre = Session["NombreUsuario"]?.ToString();
-        var id = Session["IdUsuario"]?.ToString();
+        var user = User as ClaimsPrincipal;
+        var nombre = user?.FindFirst(ClaimTypes.Name)?.Value;
+        var rol = user?.FindFirst(ClaimTypes.Role)?.Value;
+        var id = user?.FindFirst("IdUsuario")?.Value;
     }
+
+
+
+    <div style="background:#222; color:#0f0; padding:10px; font-family:monospace;">
+        <p><strong>DEBUG JWT</strong></p>
+        <p>Nombre: @nombre</p>
+        <p>Rol: @rol</p>
+        <p>ID: @id</p>
+        <p>¿User.Identity.IsAuthenticated?: @(User?.Identity?.IsAuthenticated ?? false)</p>
+    </div>
+
 
     <div id="container-wrap2">
         <div id="iconElement" class="icon-class"></div>
@@ -121,7 +134,7 @@
                                     Admin
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownAdmin">
-                                    <li><a class="dropdown-item" asp-controller="gestion" href="@Url.Action("gestion_usuarios", "Registro_Usuarios")" asp-action="Gestionar">Gestión de usuarios</a></li>
+                                    <li><a class="dropdown-item" asp-controller="gestion" href="@Url.Action("gestion_usuarios", "Registro_Usuarios")" asp-action="Gestionar">Gestión de usuariossss</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("Empleados", "Empleados")">Empleados</a></li>
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("GestionSolicitudesAusencias", "Ausencias")">
@@ -152,7 +165,7 @@
                         @if (rol == null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-uppercase" href="@Url.Action("registro_usuarios", "Registro_Usuarios")">Registrarse</a>
+                                <a class="nav-link text-uppercase" href="@Url.Action("iniciar_sesion", "Registro_Usuarios")">Registrarse</a>
                             </li>
                         }
                         else

@@ -1,25 +1,9 @@
-﻿<!-- Mensaje dinámico desde ViewBag -->
-@if (ViewBag.Mensaje != null)
-{
-    <div style="text-align:center; margin-top:50px;">
-        <h1 style="color:#e74c3c;">🚫 Acceso Denegado</h1>
-        <p>@ViewBag.Mensaje</p>
-
-        <p>Por favor, contacta a un administrador si crees que esto es un error aaa .</p>
-        <a href="@Url.Action("inicio", "Inicio")" style="color:#3498db; text-decoration:none;">Volver al inicio</a>
-    </div>
-
-}
-else
-{
-
-    <div style="text-align:center; margin-top:50px;">
-        <h1 style="color:#e74c3c;">🚫 Acceso Denegado</h1>
-        <p>No tienes permisos para acceder a esta sección.</p>
-        <p>Por favor, contacta a un administrador si crees que esto es un error. aaa</p>
-        <a href="@Url.Action("inicio", "Inicio")" style="color:#3498db; text-decoration:none;">Volver al inicio</a>
-    </div>
-
+﻿@{
+    ViewBag.Title = "Acceso Denegado";
 }
 
-
+<div class="text-center mt-5">
+    <h2 class="text-danger">🚫 Acceso Denegado</h2>
+    <p>No tienes permisos para acceder a esta sección.</p>
+    <a href="@Url.Action("inicio", "Inicio")" class="btn btn-primary">Volver al inicio</a>
+</div>

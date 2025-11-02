@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Proyecto_CreandoRecuerdos.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using System.Net;
 
 namespace Proyecto_CreandoRecuerdos
 {
@@ -24,6 +26,22 @@ namespace Proyecto_CreandoRecuerdos
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+        }
+        protected void Application_AuthenticateRequest(object sender, EventArgs e)
+        {
+            var cookie = HttpContext.Current.Request.Cookies["JWT"];
+            if (cookie == null) return;
+
+            try
+            {
+                var principal = JwtManager.ValidateToken(cookie.Value);
+                HttpContext.Current.User = principal;
+                Thread.CurrentPrincipal = principal;
+            }
+            catch
+            {
+                // token inválido o expirado → no se autentica
+            }
         }
 
     }

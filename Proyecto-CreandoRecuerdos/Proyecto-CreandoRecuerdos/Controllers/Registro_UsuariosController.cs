@@ -1,4 +1,6 @@
 ﻿using Proyecto_CreandoRecuerdos.base_de_datos;
+using Proyecto_CreandoRecuerdos.Filters;
+using Proyecto_CreandoRecuerdos.Helpers;
 using Proyecto_CreandoRecuerdos.Models;
 using System;
 using System.Linq;
@@ -14,42 +16,48 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         Utilitarios util = new Utilitarios();
 
 
-        [HttpGet]
-        public ActionResult registro_usuarios()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public ActionResult registro_usuarios()
+        //{
+        //    return View();
+        //}
 
         [HttpGet]
         public ActionResult logout()
         {
-            // 🔹 Limpiar toda la información de sesión
+            // 🔹 Borrar todas las variables de sesión
             Session.Clear();
             Session.RemoveAll();
             Session.Abandon();
 
-            // 🔹 Eliminar cookies de autenticación (si existen)
+            // 🔹 Eliminar cookie de sesión normal (por compatibilidad)
             if (Request.Cookies["ASP.NET_SessionId"] != null)
             {
-                var c = new HttpCookie("ASP.NET_SessionId", "");
-                c.Expires = DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(c);
+                var sessionCookie = new HttpCookie("ASP.NET_SessionId", "")
+                {
+                    Expires = DateTime.Now.AddDays(-1)
+                };
+                Response.Cookies.Add(sessionCookie);
             }
 
-            if (Request.Cookies[".ASPXAUTH"] != null)
+            // 🔹 Eliminar cookie del JWT
+            if (Request.Cookies["JWT"] != null)
             {
-                var c = new HttpCookie(".ASPXAUTH", "");
-                c.Expires = DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(c);
+                var jwtCookie = new HttpCookie("JWT", "")
+                {
+                    Expires = DateTime.Now.AddDays(-1)
+                };
+                Response.Cookies.Add(jwtCookie);
             }
 
-            // 🔹 Evitar caché (para que no pueda volver atrás)
+            // 🔹 Desactivar caché del navegador
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.Cache.SetNoStore();
 
-            // 🔹 Redirigir al formulario de login
-            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+            // 🔹 Redirigir al login o registro
+            return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
         }
+
 
 
 
@@ -102,9 +110,27 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 {
                     if (info.Resultado == 1)
                     {
+                        // 🟢 Crear token JWT con los datos del usuario
+                        var token = JwtManager.GenerateToken(
+                            info.NombreUsuario,
+                            info.RolID.ToString(),
+                            1 // minutos de expiración
+                        );
+
+                        // 🟢 Guardar el token en una cookie
+                        var cookie = new HttpCookie("JWT", token)
+                        {
+                            HttpOnly = false, // evita acceso por JS
+                            Secure = false,   // solo HTTPS
+                            Expires = DateTime.UtcNow.AddMinutes(1)
+                        };
+                        Response.Cookies.Add(cookie);
+
+                       
                         Session["IdUsuario"] = info.UsuarioID;
                         Session["NombreUsuario"] = info.NombreUsuario;
                         Session["Rol"] = info.RolID;
+
                         return RedirectToAction("inicio", "Inicio");
                     }
 
