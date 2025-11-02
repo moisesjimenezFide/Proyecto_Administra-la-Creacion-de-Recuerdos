@@ -376,7 +376,7 @@
     <Compile Include="Controllers\PedidosController.cs" />
     <Compile Include="Controllers\Registro_UsuariosController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
-    <Compile Include="Filters\AutorizacionFilter.cs" />
+    <Compile Include="Filters\NoCacheAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

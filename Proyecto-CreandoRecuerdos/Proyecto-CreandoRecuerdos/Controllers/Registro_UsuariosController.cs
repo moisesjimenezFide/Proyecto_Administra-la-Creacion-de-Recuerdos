@@ -4,8 +4,8 @@ using System;
 using System.Linq;
 using System.Text;
 using System.util;
+using System.Web;
 using System.Web.Mvc;
-using Proyecto_CreandoRecuerdos.Filters;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
@@ -13,11 +13,46 @@ namespace Proyecto_CreandoRecuerdos.Controllers
     {
         Utilitarios util = new Utilitarios();
 
+
         [HttpGet]
         public ActionResult registro_usuarios()
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult logout()
+        {
+            // 🔹 Limpiar toda la información de sesión
+            Session.Clear();
+            Session.RemoveAll();
+            Session.Abandon();
+
+            // 🔹 Eliminar cookies de autenticación (si existen)
+            if (Request.Cookies["ASP.NET_SessionId"] != null)
+            {
+                var c = new HttpCookie("ASP.NET_SessionId", "");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
+
+            if (Request.Cookies[".ASPXAUTH"] != null)
+            {
+                var c = new HttpCookie(".ASPXAUTH", "");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
+
+            // 🔹 Evitar caché (para que no pueda volver atrás)
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetNoStore();
+
+            // 🔹 Redirigir al formulario de login
+            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+        }
+
+
+
 
         [HttpGet]
         public ActionResult iniciar_sesion()
@@ -92,18 +127,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult cerrar_sesion()
-        {
-            Session.Abandon();  // Finaliza la sesión
-            return RedirectToAction("registro_usuarios", "Registro_Usuarios");
-        }
 
-        [AutorizacionFilter(1)]
-        //1.Admin
-        //2.Trabajador
-        //3.Cliente
-        //[AutorizacionFilter(1, 2)] 
+
+
 
         [HttpGet]
         public ActionResult gestion_usuarios(string search = null, string fecha = null)

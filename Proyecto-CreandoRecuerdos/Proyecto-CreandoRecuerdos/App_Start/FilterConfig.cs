@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using Proyecto_CreandoRecuerdos.Filters; 
 
 namespace Proyecto_CreandoRecuerdos
 {
@@ -8,6 +9,7 @@ namespace Proyecto_CreandoRecuerdos
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new NoCacheAttribute()); 
         }
     }
 }
