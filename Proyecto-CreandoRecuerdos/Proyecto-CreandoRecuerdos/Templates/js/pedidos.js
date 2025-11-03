@@ -236,27 +236,37 @@ class SistemaPedidos {
         const grid = document.getElementById('productGrid');
         if (!grid) return;
 
-        grid.innerHTML = productos.map(producto => `
-            <div class="col-md-4 mb-3 product-item" data-id="${producto.id_producto}">
-                <div class="card h-100">
-                    <img src="/Templates/img/menu/${producto.img_url || 'default.jpg'}" 
-                         class="card-img-top" 
-                         alt="${producto.nombre}"
-                         onerror="this.src='/Templates/img/menu/default.jpg'">
-                    <div class="card-body">
-                        <h5 class="card-title">${producto.nombre}</h5>
-                        <p class="card-text">${producto.descripcion || 'Sin descripción'}</p>
-                        <p class="text-muted">₡${producto.precio_por_unidad?.toLocaleString('es-CR') || '0'}</p>
-                        <button class="btn btn-sm btn-primary add-to-cart"
+        grid.innerHTML = productos.map(producto => {
+            const precio = producto.precio_por_unidad || 0;
+            const precioValido = precio > 0 && precio >= 1;
+
+            return `
+        <div class="col-md-4 mb-3 product-item" data-id="${producto.id_producto}">
+            <div class="card h-100">
+                <img src="/Templates/img/menu/${producto.img_url || 'default.jpg'}" 
+                     class="card-img-top" 
+                     alt="${producto.nombre}"
+                     onerror="this.src='/Templates/img/menu/default.jpg'">
+                <div class="card-body">
+                    <h5 class="card-title">${producto.nombre}</h5>
+                    <p class="card-text">${producto.descripcion || 'Sin descripción'}</p>
+                    <p class="text-muted">₡${precio.toLocaleString('es-CR') || '0'}</p>
+                    ${precioValido ?
+                    `<button class="btn btn-sm btn-primary add-to-cart"
                             data-id="${producto.id_producto}"
                             data-name="${producto.nombre}"
-                            data-price="${producto.precio_por_unidad}">
+                            data-price="${precio}">
                             <i class="fas fa-plus"></i> Agregar
-                        </button>
-                    </div>
+                        </button>` :
+                    `<div class="alert alert-warning small mb-0">
+                            <i class="fas fa-info-circle"></i> Por favor leer la descripción del producto.
+                        </div>`
+                }
                 </div>
             </div>
-        `).join('');
+        </div>
+        `;
+        }).join('');
     }
 
     agregarAlCarrito(btn) {

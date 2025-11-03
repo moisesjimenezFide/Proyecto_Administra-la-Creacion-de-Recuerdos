@@ -39,8 +39,8 @@
                         <div class="card-body text-center">
                             <i class="fas fa-bread-slice fa-3x mb-3 dark-pink"></i>
                             <h3 class="card-title" style="font-family: 'Sono', sans-serif;">Menú</h3>
-                            <p class="card-text">Administra los productos disponibles.</p>
-                            <a href="#" class="btn btn-outline-dark-pink mt-2">Ir al Menú</a>
+                            <p class="card-text">Consulta todos los productos disponibles en nuestro menú.</p>
+                            <a  href="@Url.Action("Menu", "menu")" class="btn btn-outline-dark-pink mt-2">Ir al Menú</a>
                         </div>
                     </div>
                 </div>
@@ -49,10 +49,10 @@
                 <div class="col-md-4">
                     <div class="card h-100">
                         <div class="card-body text-center">
-                            <i class="fas fa-users fa-3x mb-3 dark-pink"></i>
-                            <h3 class="card-title" style="font-family: 'Sono', sans-serif;">Clientes</h3>
-                            <p class="card-text">Registra y gestiona clientes.</p>
-                            <a href="#" class="btn btn-outline-dark-pink mt-2">Ver Clientes</a>
+                            <i class="fas fa-shopping-basket fa-3x mb-3 dark-pink"></i>
+                            <h3 class="card-title" style="font-family: 'Sono', sans-serif;">Pedidos</h3>
+                            <p class="card-text">Realiza tus pedidos en línea.</p>
+                            <a href="@Url.Action("Pedidos", "Pedidos")" class="btn btn-outline-dark-pink mt-2">Pedir</a>
                         </div>
                     </div>
                 </div>
@@ -61,10 +61,10 @@
                 <div class="col-md-4">
                     <div class="card h-100">
                         <div class="card-body text-center">
-                            <i class="fas fa-file-invoice-dollar fa-3x mb-3 dark-pink"></i>
-                            <h3 class="card-title" style="font-family: 'Sono', sans-serif;">Ventas</h3>
-                            <p class="card-text">Historial de transacciones.</p>
-                            <a href="#" class="btn btn-outline-dark-pink mt-2">Ver Ventas</a>
+                            <i class="fas fa-user-plus fa-3x mb-3 dark-pink"></i>
+                            <h3 class="card-title" style="font-family: 'Sono', sans-serif;">Registro</h3>
+                            <p class="card-text">Conviértete en nuestro cliente al registrarte en nuestra página.</p>
+                            <a href="@Url.Action("Registro_Usuarios", "registro_usuarios")" class="btn btn-outline-dark-pink mt-2">Registrarme</a>
                         </div>
                     </div>
                 </div>
