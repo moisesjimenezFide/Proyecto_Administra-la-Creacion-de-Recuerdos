@@ -385,6 +385,39 @@ function agregarFila(containerId, templateClass) {
     if (typeof calcularPrecioFinalProductoFinal === 'function') {
         calcularPrecioFinalProductoFinal();
     }
+
+    // --- INTEGRACIÓN DE VALIDACIÓN DINÁMICA ---
+    if (containerId === "materias_primas-container") {
+        aplicarValidacionFilaReceta(newRow, index, "materia");
+        // Fuerza la validación en los nuevos inputs
+        newRow.find('input, select').each(function () {
+            $("#formCostosRecetas").validate().element(this);
+        });
+    }
+    if (containerId === "productos_preparados-container") {
+        aplicarValidacionFilaReceta(newRow, index, "producto");
+        newRow.find('input, select').each(function () {
+            $("#formCostosRecetas").validate().element(this);
+        });
+    }
+    if (containerId === "empaques_decoraciones-container") {
+        aplicarValidacionFilaProductoFinal(newRow, index, "empaque");
+        newRow.find('input, select').each(function () {
+            $("#formPreciosFinalesSugeridos").validate().element(this);
+        });
+    }
+    if (containerId === "implementos-container") {
+        aplicarValidacionFilaProductoFinal(newRow, index, "implemento");
+        newRow.find('input, select').each(function () {
+            $("#formPreciosFinalesSugeridos").validate().element(this);
+        });
+    }
+    if (containerId === "suministros-container") {
+        aplicarValidacionFilaProductoFinal(newRow, index, "suministro");
+        newRow.find('input, select').each(function () {
+            $("#formPreciosFinalesSugeridos").validate().element(this);
+        });
+    }
 }
 
 function eliminarFila(boton) {
@@ -761,7 +794,7 @@ $(document).ready(function () {
         });
     }*/
 
-// Vaciar selects al darle cancelar
+    // Vaciar selects al darle cancelar
     const cancelButton = document.querySelector('button[type="reset"]');
 
     if (cancelButton) {
@@ -792,5 +825,4 @@ $(document).ready(function () {
             });
         });
     }
-
 });

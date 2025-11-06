@@ -5,6 +5,7 @@
 
 @section Styles {
     <link href="@Url.Content("~/Templates/css/tablas.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/validaciones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/paginaciones_y_exportaciones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
@@ -103,18 +104,23 @@
     <!-- Formulario -->
     <div class="card mb-4">
         <div class="card-body">
-            <form action="@Url.Action("GuardarHorario", "Horarios")" method="post">
+            <form id="horarioForm" class="needs-validation" action="@Url.Action("GuardarHorario", "Horarios")" method="post" novalidate>
                 <input type="hidden" name="id_horario" value="0" />
 
                 <div class="row mb-3">
                     <div class="col-md-3 mb-3 text-start">
-                        <label class="form-label fw-bold">Empleado</label>
-                        @Html.DropDownList("id_usuario", ViewBag.Empleados as List<SelectListItem>, "-- Seleccione --", new { @class = "form-select", required = "required" })
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Empleado</label>
+                            <div>
+                                @Html.DropDownList("id_usuario", ViewBag.Empleados as List<SelectListItem>, "-- Seleccione --", new { @class = "form-select" })
+                                <span class="invalid-feedback"></span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-6 mb-3 text-start">
                         <label class="form-label fw-bold">Días de la semana</label>
-                        <div class="d-flex flex-wrap gap-3">
+                        <div id="diasSemanaContainer" class="d-flex flex-wrap gap-3">
                             @foreach (var dia in new[] { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo" })
                             {
                                 <label class="custom-checkbox d-flex align-items-center" style="cursor:pointer; gap:8px;">
@@ -124,9 +130,10 @@
                                 </label>
                             }
                         </div>
+                        <span class="invalid-feedback" id="diasSemanaError"></span>
                     </div>
 
-                    <div class="col-md-3 ms-auto mb-3 text-start d-flex flex-column">
+                    <div class="col-md-3 ms-auto mb-3 text-start">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Hora Entrada</label>
                             <div class="custom-timepicker" data-input="hora_entrada">
@@ -137,10 +144,13 @@
                                     <!-- El contenido se genera dinámicamente -->
                                 </div>
                             </div>
-                            <input type="text" id="hora_entrada" name="hora_entrada" class="hidden-input" required>
+                            <div>
+                                <input type="text" id="hora_entrada" name="hora_entrada" class="hidden-input">
+                                <span class="invalid-feedback"></span>
+                            </div>
                         </div>
 
-                        <div>
+                        <div class="mb-3">
                             <label class="form-label fw-bold">Hora Salida</label>
                             <div class="custom-timepicker" data-input="hora_salida">
                                 <div class="timepicker-input">
@@ -149,7 +159,11 @@
                                 <div class="timepicker-selector">
                                     <!-- El contenido se genera dinámicamente -->
                                 </div>
-                            </div><input type="text" id="hora_salida" name="hora_salida" class="hidden-input" required>
+                            </div>
+                            <div>
+                                <input type="text" id="hora_salida" name="hora_salida" class="hidden-input">
+                                <span class="invalid-feedback"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -201,9 +215,10 @@
 @section Scripts {
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" defer></script>
-    <script src="~/Templates/js/paginaciones_y_exportaciones.js" defer></script>
-    <script src="~/Templates/js/selects.js" defer></script>
-    <script src="~/Templates/js/empleados.js" defer></script>
+    <script src="@Url.Content("~/Templates/js/paginaciones_y_exportaciones.js")" defer></script>
+    <script src="@Url.Content("~/Templates/js/selects.js")" defer></script>
+    <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>
+    <script src="@Url.Content("~/Templates/js/empleados.js")" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');

@@ -6,7 +6,7 @@
 @section Styles {
     <link href="@Url.Content("~/Templates/css/pedidos.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
-
+    <link href="@Url.Content("~/Templates/css/validaciones.css")" rel="stylesheet" />
     <style>
 
         .pos-container {
@@ -315,7 +315,8 @@
 </div>
 
 @section Scripts {
-    <script src="~/Templates/js/pedidos.js"></script>
+    <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>
+    <script src="@Url.Content("~/Templates/js/pedidos.js")"></script>
     <script>
         // SCRIPTS HECHOS CON LA AYUDA DE IA
         // Función para obtener el ícono según la categoría
@@ -373,7 +374,7 @@
         var iconos = new Dictionary<string, string>
 {
             { "Desayunos", "fa-coffee" },
-            { "Paninis", "fa-bread-slice" },
+            { "Panini", "fa-bread-slice" },
             { "Crepes", "fa-blender" },
             { "Pastas", "fa-pizza-slice" },
             { "Arroz", "fa-utensils" },

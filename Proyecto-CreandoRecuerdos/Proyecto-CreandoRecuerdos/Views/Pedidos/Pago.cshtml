@@ -2,6 +2,7 @@
 
 @section Styles {
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/validaciones.css")" rel="stylesheet" />
 }
 
 <div class="pago-container">
@@ -96,6 +97,7 @@
 </div>
 
 @section Scripts {
+    <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>
     <script>
         // Función para calcular el cambio en efectivo
         function calcularCambio(total) {
@@ -117,7 +119,7 @@
             }
         }
 
-        // Validación de teléfono SINPE
+        /* Validación de teléfono SINPE
         function validarTelefonoSinpe(telefono) {
             return /^\d{8}$/.test(telefono);
         }
@@ -126,7 +128,7 @@
             const valido = validarTelefonoSinpe(e.target.value);
             e.target.classList.toggle('is-invalid', !valido);
             e.target.classList.toggle('is-valid', valido);
-        });
+        });*/
 
         // Botón confirmar pago
         document.getElementById('confirmarPago').addEventListener('click', function () {

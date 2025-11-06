@@ -33,8 +33,13 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         }
 
         [HttpPost]
-        public ActionResult GuardarHorario(int id_usuario, string[] dias_semana, TimeSpan hora_entrada, TimeSpan hora_salida)
+        public ActionResult GuardarHorario(int? id_usuario, string[] dias_semana, TimeSpan? hora_entrada, TimeSpan? hora_salida)
         {
+            if (id_usuario == null || dias_semana == null || hora_entrada == null || hora_salida == null)
+            {
+                ModelState.AddModelError("", "Todos los campos son obligatorios.");
+                return RedirectToAction("Horarios");
+            }
 
             if (dias_semana == null)
             {
@@ -49,10 +54,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 {
                     var horario = new tabla_horarios
                     {
-                        id_usuario = id_usuario,
+                        id_usuario = id_usuario.Value,
                         dia_semana = dia,
-                        hora_entrada = hora_entrada,
-                        hora_salida = hora_salida,
+                        hora_entrada = hora_entrada.Value,
+                        hora_salida = hora_salida.Value,
                         activo = true
                     };
 

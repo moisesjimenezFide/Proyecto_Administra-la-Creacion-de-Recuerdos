@@ -1,0 +1,487 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.InsumosModel
+
+@{
+    bool editando = (ViewBag.Editando != null) ? (bool)ViewBag.Editando : false;
+    var productoFinalEditado = Model.ProductoFinalEditado != null ? Model.ProductoFinalEditado : new Proyecto_CreandoRecuerdos.Models.ProductoFinal();
+    string textoBoton = editando ? "Actualizar" : "Agregar";
+    string accion = editando ? "EditarProductoFinal" : "CrearProductoFinal";
+}
+
+<!-- Formulario de registro/edición -->
+<div class="container">
+    <h4 class="mb-3"><strong>@(ViewBag.Editando == true ? "Edición de Productos Finales" : "Registro de Productos Finales")</strong></h4>
+    @using (Html.BeginForm(accion, "Insumos", FormMethod.Post, new { @class = "needs-validation", id = "formPreciosFinalesSugeridos" }))
+    {
+        @Html.AntiForgeryToken()
+
+        if (editando)
+        {
+            @:<input type="hidden" name="id" value="@productoFinalEditado.id" />
+        }
+
+        <div class="mb-3 text-start">
+            <label for="titulo_receta_seleccionada" class="form-label" name="nombre_receta" id="nombre_receta">Receta Seleccionada</label>
+            <div class="col-md-4">
+                @Html.DropDownList(
+                    "id_receta",
+                    ViewBag.Recetas as IEnumerable<SelectListItem>,
+                    "Seleccione una receta",
+                    new { @class = "form-control" }
+                )
+            </div>
+            <input type="hidden" id="costo_total_receta" name="costo_total_receta" value="@(editando ? productoFinalEditado.costo_total_receta.ToString() : " 0")" />
+            <span class="invalid-feedback"></span>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="margen_de_utilidad" class="form-label">Margen de Utilidad (%)</label>
+            <div class="input-group">
+                <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" value="@(editando ? productoFinalEditado.margen_de_utilidad.ToString("0.##") : "")" min="0" max="100" />
+                <span class="input-group-text">%</span>
+            </div>
+            <span class="invalid-feedback d-block"></span>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="plataforma_de_envio" class="form-label">Plataforma de Envío</label>
+            <select name="plataforma_de_envio" id="plataforma_de_envio" class="form-control" required="required">
+                <option value="">Seleccione una plataforma de envío</option>
+                <option value="Propio (0%)" @(editando && productoFinalEditado?.plataforma_de_envio == "Propio (0%)" ? "selected" : "")>Propio (0%)</option>
+                <option value="PedidosYa (25%)" @(editando && productoFinalEditado?.plataforma_de_envio == "PedidosYa (25%)" ? "selected" : "")>PedidosYa (25%)</option>
+                <option value="Rappi (25%)" @(editando && productoFinalEditado?.plataforma_de_envio == "Rappi (25%)" ? "selected" : "")>Rappi (25%)</option>
+                <option value="DidiFood (30%)" @(editando && productoFinalEditado?.plataforma_de_envio == "DidiFood (30%)" ? "selected" : "")>DidiFood (30%)</option>
+                <option value="UberEats (40%)" @(editando && productoFinalEditado?.plataforma_de_envio == "UberEats (40%)" ? "selected" : "")>UberEats (40%)</option>
+            </select>
+            <span class="invalid-feedback"></span>
+        </div>
+
+        <!-- EMPAQUES y/o DECORACIONES -->
+        <h4>Empaques y/o Decoraciones Utilizados(as)</h4>
+        <div id="empaques_decoraciones-container">
+            @if (editando && productoFinalEditado?.EmpaquesDecoracionesUtilizados != null && productoFinalEditado.EmpaquesDecoracionesUtilizados.Count > 0)
+            {
+                for (int i = 0; i < productoFinalEditado.EmpaquesDecoracionesUtilizados.Count; i++)
+                {
+                    var item = productoFinalEditado.EmpaquesDecoracionesUtilizados[i];
+
+                    <div class="row fila-insumo">
+                        <div class="col-md-4">
+                            <br>
+                            <label>Nombre</label>
+                            @Html.DropDownList(
+                                $"EmpaquesDecoracionesUtilizados[{i}].id_empaque_decoracion_utilizado",
+                                new SelectList(ViewBag.EmpaquesDecoraciones as SelectList, "Value", "Text", item.id_empaque_decoracion_utilizado),
+                                "Seleccione un empaque o decoración",
+                                new { @class = "form-control" }
+                            )
+                            <span class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <br>
+                            <label>Cantidad</label>
+                            <input type="number" name="EmpaquesDecoracionesUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
+                            <span class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <br>
+                            <label>Unidad de medida</label>
+                            <input type="text" name="EmpaquesDecoracionesUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
+                            <span class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <br>
+                            <br>
+                            <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
+                        </div>
+
+                    </div>
+                }
+            }
+
+            <div class="row fila-insumo template-empaque_decoracion" style="display: none;">
+                <div class="col-md-4">
+                    <br>
+                    <label>Nombre</label>
+                    @Html.DropDownList("EmpaquesDecoracionesUtilizados[__index__].id_empaque_decoracion_utilizado",
+                    ViewBag.EmpaquesDecoraciones as SelectList,
+                    "Seleccione un empaque o decoración",
+                    new { @class = "form-control" })
+                    <span class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <br>
+                    <label>Cantidad</label>
+                    <input type="number" name="EmpaquesDecoracionesUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
+                    <span class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <br>
+                    <label>Unidad de medida</label>
+                    <input type="text" name="EmpaquesDecoracionesUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
+                    <span class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <br>
+                    <br>
+                    <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
+                </div>
+
+            </div>
+
+            <button type="button" class="btn btn-custom-pink mt-2 btn-agregar-fila" data-container="empaques_decoraciones-container" data-template="template-empaque_decoracion">+ Agregar Empaque o Decoración</button>
+        </div>
+        <br />
+
+        <!-- IMPLEMENTOS -->
+        <h4>Implementos Utilizados</h4>
+        <div id="implementos-container">
+            @if (editando && productoFinalEditado?.ImplementosUtilizados != null && productoFinalEditado.ImplementosUtilizados.Count > 0)
+            {
+                for (int i = 0; i < productoFinalEditado.ImplementosUtilizados.Count; i++)
+                {
+                    var item = productoFinalEditado.ImplementosUtilizados[i];
+
+                    <div class="row fila-insumo">
+                        <div class="col-md-3">
+                            <br>
+                            <label>Nombre</label>
+                            @Html.DropDownList(
+                            $"ImplementosUtilizados[{i}].id_implemento_utilizado",
+                            new SelectList(ViewBag.Implementos as SelectList, "Value", "Text", item.id_implemento_utilizado),
+                            "Seleccione un implemento",
+                            new { @class = "form-control" }
+                        )
+                            <span class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <br>
+                            <label>Cantidad</label>
+                            <input type="number" name="ImplementosUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
+                            <span class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <br>
+                            <label>Unidad de medida</label>
+                            <input type="text" name="ImplementosUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
+                            <span class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <br>
+                            <br>
+                            <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
+                        </div>
+                    </div>
+                }
+            }
+
+            <div class="row fila-insumo template-implemento" style="display: none;">
+                <div class="col-md-3">
+                    <br>
+                    <label>Nombre</label>
+                    @Html.DropDownList("ImplementosUtilizados[__index__].id_implemento_utilizado",
+                    ViewBag.Implementos as SelectList,
+                    "Seleccione un implemento",
+                    new { @class = "form-control" })
+                    <span class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <br>
+                    <label>Cantidad</label>
+                    <input type="number" name="ImplementosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
+                    <span class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <br>
+                    <label>Unidad de medida</label>
+                    <input type="text" name="ImplementosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
+                    <span class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <br>
+                    <br>
+                    <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
+                </div>
+
+            </div>
+
+            <button type="button" class="btn btn-custom-pink mt-2 btn-agregar-fila" data-container="implementos-container" data-template="template-implemento">+ Agregar Implemento</button>
+        </div>
+        <br />
+
+        <!-- SUMINISTROS -->
+        <h4>Suministros Utilizados</h4>
+        <div id="suministros-container">
+            @if (editando && productoFinalEditado?.SuministrosUtilizados != null && productoFinalEditado.SuministrosUtilizados.Count > 0)
+            {
+                for (int i = 0; i < productoFinalEditado.SuministrosUtilizados.Count; i++)
+                {
+                    var item = productoFinalEditado.SuministrosUtilizados[i];
+
+                    <div class="row fila-insumo">
+                        <div class="col-md-3">
+                            <br>
+                            <label>Nombre</label>
+                            @Html.DropDownList(
+                            $"SuministrosUtilizados[{i}].id_suministro_utilizado",
+                            new SelectList(ViewBag.Suministros as SelectList, "Value", "Text", item.id_suministro_utilizado),
+                            "Seleccione un suministro",
+                            new { @class = "form-control" }
+                        )
+                            <span class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <br>
+                            <label>Cantidad</label>
+                            <input type="number" name="SuministrosUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
+                            <span class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <br>
+                            <label>Unidad de medida</label>
+                            <input type="text" name="SuministrosUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
+                            <span class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-5 align-items-start">
+                            <div class="row">
+                                <div class="col-9">
+                                    <br>
+                                    <label class="form-label mb-0" style="font-weight: normal;">¿Es un suministro de impresión?</label>
+                                    <div class=" text-center">
+                                        <label class="custom-checkbox">
+                                            <input type="checkbox" name="SuministrosUtilizados[@i].es_impresion_de_facturas" @(item.es_impresion_de_facturas ? "checked" : "") />
+                                            <span><i class="fa-solid fa-check"></i></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-3 d-flex align-items-center justify-content-end">
+                                    <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            }
+
+            <div class="row fila-insumo template-suministro" style="display: none;">
+                <div class="col-md-3">
+                    <br>
+                    <label>Nombre</label>
+                    @Html.DropDownList("SuministrosUtilizados[__index__].id_suministro_utilizado",
+                   ViewBag.Suministros as SelectList,
+                   "Seleccione un suministro",
+                   new { @class = "form-control" })
+                    <span class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <br>
+                    <label>Cantidad</label>
+                    <input type="number" name="SuministrosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
+                    <span class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <br>
+                    <label>Unidad de medida</label>
+                    <input type="text" name="SuministrosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
+                    <span class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-5 align-items-start">
+                    <div class="row">
+                        <div class="col-9">
+                            <br>
+                            <label class="form-label mb-0" style="font-weight: normal;">¿Es un suministro de impresión?</label>
+                            <div class="text-center">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" name="SuministrosUtilizados[__index__].es_impresion_de_facturas" />
+                                    <span><i class="fa-solid fa-check"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center justify-content-end">
+                            <button type="button" class="btn btn-danger btn-eliminar-fila">- Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <button type="button" class="btn btn-custom-pink mt-2 btn-agregar-fila" data-container="suministros-container" data-template="template-suministro">+ Agregar Suministro</button>
+        </div>
+        <br />
+
+        <div class="mb-3 text-start">
+            <label for="porcentaje_de_iva" class="form-label">Porcentaje de IVA (%)</label>
+            <div class="input-group">
+                <input type="number" name="porcentaje_de_iva" id="porcentaje_de_iva" class="form-control" value="@(editando ? productoFinalEditado.porcentaje_de_iva.ToString("0.##") : "")" min="0" max="100" step="0.01" />
+                <span class="input-group-text">%</span>
+            </div>
+            <span class="invalid-feedback d-block"></span>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="porcentaje_de_servicio" class="form-label">Porcentaje de de Servicio (%)</label>
+            <div class="input-group">
+                <input type="number" name="porcentaje_de_servicio" id="porcentaje_de_servicio" class="form-control" value="@(editando ? productoFinalEditado.porcentaje_de_servicio.ToString("0.##") : "")" min="0" max="100" step="0.01" />
+                <span class="input-group-text">%</span>
+            </div>
+            <span class="invalid-feedback d-block"></span>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo de Receta (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_receta" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo sin Margen de Utilidad (%):</label>
+            <div class="result-symbol">
+                <label id="costo_sin_margen_de_utilidad" class="form-result">0.00</label>
+                <span class="input-symbol-right">%</span>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo con Margen de Utilidad (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_con_margen_de_utilidad" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo Empaques/Decoraciones (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_empaque_decoracion_utilizado" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo Implementos (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_implemento_utilizado" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo Suministros (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_suministro_utilizado" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo Total de Insumos (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_total_insumos" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo de Impresión Factura por Insumo (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_de_impresion_de_factura_por_insumo" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo Total de Impresión de Factura (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_total_de_impresion_de_factura" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Factura por Insumo (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="factura_por_insumo" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Factura Total (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="factura_total" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo Total de Insumos por Porcentaje de Ganancia (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo con IVA (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_con_iva" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo con Servicio (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_con_servicio" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Envío (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="envio" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Precio Final Sugerido (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="precio_final_sugerido" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+            @if (editando)
+            {
+                <a href="@Url.Action("precios_finales_sugeridos", "Insumos")" class="btn btn-secondary">Salir</a>
+            }
+
+            <button type="reset" class="btn btn-danger">Cancelar</button>
+            <button type="submit" class="btn btn-custom-pink">@textoBoton</button>
+
+        </div>
+
+    }
+</div>

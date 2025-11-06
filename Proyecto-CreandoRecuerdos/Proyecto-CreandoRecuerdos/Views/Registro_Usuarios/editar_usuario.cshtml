@@ -5,6 +5,7 @@
 
 @section Styles {
     <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/validaciones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
 }
 
@@ -16,22 +17,26 @@
         @Html.LabelFor(m => m.nombre)
         @Html.TextBoxFor(m => m.nombre, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.nombre)
+        <span class="invalid-feedback"></span>
     </div>
 
     <div class="form-group">
         @Html.Label("Correo")
         <input type="text" class="form-control" value="@Model.correo" disabled />
+        <span class="invalid-feedback"></span>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.id_rol, "Rol")
         @Html.DropDownListFor(m => m.id_rol, Model.RolesDisponibles, "--Seleccione un rol--", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.id_rol)
+        <span class="invalid-feedback"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
 }
 
 @section Scripts {
-    <script src="~/Templates/js/selects.js" defer></script>
+    <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>
+    <script src="@Url.Content("~/Templates/js/selects.js")" defer></script>
 }

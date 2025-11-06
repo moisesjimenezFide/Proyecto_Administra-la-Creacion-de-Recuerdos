@@ -6,27 +6,12 @@
 @section Styles {
     <link href="@Url.Content("~/Templates/css/menu.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/validaciones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/tablas.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/paginaciones_y_exportaciones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
 
     <style>
-        .form-control.is-invalid {
-            border-color: #DC3545;
-        }
-
-        .invalid-feedback {
-            display: none;
-            width: 100%;
-            margin-top: 0.25rem;
-            font-size: 0.875em;
-            color: #DC3545;
-        }
-
-        .is-invalid ~ .invalid-feedback {
-            display: block;
-        }
-
         .nav-tabs .nav-link {
             color: #B54885;
             border: 1px solid #B54885;
@@ -156,7 +141,8 @@
 @section Scripts {
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" defer></script>
-    <script src="~/Templates/js/paginaciones_y_exportaciones.js" defer></script>
-    <script src="~/Templates/js/selects.js" defer></script>
-    <script src="~/Templates/js/empleados.js" defer></script>
+    <script src="@Url.Content("~/Templates/js/paginaciones_y_exportaciones.js")" defer></script>
+    <script src="@Url.Content("~/Templates/js/selects.js")" defer></script>
+    <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>
+    <script src="@Url.Content("~/Templates/js/empleados.js")" defer></script>
 }

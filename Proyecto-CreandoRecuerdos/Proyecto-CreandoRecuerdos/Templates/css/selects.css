@@ -107,6 +107,15 @@ select.form-select.custom-hidden {
     top: 0;
 }
 
+.hidden-input {
+    opacity: 0 !important;
+    position: absolute !important;
+    pointer-events: none !important;
+    width: 100% !important;
+    left: 0;
+    top: 0;
+}
+
 /* === ESTILOS PARA SELECTORES DE FECHA PERSONALIZADOS === */
 
 /* Contenedor principal del selector */
@@ -152,7 +161,7 @@ select.form-select.custom-hidden {
         /* Efecto hover del botón */
         .custom-datepicker .datepicker-input:hover,
         .custom-datepicker .datepicker-input:focus,
-        .custom-datepicker .datepicker-input.open{
+        .custom-datepicker .datepicker-input.open {
             border-color: #B54885 !important;
             border-width: 2px !important;
             box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25) !important;
@@ -422,9 +431,9 @@ select.form-select.custom-hidden {
             box-shadow: 0 0 0 0.2rem rgba(226, 122, 176, 0.25) !important;
         }
 
-            .custom-timepicker .timepicker-input:hover .clock-icon {
-                color: #B54885;
-            }
+        .custom-timepicker .timepicker-input:hover .clock-icon {
+            color: #B54885;
+        }
 
     /* El selector flotante */
     .custom-timepicker .timepicker-selector {
@@ -578,9 +587,4 @@ select.form-select.custom-hidden {
     .custom-timepicker {
         width: 100% !important;
     }
-}
-
-/* Inputs ocultos */
-.hidden-input {
-    display: none;
 }

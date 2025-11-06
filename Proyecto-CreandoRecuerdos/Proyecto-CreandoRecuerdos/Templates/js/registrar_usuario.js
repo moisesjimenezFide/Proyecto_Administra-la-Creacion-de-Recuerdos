@@ -24,7 +24,7 @@ function initFormHandlers() {
         });
     });
 
-    // Validación de coincidencia de contraseñas
+    /* Validación de coincidencia de contraseñas
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', function (e) {
@@ -36,7 +36,7 @@ function initFormHandlers() {
                 showSweetAlert('error', '¡Error!', 'Las contraseñas no coinciden. Por favor, verifica.');
             }
         });
-    }
+    }*/
 
     // Mostrar mensajes del servidor
     showServerMessages();
@@ -52,7 +52,7 @@ async function showSweetAlert(icon, title, text) {
         icon: icon,
         title: title,
         text: text,
-        confirmButtonColor: '#CC8FAE'
+        confirmButtonColor: '#B54885'
     });
 }
 
@@ -112,7 +112,7 @@ async function initFormHandlers() {
         });
     });
 
-    // Validación de contraseñas
+    /* Validación de contraseñas
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', async function (e) {
@@ -124,7 +124,7 @@ async function initFormHandlers() {
                 await showSweetAlert('error', '¡Error!', 'Las contraseñas no coinciden. Por favor, verifica.');
             }
         });
-    }
+    }*/
 
     // Mostrar mensajes del servidor
     await showServerMessages();

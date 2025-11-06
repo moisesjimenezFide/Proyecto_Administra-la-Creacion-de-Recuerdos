@@ -6,131 +6,133 @@
 
 @section Styles {
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/validaciones.css")" rel="stylesheet" />
+    <style>
+        .rating-stars {
+            font-size: 2rem;
+            color: #ffc107;
+            cursor: pointer;
+        }
+
+            .rating-stars i {
+                margin: 0 5px;
+            }
+    </style>
 }
 
-    <div class="container mt-4">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h4><i class="fas fa-star me-2"></i> Valorar Pedido @Model.NumeroPedido</h4>
-            </div>
-            <div class="card-body">
-                @if (TempData["ErrorMessage"] != null)
-                {
-                    <div class="alert alert-danger">
-                        @TempData["ErrorMessage"]
-                    </div>
-                }
-
-                <form id="formValoracion" method="post" action="@Url.Action("RegistrarValoracion", "Pedidos")">
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" name="IdPedido" value="@Model.IdPedido" />
-                    @if (!string.IsNullOrEmpty(pin))
-                    {
-                        <input type="hidden" name="pin" value="@pin" />
-                    }
-
-                    <div class="text-center mb-4">
-                        <p>¿Cómo calificarías tu experiencia con este pedido?</p>
-                        <div class="rating-stars mb-3">
-                            @for (int i = 1; i <= 5; i++)
-                            {
-                                <i class="far fa-star fa-2x star" data-rating="@i"></i>
-                            }
-                            <input type="hidden" id="Calificacion" name="Calificacion" value="@Model.Calificacion" />
-                        </div>
-                        <div id="ratingError" class="text-danger"></div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="Comentarios" class="form-label">Comentarios (opcional)</label>
-                        <textarea class="form-control" id="Comentarios" name="Comentarios" rows="4"
-                                  maxlength="500" placeholder="¿Qué te gustó o qué podríamos mejorar?">@Model.Comentarios</textarea>
-                        <div class="text-end">
-                            <small class="text-muted"><span id="charsLeft">500</span> caracteres restantes</small>
-                        </div>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane me-2"></i> Enviar Valoración
-                        </button>
-                        <a href="@Url.Action("MisPedidos", "Pedidos", new { pin = pin })" class="btn btn-secondary ms-2">
-                            <i class="fas fa-arrow-left me-2"></i> Volver
-                        </a>
-                    </div>
-                </form>
-            </div>
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4><i class="fas fa-star me-2"></i> Valorar Pedido @Model.NumeroPedido</h4>
         </div>
-    </div>
-
-    @section Scripts {
-        <script>
-            $(document).ready(function () {
-                // Manejar selección de estrellas
-                $('.star').hover(
-                    function () {
-                        const rating = $(this).data('rating');
-                        highlightStars(rating);
-                    },
-                    function () {
-                        const currentRating = $('#Calificacion').val() || 0;
-                        highlightStars(currentRating);
-                    }
-                );
-
-                $('.star').click(function () {
-                    const rating = $(this).data('rating');
-                    $('#Calificacion').val(rating);
-                    highlightStars(rating);
-                    $('#ratingError').text('');
-                });
-
-                function highlightStars(rating) {
-                    $('.star').each(function () {
-                        if ($(this).data('rating') <= rating) {
-                            $(this).removeClass('far').addClass('fas');
-                        } else {
-                            $(this).removeClass('fas').addClass('far');
-                        }
-                    });
-                }
-
-                // Inicializar estrellas si ya hay una calificación
-                if ($('#Calificacion').val() > 0) {
-                    highlightStars($('#Calificacion').val());
-                }
-
-                // Contador de caracteres
-                $('#Comentarios').on('input', function () {
-                    const remaining = 500 - $(this).val().length;
-                    $('#charsLeft').text(remaining);
-                });
-
-                // Validación del formulario
-                $('#formValoracion').submit(function (e) {
-                    if (!$('#Calificacion').val()) {
-                        e.preventDefault();
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Calificación requerida',
-                            text: 'Por favor selecciona una calificación con las estrellas'
-                        });
-                        $('html, body').animate({
-                            scrollTop: $('.rating-stars').offset().top - 100
-                        }, 500);
-                    }
-                });
-            });
-        </script>
-        <style>
-            .rating-stars {
-                font-size: 2rem;
-                color: #ffc107;
-                cursor: pointer;
+        <div class="card-body">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
             }
 
-                .rating-stars i {
-                    margin: 0 5px;
+            <form id="formValoracion" method="post" action="@Url.Action("RegistrarValoracion", "Pedidos")">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="IdPedido" value="@Model.IdPedido" />
+                @if (!string.IsNullOrEmpty(pin))
+                {
+                    <input type="hidden" name="pin" value="@pin" />
                 }
-        </style>
-    }
+
+                <div class="text-center mb-4">
+                    <p>¿Cómo calificarías tu experiencia con este pedido?</p>
+                    <div class="rating-stars mb-3">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <i class="far fa-star fa-2x star" data-rating="@i"></i>
+                        }
+                        <input type="hidden" id="Calificacion" name="Calificacion" value="@Model.Calificacion" />
+                    </div>
+                    <div id="ratingError" class="text-danger"></div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="Comentarios" class="form-label">Comentarios (opcional)</label>
+                    <textarea class="form-control" id="Comentarios" name="Comentarios" rows="4"
+                              maxlength="500" placeholder="¿Qué te gustó o qué podríamos mejorar?">@Model.Comentarios</textarea>
+                    <div class="text-end">
+                        <small class="text-muted"><span id="charsLeft">500</span> caracteres restantes</small>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane me-2"></i> Enviar Valoración
+                    </button>
+                    <a href="@Url.Action("MisPedidos", "Pedidos", new { pin = pin })" class="btn btn-secondary ms-2">
+                        <i class="fas fa-arrow-left me-2"></i> Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>
+    <script>
+        $(document).ready(function () {
+            // Manejar selección de estrellas
+            $('.star').hover(
+                function () {
+                    const rating = $(this).data('rating');
+                    highlightStars(rating);
+                },
+                function () {
+                    const currentRating = $('#Calificacion').val() || 0;
+                    highlightStars(currentRating);
+                }
+            );
+
+            $('.star').click(function () {
+                const rating = $(this).data('rating');
+                $('#Calificacion').val(rating);
+                highlightStars(rating);
+                $('#ratingError').text('');
+            });
+
+            function highlightStars(rating) {
+                $('.star').each(function () {
+                    if ($(this).data('rating') <= rating) {
+                        $(this).removeClass('far').addClass('fas');
+                    } else {
+                        $(this).removeClass('fas').addClass('far');
+                    }
+                });
+            }
+
+            // Inicializar estrellas si ya hay una calificación
+            if ($('#Calificacion').val() > 0) {
+                highlightStars($('#Calificacion').val());
+            }
+
+            // Contador de caracteres
+            $('#Comentarios').on('input', function () {
+                const remaining = 500 - $(this).val().length;
+                $('#charsLeft').text(remaining);
+            });
+
+            // Validación del formulario
+            $('#formValoracion').submit(function (e) {
+                if (!$('#Calificacion').val()) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Calificación requerida',
+                        text: 'Por favor selecciona una calificación con las estrellas'
+                    });
+                    $('html, body').animate({
+                        scrollTop: $('.rating-stars').offset().top - 100
+                    }, 500);
+                }
+            });
+        });
+    </script>
+}

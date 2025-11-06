@@ -1,0 +1,41 @@
+﻿.form-control.is-invalid {
+    border: 2px solid #DC3545;
+}
+
+#diasSemanaError.invalid-feedback {
+    display: block !important;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #DC3545;
+    font-weight: bold;
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
+    font-weight: bold;
+}
+
+.invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-weight: bold !important;
+    color: #DC3545 !important;
+}
+
+.input-group {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+}
+
+    .input-group .form-control {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .input-group .input-group-text {
+        align-items: center;
+        display: flex;
+    }

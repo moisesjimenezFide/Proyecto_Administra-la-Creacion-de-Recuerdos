@@ -1,0 +1,156 @@
+﻿@model Proyecto_CreandoRecuerdos.Models.InsumosModel
+
+@{
+    bool editando = (ViewBag.Editando != null) ? (bool)ViewBag.Editando : false;
+    var productoPreparadoEditado = Model.ProductoPreparadoEditado != null ? Model.ProductoPreparadoEditado : new Proyecto_CreandoRecuerdos.Models.ProductoPreparado();
+    string textoBoton = editando ? "Actualizar" : "Agregar";
+    string accion = editando ? "EditarProductoPreparado" : "CrearProductoPreparado";
+}
+
+<!-- Formulario de registro/edición -->
+<div class="container">
+    <h4 class="mb-3"><strong>@(ViewBag.Editando == true ? "Edición de Productos Preparados" : "Registro de Productos Preparados")</strong></h4>
+    @using (Html.BeginForm(accion, "Insumos", FormMethod.Post, new { @class = "needs-validation", id = "formProductoPreparado" }))
+    {
+        @Html.AntiForgeryToken()
+
+        if (editando)
+        {
+            @:<input type="hidden" name="id" value="@productoPreparadoEditado.id" />
+        }
+
+        <div class="mb-3 text-start">
+            <label for="tipo" class="form-label">Tipo</label>
+            <input type="text" name="tipo" id="tipo" class="form-control" value="@(editando ? productoPreparadoEditado.tipo : "")" />
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("tipo"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["tipo"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="form-control" value="@(editando ? productoPreparadoEditado.nombre : "")" />
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="marca" class="form-label">Marca</label>
+            <input type="text" name="marca" id="marca" class="form-control" value="@(editando ? productoPreparadoEditado.marca : "")" />
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("marca"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["marca"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="presentacion" class="form-label">Presentación</label>
+            <input type="text" name="presentacion" id="presentacion" class="form-control" value="@(editando ? productoPreparadoEditado.presentacion : "")" />
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("presentacion"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["presentacion"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" name="cantidad" id="cantidad" class="form-control" value="@(editando ? productoPreparadoEditado.cantidad.ToString() : "")" min="1" />
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="volumen_de_porcion_de_presentacion" class="form-label">Volumen de Porción de Presentación</label>
+            <input type="number" name="volumen_de_porcion_de_presentacion" id="volumen_de_porcion_de_presentacion" class="form-control" value="@(editando ? (productoPreparadoEditado.volumen_de_porcion_de_presentacion.HasValue ? productoPreparadoEditado.volumen_de_porcion_de_presentacion.Value.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "") : "")" step="0.01" lang="en" />
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("volumen_de_porcion_de_presentacion"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["volumen_de_porcion_de_presentacion"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="unidad_de_medida_de_presentacion" class="form-label">Unidad de Medida de Presentación</label>
+            <input type="text" name="unidad_de_medida_de_presentacion" id="unidad_de_medida_de_presentacion" class="form-control" value="@(editando ? productoPreparadoEditado.unidad_de_medida_de_presentacion : "")" />
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida_de_presentacion"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida_de_presentacion"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="proveedor" class="form-label">Proveedor</label>
+            <input type="text" name="proveedor" id="proveedor" class="form-control" value="@(editando ? productoPreparadoEditado.proveedor : "")" />
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("proveedor"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["proveedor"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="costo" class="form-label">Costo</label>
+            <div class="input-group">
+                <span class="input-group-text">₡</span>
+                <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? productoPreparadoEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />
+            </div>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("costo"))
+            {
+                <span class="invalid-feedback d-block" style="display:block">@ViewBag.ErroresPorCampo["costo"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label for="unidad_de_medida_del_peso" class="form-label">Unidad de Medida del peso</label>
+            <input type="text" name="unidad_de_medida_del_peso" id="unidad_de_medida_del_peso" class="form-control" value="@(editando ? productoPreparadoEditado.unidad_de_medida_del_peso : "")" />
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida_del_peso"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida_del_peso"]</span>
+            }
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Volumen de Porción Convertido:</label>
+            <div class="result-symbol">
+                <label id="volumen_de_porcion_convertido" class="form-result">0.00</label>
+                <span class="input-symbol-right" id="unidad_volumen_convertido_span"></span>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Peso Total:</label>
+            <div class="result-symbol">
+                <label id="peso" class="form-result">0.00</label>
+                <span class="input-symbol-right" id="unidad_peso_span"></span>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo por Peso (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_por_peso" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="mb-3 text-start">
+            <label class="form-label">Costo por Porción con Merma (₡):</label>
+            <div class="result-symbol">
+                <span class="input-symbol-left">₡</span>
+                <label id="costo_por_porcion_con_merma" class="form-result">0.00</label>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+            @if (editando)
+            {
+                <a href="@Url.Action("productos_preparado", "Insumos")" class="btn btn-secondary">Salir</a>
+            }
+            <button type="reset" class="btn btn-danger">Cancelar</button>
+            <button type="submit" class="btn btn-custom-pink">@textoBoton</button>
+        </div>
+    }
+</div>

@@ -9,6 +9,7 @@
 @section Styles {
     <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/validaciones.css")" rel="stylesheet" />
     <style>
         .form-container {
             display: none;
@@ -180,12 +181,14 @@
                             <label class="form-label fw-bold">Correo Electrónico</label>
                             @Html.TextBoxFor(x => x.correo, new { @class = "form-control", @id = "login-username", @placeholder = "correo@ejemplo.com", @type = "email", @required = "true" })
                             @Html.ValidationMessageFor(x => x.correo, "", new { @class = "text-danger" })
+                            <span class="invalid-feedback"></span>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Contraseña</label>
                             @Html.TextBoxFor(x => x.contrasenna, new { @class = "form-control", @type = "password", @id = "Password", @placeholder = "**********", @required = "true" })
                             @Html.ValidationMessageFor(x => x.contrasenna, "", new { @class = "text-danger" })
+                            <span class="invalid-feedback"></span>
                         </div>
 
                         <div class="d-grid mb-3">
@@ -209,23 +212,27 @@
                             <label class="form-label fw-bold">Nombre</label>
                             @Html.TextBoxFor(x => x.nombre, new { @class = "form-control", @placeholder = "Tu nombre completo", @required = "true" })
                             @Html.ValidationMessageFor(x => x.nombre, "", new { @class = "text-danger" })
+                            <span class="invalid-feedback"></span>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Correo Electrónico</label>
                             @Html.TextBoxFor(x => x.correo, new { @class = "form-control", @type = "email", @placeholder = "correo@ejemplo.com", @required = "true" })
                             @Html.ValidationMessageFor(x => x.correo, "", new { @class = "text-danger" })
+                            <span class="invalid-feedback"></span>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Contraseña</label>
                             @Html.Password("password", null, new { @class = "form-control", @id = "password", @placeholder = "Mínimo 8 caracteres", @required = "true" })
+                            <span class="invalid-feedback"></span>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Confirmar Contraseña</label>
                             @Html.TextBoxFor(x => x.contrasenna, new { @class = "form-control", @type = "password", @id = "confirmPassword", @placeholder = "Repetir cotraseña", @required = "true" })
                             @Html.ValidationMessageFor(x => x.contrasenna, "", new { @class = "text-danger" })
+                            <span class="invalid-feedback"></span>
                         </div>
 
                         <div class="d-grid gap-2 mb-3">
@@ -247,5 +254,6 @@
 </div>
 
 @section Scripts {
-    <script src="~/Templates/js/registrar_usuario.js"></script>
+    <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>
+    <script src="@Url.Content("~/Templates/js/registrar_usuario.js")"></script>
 }

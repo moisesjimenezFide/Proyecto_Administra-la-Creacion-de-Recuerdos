@@ -1,13 +1,18 @@
 using Microsoft.Ajax.Utilities;
+using Org.BouncyCastle.Crypto;
 using Proyecto_CreandoRecuerdos.base_de_datos;
 using Proyecto_CreandoRecuerdos.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Windows;
 
 public class InsumosController : Controller
 {
     private BD_CREANDO_RECUERDOSEntities db = new BD_CREANDO_RECUERDOSEntities();
+
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
 
     /* Materias Primas */
 
@@ -71,7 +76,41 @@ public class InsumosController : Controller
             }).ToList()
         };
         ViewBag.Search = search;
+        ViewBag.Editando = false;
         return View(materia_prima);
+    }
+
+    [HttpGet]
+    public JsonResult VerificarDuplicadoMateriaPrima(
+    string nombre, string marca, string presentacion, int? cantidad,
+    decimal? volumen_de_porcion_de_presentacion, string unidad_de_medida_de_presentacion,
+    string proveedor, decimal? costo, string unidad_de_medida_del_peso, int id = 0)
+    {
+        nombre = nombre?.Trim().ToLower() ?? "";
+        marca = marca?.Trim().ToLower() ?? "";
+        presentacion = presentacion?.Trim().ToLower() ?? "";
+        unidad_de_medida_de_presentacion = unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
+        proveedor = proveedor?.Trim().ToLower() ?? "";
+        unidad_de_medida_del_peso = unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
+
+        int cantidadVal = cantidad ?? 0;
+        decimal volumenVal = volumen_de_porcion_de_presentacion ?? 0m;
+        decimal costoVal = costo ?? 0m;
+
+        bool isUnique = !db.tabla_materias_primas.Any(mp =>
+            mp.id != id &&
+            (mp.nombre ?? "").Trim().ToLower() == nombre &&
+            (mp.marca ?? "").Trim().ToLower() == marca &&
+            (mp.presentacion ?? "").Trim().ToLower() == presentacion &&
+            (mp.cantidad ?? 0) == cantidadVal &&
+            (mp.volumen_de_porcion_de_presentacion ?? 0m) == volumenVal &&
+            (mp.unidad_de_medida_de_presentacion ?? "").Trim().ToLower() == unidad_de_medida_de_presentacion &&
+            (mp.proveedor ?? "").Trim().ToLower() == proveedor &&
+            (mp.costo ?? 0m) == costoVal &&
+            (mp.unidad_de_medida_del_peso ?? "").Trim().ToLower() == unidad_de_medida_del_peso
+        );
+
+        return Json(new { isUnique }, JsonRequestBehavior.AllowGet);
     }
 
     // Crear una nueva materia prima
@@ -112,91 +151,54 @@ public class InsumosController : Controller
             }
         }
 
-        // Unidades permitidas
+        var erroresPorCampo = new Dictionary<string, string>();
+
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(materia_prima.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(materia_prima.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(materia_prima.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (materia_prima.cantidad <= 0)
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a 0.";
+        if (materia_prima.volumen_de_porcion_de_presentacion == null || materia_prima.volumen_de_porcion_de_presentacion <= 0m)
+            erroresPorCampo["volumen_de_porcion_de_presentacion"] = "El volumen debe ser mayor a 0.";
+        if (string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_de_presentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "La unidad es obligatoria.";
+        if (string.IsNullOrWhiteSpace(materia_prima.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
+        if (materia_prima.costo <= 0.99m)
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
+        if (string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_del_peso))
+            erroresPorCampo["unidad_de_medida_del_peso"] = "La unidad es obligatoria.";
+        if (materia_prima.merma_total_en_gramos != null && materia_prima.merma_total_en_gramos < 0m)
+            erroresPorCampo["merma_total_en_gramos"] = "No puede ser negativa.";
+
+        // Validaciones de unidades
         var unidadesPresentacion = new[] { "kg", "kilo", "kilos", "kilogramo", "kilogramos", "g", "gr", "grs", "gramo", "gramos", "l", "litro", "litros", "ml", "mililitro", "mililitros" };
         var unidadesPeso = new[] { "g", "gr", "grs", "gramo", "gramos", "ml", "mililitro", "mililitros" };
         var unidadesPresentacionMayorA0 = new[] { "g", "grs", "gramos", "kilos", "kilogramos", "l", "litros", "ml", "mililitros" };
-        var unidadesPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
+        var unidadPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
 
         string unidadPresentacion = materia_prima.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
         string unidadPeso = materia_prima.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
         decimal volumen = materia_prima.volumen_de_porcion_de_presentacion ?? 0m;
 
-        var errores = new List<string>();
+        if (!string.IsNullOrWhiteSpace(unidadPresentacion) && !unidadesPresentacion.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Unidad de medida de presentación no permitida.";
+        if (!string.IsNullOrWhiteSpace(unidadPeso) && !unidadesPeso.Contains(unidadPeso))
+            erroresPorCampo["unidad_de_medida_del_peso"] = "Unidad de medida del peso no permitida.";
 
-        // Normalizar valores para comparación
-        string nombre = materia_prima.nombre?.Trim().ToLower() ?? "";
-        string marca = materia_prima.marca?.Trim().ToLower() ?? "";
-        string presentacion = materia_prima.presentacion?.Trim().ToLower() ?? "";
-        int cantidad = materia_prima.cantidad;
-        decimal? volumenDePorciondePresentacion = materia_prima.volumen_de_porcion_de_presentacion;
-        string unidadDeMedidaDePresentacion = materia_prima.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
-        string proveedor = materia_prima.proveedor?.Trim().ToLower() ?? "";
-        decimal? costo = materia_prima.costo;
-        string unidadDeMedidaDelPeso = materia_prima.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
+        if (volumen > 0m && volumen != 1m && !unidadesPresentacionMayorA0.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Si el volumen es mayor a 0 y distinto de 1, solo se permiten palabras plurales.";
+        if (volumen == 1m && !unidadPresentacionIgualA1.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Si el volumen es igual a 1, solo se permiten palabras singulares.";
 
-        // Duplicado exacto (todos los campos)
-        bool existeExacto = db.tabla_materias_primas.Any(m =>
-            m.nombre.ToLower() == nombre &&
-            m.marca.ToLower() == marca &&
-            m.presentacion.ToLower() == presentacion &&
-            m.cantidad == cantidad &&
-            m.volumen_de_porcion_de_presentacion == volumenDePorciondePresentacion &&
-            m.unidad_de_medida_de_presentacion.ToLower() == unidadDeMedidaDePresentacion.ToLower() &&
-            m.proveedor.ToLower() == proveedor &&
-            m.costo == costo &&
-            m.unidad_de_medida_del_peso.ToLower() == unidadDeMedidaDelPeso
-        );
-        if (existeExacto)
+        if (erroresPorCampo.Any())
         {
-            errores.Add("Ya existe una materia prima con los mismos datos");
-        }
-
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(materia_prima.nombre) ||
-            string.IsNullOrWhiteSpace(materia_prima.marca) ||
-            string.IsNullOrWhiteSpace(materia_prima.presentacion) ||
-            materia_prima.cantidad <= 0 ||
-            string.IsNullOrWhiteSpace(materia_prima.volumen_de_porcion_de_presentacion.ToString()) ||
-            string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_de_presentacion) ||
-            string.IsNullOrWhiteSpace(materia_prima.proveedor) ||
-            string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_del_peso))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
-
-        if (materia_prima.costo <= 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
-
-        if (materia_prima.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a 0.");
-
-        if (materia_prima.volumen_de_porcion_de_presentacion <= 0m)
-            errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
-
-        if (materia_prima.merma_total_en_gramos < 0m)
-            errores.Add("La merma total en gramos no puede ser negatcosto_con_iva.");
-
-        if (!unidadesPresentacion.Contains(unidadPresentacion))
-            errores.Add("Unidad de medida de presentación no permitida.");
-
-        if (!unidadesPeso.Contains(unidadPeso))
-            errores.Add("Unidad de medida del peso no permitida.");
-
-        if (volumen > 0m && volumen != 1m)
-        {
-            if (!unidadesPresentacionMayorA0.Contains(unidadPresentacion))
-                errores.Add("Si el volumen de porción de presentación mayor a 0.00 y distinto de 1.00, solo se permiten palabras plurales (g, grs, gramos, kilos, kilogramos, l, litros, ml, mililitros.).");
-        }
-        else if (volumen == 1m)
-        {
-            if (!unidadesPresentacionIgualA1.Contains(unidadPresentacion))
-                errores.Add("Si el volumen de porción de presentación igual a 1.00, solo se permiten palabras singurales (g, gr, gramo, kilo, kilogramo, l, litro, ml, mililitro.).");
-        }
-
-        if (errores.Any())
-        {
-            ViewBag.Errores = errores;
+            ViewBag.ErroresPorCampo = erroresPorCampo;
+            ViewBag.Editando = false;
             var lista = db.tabla_materias_primas.Select(mp => new MateriaPrima
             {
                 id = mp.id,
@@ -219,11 +221,16 @@ public class InsumosController : Controller
                 costo_total_mas_merma_total = mp.costo_total_mas_merma_total,
                 costo_por_gramo_con_merma = mp.costo_por_gramo_con_merma
             }).ToList();
-            return View("materias_primas", new InsumosModel
+            var modelo = new InsumosModel
             {
                 MateriaPrimaEditado = materia_prima,
                 MateriasPrimas = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioMateriaPrima", modelo);
+
+            return View("materias_primas", modelo);
         }
 
         db.tabla_materias_primas.Add(new tabla_materias_primas
@@ -244,7 +251,11 @@ public class InsumosController : Controller
         });
         db.SaveChanges();
         db.Database.ExecuteSqlCommand("EXEC sp_calculos_materiaprima");
-        TempData["SuccessMessage"] = "¡Materia prima agregada con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Materia prima agregada con éxito!" });
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true });
+
         return RedirectToAction("materias_primas");
     }
 
@@ -348,19 +359,51 @@ public class InsumosController : Controller
             }
         }
 
-        // Unidades permitidas
+        var erroresPorCampo = new Dictionary<string, string>();
+
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(materia_prima.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(materia_prima.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(materia_prima.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (materia_prima.cantidad <= 0)
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a 0.";
+        if (materia_prima.volumen_de_porcion_de_presentacion == null || materia_prima.volumen_de_porcion_de_presentacion <= 0m)
+            erroresPorCampo["volumen_de_porcion_de_presentacion"] = "El volumen debe ser mayor a 0.";
+        if (string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_de_presentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "La unidad es obligatoria.";
+        if (string.IsNullOrWhiteSpace(materia_prima.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
+        if (materia_prima.costo <= 0.99m)
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
+        if (string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_del_peso))
+            erroresPorCampo["unidad_de_medida_del_peso"] = "La unidad es obligatoria.";
+        if (materia_prima.merma_total_en_gramos != null && materia_prima.merma_total_en_gramos < 0m)
+            erroresPorCampo["merma_total_en_gramos"] = "No puede ser negativa.";
+
+        // Validaciones de unidades
         var unidadesPresentacion = new[] { "kg", "kilo", "kilos", "kilogramo", "kilogramos", "g", "gr", "grs", "gramo", "gramos", "l", "litro", "litros", "ml", "mililitro", "mililitros" };
         var unidadesPeso = new[] { "g", "gr", "grs", "gramo", "gramos", "ml", "mililitro", "mililitros" };
         var unidadesPresentacionMayorA0 = new[] { "g", "grs", "gramos", "kilos", "kilogramos", "l", "litros", "ml", "mililitros" };
-        var unidadesPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
+        var unidadPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
 
         string unidadPresentacion = materia_prima.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
         string unidadPeso = materia_prima.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
         decimal volumen = materia_prima.volumen_de_porcion_de_presentacion ?? 0m;
 
-        var errores = new List<string>();
+        if (!string.IsNullOrWhiteSpace(unidadPresentacion) && !unidadesPresentacion.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Unidad de medida de presentación no permitida.";
+        if (!string.IsNullOrWhiteSpace(unidadPeso) && !unidadesPeso.Contains(unidadPeso))
+            erroresPorCampo["unidad_de_medida_del_peso"] = "Unidad de medida del peso no permitida.";
 
-        // Normalizar valores para comparación
+        if (volumen > 0m && volumen != 1m && !unidadesPresentacionMayorA0.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Si el volumen es mayor a 0 y distinto de 1, solo se permiten palabras plurales.";
+        if (volumen == 1m && !unidadPresentacionIgualA1.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Si el volumen es igual a 1, solo se permiten palabras singulares.";
+
+        // Duplicado exacto
         string nombre = materia_prima.nombre?.Trim().ToLower() ?? "";
         string marca = materia_prima.marca?.Trim().ToLower() ?? "";
         string presentacion = materia_prima.presentacion?.Trim().ToLower() ?? "";
@@ -371,9 +414,7 @@ public class InsumosController : Controller
         decimal? costo = materia_prima.costo;
         string unidadDeMedidaDelPeso = materia_prima.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
 
-        // Duplicado exacto (todos los campos)
         bool existeExacto = db.tabla_materias_primas.Any(mp =>
-            mp.id != materia_prima.id &&
             mp.nombre.ToLower() == nombre &&
             mp.marca.ToLower() == marca &&
             mp.presentacion.ToLower() == presentacion &&
@@ -385,55 +426,11 @@ public class InsumosController : Controller
             mp.unidad_de_medida_del_peso.ToLower() == unidadDeMedidaDelPeso
         );
         if (existeExacto)
+            erroresPorCampo["duplicado"] = "Ya existe una materia prima con los mismos datos.";
+
+        if (erroresPorCampo.Any())
         {
-            errores.Add("Ya existe una materia prima con los mismos datos");
-        }
-
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(materia_prima.nombre) ||
-            string.IsNullOrWhiteSpace(materia_prima.marca) ||
-            string.IsNullOrWhiteSpace(materia_prima.presentacion) ||
-            materia_prima.cantidad <= 0 ||
-            string.IsNullOrWhiteSpace(materia_prima.volumen_de_porcion_de_presentacion.ToString()) ||
-            string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_de_presentacion) ||
-            string.IsNullOrWhiteSpace(materia_prima.proveedor) ||
-            string.IsNullOrWhiteSpace(materia_prima.unidad_de_medida_del_peso))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
-
-        if (materia_prima.costo <= 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
-
-        if (materia_prima.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a 0.");
-
-        if (materia_prima.volumen_de_porcion_de_presentacion <= 0m)
-            errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
-
-        if (materia_prima.merma_total_en_gramos < 0)
-            errores.Add("La merma total en gramos no puede ser negatcosto_con_iva.");
-
-        if (!unidadesPresentacion.Contains(unidadPresentacion))
-            errores.Add("Unidad de medida de presentación no permitida.");
-
-        if (!unidadesPeso.Contains(unidadPeso))
-            errores.Add("Unidad de medida del peso no permitida.");
-
-        if (volumen > 0m && volumen != 1m)
-        {
-            if (!unidadesPresentacionMayorA0.Contains(unidadPresentacion))
-                errores.Add("Si el volumen de porción de presentación mayor a 0.00 y distinto de 1.00, solo se permiten palabras plurales (g, grs, gramos, kilos, kilogramos, l, litros, ml, mililitros.).");
-        }
-        else if (volumen == 1m)
-        {
-            if (!unidadesPresentacionIgualA1.Contains(unidadPresentacion))
-                errores.Add("Si el volumen de porción de presentación igual a 1.00, solo se permiten palabras singurales (g, gr, gramo, kilo, kilogramo, l, litro, ml, mililitro.).");
-        }
-
-        if (errores.Any())
-        {
-            ViewBag.Errores = errores;
+            ViewBag.ErroresPorCampo = erroresPorCampo;
             ViewBag.Editando = true;
             var lista = db.tabla_materias_primas.Select(mp => new MateriaPrima
             {
@@ -444,7 +441,7 @@ public class InsumosController : Controller
                 cantidad = mp.cantidad ?? 0,
                 volumen_de_porcion_de_presentacion = mp.volumen_de_porcion_de_presentacion ?? 0m,
                 unidad_de_medida_de_presentacion = mp.unidad_de_medida_de_presentacion,
-                volumen_de_porcion_convertido = mp.volumen_de_porcion_convertido ?? 0m,
+                volumen_de_porcion_convertido = mp.volumen_de_porcion_convertido,
                 unidad_de_medida_convertida = mp.unidad_de_medida_convertida,
                 proveedor = mp.proveedor,
                 costo = mp.costo ?? 0m,
@@ -457,11 +454,17 @@ public class InsumosController : Controller
                 costo_total_mas_merma_total = mp.costo_total_mas_merma_total,
                 costo_por_gramo_con_merma = mp.costo_por_gramo_con_merma
             }).ToList();
-            return View("materias_primas", new InsumosModel
+
+            var modelo = new InsumosModel
             {
                 MateriaPrimaEditado = materia_prima,
                 MateriasPrimas = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioMateriaPrima", modelo);
+
+            return View("materias_primas", modelo);
         }
 
         var m = db.tabla_materias_primas.Find(materia_prima.id);
@@ -471,7 +474,7 @@ public class InsumosController : Controller
             m.marca = materia_prima.marca;
             m.presentacion = materia_prima.presentacion;
             m.cantidad = materia_prima.cantidad;
-            m.volumen_de_porcion_de_presentacion = materia_prima.volumen_de_porcion_de_presentacion ;
+            m.volumen_de_porcion_de_presentacion = materia_prima.volumen_de_porcion_de_presentacion;
             m.unidad_de_medida_de_presentacion = materia_prima.unidad_de_medida_de_presentacion;
             m.volumen_de_porcion_convertido = materia_prima.volumen_de_porcion_convertido;
             m.unidad_de_medida_convertida = materia_prima.unidad_de_medida_convertida;
@@ -483,7 +486,10 @@ public class InsumosController : Controller
         }
         db.SaveChanges();
         db.Database.ExecuteSqlCommand("EXEC sp_calculos_materiaprima");
-        TempData["SuccessMessage"] = "¡Materia prima actualizada con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Materia prima actualizada con éxito!" });
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true });
 
         return RedirectToAction("materias_primas");
     }
@@ -562,6 +568,38 @@ public class InsumosController : Controller
         return View(producto_preparado);
     }
 
+    [HttpGet]
+    public JsonResult VerificarDuplicadoProductoPreparado(
+        string tipo, string nombre, string marca, string presentacion, int? cantidad,
+        decimal? volumen_de_porcion_de_presentacion, string unidad_de_medida_de_presentacion,
+        string proveedor, decimal? costo, string unidad_de_medida_del_peso, int id = 0)
+    {
+        tipo = tipo?.Trim().ToLower() ?? "";
+        nombre = nombre?.Trim().ToLower() ?? "";
+        marca = marca?.Trim().ToLower() ?? "";
+        presentacion = presentacion?.Trim().ToLower() ?? "";
+        unidad_de_medida_de_presentacion = unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
+        proveedor = proveedor?.Trim().ToLower() ?? "";
+        unidad_de_medida_del_peso = unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
+
+        // Evita errores por nulos en la consulta
+        bool isUnique = !db.tabla_productos_preparados.Any(pp =>
+            pp.id != id &&
+            (pp.tipo ?? "").Trim().ToLower() == tipo &&
+            (pp.nombre ?? "").Trim().ToLower() == nombre &&
+            (pp.marca ?? "").Trim().ToLower() == marca &&
+            (pp.presentacion ?? "").Trim().ToLower() == presentacion &&
+            (pp.cantidad ?? 0) == cantidad &&
+            (pp.volumen_de_porcion_de_presentacion ?? 0m) == volumen_de_porcion_de_presentacion &&
+            (pp.unidad_de_medida_de_presentacion ?? "").Trim().ToLower() == unidad_de_medida_de_presentacion &&
+            (pp.proveedor ?? "").Trim().ToLower() == proveedor &&
+            (pp.costo ?? 0m) == costo &&
+            (pp.unidad_de_medida_del_peso ?? "").Trim().ToLower() == unidad_de_medida_del_peso
+        );
+
+        return Json(new { isUnique }, JsonRequestBehavior.AllowGet);
+    }
+
     // Crear un nuevo producto preparado
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -589,113 +627,83 @@ public class InsumosController : Controller
             }
         }
 
-        // Unidades permitidas
+        var erroresPorCampo = new Dictionary<string, string>();
+
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(producto_preparado.tipo))
+            erroresPorCampo["tipo"] = "El tipo es obligatorio.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (producto_preparado.cantidad <= 0)
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a 0.";
+        if (producto_preparado.volumen_de_porcion_de_presentacion == null || producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
+            erroresPorCampo["volumen_de_porcion_de_presentacion"] = "El volumen debe ser mayor a 0.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_de_presentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "La unidad es obligatoria.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
+        if (producto_preparado.costo <= 0.99m)
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_del_peso))
+            erroresPorCampo["unidad_de_medida_del_peso"] = "La unidad es obligatoria.";
+
+        // Validaciones de unidades
         var unidadesPresentacion = new[] { "kg", "kilo", "kilos", "kilogramo", "kilogramos", "g", "gr", "grs", "gramo", "gramos", "l", "litro", "litros", "ml", "mililitro", "mililitros" };
         var unidadesPeso = new[] { "g", "gr", "grs", "gramo", "gramos", "ml", "mililitro", "mililitros" };
         var unidadesPresentacionMayorA0 = new[] { "g", "grs", "gramos", "kilos", "kilogramos", "l", "litros", "ml", "mililitros" };
-        var unidadesPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
+        var unidadPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
 
         string unidadPresentacion = producto_preparado.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
         string unidadPeso = producto_preparado.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
         decimal volumen = producto_preparado.volumen_de_porcion_de_presentacion ?? 0m;
 
-        var errores = new List<string>();
-        
-        // Normalizar valores para comparación
-        string tipo = producto_preparado.tipo?.Trim().ToLower() ?? "";
-        string nombre = producto_preparado.nombre?.Trim().ToLower() ?? "";
-        string marca = producto_preparado.marca?.Trim().ToLower() ?? "";
-        string presentacion = producto_preparado.presentacion?.Trim().ToLower() ?? "";
-        int cantidad = producto_preparado.cantidad;
-        decimal? volumenDePorciondePresentacion = producto_preparado.volumen_de_porcion_de_presentacion;
-        string unidadDeMedidaDePresentacion = producto_preparado.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
-        string proveedor = producto_preparado.proveedor?.Trim().ToLower() ?? "";
-        decimal? costo = producto_preparado.costo;
-        string unidadDeMedidaDelPeso = producto_preparado.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
+        if (!string.IsNullOrWhiteSpace(unidadPresentacion) && !unidadesPresentacion.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Unidad de medida de presentación no permitida.";
+        if (!string.IsNullOrWhiteSpace(unidadPeso) && !unidadesPeso.Contains(unidadPeso))
+            erroresPorCampo["unidad_de_medida_del_peso"] = "Unidad de medida del peso no permitida.";
 
-        // Duplicado exacto (todos los campos)
-        if (db.tabla_productos_preparados.Any(p =>
-            p.tipo.ToLower() == tipo &&
-            p.nombre.ToLower() == nombre &&
-            p.marca.ToLower() == marca &&
-            p.presentacion.ToLower() == presentacion &&
-            p.cantidad == cantidad &&
-            p.volumen_de_porcion_de_presentacion == volumenDePorciondePresentacion &&
-            p.unidad_de_medida_de_presentacion.ToLower() == unidadDeMedidaDePresentacion &&
-            p.proveedor.ToLower() == proveedor &&
-            p.costo == costo &&
-            p.unidad_de_medida_del_peso.ToLower() == unidadDeMedidaDelPeso))
+        if (volumen > 0m && volumen != 1m && !unidadesPresentacionMayorA0.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Si el volumen es mayor a 0 y distinto de 1, solo se permiten palabras plurales.";
+        if (volumen == 1m && !unidadPresentacionIgualA1.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Si el volumen es igual a 1, solo se permiten palabras singulares.";
+
+        if (erroresPorCampo.Any())
         {
-            errores.Add("Ya existe un producto preparado con los mismos datos.");
-        }
-
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(producto_preparado.tipo) ||
-            string.IsNullOrWhiteSpace(producto_preparado.nombre) ||
-            string.IsNullOrWhiteSpace(producto_preparado.marca) ||
-            string.IsNullOrWhiteSpace(producto_preparado.presentacion) ||
-            string.IsNullOrWhiteSpace(producto_preparado.cantidad.ToString()) ||
-            string.IsNullOrWhiteSpace(producto_preparado.volumen_de_porcion_de_presentacion.ToString()) ||
-            string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_de_presentacion) ||
-            string.IsNullOrWhiteSpace(producto_preparado.proveedor) ||
-            string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_del_peso))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
-
-        if (producto_preparado.costo <= 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
-
-        if (producto_preparado.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a cero.");
-
-        if (producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
-            errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
-
-        if (!unidadesPresentacion.Contains(unidadPresentacion))
-            errores.Add("Unidad de medida de presentación no permitida.");
-
-        if (!unidadesPeso.Contains(unidadPeso))
-            errores.Add("Unidad de medida del peso no permitida.");
-
-        if (volumen > 0m && volumen != 1m)
-        {
-            if (!unidadesPresentacionMayorA0.Contains(unidadPresentacion))
-                errores.Add("Si el volumen de porción de presentación mayor a 0.00 y distinto de 1.00, solo se permiten palabras plurales (g, grs, gramos, kilos, kilogramos, l, litros, ml, mililitros.).");
-        }
-        else if (volumen == 1m)
-        {
-            if (!unidadesPresentacionIgualA1.Contains(unidadPresentacion))
-                errores.Add("Si el volumen de porción de presentación igual a 1.00, solo se permiten palabras singurales (g, gr, gramo, kilo, kilogramo, l, litro, ml, mililitro.).");
-        }
-
-        if (errores.Any())
-        {
-            ViewBag.Errores = errores;
-            var lista = db.tabla_productos_preparados.Select(p => new ProductoPreparado
+            ViewBag.ErroresPorCampo = erroresPorCampo;
+            ViewBag.Editando = false;
+            var lista = db.tabla_productos_preparados.Select(pp => new ProductoPreparado
             {
-                id = p.id,
-                tipo = p.tipo,
-                nombre = p.nombre,
-                marca = p.marca,
-                presentacion = p.presentacion,
-                cantidad = p.cantidad ?? 0 ,
-                volumen_de_porcion_de_presentacion = p.volumen_de_porcion_de_presentacion ?? 0m,
-                unidad_de_medida_de_presentacion = p.unidad_de_medida_de_presentacion,
-                volumen_de_porcion_convertido = p.volumen_de_porcion_convertido,
-                unidad_de_medida_convertida = p.unidad_de_medida_convertida,
-                proveedor = p.proveedor,
-                costo = p.costo ?? 0m,
-                peso = p.peso ?? 0m,
-                unidad_de_medida_del_peso = p.unidad_de_medida_del_peso,
-                costo_por_peso = p.costo_por_peso,
-                costo_por_porcion_con_merma = p.costo_por_porcion_con_merma
+                id = pp.id,
+                tipo = pp.tipo,
+                nombre = pp.nombre,
+                marca = pp.marca,
+                presentacion = pp.presentacion,
+                cantidad = pp.cantidad ?? 0,
+                volumen_de_porcion_de_presentacion = pp.volumen_de_porcion_de_presentacion ?? 0m,
+                unidad_de_medida_de_presentacion = pp.unidad_de_medida_de_presentacion,
+                volumen_de_porcion_convertido = pp.volumen_de_porcion_convertido,
+                unidad_de_medida_convertida = pp.unidad_de_medida_convertida,
+                proveedor = pp.proveedor,
+                costo = pp.costo ?? 0m,
+                peso = pp.peso ?? 0m,
+                unidad_de_medida_del_peso = pp.unidad_de_medida_del_peso,
+                costo_por_peso = pp.costo_por_peso,
+                costo_por_porcion_con_merma = pp.costo_por_porcion_con_merma
             }).ToList();
-            return View("productos_preparados", new InsumosModel
+            var modelo = new InsumosModel
             {
                 ProductoPreparadoEditado = producto_preparado,
                 ProductosPreparados = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioProductoPreparado", modelo);
+
+            return View("productos_preparados", modelo);
         }
 
         db.tabla_productos_preparados.Add(new tabla_productos_preparados
@@ -716,7 +724,11 @@ public class InsumosController : Controller
         });
         db.SaveChanges();
         db.Database.ExecuteSqlCommand("EXEC sp_calculos_productopreparado");
-        TempData["SuccessMessage"] = "¡Producto preparado agregado con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Producto preparado agregado con éxito!" });
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true });
+
         return RedirectToAction("productos_preparados");
     }
 
@@ -804,20 +816,51 @@ public class InsumosController : Controller
             }
         }
 
-        // Unidades permitidas
+        var erroresPorCampo = new Dictionary<string, string>();
+
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(producto_preparado.tipo))
+            erroresPorCampo["tipo"] = "El tipo es obligatorio.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (producto_preparado.cantidad <= 0)
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a 0.";
+        if (producto_preparado.volumen_de_porcion_de_presentacion == null || producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
+            erroresPorCampo["volumen_de_porcion_de_presentacion"] = "El volumen debe ser mayor a 0.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_de_presentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "La unidad es obligatoria.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
+        if (producto_preparado.costo <= 0.99m)
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
+        if (string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_del_peso))
+            erroresPorCampo["unidad_de_medida_del_peso"] = "La unidad es obligatoria.";
+
+        // Validaciones de unidades
         var unidadesPresentacion = new[] { "kg", "kilo", "kilos", "kilogramo", "kilogramos", "g", "gr", "grs", "gramo", "gramos", "l", "litro", "litros", "ml", "mililitro", "mililitros" };
         var unidadesPeso = new[] { "g", "gr", "grs", "gramo", "gramos", "ml", "mililitro", "mililitros" };
         var unidadesPresentacionMayorA0 = new[] { "g", "grs", "gramos", "kilos", "kilogramos", "l", "litros", "ml", "mililitros" };
-        var unidadesPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
+        var unidadPresentacionIgualA1 = new[] { "g", "gr", "gramo", "kilo", "kilogramo", "l", "litro", "ml", "mililitro" };
 
         string unidadPresentacion = producto_preparado.unidad_de_medida_de_presentacion?.Trim().ToLower() ?? "";
         string unidadPeso = producto_preparado.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
         decimal volumen = producto_preparado.volumen_de_porcion_de_presentacion ?? 0m;
 
+        if (!string.IsNullOrWhiteSpace(unidadPresentacion) && !unidadesPresentacion.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Unidad de medida de presentación no permitida.";
+        if (!string.IsNullOrWhiteSpace(unidadPeso) && !unidadesPeso.Contains(unidadPeso))
+            erroresPorCampo["unidad_de_medida_del_peso"] = "Unidad de medida del peso no permitida.";
 
-        var errores = new List<string>();
+        if (volumen > 0m && volumen != 1m && !unidadesPresentacionMayorA0.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Si el volumen es mayor a 0 y distinto de 1, solo se permiten palabras plurales.";
+        if (volumen == 1m && !unidadPresentacionIgualA1.Contains(unidadPresentacion))
+            erroresPorCampo["unidad_de_medida_de_presentacion"] = "Si el volumen es igual a 1, solo se permiten palabras singulares.";
 
-        // Normalizar valores para comparación
+        // Duplicado exacto
         string tipo = producto_preparado.tipo?.Trim().ToLower() ?? "";
         string nombre = producto_preparado.nombre?.Trim().ToLower() ?? "";
         string marca = producto_preparado.marca?.Trim().ToLower() ?? "";
@@ -829,9 +872,7 @@ public class InsumosController : Controller
         decimal? costo = producto_preparado.costo;
         string unidadDeMedidaDelPeso = producto_preparado.unidad_de_medida_del_peso?.Trim().ToLower() ?? "";
 
-        // Duplicado exacto (todos los campos excepto ID)
         bool existeExacto = db.tabla_productos_preparados.Any(p =>
-            p.id != producto_preparado.id &&
             p.tipo.ToLower() == tipo &&
             p.nombre.ToLower() == nombre &&
             p.marca.ToLower() == marca &&
@@ -840,83 +881,46 @@ public class InsumosController : Controller
             p.volumen_de_porcion_de_presentacion == volumenDePorciondePresentacion &&
             p.unidad_de_medida_de_presentacion.ToLower() == unidadDeMedidaDePresentacion &&
             p.proveedor.ToLower() == proveedor &&
-            p.costo == costo && 
+            p.costo == costo &&
             p.unidad_de_medida_del_peso.ToLower() == unidadDeMedidaDelPeso
         );
         if (existeExacto)
+            erroresPorCampo["duplicado"] = "Ya existe un producto preparado con los mismos datos.";
+
+        if (erroresPorCampo.Any())
         {
-            errores.Add("Ya existe un producto preparado con los mismos datos.");
-        }
-
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(producto_preparado.tipo) ||
-            string.IsNullOrWhiteSpace(producto_preparado.nombre) ||
-            string.IsNullOrWhiteSpace(producto_preparado.marca) ||
-            string.IsNullOrWhiteSpace(producto_preparado.presentacion) ||
-            string.IsNullOrWhiteSpace(producto_preparado.cantidad.ToString()) ||
-            string.IsNullOrWhiteSpace(producto_preparado.volumen_de_porcion_de_presentacion.ToString()) ||
-            string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_de_presentacion) ||
-            string.IsNullOrWhiteSpace(producto_preparado.proveedor) ||
-            string.IsNullOrWhiteSpace(producto_preparado.unidad_de_medida_del_peso))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
-
-        if (producto_preparado.costo <= 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
-
-        if (producto_preparado.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a cero.");
-
-        if (producto_preparado.volumen_de_porcion_de_presentacion <= 0m)
-            errores.Add("El volumen de porción de presentación debe ser mayor a 0.00");
-
-        if (!unidadesPresentacion.Contains(unidadPresentacion))
-            errores.Add("Unidad de medida de presentación no permitida.");
-
-        if (!unidadesPeso.Contains(unidadPeso))
-            errores.Add("Unidad de medida del peso no permitida.");
-
-        if (volumen > 0m && volumen != 1m)
-        {
-            if (!unidadesPresentacionMayorA0.Contains(unidadPresentacion))
-                errores.Add("Si el volumen de porción de presentación mayor a 0.00 y distinto de 1.00, solo se permiten palabras plurales (g, grs, gramos, kilos, kilogramos, l, litros, ml, mililitros.).");
-        }
-        else if (volumen == 1m)
-        {
-            if (!unidadesPresentacionIgualA1.Contains(unidadPresentacion))
-                errores.Add("Si el volumen de porción de presentación igual a 1.00, solo se permiten palabras singurales (g, gr, gramo, kilo, kilogramo, l, litro, ml, mililitro.).");
-        }
-
-        if (errores.Any())
-        {
-            ViewBag.Errores = errores;
+            ViewBag.ErroresPorCampo = erroresPorCampo;
             ViewBag.Editando = true;
-            var lista = db.tabla_productos_preparados.Select(prodprep => new ProductoPreparado
+            var lista = db.tabla_productos_preparados.Select(p => new ProductoPreparado
             {
-                id = prodprep.id,
-                tipo = prodprep.tipo,
-                nombre = prodprep.nombre,
-                marca = prodprep.marca,
-                presentacion = prodprep.presentacion,
-                cantidad = prodprep.cantidad ?? 0,
-                volumen_de_porcion_de_presentacion = prodprep.volumen_de_porcion_de_presentacion ?? 0m,
-                unidad_de_medida_de_presentacion = prodprep.unidad_de_medida_de_presentacion,
-                volumen_de_porcion_convertido = prodprep.volumen_de_porcion_convertido ?? 0m,
-                unidad_de_medida_convertida = prodprep.unidad_de_medida_convertida,
-                proveedor = prodprep.proveedor,
-                costo = prodprep.costo ?? 0m,
-                peso = prodprep.peso,
-                unidad_de_medida_del_peso = prodprep.unidad_de_medida_del_peso,
-                costo_por_peso = prodprep.costo_por_peso,
-                costo_por_porcion_con_merma = prodprep.costo_por_porcion_con_merma,
+                id = p.id,
+                tipo = p.tipo,
+                nombre = p.nombre,
+                marca = p.marca,
+                presentacion = p.presentacion,
+                cantidad = p.cantidad ?? 0,
+                volumen_de_porcion_de_presentacion = p.volumen_de_porcion_de_presentacion ?? 0m,
+                unidad_de_medida_de_presentacion = p.unidad_de_medida_de_presentacion,
+                volumen_de_porcion_convertido = p.volumen_de_porcion_convertido,
+                unidad_de_medida_convertida = p.unidad_de_medida_convertida,
+                proveedor = p.proveedor,
+                costo = p.costo ?? 0m,
+                peso = p.peso ?? 0m,
+                unidad_de_medida_del_peso = p.unidad_de_medida_del_peso,
+                costo_por_peso = p.costo_por_peso,
+                costo_por_porcion_con_merma = p.costo_por_porcion_con_merma
             }).ToList();
 
-            return View("productos_preparados", new InsumosModel
+            var modelo = new InsumosModel
             {
                 ProductoPreparadoEditado = producto_preparado,
                 ProductosPreparados = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioProductoPreparado", modelo);
+
+            return View("productos_preparados", modelo);
         }
 
         var pp = db.tabla_productos_preparados.Find(producto_preparado.id);
@@ -937,8 +941,12 @@ public class InsumosController : Controller
             pp.unidad_de_medida_del_peso = producto_preparado.unidad_de_medida_del_peso;
         }
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_productopreparado"); 
-        TempData["SuccessMessage"] = "¡Producto preparado actualizado con éxito!";
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_productopreparado");
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Producto preparado actualizado con éxito!" });
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true });
+
         return RedirectToAction("productos_preparados");
     }
 
@@ -1000,6 +1008,34 @@ public class InsumosController : Controller
         return View(empaque_decoracion);
     }
 
+    [HttpGet]
+    public JsonResult VerificarDuplicadoEmpaqueDecoracion(
+    string nombre, string marca, string presentacion, string proveedor,
+    decimal costo, int cantidad, string unidad_de_medida, int id = 0)
+    {
+        nombre = nombre?.Trim().ToLower() ?? "";
+        marca = marca?.Trim().ToLower() ?? "";
+        presentacion = presentacion?.Trim().ToLower() ?? "";
+        proveedor = proveedor?.Trim().ToLower() ?? "";
+        unidad_de_medida = unidad_de_medida?.Trim().ToLower() ?? "";
+
+        decimal costoVal = costo;
+        int cantidadVal = cantidad;
+
+        bool isUnique = !db.tabla_empaques_decoraciones.Any(ed =>
+            ed.id != id &&
+            (ed.nombre ?? "").Trim().ToLower() == nombre &&
+            (ed.marca ?? "").Trim().ToLower() == marca &&
+            (ed.presentacion ?? "").Trim().ToLower() == presentacion &&
+            (ed.proveedor ?? "").Trim().ToLower() == proveedor &&
+            (ed.costo ?? 0m) == costoVal &&
+            (ed.cantidad ?? 0) == cantidadVal &&
+            (ed.unidad_de_medida ?? "").Trim().ToLower() == unidad_de_medida
+        );
+
+        return Json(new { isUnique }, JsonRequestBehavior.AllowGet);
+    }
+
     // Crear un nuevo empaque o decoración
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -1016,49 +1052,43 @@ public class InsumosController : Controller
             }
         }
 
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        // Normalizar valores para comparación
-        string nombre = empaque_decoracion.nombre?.Trim().ToLower() ?? "";
-        string marca = empaque_decoracion.marca?.Trim().ToLower() ?? "";
-        string presentacion = empaque_decoracion.presentacion?.Trim().ToLower() ?? "";
-        string proveedor = empaque_decoracion.proveedor?.Trim().ToLower() ?? "";
-        decimal? costo = empaque_decoracion.costo;
-        int cantidad = empaque_decoracion.cantidad;
-        
-        // Duplicado exacto (todos los campos)
-        if (db.tabla_empaques_decoraciones.Any(ed =>
-            ed.nombre.ToLower() == nombre &&
-            ed.marca.ToLower() == marca &&
-            ed.presentacion.ToLower() == presentacion &&
-            ed.proveedor.ToLower() == proveedor &&
-            ed.costo == costo &&
-            ed.cantidad == cantidad))
-        {
-            errores.Add("Ya existe un empaque o decoración con los mismos datos.");
-        }
-
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(empaque_decoracion.nombre) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.marca) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.presentacion) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.proveedor) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.cantidad.ToString()) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.unidad_de_medida))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
-
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
         if (empaque_decoracion.costo <= 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
-
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
         if (empaque_decoracion.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a cero.");
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a cero.";
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.unidad_de_medida))
+            erroresPorCampo["unidad_de_medida"] = "La unidad de medida es obligatoria.";
 
-        if (errores.Any())
+        // Validaciones de unidades
+        var unidadesValidas = new[] { "unidad", "unidades" };
+        var unidadesMayorA0 = new[] { "unidades" };
+        var unidadIgualA1 = new[] { "unidad" };
+
+        string unidadDeMedida = empaque_decoracion.unidad_de_medida?.Trim().ToLower() ?? "";
+        int cantidad = empaque_decoracion.cantidad;
+
+        if (!string.IsNullOrWhiteSpace(unidadDeMedida) && !unidadesValidas.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Unidad de medida no permitida.";
+        if (cantidad > 0 && cantidad != 1 && !unidadesMayorA0.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+        if (cantidad == 1 && !unidadIgualA1.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es igual a 1, solo se permiten palabras singulares.";
+
+        if (erroresPorCampo.Any())
         {
-            ViewBag.Errores = errores;
-            var empaques = db.tabla_empaques_decoraciones
+            ViewBag.Errores = erroresPorCampo;
+            var lista = db.tabla_empaques_decoraciones
                          .AsNoTracking()
                          .Select(ed => new EmpaqueDecoracion
                          {
@@ -1073,11 +1103,16 @@ public class InsumosController : Controller
                              costo_por_cantidad = ed.costo_por_cantidad
                          }).ToList();
 
-        return View("empaques_decoraciones", new InsumosModel
-        {
-            EmpaqueDecoracionEditado = empaque_decoracion,
-            EmpaquesDecoraciones = empaques
-        });
+            var modelo = new InsumosModel
+            {
+                EmpaqueDecoracionEditado = empaque_decoracion,
+                EmpaquesDecoraciones = lista
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioEmpaqueDecoracion", modelo);
+
+            return View("empaques_decoraciones", modelo);
         }
 
         db.tabla_empaques_decoraciones.Add(new tabla_empaques_decoraciones
@@ -1092,7 +1127,11 @@ public class InsumosController : Controller
         });
         db.SaveChanges();
         db.Database.ExecuteSqlCommand("EXEC sp_calculos_empaque_decoracion");
-        TempData["SuccessMessage"] = "¡Empaque o decoración agregado con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Empaque o Decoración agregada(o) con éxito!" });
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true });
+
         return RedirectToAction("empaques_decoraciones");
     }
 
@@ -1154,17 +1193,47 @@ public class InsumosController : Controller
             }
         }
 
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        // Normalizar valores para comparación
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
+        if (empaque_decoracion.costo <= 0.99m)
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
+        if (empaque_decoracion.cantidad <= 0)
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a cero.";
+        if (string.IsNullOrWhiteSpace(empaque_decoracion.unidad_de_medida))
+            erroresPorCampo["unidad_de_medida"] = "La unidad de medida es obligatoria.";
+
+        // Validaciones de unidades
+        var unidadesValidas = new[] { "unidad", "unidades" };
+        var unidadesMayorA0 = new[] { "unidades" };
+        var unidadIgualA1 = new[] { "unidad" };
+
+        string unidadDeMedida = empaque_decoracion.unidad_de_medida?.Trim().ToLower() ?? "";
+        int cantidad = empaque_decoracion.cantidad;
+
+        if (!string.IsNullOrWhiteSpace(unidadDeMedida) && !unidadesValidas.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Unidad de medida no permitida.";
+        if (cantidad > 0 && cantidad != 1 && !unidadesMayorA0.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+        if (cantidad == 1 && !unidadIgualA1.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es igual a 1, solo se permiten palabras singulares.";
+
+        // Duplicado exacto
         string nombre = empaque_decoracion.nombre?.Trim().ToLower() ?? "";
         string marca = empaque_decoracion.marca?.Trim().ToLower() ?? "";
         string presentacion = empaque_decoracion.presentacion?.Trim().ToLower() ?? "";
         string proveedor = empaque_decoracion.proveedor?.Trim().ToLower() ?? "";
         decimal? costo = empaque_decoracion.costo;
-        int cantidad = empaque_decoracion.cantidad;
-
-        // Duplicado exacto (todos los campos excepto ID)
+        int cantidadEd = empaque_decoracion.cantidad;
+        string unidadDeMedidaEd = empaque_decoracion.unidad_de_medida?.Trim().ToLower() ?? "";
         bool existeExacto = db.tabla_empaques_decoraciones.Any(empdec =>
             empdec.id != empaque_decoracion.id &&
             empdec.nombre.ToLower() == nombre &&
@@ -1172,33 +1241,15 @@ public class InsumosController : Controller
             empdec.presentacion.ToLower() == presentacion &&
             empdec.proveedor.ToLower() == proveedor &&
             empdec.costo == costo &&
-            empdec.cantidad == cantidad
+            empdec.cantidad == cantidadEd &&
+            empdec.unidad_de_medida.ToLower() == unidadDeMedidaEd
         );
         if (existeExacto)
+            erroresPorCampo["duplicado"] = "Ya existe un(a) empaque o decoración con los mismos datos.";
+
+        if (erroresPorCampo.Any())
         {
-            errores.Add("Ya existe un empaque o decoración con los mismos datos.");
-        }
-
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(empaque_decoracion.nombre) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.marca) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.presentacion) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.proveedor) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.cantidad.ToString()) ||
-            string.IsNullOrWhiteSpace(empaque_decoracion.unidad_de_medida))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
-
-        if (empaque_decoracion.costo <= 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
-
-        if (empaque_decoracion.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a cero.");
-
-        if (errores.Any())
-        {
-            ViewBag.Errores = errores;
+            ViewBag.Errores = erroresPorCampo;
             ViewBag.Editando = true;
             var lista = db.tabla_empaques_decoraciones.Select(empdec => new EmpaqueDecoracion
             {
@@ -1212,11 +1263,17 @@ public class InsumosController : Controller
                 unidad_de_medida = empdec.unidad_de_medida,
                 costo_por_cantidad = empdec.costo_por_cantidad
             }).ToList();
-            return View("empaques_decoraciones", new InsumosModel
+
+            var modelo = new InsumosModel
             {
                 EmpaqueDecoracionEditado = empaque_decoracion,
                 EmpaquesDecoraciones = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioEmpaqueDecoracion", modelo);
+
+            return View("empaques_decoraciones", modelo);
         }
 
         var ed = db.tabla_empaques_decoraciones.Find(empaque_decoracion.id);
@@ -1232,7 +1289,11 @@ public class InsumosController : Controller
         }
         db.SaveChanges();
         db.Database.ExecuteSqlCommand("EXEC sp_calculos_empaque_decoracion");
-        TempData["SuccessMessage"] = "¡Empaque o decoración actualizado con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Empaque o Decoración actualizado(a) con éxito!" });
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true });
+
         return RedirectToAction("empaques_decoraciones");
     }
 
@@ -1294,6 +1355,31 @@ public class InsumosController : Controller
         return View(implemento);
     }
 
+    [HttpGet]
+    public JsonResult VerificarDuplicadoImplemento(
+        string nombre, string marca, string presentacion, string proveedor,
+        decimal costo, int cantidad, string unidad_de_medida, int id = 0)
+    {
+        nombre = nombre?.Trim().ToLower() ?? "";
+        marca = marca?.Trim().ToLower() ?? "";
+        presentacion = presentacion?.Trim().ToLower() ?? "";
+        proveedor = proveedor?.Trim().ToLower() ?? "";
+        unidad_de_medida = unidad_de_medida?.Trim().ToLower() ?? "";
+        decimal costoVal = costo;
+        int cantidadVal = cantidad;
+        bool isUnique = !db.tabla_implementos.Any(i =>
+            i.id != id &&
+            (i.nombre ?? "").Trim().ToLower() == nombre &&
+            (i.marca ?? "").Trim().ToLower() == marca &&
+            (i.presentacion ?? "").Trim().ToLower() == presentacion &&
+            (i.proveedor ?? "").Trim().ToLower() == proveedor &&
+            (i.costo ?? 0m) == costoVal &&
+            (i.cantidad ?? 0) == cantidadVal &&
+            (i.unidad_de_medida ?? "").Trim().ToLower() == unidad_de_medida
+        );
+        return Json(new { isUnique }, JsonRequestBehavior.AllowGet);
+    }
+
     // Crear un nuevo implemento
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -1310,48 +1396,42 @@ public class InsumosController : Controller
             }
         }
 
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        // Normalizar valores para comparación
-        string nombre = implemento.nombre?.Trim().ToLower() ?? "";
-        string marca = implemento.marca?.Trim().ToLower() ?? "";
-        string presentacion = implemento.presentacion?.Trim().ToLower() ?? "";
-        string proveedor = implemento.proveedor?.Trim().ToLower() ?? "";
-        decimal? costo = implemento.costo;
-        int cantidad = implemento.cantidad;
-        
-        // Duplicado exacto (todos los campos)
-        if (db.tabla_implementos.Any(i =>
-            i.nombre.ToLower() == nombre &&
-            i.marca.ToLower() == marca &&
-            i.presentacion.ToLower() == presentacion &&
-            i.proveedor.ToLower() == proveedor &&
-            i.costo == costo &&
-            i.cantidad == cantidad))
-        {
-            errores.Add("Ya existe un implemento con los mismos datos.");
-        }
-
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(implemento.nombre) ||
-            string.IsNullOrWhiteSpace(implemento.marca) ||
-            string.IsNullOrWhiteSpace(implemento.presentacion) ||
-            string.IsNullOrWhiteSpace(implemento.proveedor) ||
-            string.IsNullOrWhiteSpace(implemento.cantidad.ToString()) ||
-            string.IsNullOrWhiteSpace(implemento.unidad_de_medida))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
-
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(implemento.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(implemento.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(implemento.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (string.IsNullOrWhiteSpace(implemento.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
         if (implemento.costo <= 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
-
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
         if (implemento.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a cero.");
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a cero.";
+        if (string.IsNullOrWhiteSpace(implemento.unidad_de_medida))
+            erroresPorCampo["unidad_de_medida"] = "La unidad de medida es obligatoria.";
 
-        if (errores.Any())
+        // Validaciones de unidades
+        var unidadesValidas = new[] { "unidad", "unidades" };
+        var unidadesMayorA0 = new[] { "unidades" };
+        var unidadIgualA1 = new[] { "unidad" };
+
+        string unidadDeMedida = implemento.unidad_de_medida?.Trim().ToLower() ?? "";
+        int cantidad = implemento.cantidad;
+
+        if (!string.IsNullOrWhiteSpace(unidadDeMedida) && !unidadesValidas.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Unidad de medida no permitida.";
+        if (cantidad > 0 && cantidad != 1 && !unidadesMayorA0.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+        if (cantidad == 1 && !unidadIgualA1.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es igual a 1, solo se permiten palabras singulares.";
+
+        if (erroresPorCampo.Any())
         {
-            ViewBag.Errores = errores;
+            ViewBag.Errores = erroresPorCampo;
             var lista = db.tabla_implementos.Select(i => new Implemento
             {
                 id = i.id,
@@ -1364,11 +1444,16 @@ public class InsumosController : Controller
                 unidad_de_medida = i.unidad_de_medida,
                 costo_por_cantidad = i.costo_por_cantidad
             }).ToList();
-            return View("implementos", new InsumosModel
+            var modelo = new InsumosModel
             {
                 ImplementoEditado = implemento,
                 Implementos = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioImplemento", modelo);
+
+            return View("implementos", modelo);
         }
 
         db.tabla_implementos.Add(new tabla_implementos
@@ -1383,7 +1468,9 @@ public class InsumosController : Controller
         });
         db.SaveChanges();
         db.Database.ExecuteSqlCommand("EXEC sp_calculos_implemento");
-        TempData["SuccessMessage"] = "¡Implemento agregado con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Implemento agregado con éxito!" });
+
         return RedirectToAction("implementos");
     }
 
@@ -1445,16 +1532,32 @@ public class InsumosController : Controller
             }
         }
 
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        // Normalizar valores para comparación
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(implemento.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(implemento.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(implemento.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (string.IsNullOrWhiteSpace(implemento.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
+        if (implemento.costo <= 0.99m)
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
+        if (implemento.cantidad <= 0)
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a cero.";
+        if (string.IsNullOrWhiteSpace(implemento.unidad_de_medida))
+            erroresPorCampo["unidad_de_medida"] = "La unidad de medida es obligatoria.";
+
+        // Duplicado exacto
         string nombre = implemento.nombre?.Trim().ToLower() ?? "";
         string marca = implemento.marca?.Trim().ToLower() ?? "";
         string presentacion = implemento.presentacion?.Trim().ToLower() ?? "";
         string proveedor = implemento.proveedor?.Trim().ToLower() ?? "";
         decimal? costo = implemento.costo;
-        int cantidad = implemento.cantidad;
-        // Duplicado exacto (todos los campos excepto ID)
+        int cantidadEd = implemento.cantidad;
+        string unidadDeMedidaEd = implemento.unidad_de_medida?.Trim().ToLower() ?? "";
         bool existeExacto = db.tabla_implementos.Any(impl =>
             impl.id != implemento.id &&
             impl.nombre.ToLower() == nombre &&
@@ -1462,33 +1565,30 @@ public class InsumosController : Controller
             impl.presentacion.ToLower() == presentacion &&
             impl.proveedor.ToLower() == proveedor &&
             impl.costo == costo &&
-            impl.cantidad == cantidad
+            impl.cantidad == cantidadEd &&
+            impl.unidad_de_medida.ToLower() == unidadDeMedidaEd
         );
         if (existeExacto)
+            erroresPorCampo["duplicado"] = "Ya existe un implemento con los mismos datos.";
+
+        // Validaciones de unidades
+        var unidadesValidas = new[] { "unidad", "unidades" };
+        var unidadesMayorA0 = new[] { "unidades" };
+        var unidadIgualA1 = new[] { "unidad" };
+
+        string unidadDeMedida = implemento.unidad_de_medida?.Trim().ToLower() ?? "";
+        int cantidad = implemento.cantidad;
+
+        if (!string.IsNullOrWhiteSpace(unidadDeMedida) && !unidadesValidas.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Unidad de medida no permitida.";
+        if (cantidad > 0 && cantidad != 1 && !unidadesMayorA0.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+        if (cantidad == 1 && !unidadIgualA1.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es igual a 1, solo se permiten palabras singulares.";
+
+        if (erroresPorCampo.Any())
         {
-            errores.Add("Ya existe un implemento con los mismos datos.");
-        }
-
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(implemento.nombre) ||
-            string.IsNullOrWhiteSpace(implemento.marca) ||
-            string.IsNullOrWhiteSpace(implemento.presentacion) ||
-            string.IsNullOrWhiteSpace(implemento.proveedor) ||
-            string.IsNullOrWhiteSpace(implemento.cantidad.ToString()) ||
-            string.IsNullOrWhiteSpace(implemento.unidad_de_medida))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
-
-        if (implemento.costo <= 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
-
-        if (implemento.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a cero.");
-
-        if (errores.Any())
-        {
-            ViewBag.Errores = errores;
+            ViewBag.Errores = erroresPorCampo;
             ViewBag.Editando = true;
             var lista = db.tabla_implementos.Select(impl => new Implemento
             {
@@ -1502,11 +1602,16 @@ public class InsumosController : Controller
                 unidad_de_medida = impl.unidad_de_medida,
                 costo_por_cantidad = impl.costo_por_cantidad
             }).ToList();
-            return View("implementos", new InsumosModel
+            var modelo = new InsumosModel
             {
                 ImplementoEditado = implemento,
                 Implementos = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioImplemento", modelo);
+
+            return View("implementos", modelo);
         }
 
         var i = db.tabla_implementos.Find(implemento.id);
@@ -1521,8 +1626,10 @@ public class InsumosController : Controller
             i.unidad_de_medida = implemento.unidad_de_medida;
         }
         db.SaveChanges();
-        db.Database.ExecuteSqlCommand("EXEC sp_calculos_implemento"); 
-        TempData["SuccessMessage"] = "¡Implemento actualizado con éxito!";
+        db.Database.ExecuteSqlCommand("EXEC sp_calculos_implemento");
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Implemento actualizado con éxito!" });
+
         return RedirectToAction("implementos");
     }
 
@@ -1584,6 +1691,31 @@ public class InsumosController : Controller
         return View(suministro);
     }
 
+    [HttpGet]
+    public JsonResult VerificarDuplicadoSuministro(
+        string nombre, string marca, string presentacion, string proveedor,
+        decimal costo, int cantidad, string unidad_de_medida, int id = 0)
+    {
+        nombre = nombre?.Trim().ToLower() ?? "";
+        marca = marca?.Trim().ToLower() ?? "";
+        presentacion = presentacion?.Trim().ToLower() ?? "";
+        proveedor = proveedor?.Trim().ToLower() ?? "";
+        unidad_de_medida = unidad_de_medida?.Trim().ToLower() ?? "";
+        decimal costoVal = costo;
+        int cantidadVal = cantidad;
+        bool isUnique = !db.tabla_suministros.Any(s =>
+            s.id != id &&
+            (s.nombre ?? "").Trim().ToLower() == nombre &&
+            (s.marca ?? "").Trim().ToLower() == marca &&
+            (s.presentacion ?? "").Trim().ToLower() == presentacion &&
+            (s.proveedor ?? "").Trim().ToLower() == proveedor &&
+            (s.costo ?? 0m) == costoVal &&
+            (s.cantidad ?? 0) == cantidadVal &&
+            (s.unidad_de_medida ?? "").Trim().ToLower() == unidad_de_medida
+        );
+        return Json(new { isUnique }, JsonRequestBehavior.AllowGet);
+    }
+
     // Crear un nuevo suministro
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -1601,50 +1733,41 @@ public class InsumosController : Controller
             }
         }
 
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        // Normalizar valores para comparación
-        string nombre = suministro.nombre?.Trim().ToLower() ?? "";
-        string marca = suministro.marca?.Trim().ToLower() ?? "";
-        string presentacion = suministro.presentacion?.Trim().ToLower() ?? "";
-        string proveedor = suministro.proveedor?.Trim().ToLower() ?? "";
-        decimal? costo = suministro.costo;
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(suministro.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(suministro.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(suministro.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (string.IsNullOrWhiteSpace(suministro.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
+        if (suministro.costo <= 0.99m)
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
+        if (suministro.cantidad <= 0)
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a cero.";
+        if (string.IsNullOrWhiteSpace(suministro.unidad_de_medida))
+            erroresPorCampo["unidad_de_medida"] = "La unidad de medida es obligatoria.";
+
+        // Validaciones de unidades
+        var unidadesValidas = new[] { "unidad", "unidades" };
+        var unidadesMayorA0 = new[] { "unidades" };
+        var unidadIgualA1 = new[] { "unidad" };
+        string unidadDeMedida = suministro.unidad_de_medida?.Trim().ToLower() ?? "";
         int cantidad = suministro.cantidad;
 
-        // Duplicado exacto (todos los campos)
-        bool existeExacto = db.tabla_suministros.Any(s =>
-            s.nombre.ToLower() == nombre &&
-            s.marca.ToLower() == marca &&
-            s.presentacion.ToLower() == presentacion &&
-            s.proveedor.ToLower() == proveedor &&
-            s.costo == costo &&
-            s.cantidad == cantidad
-        );
-        if (existeExacto)
+        if (!string.IsNullOrWhiteSpace(unidadDeMedida) && !unidadesValidas.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Unidad de medida no permitida.";
+        if (cantidad > 0 && cantidad != 1 && !unidadesMayorA0.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+        if (cantidad == 1 && !unidadIgualA1.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es igual a 1, solo se permiten palabras singulares.";
+
+        if (erroresPorCampo.Any())
         {
-            errores.Add("Ya existe un suministro con los mismos datos.");
-        }
-
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(suministro.nombre) ||
-            string.IsNullOrWhiteSpace(suministro.marca) ||
-            string.IsNullOrWhiteSpace(suministro.presentacion) ||
-            string.IsNullOrWhiteSpace(suministro.proveedor) ||
-            string.IsNullOrWhiteSpace(suministro.cantidad.ToString()) ||
-            string.IsNullOrWhiteSpace(suministro.unidad_de_medida))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
-
-        if (suministro.costo <= 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
-
-        if (suministro.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a cero.");
-
-        if (errores.Any())
-        {
-            ViewBag.Errores = errores;
+            ViewBag.Errores = erroresPorCampo;
             var lista = db.tabla_suministros.Select(s => new Suministro
             {
                 id = s.id,
@@ -1657,11 +1780,16 @@ public class InsumosController : Controller
                 unidad_de_medida = s.unidad_de_medida,
                 costo_por_cantidad = s.costo_por_cantidad
             }).ToList();
-            return View("suministros", new InsumosModel
+            var modelo = new InsumosModel
             {
                 SuministroEditado = suministro,
                 Suministros = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioSuministro", modelo);
+
+            return View("suministros", modelo);
         }
 
         db.tabla_suministros.Add(new tabla_suministros
@@ -1676,7 +1804,9 @@ public class InsumosController : Controller
         });
         db.SaveChanges();
         db.Database.ExecuteSqlCommand("EXEC sp_calculos_suministro");
-        TempData["SuccessMessage"] = "¡Suministro agregado con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Suministro agregado con éxito!" });
+
         return RedirectToAction("suministros");
     }
 
@@ -1738,17 +1868,33 @@ public class InsumosController : Controller
             }
         }
 
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        // Normalizar valores para comparación
+        // Validaciones por campo
+        if (string.IsNullOrWhiteSpace(suministro.nombre))
+            erroresPorCampo["nombre"] = "El nombre es obligatorio.";
+        if (string.IsNullOrWhiteSpace(suministro.marca))
+            erroresPorCampo["marca"] = "La marca es obligatoria.";
+        if (string.IsNullOrWhiteSpace(suministro.presentacion))
+            erroresPorCampo["presentacion"] = "La presentación es obligatoria.";
+        if (string.IsNullOrWhiteSpace(suministro.proveedor))
+            erroresPorCampo["proveedor"] = "El proveedor es obligatorio.";
+        if (suministro.costo <= 0.99m)
+            erroresPorCampo["costo"] = "El costo debe ser mayor a ₡0.99.";
+        if (suministro.cantidad <= 0)
+            erroresPorCampo["cantidad"] = "La cantidad debe ser mayor a cero.";
+        if (string.IsNullOrWhiteSpace(suministro.unidad_de_medida))
+            erroresPorCampo["unidad_de_medida"] = "La unidad de medida es obligatoria.";
+
+        // Duplicado exacto
         string nombre = suministro.nombre?.Trim().ToLower() ?? "";
         string marca = suministro.marca?.Trim().ToLower() ?? "";
         string presentacion = suministro.presentacion?.Trim().ToLower() ?? "";
         string proveedor = suministro.proveedor?.Trim().ToLower() ?? "";
         decimal? costo = suministro.costo;
-        int cantidad = suministro.cantidad;
-        
-        // Duplicado exacto (todos los campos excepto ID)
+        int cantidadEd = suministro.cantidad;
+        string unidadDeMedidaEd = suministro.unidad_de_medida?.Trim().ToLower() ?? "";
+
         bool existeExacto = db.tabla_suministros.Any(sumn =>
             sumn.id != suministro.id &&
             sumn.nombre.ToLower() == nombre &&
@@ -1756,33 +1902,28 @@ public class InsumosController : Controller
             sumn.presentacion.ToLower() == presentacion &&
             sumn.proveedor.ToLower() == proveedor &&
             sumn.costo == costo &&
-            sumn.cantidad == cantidad
+            sumn.cantidad == cantidadEd &&
+            sumn.unidad_de_medida.ToLower() == unidadDeMedidaEd
         );
         if (existeExacto)
-        {
-            errores.Add("Ya existe un suministro con los mismos datos.");
-        }
-        
-        // Validar campos obligatorios y valores numéricos
-        if (string.IsNullOrWhiteSpace(suministro.nombre) ||
-            string.IsNullOrWhiteSpace(suministro.marca) ||
-            string.IsNullOrWhiteSpace(suministro.presentacion) ||
-            string.IsNullOrWhiteSpace(suministro.proveedor) ||
-            string.IsNullOrWhiteSpace(suministro.cantidad.ToString()) ||
-            string.IsNullOrWhiteSpace(suministro.unidad_de_medida))
-        {
-            errores.Add("Todos los campos son obligatorios.");
-        }
+            erroresPorCampo["duplicado"] = "Ya existe un suministro con los mismos datos.";
 
-        if (suministro.costo > 0.99m)
-            errores.Add("El costo debe ser mayor a ₡0.99.");
+        // Validaciones de unidades
+        var unidadesValidas = new[] { "unidad", "unidades" };
+        var unidadesMayorA0 = new[] { "unidades" };
+        var unidadIgualA1 = new[] { "unidad" };
+        string unidadDeMedida = suministro.unidad_de_medida?.Trim().ToLower() ?? "";
+        int cantidad = suministro.cantidad;
+        if (!string.IsNullOrWhiteSpace(unidadDeMedida) && !unidadesValidas.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Unidad de medida no permitida.";
+        if (cantidad > 0 && cantidad != 1 && !unidadesMayorA0.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+        if (cantidad == 1 && !unidadIgualA1.Contains(unidadDeMedida))
+            erroresPorCampo["unidad_de_medida"] = "Si la cantidad es igual a 1, solo se permiten palabras singulares.";
 
-        if (suministro.cantidad <= 0)
-            errores.Add("La cantidad debe ser mayor a cero.");
-
-        if (errores.Any())
+        if (erroresPorCampo.Any())
         {
-            ViewBag.Errores = errores;
+            ViewBag.Errores = erroresPorCampo;
             ViewBag.Editando = true;
             var lista = db.tabla_suministros.Select(sumn => new Suministro
             {
@@ -1796,11 +1937,16 @@ public class InsumosController : Controller
                 unidad_de_medida = sumn.unidad_de_medida,
                 costo_por_cantidad = sumn.costo_por_cantidad
             }).ToList();
-            return View("suministros", new InsumosModel
+            var modelo = new InsumosModel
             {
                 SuministroEditado = suministro,
                 Suministros = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioSuministro", modelo);
+
+            return View("suministros", modelo);
         }
 
         var s = db.tabla_suministros.Find(suministro.id);
@@ -1816,7 +1962,8 @@ public class InsumosController : Controller
         }
         db.SaveChanges();
         db.Database.ExecuteSqlCommand("EXEC sp_calculos_suministro");
-        TempData["SuccessMessage"] = "¡Suministro actualizado con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Suministro actualizado con éxito!" });
         return RedirectToAction("suministros");
     }
 
@@ -1833,7 +1980,28 @@ public class InsumosController : Controller
         return RedirectToAction("suministros");
     }
 
-   /* Costos de Recetas */
+    /* Costos de Recetas */
+
+    private void CargarListasParaReceta()
+    {
+        ViewBag.MateriasPrimas = new SelectList(
+            db.tabla_materias_primas.ToList()
+                .Select(mp => new {
+                    Value = mp.id,
+                    Text = $"ID: {mp.id} | {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
+                }),
+            "Value", "Text"
+        );
+
+        ViewBag.ProductosPreparados = new SelectList(
+            db.tabla_productos_preparados.ToList()
+                .Select(pp => new {
+                    Value = pp.id,
+                    Text = $"ID: {pp.id} | {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
+                }),
+            "Value", "Text"
+        );
+    }
 
     // Listar y buscar recetas
     public ActionResult costos_recetas(string search)
@@ -1938,23 +2106,29 @@ public class InsumosController : Controller
         return View(receta);
     }
 
+    [HttpGet]
+    public JsonResult VerificarDuplicadoReceta(string nombre, int id = 0)
+    {
+        nombre = nombre?.Trim().ToLower() ?? "";
+        bool isUnique = !db.tabla_costos_recetas.Any(r =>
+            r.id != id &&
+            (r.nombre ?? "").Trim().ToLower() == nombre
+        );
+        return Json(new { isUnique }, JsonRequestBehavior.AllowGet);
+    }
+
     // Crear una nueva receta
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult CrearReceta(Receta receta)
     {
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        // Validar nombre único
-        if (db.tabla_costos_recetas.Any(rec => rec.nombre.ToLower() == receta.nombre.ToLower()))
-            errores.Add("Ya existe una receta con ese nombre.");
-
-        // Validar campos principales
+        // Validaciones por campos
         if (string.IsNullOrWhiteSpace(receta.nombre))
-            errores.Add("El nombre de la receta es obligatorio.");
-
+            erroresPorCampo["nombre"] = "El nombre de la receta es obligatorio.";
         if (receta.porcion <= 0)
-            errores.Add("La porción debe ser mayor a cero.");
+            erroresPorCampo["porcion"] = "La porción debe ser mayor a cero.";
 
         decimal costoTotalReceta = 0;
 
@@ -1965,31 +2139,35 @@ public class InsumosController : Controller
             for (int i = 0; i < receta.MateriasPrimasUtilizadas.Count; i++)
             {
                 var mp = receta.MateriasPrimasUtilizadas[i];
+                string prefix = $"MateriaPrima_{i}_";
 
                 if (mp.id_materia_prima_utilizada == 0 && mp.cantidad == 0 && string.IsNullOrWhiteSpace(mp.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Materias Primas: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
-
                 if (mp.id_materia_prima_utilizada == 0)
-                    errores.Add($"Fila {i + 1} de Materias Primas: Debe seleccionar una materia prima.");
-
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar una materia prima.";
                 if (mp.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Materias Primas: La cantidad debe ser mayor a cero.");
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
+                if (string.IsNullOrWhiteSpace(mp.unidad_de_medida))
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
 
                 if (mp.id_materia_prima_utilizada != 0)
                 {
                     if (!idsMP.Add(mp.id_materia_prima_utilizada))
-                        errores.Add($"Fila {i + 1} de Materias Primas: Materia prima repetida.");
-
-                    // Validar existencia en BD
+                        erroresPorCampo[$"{prefix}repetida"] = $"Fila {i + 1}: Materia prima repetida.";
                     var materia_prima = db.tabla_materias_primas.FirstOrDefault(m => m.id == mp.id_materia_prima_utilizada);
                     if (materia_prima == null)
                     {
-                        errores.Add($"Fila {i + 1} de Materias Primas: La materia prima seleccionada no existe en el sistema.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: La materia prima seleccionada no existe en el sistema.";
                         continue;
                     }
+                    // Validación de unidad de medida
+                    var unidadesValidas = new[] { "g", "gr", "grs", "gramo", "gramos", "kg", "kilo", "kilos", "kilogramo", "kilogramos", "ml", "mililitro", "mililitros", "l", "litro", "litros" };
+                    string unidad = mp.unidad_de_medida?.Trim().ToLower() ?? "";
+                    if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                        erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: Unidad de medida no permitida.";
 
                     // Si existe, asignar valores para cálculos
                     mp.nombre = materia_prima.nombre;
@@ -2006,31 +2184,35 @@ public class InsumosController : Controller
             for (int i = 0; i < receta.ProductosPreparadosUtilizados.Count; i++)
             {
                 var pp = receta.ProductosPreparadosUtilizados[i];
+                string prefix = $"ProductoPreparado_{i}_";
 
                 if (pp.id_producto_preparado_utilizado == 0 && pp.cantidad == 0 && string.IsNullOrWhiteSpace(pp.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Productos Preparados: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
-
                 if (pp.id_producto_preparado_utilizado == 0)
-                    errores.Add($"Fila {i + 1} de Productos Preparados: Debe seleccionar un producto preparado.");
-
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar un producto preparado.";
                 if (pp.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Productos Preparados: La cantidad debe ser mayor a cero.");
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
+                if (string.IsNullOrWhiteSpace(pp.unidad_de_medida))
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
 
                 if (pp.id_producto_preparado_utilizado != 0)
                 {
                     if (!idsPP.Add(pp.id_producto_preparado_utilizado))
-                        errores.Add($"Fila {i + 1} de Productos Preparados: Producto preparado repetido.");
-
-                    // Validar existencia en BD
+                        erroresPorCampo[$"{prefix}repetido"] = $"Fila {i + 1}: Producto preparado repetido.";
                     var producto_preparado = db.tabla_productos_preparados.FirstOrDefault(p => p.id == pp.id_producto_preparado_utilizado);
                     if (producto_preparado == null)
                     {
-                        errores.Add($"Fila {i + 1} de Productos Preparados: El producto preparado seleccionado no existe en el sistema.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: El producto preparado seleccionado no existe en el sistema.";
                         continue;
                     }
+                    // Validación de unidad de medida
+                    var unidadesValidas = new[] { "g", "gr", "grs", "gramo", "gramos", "kg", "kilo", "kilos", "kilogramo", "kilogramos", "ml", "mililitro", "mililitros", "l", "litro", "litros" };
+                    string unidad = pp.unidad_de_medida?.Trim().ToLower() ?? "";
+                    if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                        erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: Unidad de medida no permitida.";
 
                     // Si existe, asignar valores para cálculos
                     pp.nombre = producto_preparado.nombre;
@@ -2040,28 +2222,10 @@ public class InsumosController : Controller
             }
         }
 
-        if (errores.Any())
+        if (erroresPorCampo.Any())
         {
-            ViewBag.Errores = errores;
-
-            ViewBag.MateriasPrimas = new SelectList(
-                db.tabla_materias_primas.ToList()
-                .Select(mp => new {
-                    Value = mp.id,
-                    Text = $"ID: {mp.id} | {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
-                }),
-                "Value", "Text"
-            );
-
-            ViewBag.ProductosPreparados = new SelectList(
-                db.tabla_productos_preparados.ToList()
-                    .Select(pp => new {
-                        Value = pp.id,
-                        Text = $"ID: {pp.id} | {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
-                    }),
-                "Value", "Text"
-            );
-
+            ViewBag.ErroresPorCampo = erroresPorCampo;
+            CargarListasParaReceta();
             var lista = db.tabla_costos_recetas.Select(rec => new Receta
             {
                 id = rec.id,
@@ -2088,7 +2252,7 @@ public class InsumosController : Controller
                 .Select(pp => new ProductoPreparadoUtilizado
                 {
                     id = pp.id,
-                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0 ,
+                    id_producto_preparado_utilizado = pp.id_producto_preparado_utilizado ?? 0,
                     nombre = pp.tabla_productos_preparados.nombre,
                     cantidad = pp.cantidad ?? 0,
                     unidad_de_medida = pp.unidad_de_medida,
@@ -2098,11 +2262,16 @@ public class InsumosController : Controller
 
             }).ToList();
 
-            return View("costos_recetas", new InsumosModel
+            var modelo = new InsumosModel
             {
                 RecetaEditada = receta,
                 CostosRecetas = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioCostoReceta", modelo);
+
+            return View("costos_recetas", modelo);
         }
 
         // Calcular costos y guardar
@@ -2181,7 +2350,9 @@ public class InsumosController : Controller
         }
 
         db.SaveChanges();
-        TempData["SuccessMessage"] = "¡Receta agregada con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Receta agregada con éxito!" });
+
         return RedirectToAction("costos_recetas");
     }
 
@@ -2284,10 +2455,10 @@ public class InsumosController : Controller
 
         ViewBag.Editando = true;
         return View("costos_recetas", new InsumosModel
-            {
-                RecetaEditada = receta,
-                CostosRecetas = lista
-            });
+        {
+            RecetaEditada = receta,
+            CostosRecetas = lista
+        });
     }
 
     // Editar receta existente (POST)
@@ -2295,16 +2466,13 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult EditarReceta(Receta receta)
     {
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        if (db.tabla_costos_recetas.Any(rec => rec.nombre.ToLower() == receta.nombre.ToLower() && rec.id != receta.id))
-            errores.Add("Ya existe una receta con ese nombre.");
-
+        // Validaciones por campos
         if (string.IsNullOrWhiteSpace(receta.nombre))
-            errores.Add("El nombre de la receta es obligatorio.");
-
+            erroresPorCampo["nombre"] = "El nombre de la receta es obligatorio.";
         if (receta.porcion <= 0)
-            errores.Add("La porción debe ser mayor a cero.");
+            erroresPorCampo["porcion"] = "La porción debe ser mayor a cero.";
 
         decimal costoTotalReceta = 0;
 
@@ -2315,31 +2483,35 @@ public class InsumosController : Controller
             for (int i = 0; i < receta.MateriasPrimasUtilizadas.Count; i++)
             {
                 var mp = receta.MateriasPrimasUtilizadas[i];
+                string prefix = $"MateriaPrima_{i}_";
 
                 if (mp.id_materia_prima_utilizada == 0 && mp.cantidad == 0 && string.IsNullOrWhiteSpace(mp.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Materias Primas: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
-
                 if (mp.id_materia_prima_utilizada == 0)
-                    errores.Add($"Fila {i + 1} de Materias Primas: Debe seleccionar una materia prima.");
-
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar una materia prima.";
                 if (mp.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Materias Primas: La cantidad debe ser mayor a cero.");
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
+                if (string.IsNullOrWhiteSpace(mp.unidad_de_medida))
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
 
                 if (mp.id_materia_prima_utilizada != 0)
                 {
                     if (!idsMP.Add(mp.id_materia_prima_utilizada))
-                        errores.Add($"Fila {i + 1} de Materias Primas: Materia prima repetida.");
-
-                    // Validar existencia en BD
+                        erroresPorCampo[$"{prefix}repetida"] = $"Fila {i + 1}: Materia prima repetida.";
                     var materia_prima = db.tabla_materias_primas.FirstOrDefault(m => m.id == mp.id_materia_prima_utilizada);
                     if (materia_prima == null)
                     {
-                        errores.Add($"Fila {i + 1} de Materias Primas: La materia prima seleccionada no existe en el sistema.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: La materia prima seleccionada no existe en el sistema.";
                         continue;
                     }
+                    // Validación de unidad de medida
+                    var unidadesValidas = new[] { "g", "gr", "grs", "gramo", "gramos", "kg", "kilo", "kilos", "kilogramo", "kilogramos", "ml", "mililitro", "mililitros", "l", "litro", "litros" };
+                    string unidad = mp.unidad_de_medida?.Trim().ToLower() ?? "";
+                    if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                        erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: Unidad de medida no permitida.";
 
                     // Si existe, asignar valores para cálculos
                     mp.nombre = materia_prima.nombre;
@@ -2356,31 +2528,35 @@ public class InsumosController : Controller
             for (int i = 0; i < receta.ProductosPreparadosUtilizados.Count; i++)
             {
                 var pp = receta.ProductosPreparadosUtilizados[i];
+                string prefix = $"ProductoPreparado_{i}_";
 
                 if (pp.id_producto_preparado_utilizado == 0 && pp.cantidad == 0 && string.IsNullOrWhiteSpace(pp.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Productos Preparados: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
-
                 if (pp.id_producto_preparado_utilizado == 0)
-                    errores.Add($"Fila {i + 1} de Productos Preparados: Debe seleccionar un producto preparado.");
-
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar un producto preparado.";
                 if (pp.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Productos Preparados: La cantidad debe ser mayor a cero.");
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
+                if (string.IsNullOrWhiteSpace(pp.unidad_de_medida))
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
 
                 if (pp.id_producto_preparado_utilizado != 0)
                 {
                     if (!idsPP.Add(pp.id_producto_preparado_utilizado))
-                        errores.Add($"Fila {i + 1} de Productos Preparados: Producto preparado repetido.");
-
-                    // Validar existencia en BD
+                        erroresPorCampo[$"{prefix}repetido"] = $"Fila {i + 1}: Producto preparado repetido.";
                     var producto_preparado = db.tabla_productos_preparados.FirstOrDefault(p => p.id == pp.id_producto_preparado_utilizado);
                     if (producto_preparado == null)
                     {
-                        errores.Add($"Fila {i + 1} de Productos Preparados: El producto preparado seleccionado no existe en el sistema.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: El producto preparado seleccionado no existe en el sistema.";
                         continue;
                     }
+                    // Validación de unidad de medida
+                    var unidadesValidas = new[] { "g", "gr", "grs", "gramo", "gramos", "kg", "kilo", "kilos", "kilogramo", "kilogramos", "ml", "mililitro", "mililitros", "l", "litro", "litros" };
+                    string unidad = pp.unidad_de_medida?.Trim().ToLower() ?? "";
+                    if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                        erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: Unidad de medida no permitida.";
 
                     // Si existe, asignar valores para cálculos
                     pp.nombre = producto_preparado.nombre;
@@ -2390,28 +2566,15 @@ public class InsumosController : Controller
             }
         }
 
-        if (errores.Any())
+        // Validación de duplicado por nombre (excluyendo el actual)
+        if (db.tabla_costos_recetas.Any(rec => rec.nombre.ToLower() == receta.nombre.ToLower() && rec.id != receta.id))
+            erroresPorCampo["duplicado"] = "Ya existe una receta con ese nombre.";
+
+        if (erroresPorCampo.Any())
         {
-            ViewBag.Errores = errores;
+            ViewBag.Errores = erroresPorCampo;
             ViewBag.Editando = true;
-
-            ViewBag.MateriasPrimas = new SelectList(
-                db.tabla_materias_primas.ToList()
-                .Select(mp => new {
-                    Value = mp.id,
-                    Text = $"ID: {mp.id} | {mp.nombre} | Costo por gramo con merma: ₡{mp.costo_por_gramo_con_merma:N2}"
-                }),
-                "Value", "Text"
-            );
-
-            ViewBag.ProductosPreparados = new SelectList(
-                db.tabla_productos_preparados.ToList()
-                    .Select(pp => new {
-                        Value = pp.id,
-                        Text = $"ID: {pp.id} | {pp.nombre} | Costo por peso: ₡{pp.costo_por_peso:N2}"
-                    }),
-                "Value", "Text"
-            );
+            CargarListasParaReceta();
 
             var lista = db.tabla_costos_recetas.Select(rec => new Receta
             {
@@ -2448,11 +2611,16 @@ public class InsumosController : Controller
                 }).ToList()
             }).ToList();
 
-            return View("costos_recetas", new InsumosModel
+            var modelo = new InsumosModel
             {
                 RecetaEditada = receta,
                 CostosRecetas = lista
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioCostoReceta", modelo);
+
+            return View("costos_recetas", modelo);
         }
 
         if (receta.MateriasPrimasUtilizadas != null)
@@ -2533,7 +2701,9 @@ public class InsumosController : Controller
         }
 
         db.SaveChanges();
-        TempData["SuccessMessage"] = "¡Receta actualizada con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Receta actualizada con éxito!" });
+
         return RedirectToAction("costos_recetas");
     }
 
@@ -2557,6 +2727,46 @@ public class InsumosController : Controller
     }
 
     /* Precios Finales Sugeridos de Productos Finales */
+
+    private void CargarListasParaProductosFinales()
+    {
+        ViewBag.Recetas = new SelectList(
+            db.tabla_costos_recetas.ToList()
+            .Select(r => new {
+                Value = r.id,
+                Text = $"ID: {r.id} | {r.nombre} | Costo Total: ₡{r.costo_total_receta:N2}"
+            }),
+            "Value", "Text"
+        );
+
+        ViewBag.EmpaquesDecoraciones = new SelectList(
+            db.tabla_empaques_decoraciones.ToList()
+            .Select(ed => new {
+                Value = ed.id,
+                Text = $"ID: {ed.id} | {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad:N2}"
+            }),
+            "Value", "Text"
+        );
+
+        ViewBag.Implementos = new SelectList(
+            db.tabla_implementos.ToList()
+            .Select(i => new {
+                Value = i.id,
+                Text = $"ID: {i.id} | {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad:N2}"
+            }),
+            "Value", "Text"
+        );
+
+        ViewBag.Suministros = new SelectList(
+            db.tabla_suministros.ToList()
+            .Select(s => new {
+                Value = s.id,
+                Text = $"ID: {s.id} | {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad:N2}"
+            }),
+            "Value", "Text"
+        );
+
+    }
 
     // Listar y buscar productos finales
     public ActionResult precios_finales_sugeridos(string search)
@@ -2709,8 +2919,8 @@ public class InsumosController : Controller
         ViewBag.EmpaquesDecoraciones = new SelectList(
             db.tabla_empaques_decoraciones.ToList()
             .Select(ed => new {
-            Value = ed.id,
-            Text = $"ID: {ed.id} | {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad:N2}"
+                Value = ed.id,
+                Text = $"ID: {ed.id} | {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad:N2}"
             }),
             "Value", "Text"
         );
@@ -2731,8 +2941,19 @@ public class InsumosController : Controller
                     Text = $"ID: {s.id} | {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad:N2}"
                 }),
             "Value", "Text"
-        ); 
+        );
         return View(producto_final);
+    }
+
+    [HttpGet]
+    public JsonResult VerificarDuplicadoProductoFinal(string nombre, int id = 0)
+    {
+        nombre = nombre?.Trim().ToLower() ?? "";
+        bool isUnique = !db.tabla_precios_finales_sugeridos.Any(r =>
+            r.id != id &&
+            (r.nombre_receta ?? "").Trim().ToLower() == nombre
+        );
+        return Json(new { isUnique }, JsonRequestBehavior.AllowGet);
     }
 
     // Crear un nuevo producto final
@@ -2740,24 +2961,14 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult CrearProductoFinal(ProductoFinal producto_final)
     {
-        // Obtener el id_receta del formulario
         int idReceta = 0;
         int.TryParse(Request.Form["id_receta"], out idReceta);
-
-        // Buscar la receta por ID
         var receta = db.tabla_costos_recetas.FirstOrDefault(r => r.id == idReceta);
-
-        // Asignar el nombre de la receta al modelo
         if (receta != null)
-        {
             producto_final.nombre_receta = receta.nombre;
-        }
         else
-        {
-            producto_final.nombre_receta = ""; // Para que falle la validación si no existe
-        }
+            producto_final.nombre_receta = "";
 
-        // Asignar el valor del checkbox manualmente para cada suministro
         if (producto_final.SuministrosUtilizados != null)
         {
             for (int i = 0; i < producto_final.SuministrosUtilizados.Count; i++)
@@ -2767,63 +2978,60 @@ public class InsumosController : Controller
             }
         }
 
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        // Validar campos obligatorios
+        // Validaciones por campo principal
         if (idReceta == 0 || string.IsNullOrWhiteSpace(producto_final.nombre_receta))
-        {
-            errores.Add("El nombre de la receta es obligatorio. Debe seleccionar una receta");
-        }
-
-        // Validar que no exista un producto final con el mismo nombre de receta
-        if (db.tabla_precios_finales_sugeridos.Any(p => p.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && p.id != producto_final.id))
-        {
-            errores.Add("Ya existe un producto final para esa receta.");
-        }
-
-        // Validar que la receta exista en la base de datos
+            erroresPorCampo["nombre_receta"] = "El nombre de la receta es obligatorio. Debe seleccionar una receta.";
         if (receta == null)
-        {
-            errores.Add("La receta seleccionada no existe en la base de datos.");
-        }
-
+            erroresPorCampo["receta"] = "La receta seleccionada no existe en la base de datos.";
         if (producto_final.margen_de_utilidad < 0 || producto_final.margen_de_utilidad > 100)
-        {
-            errores.Add("El margen de utilidad debe estar entre 0 y 100.");
-        }
+            erroresPorCampo["margen_de_utilidad"] = "El margen de utilidad debe estar entre 0 y 100.";
+        if (db.tabla_precios_finales_sugeridos.Any(p => p.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && p.id != producto_final.id))
+            erroresPorCampo["duplicado"] = "Ya existe un producto final para esa receta.";
 
-        // Validar detalles (Empaques, Implementos, suministros)
+        // Validaciones de detalles
+        // Empaques/Decoraciones
         if (producto_final.EmpaquesDecoracionesUtilizados != null)
         {
             var idsEmpaques = new HashSet<int>();
+            var unidadesValidas = new[] { "unidad", "unidades" };
+            var unidadesMayorA0 = new[] { "unidades" };
+            var unidadIgualA1 = new[] { "unidad" };
+
             for (int i = 0; i < producto_final.EmpaquesDecoracionesUtilizados.Count; i++)
             {
                 var ed = producto_final.EmpaquesDecoracionesUtilizados[i];
+                string prefix = $"Empaque_{i}_";
 
                 if ((ed.id_empaque_decoracion_utilizado == 0) && ed.cantidad == 0 && string.IsNullOrWhiteSpace(ed.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
-
                 if (ed.id_empaque_decoracion_utilizado == 0)
-                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Debe seleccionar un empaque/decoración.");
-                
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar un empaque/decoración.";
                 if (ed.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La cantidad debe ser mayor a cero.");
-                
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
                 if (string.IsNullOrWhiteSpace(ed.unidad_de_medida))
-                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La unidad de medida es obligatoria.");
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
+
+                string unidad = ed.unidad_de_medida?.Trim().ToLower() ?? "";
+                if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_valida"] = $"Fila {i + 1}: Unidad de medida no permitida.";
+                if (ed.cantidad > 0 && ed.cantidad != 1 && !unidadesMayorA0.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_plural"] = $"Fila {i + 1}: Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+                if (ed.cantidad == 1 && !unidadIgualA1.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_singular"] = $"Fila {i + 1}: Si la cantidad es igual a 1, solo se permiten palabras singulares.";
 
                 if (ed.id_empaque_decoracion_utilizado != 0)
                 {
                     if (!idsEmpaques.Add(ed.id_empaque_decoracion_utilizado))
-                        errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Empaque/decoración repetido.");
-
+                        erroresPorCampo[$"{prefix}repetido"] = $"Fila {i + 1}: Empaque/decoración repetido.";
                     var empaque = db.tabla_empaques_decoraciones.FirstOrDefault(x => x.id == ed.id_empaque_decoracion_utilizado);
                     if (empaque == null)
                     {
-                        errores.Add($"Fila {i + 1} de Empaques/Decoraciones: El empaque/decoración seleccionado no existe.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: El empaque/decoración seleccionado no existe.";
                         continue;
                     }
                     ed.nombre = empaque.nombre;
@@ -2833,37 +3041,47 @@ public class InsumosController : Controller
             }
         }
 
+        // Implementos
         if (producto_final.ImplementosUtilizados != null)
         {
             var idsImplementos = new HashSet<int>();
+            var unidadesValidas = new[] { "unidad", "unidades" };
+            var unidadesMayorA0 = new[] { "unidades" };
+            var unidadIgualA1 = new[] { "unidad" };
+
             for (int i = 0; i < producto_final.ImplementosUtilizados.Count; i++)
             {
                 var impl = producto_final.ImplementosUtilizados[i];
+                string prefix = $"Implemento_{i}_";
 
                 if ((impl.id_implemento_utilizado == 0) && impl.cantidad == 0 && string.IsNullOrWhiteSpace(impl.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Implementos: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
-                
                 if (impl.id_implemento_utilizado == 0)
-                    errores.Add($"Fila {i + 1} de Implementos: Debe seleccionar un implemento.");
-                
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar un implemento.";
                 if (impl.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Implementos: La cantidad debe ser mayor a cero.");
-                
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
                 if (string.IsNullOrWhiteSpace(impl.unidad_de_medida))
-                    errores.Add($"Fila {i + 1} de Implementos: La unidad de medida es obligatoria.");
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
+
+                string unidad = impl.unidad_de_medida?.Trim().ToLower() ?? "";
+                if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_valida"] = $"Fila {i + 1}: Unidad de medida no permitida.";
+                if (impl.cantidad > 0 && impl.cantidad != 1 && !unidadesMayorA0.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_plural"] = $"Fila {i + 1}: Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+                if (impl.cantidad == 1 && !unidadIgualA1.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_singular"] = $"Fila {i + 1}: Si la cantidad es igual a 1, solo se permiten palabras singulares.";
 
                 if (impl.id_implemento_utilizado != 0)
                 {
                     if (!idsImplementos.Add(impl.id_implemento_utilizado))
-                        errores.Add($"Fila {i + 1} de Implementos: Implemento repetido.");
-
+                        erroresPorCampo[$"{prefix}repetido"] = $"Fila {i + 1}: Implemento repetido.";
                     var implemento = db.tabla_implementos.FirstOrDefault(x => x.id == impl.id_implemento_utilizado);
                     if (implemento == null)
                     {
-                        errores.Add($"Fila {i + 1} de Implementos: El implemento seleccionado no existe.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: El implemento seleccionado no existe.";
                         continue;
                     }
                     impl.nombre = implemento.nombre;
@@ -2873,37 +3091,47 @@ public class InsumosController : Controller
             }
         }
 
+        // Suministros
         if (producto_final.SuministrosUtilizados != null)
         {
             var idsSuministros = new HashSet<int>();
+            var unidadesValidas = new[] { "unidad", "unidades" };
+            var unidadesMayorA0 = new[] { "unidades" };
+            var unidadIgualA1 = new[] { "unidad" };
+
             for (int i = 0; i < producto_final.SuministrosUtilizados.Count; i++)
             {
                 var sumn = producto_final.SuministrosUtilizados[i];
+                string prefix = $"Suministro_{i}_";
 
                 if ((sumn.id_suministro_utilizado == 0) && sumn.cantidad == 0 && string.IsNullOrWhiteSpace(sumn.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Suministros: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
-                
                 if (sumn.id_suministro_utilizado == 0)
-                    errores.Add($"Fila {i + 1} de Suministros: Debe seleccionar un suministro.");
-                
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar un suministro.";
                 if (sumn.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Suministros: La cantidad debe ser mayor a cero.");
-                
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
                 if (string.IsNullOrWhiteSpace(sumn.unidad_de_medida))
-                    errores.Add($"Fila {i + 1} de Suministros: La unidad de medida es obligatoria.");
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
+
+                string unidad = sumn.unidad_de_medida?.Trim().ToLower() ?? "";
+                if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_valida"] = $"Fila {i + 1}: Unidad de medida no permitida.";
+                if (sumn.cantidad > 0 && sumn.cantidad != 1 && !unidadesMayorA0.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_plural"] = $"Fila {i + 1}: Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+                if (sumn.cantidad == 1 && !unidadIgualA1.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_singular"] = $"Fila {i + 1}: Si la cantidad es igual a 1, solo se permiten palabras singulares.";
 
                 if (sumn.id_suministro_utilizado != 0)
                 {
                     if (!idsSuministros.Add(sumn.id_suministro_utilizado))
-                        errores.Add($"Fila {i + 1} de Suministros: Suministro repetido.");
-
+                        erroresPorCampo[$"{prefix}repetido"] = $"Fila {i + 1}: Suministro repetido.";
                     var suministro = db.tabla_suministros.FirstOrDefault(x => x.id == sumn.id_suministro_utilizado);
                     if (suministro == null)
                     {
-                        errores.Add($"Fila {i + 1} de Suministros: El suministro seleccionado no existe.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: El suministro seleccionado no existe.";
                         continue;
                     }
                     sumn.nombre = suministro.nombre;
@@ -2913,10 +3141,10 @@ public class InsumosController : Controller
             }
         }
 
-        if (errores.Any())
+        if (erroresPorCampo.Any())
         {
-            ViewBag.Errores = errores;
-
+            ViewBag.Errores = erroresPorCampo;
+            ViewBag.Editando = false;
             ViewBag.Recetas = db.tabla_costos_recetas.ToList()
                 .Select(r => new SelectListItem
                 {
@@ -2975,11 +3203,17 @@ public class InsumosController : Controller
                 plataforma_de_envio = pf.plataforma_de_envio,
                 precio_final_sugerido = pf.precio_final_sugerido ?? 0m,
             }).ToList();
-            return View("precios_finales_sugeridos", new InsumosModel
+
+            var modelo = new InsumosModel
             {
                 ProductoFinalEditado = producto_final,
                 ProductosFinales = productosFinales
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioPrecioFinalSugerido", modelo);
+
+            return View("precios_finales_sugeridos", modelo);
         }
 
         // Calcula el costo de la receta desde la base de datos
@@ -3131,7 +3365,9 @@ public class InsumosController : Controller
             }
         }
         db.SaveChanges();
-        TempData["SuccessMessage"] = "¡Producto final agregado con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Producto Final agregado con éxito!" });
+
         return RedirectToAction("precios_finales_sugeridos");
     }
 
@@ -3320,24 +3556,14 @@ public class InsumosController : Controller
     [ValidateAntiForgeryToken]
     public ActionResult EditarProductoFinal(ProductoFinal producto_final)
     {
-        // Obtener el id_receta del formulario
         int idReceta = 0;
         int.TryParse(Request.Form["id_receta"], out idReceta);
-
-        // Buscar la receta por ID
         var receta = db.tabla_costos_recetas.FirstOrDefault(r => r.id == idReceta);
-
-        // Asignar el nombre de la receta al modelo
         if (receta != null)
-        {
             producto_final.nombre_receta = receta.nombre;
-        }
         else
-        {
-            producto_final.nombre_receta = ""; // Para que falle la validación si no existe
-        }
+            producto_final.nombre_receta = "";
 
-        // Asignar el valor del checkbox manualmente para cada suministro
         if (producto_final.SuministrosUtilizados != null)
         {
             for (int i = 0; i < producto_final.SuministrosUtilizados.Count; i++)
@@ -3347,61 +3573,60 @@ public class InsumosController : Controller
             }
         }
 
-        var errores = new List<string>();
+        var erroresPorCampo = new Dictionary<string, string>();
 
-        // Validar campos obligatorios
+        // Validaciones por campo principal
         if (idReceta == 0 || string.IsNullOrWhiteSpace(producto_final.nombre_receta))
-        {
-            errores.Add("El nombre de la receta es obligatorio. Debe seleccionar una receta");
-        }
-
-        // Validar que no exista un producto final con el mismo nombre de receta
-        if (db.tabla_precios_finales_sugeridos.Any(pf => pf.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && pf.id != producto_final.id))
-        {
-            errores.Add("Ya existe un producto final para esa receta.");
-        }
-
-        // Validar que la receta exista en la base de datos
+            erroresPorCampo["nombre_receta"] = "El nombre de la receta es obligatorio. Debe seleccionar una receta.";
         if (receta == null)
-        {
-            errores.Add("La receta seleccionada no existe en la base de datos.");
-        }
-
+            erroresPorCampo["receta"] = "La receta seleccionada no existe en la base de datos.";
         if (producto_final.margen_de_utilidad < 0 || producto_final.margen_de_utilidad > 100)
-            errores.Add("El margen de utilidad debe estar entre 0 y 100.");
+            erroresPorCampo["margen_de_utilidad"] = "El margen de utilidad debe estar entre 0 y 100.";
+        if (db.tabla_precios_finales_sugeridos.Any(p => p.nombre_receta.ToLower() == producto_final.nombre_receta.ToLower() && p.id != producto_final.id))
+            erroresPorCampo["duplicado"] = "Ya existe un producto final para esa receta.";
 
-        // Validar detalles (Empaques, Implementos, suministros)
+        // Validaciones de detalles
+        // Empaques/Decoraciones
         if (producto_final.EmpaquesDecoracionesUtilizados != null)
         {
             var idsEmpaques = new HashSet<int>();
+            var unidadesValidas = new[] { "unidad", "unidades" };
+            var unidadesMayorA0 = new[] { "unidades" };
+            var unidadIgualA1 = new[] { "unidad" };
+
             for (int i = 0; i < producto_final.EmpaquesDecoracionesUtilizados.Count; i++)
             {
                 var ed = producto_final.EmpaquesDecoracionesUtilizados[i];
+                string prefix = $"Empaque_{i}_";
 
                 if ((ed.id_empaque_decoracion_utilizado == 0) && ed.cantidad == 0 && string.IsNullOrWhiteSpace(ed.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
-                
                 if (ed.id_empaque_decoracion_utilizado == 0)
-                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Debe seleccionar un empaque/decoración.");
-                
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar un empaque/decoración.";
                 if (ed.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La cantidad debe ser mayor a cero.");
-                
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
                 if (string.IsNullOrWhiteSpace(ed.unidad_de_medida))
-                    errores.Add($"Fila {i + 1} de Empaques/Decoraciones: La unidad de medida es obligatoria.");
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
+
+                string unidad = ed.unidad_de_medida?.Trim().ToLower() ?? "";
+                if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_valida"] = $"Fila {i + 1}: Unidad de medida no permitida.";
+                if (ed.cantidad > 0 && ed.cantidad != 1 && !unidadesMayorA0.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_plural"] = $"Fila {i + 1}: Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+                if (ed.cantidad == 1 && !unidadIgualA1.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_singular"] = $"Fila {i + 1}: Si la cantidad es igual a 1, solo se permiten palabras singulares.";
 
                 if (ed.id_empaque_decoracion_utilizado != 0)
                 {
                     if (!idsEmpaques.Add(ed.id_empaque_decoracion_utilizado))
-                        errores.Add($"Fila {i + 1} de Empaques/Decoraciones: Empaque/decoración repetido.");
-
+                        erroresPorCampo[$"{prefix}repetido"] = $"Fila {i + 1}: Empaque/decoración repetido.";
                     var empaque = db.tabla_empaques_decoraciones.FirstOrDefault(x => x.id == ed.id_empaque_decoracion_utilizado);
                     if (empaque == null)
                     {
-                        errores.Add($"Fila {i + 1} de Empaques/Decoraciones: El empaque/decoración seleccionado no existe.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: El empaque/decoración seleccionado no existe.";
                         continue;
                     }
                     ed.nombre = empaque.nombre;
@@ -3411,37 +3636,47 @@ public class InsumosController : Controller
             }
         }
 
+        // Implementos
         if (producto_final.ImplementosUtilizados != null)
         {
             var idsImplementos = new HashSet<int>();
+            var unidadesValidas = new[] { "unidad", "unidades" };
+            var unidadesMayorA0 = new[] { "unidades" };
+            var unidadIgualA1 = new[] { "unidad" };
+
             for (int i = 0; i < producto_final.ImplementosUtilizados.Count; i++)
             {
                 var impl = producto_final.ImplementosUtilizados[i];
+                string prefix = $"Implemento_{i}_";
 
                 if ((impl.id_implemento_utilizado == 0) && impl.cantidad == 0 && string.IsNullOrWhiteSpace(impl.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Implementos: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
-                
                 if (impl.id_implemento_utilizado == 0)
-                    errores.Add($"Fila {i + 1} de Implementos: Debe seleccionar un implemento.");
-                
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar un implemento.";
                 if (impl.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Implementos: La cantidad debe ser mayor a cero.");
-                
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
                 if (string.IsNullOrWhiteSpace(impl.unidad_de_medida))
-                    errores.Add($"Fila {i + 1} de Implementos: La unidad de medida es obligatoria.");
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
+
+                string unidad = impl.unidad_de_medida?.Trim().ToLower() ?? "";
+                if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_valida"] = $"Fila {i + 1}: Unidad de medida no permitida.";
+                if (impl.cantidad > 0 && impl.cantidad != 1 && !unidadesMayorA0.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_plural"] = $"Fila {i + 1}: Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+                if (impl.cantidad == 1 && !unidadIgualA1.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_singular"] = $"Fila {i + 1}: Si la cantidad es igual a 1, solo se permiten palabras singulares.";
 
                 if (impl.id_implemento_utilizado != 0)
                 {
                     if (!idsImplementos.Add(impl.id_implemento_utilizado))
-                        errores.Add($"Fila {i + 1} de Implementos: Implemento repetido.");
-
+                        erroresPorCampo[$"{prefix}repetido"] = $"Fila {i + 1}: Implemento repetido.";
                     var implemento = db.tabla_implementos.FirstOrDefault(x => x.id == impl.id_implemento_utilizado);
                     if (implemento == null)
                     {
-                        errores.Add($"Fila {i + 1} de Implementos: El implemento seleccionado no existe.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: El implemento seleccionado no existe.";
                         continue;
                     }
                     impl.nombre = implemento.nombre;
@@ -3451,34 +3686,47 @@ public class InsumosController : Controller
             }
         }
 
+        // Suministros
         if (producto_final.SuministrosUtilizados != null)
         {
             var idsSuministros = new HashSet<int>();
+            var unidadesValidas = new[] { "unidad", "unidades" };
+            var unidadesMayorA0 = new[] { "unidades" };
+            var unidadIgualA1 = new[] { "unidad" };
+
             for (int i = 0; i < producto_final.SuministrosUtilizados.Count; i++)
             {
                 var sumn = producto_final.SuministrosUtilizados[i];
+                string prefix = $"Suministro_{i}_";
 
                 if ((sumn.id_suministro_utilizado == 0) && sumn.cantidad == 0 && string.IsNullOrWhiteSpace(sumn.unidad_de_medida))
                 {
-                    errores.Add($"Fila {i + 1} de Suministros: No puede dejar filas vacías.");
+                    erroresPorCampo[$"{prefix}fila_vacia"] = $"Fila {i + 1}: No puede dejar filas vacías.";
                     continue;
                 }
                 if (sumn.id_suministro_utilizado == 0)
-                    errores.Add($"Fila {i + 1} de Suministros: Debe seleccionar un suministro.");
+                    erroresPorCampo[$"{prefix}id"] = $"Fila {i + 1}: Debe seleccionar un suministro.";
                 if (sumn.cantidad <= 0)
-                    errores.Add($"Fila {i + 1} de Suministros: La cantidad debe ser mayor a cero.");
+                    erroresPorCampo[$"{prefix}cantidad"] = $"Fila {i + 1}: La cantidad debe ser mayor a cero.";
                 if (string.IsNullOrWhiteSpace(sumn.unidad_de_medida))
-                    errores.Add($"Fila {i + 1} de Suministros: La unidad de medida es obligatoria.");
+                    erroresPorCampo[$"{prefix}unidad"] = $"Fila {i + 1}: La unidad de medida es obligatoria.";
+
+                string unidad = sumn.unidad_de_medida?.Trim().ToLower() ?? "";
+                if (!string.IsNullOrWhiteSpace(unidad) && !unidadesValidas.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_valida"] = $"Fila {i + 1}: Unidad de medida no permitida.";
+                if (sumn.cantidad > 0 && sumn.cantidad != 1 && !unidadesMayorA0.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_plural"] = $"Fila {i + 1}: Si la cantidad es mayor a 0 y distinta de 1, solo se permiten palabras plurales.";
+                if (sumn.cantidad == 1 && !unidadIgualA1.Contains(unidad))
+                    erroresPorCampo[$"{prefix}unidad_singular"] = $"Fila {i + 1}: Si la cantidad es igual a 1, solo se permiten palabras singulares.";
 
                 if (sumn.id_suministro_utilizado != 0)
                 {
                     if (!idsSuministros.Add(sumn.id_suministro_utilizado))
-                        errores.Add($"Fila {i + 1} de Suministros: Suministro repetido.");
-
+                        erroresPorCampo[$"{prefix}repetido"] = $"Fila {i + 1}: Suministro repetido.";
                     var suministro = db.tabla_suministros.FirstOrDefault(x => x.id == sumn.id_suministro_utilizado);
                     if (suministro == null)
                     {
-                        errores.Add($"Fila {i + 1} de Suministros: El suministro seleccionado no existe.");
+                        erroresPorCampo[$"{prefix}no_existe"] = $"Fila {i + 1}: El suministro seleccionado no existe.";
                         continue;
                     }
                     sumn.nombre = suministro.nombre;
@@ -3488,50 +3736,12 @@ public class InsumosController : Controller
             }
         }
 
-        var p = db.tabla_precios_finales_sugeridos.Find(producto_final.id);
-        if (p == null) return HttpNotFound();
-
-        if (errores.Any())
+        if (erroresPorCampo.Any())
         {
-            ViewBag.Errores = errores;
+            ViewBag.Errores = erroresPorCampo;
             ViewBag.Editando = true;
+            CargarListasParaProductosFinales();
 
-            ViewBag.Recetas = db.tabla_costos_recetas.ToList()
-                .Select(r => new SelectListItem
-                {
-                    Value = r.id.ToString(),
-                    Text = $"ID: {r.id} | {r.nombre} | Costo total: ₡{r.costo_total_receta:N2} | Porción: {r.porcion}",
-                    Selected = r.id == producto_final.id_receta
-                })
-                .ToList();
-
-            ViewBag.EmpaquesDecoraciones = new SelectList(
-                db.tabla_empaques_decoraciones.ToList()
-                .Select(ed => new {
-                    Value = ed.id,
-                    Text = $"ID: {ed.id} | {ed.nombre} | Costo por cantidad: ₡{ed.costo_por_cantidad:N2}"
-                }),
-                "Value", "Text"
-            );
-
-            ViewBag.Implementos = new SelectList(
-                db.tabla_implementos.ToList()
-                    .Select(i => new {
-                        Value = i.id,
-                        Text = $"ID: {i.id} | {i.nombre} | Costo por cantidad: ₡{i.costo_por_cantidad:N2}"
-                    }),
-                "Value", "Text"
-            );
-
-            ViewBag.Suministros = new SelectList(
-                db.tabla_suministros.ToList()
-                    .Select(s => new {
-                        Value = s.id,
-                        Text = $"ID: {s.id} | {s.nombre} | Costo por cantidad: ₡{s.costo_por_cantidad:N2}"
-                    }),
-                "Value", "Text"
-            ); 
-            
             var productosFinales = db.tabla_precios_finales_sugeridos.ToList().Select(pf => new ProductoFinal
             {
                 id = pf.id,
@@ -3554,11 +3764,17 @@ public class InsumosController : Controller
                 envio = pf.envio ?? 0m,
                 plataforma_de_envio = pf.plataforma_de_envio,
             }).ToList();
-            return View("precios_finales_sugeridos", new InsumosModel
+
+            var modelo = new InsumosModel
             {
                 ProductoFinalEditado = producto_final,
                 ProductosFinales = productosFinales
-            });
+            };
+
+            if (Request.IsAjaxRequest())
+                return PartialView("_FormularioPrecioFinalSugerido", modelo);
+
+            return View("precios_finales_sugeridos", modelo);
         }
 
         // Calcula el costo de la receta desde la base de datos
@@ -3634,37 +3850,37 @@ public class InsumosController : Controller
         decimal precioFinalSugerido = baseImpuestos + costoConIva + costoConServicio + envio;
 
         // Actualizar campos principales
-        p.id_receta = receta.id;
-        p.nombre_receta = producto_final.nombre_receta;
-        p.costo_total_receta = costoReceta;
-        p.margen_de_utilidad = margenUtilidad;
-        p.costo_sin_margen_de_utilidad = costoReceta;
-        p.costo_con_margen_de_utilidad = costoConUtilidad;
-        p.costo_empaque_decoracion_utilizado = sumaEmpaquesPorCantidad;
-        p.costo_implemento_utilizado = sumaImplementosPorCantidad;
-        p.costo_suministro_utilizado = totalSuministros;
-        p.costo_total_insumos = costoTotalInsumos;
-        p.costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorInsumo;
-        p.costo_total_de_impresion_de_factura = costoTotalImpresionFactura;
-        p.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia = totalInsumosConGanancia;
-        p.factura_por_insumo = facturaPorInsumo;
-        p.factura_total = facturaTotal;
-        p.porcentaje_de_iva = porcentajeIva;
-        p.porcentaje_de_servicio = porcentajeServicio;
-        p.costo_con_iva = costoConIva;
-        p.costo_con_servicio = costoConServicio;
-        p.envio = envio;
-        p.plataforma_de_envio = producto_final.plataforma_de_envio;
-        p.precio_final_sugerido = precioFinalSugerido;
+        producto_final.id_receta = receta.id;
+        producto_final.nombre_receta = producto_final.nombre_receta;
+        producto_final.costo_total_receta = costoReceta;
+        producto_final.margen_de_utilidad = margenUtilidad;
+        producto_final.costo_sin_margen_de_utilidad = costoReceta;
+        producto_final.costo_con_margen_de_utilidad = costoConUtilidad;
+        producto_final.costo_empaque_decoracion_utilizado = sumaEmpaquesPorCantidad;
+        producto_final.costo_implemento_utilizado = sumaImplementosPorCantidad;
+        producto_final.costo_suministro_utilizado = totalSuministros;
+        producto_final.costo_total_insumos = costoTotalInsumos;
+        producto_final.costo_de_impresion_de_factura_por_insumo = costoImpresionFacturaPorInsumo;
+        producto_final.costo_total_de_impresion_de_factura = costoTotalImpresionFactura;
+        producto_final.costo_total_empaque_decoracion_implemento_suministro_por_porcentaje_de_ganancia = totalInsumosConGanancia;
+        producto_final.factura_por_insumo = facturaPorInsumo;
+        producto_final.factura_total = facturaTotal;
+        producto_final.porcentaje_de_iva = porcentajeIva;
+        producto_final.porcentaje_de_servicio = porcentajeServicio;
+        producto_final.costo_con_iva = costoConIva;
+        producto_final.costo_con_servicio = costoConServicio;
+        producto_final.envio = envio;
+        producto_final.plataforma_de_envio = producto_final.plataforma_de_envio;
+        producto_final.precio_final_sugerido = precioFinalSugerido;
 
         // Eliminar detalles existentes
-        var empaques = db.precios_empaques_decoraciones_utilizados.Where(x => x.id_precio_final_sugerido == p.id).ToList();
+        var empaques = db.precios_empaques_decoraciones_utilizados.Where(x => x.id_precio_final_sugerido == producto_final.id).ToList();
         foreach (var item in empaques) db.precios_empaques_decoraciones_utilizados.Remove(item);
 
-        var implementos = db.precios_implementos_utilizados.Where(x => x.id_precio_final_sugerido == p.id).ToList();
+        var implementos = db.precios_implementos_utilizados.Where(x => x.id_precio_final_sugerido == producto_final.id).ToList();
         foreach (var item in implementos) db.precios_implementos_utilizados.Remove(item);
 
-        var suministros = db.precios_suministros_utilizados.Where(x => x.id_precio_final_sugerido == p.id).ToList();
+        var suministros = db.precios_suministros_utilizados.Where(x => x.id_precio_final_sugerido == producto_final.id).ToList();
         foreach (var item in suministros) db.precios_suministros_utilizados.Remove(item);
 
         // Agregar nuevos detalles
@@ -3674,7 +3890,7 @@ public class InsumosController : Controller
             {
                 db.precios_empaques_decoraciones_utilizados.Add(new precios_empaques_decoraciones_utilizados
                 {
-                    id_precio_final_sugerido = p.id,
+                    id_precio_final_sugerido = producto_final.id,
                     id_empaque_decoracion_utilizado = ed.id_empaque_decoracion_utilizado,
                     cantidad = ed.cantidad,
                     unidad_de_medida = ed.unidad_de_medida,
@@ -3689,7 +3905,7 @@ public class InsumosController : Controller
             {
                 db.precios_implementos_utilizados.Add(new precios_implementos_utilizados
                 {
-                    id_precio_final_sugerido = p.id,
+                    id_precio_final_sugerido = producto_final.id,
                     id_implemento_utilizado = i.id_implemento_utilizado,
                     cantidad = i.cantidad,
                     unidad_de_medida = i.unidad_de_medida,
@@ -3704,7 +3920,7 @@ public class InsumosController : Controller
             {
                 db.precios_suministros_utilizados.Add(new precios_suministros_utilizados
                 {
-                    id_precio_final_sugerido = p.id,
+                    id_precio_final_sugerido = producto_final.id,
                     id_suministro_utilizado = s.id_suministro_utilizado,
                     cantidad = s.cantidad,
                     unidad_de_medida = s.unidad_de_medida,
@@ -3715,7 +3931,9 @@ public class InsumosController : Controller
             }
         }
         db.SaveChanges();
-        TempData["SuccessMessage"] = "¡Producto final actualizado con éxito!";
+        if (Request.IsAjaxRequest())
+            return Json(new { success = true, message = "¡Producto Final actualizado con éxito!" });
+
         return RedirectToAction("precios_finales_sugeridos");
     }
 
