@@ -17,7 +17,7 @@
     <h4><strong>Búsqueda de Usuarios</strong></h4>
     <form method="get" action="@Url.Action("gestion_usuarios", "Registro_Usuarios")" class="mt-4">
         <div class="d-flex align-items-center mb-4" style="gap: 12px;">
-            <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" style="max-width: 60%;" />
+            <input type="text" name="search" class="form-control" placeholder="Buscar por cualquier campo..." value="@ViewBag.Search" />
             <div class="d-flex align-items-center" style="min-width: 320px;">
                 <div class="custom-datepicker" data-input="FechaBusqueda">
                     <div class="datepicker-input">
@@ -43,7 +43,7 @@
         <div class="card-body p-0">
             <div class="table-responsive">
 
-                <table id="tabla_usuarios" class="table usuarios-table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="8">
+                <table id="tabla_usuarios" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="8">
                     <thead class="tabla-global">
                         <tr>
                             <th>ID</th>

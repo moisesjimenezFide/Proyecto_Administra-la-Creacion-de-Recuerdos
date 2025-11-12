@@ -1,4 +1,5 @@
 ﻿using Proyecto_CreandoRecuerdos.base_de_datos;
+using Proyecto_CreandoRecuerdos.Filters;
 using Proyecto_CreandoRecuerdos.Models;
 using System;
 using System.Collections.Generic;
@@ -7,15 +8,15 @@ using System.Web.Mvc;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
+    [RolAuthorize("1")]
     public class EmpleadosController : Controller
     {
         [HttpGet]
         public ActionResult Empleados()
         {
-            if (Session["Rol"] == null || (int)Session["Rol"] != 1)
-            {
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
-            }
 
             List<EmpleadoModel> empleados = new List<EmpleadoModel>();
             using (var context = new BD_CREANDO_RECUERDOSEntities())

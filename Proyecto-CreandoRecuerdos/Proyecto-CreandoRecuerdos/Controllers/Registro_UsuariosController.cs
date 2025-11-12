@@ -5,22 +5,17 @@ using Proyecto_CreandoRecuerdos.Models;
 using System;
 using System.Linq;
 using System.Text;
-using System.util;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
     public class Registro_UsuariosController : Controller
     {
         Utilitarios util = new Utilitarios();
-
-
-        //[HttpGet]
-        //public ActionResult registro_usuarios()
-        //{
-        //    return View();
-        //}
 
         [HttpGet]
         public ActionResult logout()
@@ -57,10 +52,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             // 🔹 Redirigir al login o registro
             return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
         }
-
-
-
-
 
         [HttpGet]
         public ActionResult iniciar_sesion()
@@ -106,6 +97,12 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             {
                 var info = context.sp_autenticar_usuario(model.correo, model.contrasenna).FirstOrDefault();
 
+                if (info == null)
+                {
+                    TempData["ErrorMessage"] = "No se pudo validar el usuario. Intente de nuevo.";
+                    return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                }
+
                 if (info != null)
                 {
                     if (info.Resultado == 1)
@@ -120,13 +117,17 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         // 🟢 Guardar el token en una cookie
                         var cookie = new HttpCookie("JWT", token)
                         {
-                            HttpOnly = false, // evita acceso por JS
-                            Secure = false,   // solo HTTPS
+                            HttpOnly = true, // evita acceso por JS
+                            Secure = true,   // solo HTTPS
+                            SameSite = SameSiteMode.Lax,
                             Expires = DateTime.UtcNow.AddMinutes(1)
                         };
                         Response.Cookies.Add(cookie);
 
-                       
+                        // opcionalmente también enviar el header (para AJAX)
+                        Response.Headers.Add("X-Renewed-Token", token);
+
+
                         Session["IdUsuario"] = info.UsuarioID;
                         Session["NombreUsuario"] = info.NombreUsuario;
                         Session["Rol"] = info.RolID;
@@ -153,11 +154,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
-
-
-
-
         [HttpGet]
+        [RolAuthorize("1")]
         public ActionResult gestion_usuarios(string search = null, string fecha = null)
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
@@ -207,6 +205,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         }
 
         [HttpPost]
+        [RolAuthorize("1")]
         public ActionResult inactivar_usuarios(int id)
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
@@ -217,6 +216,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         }
 
         [HttpPost]
+        [RolAuthorize("1")]
         public ActionResult activar_usuarios(int id)
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
@@ -227,6 +227,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         }
 
         [HttpGet]
+        [RolAuthorize("1")]
         public ActionResult editar_usuario(int id)
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
@@ -256,6 +257,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         }
 
         [HttpPost]
+        [RolAuthorize("1")]
         public ActionResult editar_usuario(UsuarioModel model)
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
@@ -313,9 +315,5 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
             return res.ToString();
         }
-
-
-
-
     }
 }

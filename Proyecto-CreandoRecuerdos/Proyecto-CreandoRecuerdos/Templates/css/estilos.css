@@ -42,7 +42,6 @@ html, body {
     flex-direction: column;
     margin-bottom: 0;
     padding-bottom: 0;
-    overflow: auto;
     height: auto;
     margin: 0;
     padding: 0;
@@ -70,6 +69,11 @@ html, body {
     aspect-ratio: attr(width) / attr(height);
     height: auto;
     max-width: 100%;
+}
+
+.main-centered-content {
+    width: 100%;
+    margin: 0 auto;
 }
 
 .navbar {

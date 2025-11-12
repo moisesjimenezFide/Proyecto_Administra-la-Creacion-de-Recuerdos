@@ -1,10 +1,10 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Configuration;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+
 
 namespace Proyecto_CreandoRecuerdos.Helpers
 {
@@ -24,7 +24,9 @@ namespace Proyecto_CreandoRecuerdos.Helpers
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, username),
-                    new Claim(ClaimTypes.Role, role)
+                    new Claim(ClaimTypes.Role, role),
+                    new Claim(ClaimTypes.NameIdentifier, username),
+                    new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "JWT")
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(expireMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),

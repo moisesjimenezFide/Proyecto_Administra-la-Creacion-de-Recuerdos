@@ -1,26 +1,26 @@
-﻿using Proyecto_CreandoRecuerdos.Models;
+﻿using ClosedXML.Excel;
+using Newtonsoft.Json;
 using Proyecto_CreandoRecuerdos.base_de_datos;
+using Proyecto_CreandoRecuerdos.Filters;
+using Proyecto_CreandoRecuerdos.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using System.IO;
-using Newtonsoft.Json;
-using ClosedXML.Excel;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
+    [RolAuthorize("1")]
     public class AdminController : Controller
     {
 
         [HttpGet]
         public ActionResult HistorialActividades()
         {
-            // Verificar si el usuario es administrador
-            if (Session["Rol"] == null || (int)Session["Rol"] != 1)
-            {
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
-            }
 
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {

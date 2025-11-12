@@ -1,9 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Acceso Denegado";
+    ViewData["Title"] = "Acceso Denegado";
+    var mensaje = TempData["Message"] as string ?? "Acceso denegado.";
 }
 
 <div class="text-center mt-5">
     <h2 class="text-danger">🚫 Acceso Denegado</h2>
-    <p>No tienes permisos para acceder a esta sección.</p>
+    <p>@mensaje</p>
     <a href="@Url.Action("inicio", "Inicio")" class="btn btn-primary">Volver al inicio</a>
 </div>

@@ -58,17 +58,3 @@
     min-width: 100%;
     max-width: 800%;
 }
-
-@media (max-width: 992px) {
-    .tabla-global th, .tabla-global td {
-        padding: 0.5rem;
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .tabla-global {
-        display: table;
-        width: auto;
-    }
-}

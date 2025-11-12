@@ -1,25 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.IO;
-using System.Linq;
-using System.Web.Mvc;
-using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Vml;
+﻿using ClosedXML.Excel;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Proyecto_CreandoRecuerdos.base_de_datos;
+using Proyecto_CreandoRecuerdos.Filters;
 using Proyecto_CreandoRecuerdos.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
 
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
+    [RolAuthorize("1")]
+
     public class ReportesController : Controller
     {
         private bool UsuarioEsAdmin()
         {
-            return Session["Rol"] != null && (int)Session["Rol"] == 1;
+            return Session["Rol"] != null && Convert.ToInt32(Session["Rol"]) == 1;
         }
 
         public ActionResult ReportesIndex()

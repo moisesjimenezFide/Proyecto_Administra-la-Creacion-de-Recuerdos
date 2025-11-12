@@ -1,20 +1,21 @@
 ﻿// HorariosController.cs
 using Proyecto_CreandoRecuerdos.base_de_datos;
+using Proyecto_CreandoRecuerdos.Filters;
 using System;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
+    [RolAuthorize("1")]
     public class HorariosController : Controller
     {
         [HttpGet]
         public ActionResult Horarios()
         {
-            if (Session["Rol"] == null || (int)Session["Rol"] != 1)
-            {
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
-            }
 
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {

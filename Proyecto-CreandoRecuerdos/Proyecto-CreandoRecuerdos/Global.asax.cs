@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -25,6 +27,9 @@ namespace Proyecto_CreandoRecuerdos
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            BundleTable.EnableOptimizations = true;
+
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Name;
 
         }
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

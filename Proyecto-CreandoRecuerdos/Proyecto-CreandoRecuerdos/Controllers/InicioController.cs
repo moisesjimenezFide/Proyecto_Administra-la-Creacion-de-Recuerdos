@@ -2,6 +2,9 @@
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
     public class InicioController : Controller
     {
         // GET: Home
@@ -11,7 +14,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             return View();
         }
 
-        // GET: Home
+        // GET: Pago
         public ActionResult pago()
         {
             return View();
@@ -19,12 +22,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         public ActionResult AccesoDenegado()
         {
-            if (Request.QueryString["expired"] == "true")
-            {
-                ViewBag.Mensaje = "Tu sesión ha expirado por inactividad. Por favor inicia sesión nuevamente.";
-            }
-            return View(); 
+            // El mensaje se puede recibir por TempData o ViewBag
+            ViewBag.Message = TempData["Message"] as string;
+            return View();
         }
-
     }
 }

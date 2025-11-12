@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.EMMA;
 using Newtonsoft.Json;
 using Proyecto_CreandoRecuerdos.base_de_datos;
+using Proyecto_CreandoRecuerdos.Filters;
 using Proyecto_CreandoRecuerdos.Models;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
     public class PedidosController : Controller
     {
         // Acción principal que muestra la vista de pedidos con productos y categorías
@@ -141,6 +144,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         // Vista de gestión de pedidos (solo para administradores)
         [HttpGet]
+        [RolAuthorize("1")]
         public ActionResult Gestionar()
         {
             int userId = GetUserId();
@@ -160,6 +164,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         // Obtener pedidos con filtros y paginación
         [HttpGet]
+        [RolAuthorize("1")]
         public JsonResult ObtenerPedidos(string estado = null, string fechaInicio = null, string fechaFin = null,
     string metodoPago = null)
         {
@@ -1388,6 +1393,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         }
 
         [HttpGet]
+        [RolAuthorize("1")]
         public ActionResult RegistroVentas()
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())

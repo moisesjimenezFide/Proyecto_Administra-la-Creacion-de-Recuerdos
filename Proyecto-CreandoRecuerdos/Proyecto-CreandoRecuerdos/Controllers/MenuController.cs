@@ -1,7 +1,6 @@
 ﻿using Proyecto_CreandoRecuerdos.base_de_datos;
-using Proyecto_CreandoRecuerdos.Models;
+using Proyecto_CreandoRecuerdos.Filters;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -9,6 +8,9 @@ using System.Web.Mvc;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
     public class MenuController : Controller
     {
         [HttpGet]
@@ -26,14 +28,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
-
+        [RolAuthorize("1")]
         [HttpGet]
         public ActionResult menu_admin()
         {
-            if (Session["Rol"] == null || (int)Session["Rol"] != 1)
-            {
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
-            }
 
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {

@@ -60,6 +60,7 @@
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 emptyTable: "",
                 zeroRecords: "",
+                search: "Buscar:",
                 paginate: {
                     first: "Primer página",
                     previous: "Página anterior",

@@ -6,7 +6,7 @@ namespace Proyecto_CreandoRecuerdos.Filters
 {
     public class NoCacheAttribute : ActionFilterAttribute
     {
-        public override void OnResultExecuting(ResultExecutingContext filterContext)
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var response = filterContext.HttpContext.Response;
             response.Cache.SetExpires(DateTime.UtcNow.AddDays(-1));
@@ -15,7 +15,7 @@ namespace Proyecto_CreandoRecuerdos.Filters
             response.Cache.SetNoStore();
             response.AppendHeader("Pragma", "no-cache");
             response.AppendHeader("Cache-Control", "no-store, must-revalidate, no-cache, max-age=0");
-            base.OnResultExecuting(filterContext);
+            base.OnActionExecuting(filterContext);
         }
     }
 }

@@ -2,15 +2,20 @@
 using System.Web.Mvc;
 using Proyecto_CreandoRecuerdos.Models;
 using Proyecto_CreandoRecuerdos.base_de_datos;
-
+using Proyecto_CreandoRecuerdos.Filters;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
+    // Evitar el almacenamiento en caché de las vistas
+    [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
     public class AusenciasController : Controller
     {
+        
         // GET: Ausencias
         private BD_CREANDO_RECUERDOSEntities db = new BD_CREANDO_RECUERDOSEntities();
 
+        [RolAuthorize("1")]
         public ActionResult GestionSolicitudesAusencias()
         {
             if (Session["IdUsuario"] == null)
@@ -25,6 +30,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RolAuthorize("1")]
         public ActionResult Aprobar(int id)
         {
             var solicitud = db.tabla_solicitudes_ausencias.Find(id);
@@ -39,6 +45,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RolAuthorize("1")]
         public ActionResult Rechazar(int id)
         {
             var solicitud = db.tabla_solicitudes_ausencias.Find(id);
@@ -52,13 +59,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         }
 
         // GET: Ausencias/SolicitudAusencia
+        [RolAuthorize("2")]
         public ActionResult SolicitudAusencia()
         {
-            if (Session["Rol"] == null || (int)Session["Rol"] != 2)
-            {
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
-            }
-
             int idUsuario = (int)Session["IdUsuario"];
             var solicitudes = db.tabla_solicitudes_ausencias
                 .Where(s => s.id_usuario == idUsuario)
@@ -72,6 +75,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         // POST: Ausencias/SolicitudAusencia
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RolAuthorize("2")]
         public ActionResult SolicitudAusencia(SolicitudAusenciaModel model)
         {
             if (ModelState.IsValid)

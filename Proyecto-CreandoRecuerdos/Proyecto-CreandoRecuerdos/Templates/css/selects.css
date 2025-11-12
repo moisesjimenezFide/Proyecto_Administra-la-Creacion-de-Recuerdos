@@ -21,8 +21,6 @@
         align-items: center;
         justify-content: space-between;
         transition: all 0.3s ease;
-        min-height: 43px;
-        max-height: 43px;
         width: 100%;
         -webkit-touch-callout: none;
         -webkit-user-select: none;

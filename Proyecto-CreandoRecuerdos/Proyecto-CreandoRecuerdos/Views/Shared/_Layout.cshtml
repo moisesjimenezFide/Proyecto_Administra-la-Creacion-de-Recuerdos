@@ -48,11 +48,15 @@
     @{
         var user = User as ClaimsPrincipal;
         var nombre = user?.FindFirst(ClaimTypes.Name)?.Value;
-        var rol = user?.FindFirst(ClaimTypes.Role)?.Value;
+        var rol = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
         var id = user?.FindFirst("IdUsuario")?.Value;
+        // Si no hay autenticación, asumimos invitado
+        if (!User.Identity.IsAuthenticated)
+        {
+            nombre = "Invitado";
+            rol = null; // null = Invitado, 1 = Admin, 2 = Empleado
+        }
     }
-
-
 
     <div style="background:#222; color:#0f0; padding:10px; font-family:monospace;">
         <p><strong>DEBUG JWT</strong></p>
@@ -95,24 +99,27 @@
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-uppercase" asp-controller="Home" href="@Url.Action("Inicio", "inicio")" asp-action="Index">Inicio</a>
-                        </li>
+                        @if (rol == null || rol == "1" || rol == "2")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-uppercase" asp-controller="Home" href="@Url.Action("Inicio", "inicio")" asp-action="Index">Inicio</a>
+                            </li>
 
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-uppercase" href="#" id="dropdownClientes" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Clientes
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownClientes">
-                                <li><a class="dropdown-item" asp-controller="Menu" href="@Url.Action("Menu", "menu")" asp-action="Index">Menú</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-uppercase" href="#" id="dropdownClientes" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Clientes
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownClientes">
+                                    <li><a class="dropdown-item" asp-controller="Menu" href="@Url.Action("Menu", "menu")" asp-action="Index">Menú</a></li>
 
-                                <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("Pedidos", "Pedidos")" asp-action="Index">Pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("Pedidos", "Pedidos")" asp-action="Index">Pedidos</a></li>
 
-                                <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("MisPedidos", "Pedidos")" asp-action="MisPedidos">Mis Pedidos</a></li>
-                            </ul>
-                        </li>
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" href="@Url.Action("MisPedidos", "Pedidos")" asp-action="MisPedidos">Mis Pedidos</a></li>
+                                </ul>
+                            </li>
+                        }
 
                         @if (rol == "1")
                         {
@@ -139,7 +146,7 @@
                                     Admin
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownAdmin">
-                                    <li><a class="dropdown-item" asp-controller="gestion" href="@Url.Action("gestion_usuarios", "Registro_Usuarios")" asp-action="Gestionar">Gestión de usuariossss</a></li>
+                                    <li><a class="dropdown-item" asp-controller="gestion" href="@Url.Action("gestion_usuarios", "Registro_Usuarios")" asp-action="Gestionar">Gestión de usuarios</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("Empleados", "Empleados")">Empleados</a></li>
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("GestionSolicitudesAusencias", "Ausencias")">
@@ -203,12 +210,14 @@
         <!-- Contenido principal -->
         <div id="container-wrap">
             <div class="container">
-                <main role="main" class="pb-3">
-                    @RenderBody()
-                </main>
+                <div class="main-centered-content">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                </div>
             </div>
-            @RenderSection("ListadoInsumos", required: false)
-        </div>
+                @RenderSection("ListadoInsumos", required: false)
+            </div>
 
         <!-- Footer -->
         <footer id="footer" class="footer text-white pt-5 pb-3">
@@ -337,6 +346,25 @@
                     updateBarraTop();
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ajaxComplete(function (event, xhr) {
+            const token = xhr.getResponseHeader("X-Renewed-Token");
+            if (token) {
+                localStorage.setItem("jwtToken", token);
+            }
+        });
+
+        // Al hacer peticiones AJAX, siempre envía el token actual:
+        $.ajaxSetup({
+            beforeSend: function (xhr) {
+                const token = localStorage.getItem("jwtToken");
+                if (token) {
+                    xhr.setRequestHeader("Authorization", "Bearer " + token);
+                }
+            }
         });
     </script>
 
