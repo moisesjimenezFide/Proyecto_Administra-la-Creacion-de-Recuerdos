@@ -46,6 +46,15 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     })
                     .ToList();
 
+                foreach (var producto in productos)
+                {
+                    var imgPath = Server.MapPath($"~/Templates/img/menu/{producto.img_url}");
+                    if (string.IsNullOrEmpty(producto.img_url) || !System.IO.File.Exists(imgPath))
+                    {
+                        producto.img_url = "default.png";
+                    }
+                }
+
                 // Obtener categorías para el filtrado
                 var categorias = db.tabla_categorias.ToList();
 
@@ -925,7 +934,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
-        // Mostrar pedidos del usuario actual
+        // Mostrar pedidos del usuario actuales
         [HttpGet]
         public ActionResult MisPedidos(string numeroPedido = null, string pin = null)
         {

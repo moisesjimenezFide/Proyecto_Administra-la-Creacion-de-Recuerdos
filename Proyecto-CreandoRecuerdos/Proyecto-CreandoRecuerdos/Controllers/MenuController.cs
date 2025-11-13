@@ -54,10 +54,32 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 // Obtener TODOS los productos del menú, sin filtrar por recomendaciones
                 var productosDisponibles = db.tabla_productos
                     .Select(p => new {
-                        p.id_producto,
-                        p.nombre
+                        id_producto = p.id_producto,
+                        nombre = p.nombre,
+                        descripcion = p.descripcion,
+                        precio_por_unidad = p.precio_por_unidad,
+                        img_url = p.img_url
                     })
                     .ToList();
+
+                // Crear una nueva lista con la imagen corregida si es necesario
+                var productosConImagen = productosDisponibles.Select(producto =>
+                {
+                    var imgPath = Server.MapPath($"~/Templates/img/menu/{producto.img_url}");
+                    var imgUrlFinal = (string.IsNullOrEmpty(producto.img_url) || !System.IO.File.Exists(imgPath))
+                        ? "default.png"
+                        : producto.img_url;
+
+                    return new
+                    {
+                        id_producto = producto.id_producto,
+                        nombre = producto.nombre,
+                        descripcion = producto.descripcion,
+                        precio_por_unidad = producto.precio_por_unidad,
+                        img_url = imgUrlFinal
+                    };
+                }).ToList();
+
 
                 return Json(productosDisponibles, JsonRequestBehavior.AllowGet);
             }

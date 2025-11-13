@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
     cargarProductos();
 
     function cargarProductos() {
-        fetch('/Menu/ObtenerTodosLosProductos')
+        fetch('/Menu/ObtenerProductosDisponibles')
             .then(response => response.json())
             .then(productos => {
                 const contenedor = document.getElementById('product-container');
@@ -47,15 +47,24 @@ document.addEventListener('DOMContentLoaded', function () {
                     div.dataset.recomendado = p.recomendado;
 
                     div.innerHTML = `
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">${p.nombre}</h5>
-                                <p class="card-text">${p.descripcion}</p>
-                                <p class="fw-bold">₡${p.precio_por_unit}</p>
-                                <button class="btn btn-sm btn-outline-dark">Editar</button>
-                                <button class="btn btn-sm btn-danger">Eliminar</button>
-                            </div>
-                        </div>
+                        <div class="card h-100 border-0 shadow-sm product-card">
+        <img src="/Templates/img/menu/${p.img_url}?v=${new Date().getTime()}" class="card-img-top" alt="${p.nombre}" style="max-height:120px;object-fit:cover;">
+        <div class="card-body">
+            <h5 class="card-title" style="font-family: 'Sono', sans-serif;">${p.nombre}</h5>
+            <p class="card-text">${p.descripcion}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold dark-violet">₡${Number(p.precio_por_unidad).toLocaleString('es-CR')}</span>
+            </div>
+            <div class="d-flex justify-content-between mt-2">
+                <a href="#" class="btn btn-primary btn-sm">
+                    <i class="fas fa-edit me-1"></i> Editar
+                </a>
+                <a href="#" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash-alt me-1"></i> Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
                     `;
                     contenedor.appendChild(div);
                 });

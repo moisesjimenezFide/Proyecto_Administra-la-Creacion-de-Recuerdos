@@ -573,6 +573,8 @@
     <Content Include="Templates\img\menu\7.jpg" />
     <Content Include="Templates\img\menu\8.jpg" />
     <Content Include="Templates\img\menu\9.jpg" />
+    <Content Include="Templates\img\menu\73.jpg" />
+    <Content Include="Templates\img\menu\default.png" />
     <Content Include="Templates\img\Recuerdos.png" />
     <Content Include="Templates\js\empleados.js" />
     <Content Include="Templates\js\gestionPedidos.js" />

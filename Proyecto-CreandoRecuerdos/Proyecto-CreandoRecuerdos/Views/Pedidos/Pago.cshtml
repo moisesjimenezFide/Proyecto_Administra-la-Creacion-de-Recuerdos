@@ -119,7 +119,7 @@
             }
         }
 
-        /* Validación de teléfono SINPE
+         //Validación de teléfono SINPE
         function validarTelefonoSinpe(telefono) {
             return /^\d{8}$/.test(telefono);
         }
@@ -128,7 +128,7 @@
             const valido = validarTelefonoSinpe(e.target.value);
             e.target.classList.toggle('is-invalid', !valido);
             e.target.classList.toggle('is-valid', valido);
-        });*/
+        });
 
         // Botón confirmar pago
         document.getElementById('confirmarPago').addEventListener('click', function () {

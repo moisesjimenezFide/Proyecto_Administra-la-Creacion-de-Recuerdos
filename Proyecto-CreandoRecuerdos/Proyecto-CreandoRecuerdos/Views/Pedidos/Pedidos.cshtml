@@ -344,9 +344,12 @@
             const sistemaPedidos = new SistemaPedidos();
 
             // Configurar evento para el botón de procesar pago
-            document.getElementById('checkoutBtn').addEventListener('click', () => {
-                sistemaPedidos.procesarPago();
-            });
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', () => {
+                    sistemaPedidos.procesarPago();
+                });
+            }
 
             // Configurar eventos para los métodos de pago
             document.querySelectorAll('.payment-method').forEach(method => {
@@ -356,14 +359,20 @@
 
                     // Mostrar solo los detalles del método seleccionado
                     document.querySelectorAll('.payment-details').forEach(d => d.style.display = 'none');
-                    document.getElementById(`${this.dataset.method}Details`).style.display = 'block';
+                    const details = document.getElementById(`${this.dataset.method}Details`);
+                    if (details) {
+                        details.style.display = 'block';
+                    }
                 });
             });
 
             // Configurar evento para el botón de confirmar pago en el modal
-            document.getElementById('confirmPaymentBtn').addEventListener('click', () => {
-                sistemaPedidos.confirmarPago();
-            });
+            const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+            if (confirmPaymentBtn) {
+                confirmPaymentBtn.addEventListener('click', () => {
+                    sistemaPedidos.confirmarPago();
+                });
+            }
         });
     </script>
 }

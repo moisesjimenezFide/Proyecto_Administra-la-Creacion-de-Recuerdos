@@ -243,10 +243,10 @@ class SistemaPedidos {
             return `
         <div class="col-md-4 mb-3 product-item" data-id="${producto.id_producto}">
             <div class="card h-100">
-                <img src="/Templates/img/menu/${producto.img_url || 'default.jpg'}" 
+                <img src="/Templates/img/menu/${producto.img_url || 'default.png'}" 
                      class="card-img-top" 
                      alt="${producto.nombre}"
-                     onerror="this.src='/Templates/img/menu/default.jpg'">
+                     onerror="this.src='/Templates/img/menu/default.png'">
                 <div class="card-body">
                     <h5 class="card-title">${producto.nombre}</h5>
                     <p class="card-text">${producto.descripcion || 'Sin descripción'}</p>
