@@ -1079,6 +1079,7 @@
 
         if (this.id === "horarioForm") {
             $(this).validate({
+                ignore: [],
                 rules: {
                     id_usuario: { required: true },
                     'dias_semana': { atLeastOneDay: true },
