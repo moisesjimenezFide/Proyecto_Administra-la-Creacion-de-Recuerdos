@@ -1,4 +1,5 @@
-﻿
+﻿@model List<Proyecto_CreandoRecuerdos.Models.ProductoModel>
+
 @{
     ViewData["Title"] = "Menú Admin";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -89,34 +90,34 @@
                 <div class="row" id="product-container">
                     @foreach (var producto in Model)
                     {
-                        var esRecomendado = recomendados.Contains(producto.id_producto);
+                        var esRecomendado = recomendados.Contains((int)producto.id_producto);
+                        string imgUrl = string.IsNullOrEmpty(producto.img_url) ? "default.png" : producto.img_url;
+                        var imgPath = Server.MapPath("~/Templates/img/menu/" + imgUrl);
+                        if (!System.IO.File.Exists(imgPath)) { imgUrl = "default.png"; }
+
                         <div class="col-md-4 mb-4" data-category="@producto.id_categoria" data-recomendado="@(esRecomendado.ToString().ToLower())">
                             <div class="card h-100 border-0 shadow-sm product-card">
-                                <div class="card-img-container">
-                                    <img src="~/Templates/img/menu/@producto.img_url?v=@DateTime.Now.Ticks" class="card-img-top" alt="@producto.nombre">
+                                <div class="card-img-container text-center">
+                                    <img src="~/Templates/img/menu/@imgUrl?v=@DateTime.Now.Ticks" class="card-img-top" alt="@producto.nombre" style="max-width: 120px;">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title" style="font-family: 'Sono', sans-serif;">@producto.nombre</h5>
-                                    <p class="card-text">@producto.descripcion</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fw-bold dark-violet">₡@producto.precio_por_unidad.ToString("N0")</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
+                                    <h5 class="card-title" style="font-family: 'Sono', sans-serif; font-weight: bold;">@producto.nombre</h5>
+                                    <p class="card-text" style="white-space: pre-line;">@producto.descripcion</p>
+                                    <span class="fw-bold dark-violet">₡@producto.precio_por_unidad.ToString("N0")</span>
+                                    <div class="d-flex justify-content-between mt-3">
                                         <a href="#" class="btn btn-primary btn-sm"
-                                           data-id_edit="@producto.id_producto"
-                                           data-nombre="@producto.nombre"
-                                           data-descripcion="@producto.descripcion"
-                                           data-precio="@producto.precio_por_unidad"
-                                           data-img="@producto.img_url"
-                                           data-category="@producto.id_categoria">
-
+                                           data-id_edit="@producto.id_producto.ToString()"
+                                           data-nombre="@(producto.nombre ?? "")"
+                                           data-descripcion="@(producto.descripcion ?? "")"
+                                           data-precio="@producto.precio_por_unidad.ToString()"
+                                           data-img="@(producto.img_url ?? "")"
+                                           data-category="@producto.id_categoria.ToString()">
                                             <i class="fas fa-edit me-1"></i> Editar
                                         </a>
                                         <a href="#" class="btn btn-danger btn-sm" data-id_eliminar="@producto.id_producto">
                                             <i class="fas fa-trash-alt me-1"></i> Eliminar
                                         </a>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -130,6 +131,7 @@
 </div>
 
 @section Scripts {
+
     <script src="@Url.Content("~/Templates/js/menu.js")"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -141,11 +143,17 @@
                     crear_funcion();
                 });
             }
+
             productContainer.addEventListener('click', function (e) {
                 // se genera un triger para saber cuando se pulsa un boton
                 const target = e.target;
-                const editar_btn = target.closest('a.btn.btn-primary[data-id_edit]');
-                const eliminar_btn = target.closest('a.btn.btn-danger[data-id_eliminar]');
+                let editar_btn = null;
+                if (target.matches('a.btn.btn-primary')) {
+                    editar_btn = target;
+                } else {
+                    editar_btn = target.closest('a.btn.btn-primary');
+                }
+                const eliminar_btn = target.closest('a.btn.btn-danger');
 
                 if (editar_btn) {
                     //Validar boton editar
@@ -174,14 +182,21 @@
         };
 
         function editar_funcion(btn) {
-
             // Tomar datos
             const id = btn.getAttribute('data-id_edit');
-            const nombre = btn.getAttribute('data-nombre');
-            const descripcion = btn.getAttribute('data-descripcion');
-            const precio = btn.getAttribute('data-precio');
-            const img = btn.getAttribute('data-img');
-            const idCategoriaActual = btn.getAttribute('data-category') || '';
+            let nombre = btn.getAttribute('data-nombre');
+            let descripcion = btn.getAttribute('data-descripcion');
+            let precio = btn.getAttribute('data-precio');
+            let img = btn.getAttribute('data-img');
+            let idCategoriaActual = btn.getAttribute('data-category') || '';
+
+            nombre = (nombre === "null" || nombre == null) ? "" : nombre;
+            descripcion = (descripcion === "null" || descripcion == null) ? "" : descripcion;
+            precio = (precio === "null" || precio == null) ? "" : precio;
+            img = (img === "null" || img == null) ? "" : img;
+            idCategoriaActual = (idCategoriaActual === "null" || idCategoriaActual == null) ? "" : idCategoriaActual;
+
+            const imgUrlFinal = (!img || img === "null") ? 'default.png' : img;
 
             // Dropdown
             let optionsHtml = '<select id="swal-categoria" class="swal2-select"><option value="">Seleccione una categoría</option>';
@@ -191,6 +206,7 @@
             }
 
             optionsHtml += '</select>';
+
             // Código Swal.fire...
             Swal.fire({
                 title: `Editar Producto: ${nombre}`,
@@ -210,7 +226,7 @@
                     optionsHtml +
 
                     `<p class="mt-2">Imagen actual:</p>` +
-                    `<img src="/Templates/img/menu/${img}?v=${new Date().getTime()}" class="swal2-image" style="max-height:100px;">` +
+                    `<img src="/Templates/img/menu/${imgUrlFinal}?v=${new Date().getTime()}" class="swal2-image" style="max-height:100px;">` +
 
                     `<p class="mt-2">Cargar nueva imagen:</p>` +
                     `<input type="file" id="swal-img" class="swal2-file">`,
@@ -405,8 +421,8 @@
                 e.preventDefault();
                 $.get('/Menu/RecomendacionesAjax', function (productos) {
                     let selectHtml = `<label for="eliminarRecomendacion">Quitar recomendación existente:</label>
-                        <select id="eliminarRecomendacion" class="swal2-select">
-                            <option value="">Seleccione una recomendación</option>`;
+                                <select id="eliminarRecomendacion" class="swal2-select">
+                                    <option value="">Seleccione una recomendación</option>`;
                     productos.forEach(prod => {
                         selectHtml += `<option value="${prod.id_producto}">${prod.nombre}</option>`;
                     });

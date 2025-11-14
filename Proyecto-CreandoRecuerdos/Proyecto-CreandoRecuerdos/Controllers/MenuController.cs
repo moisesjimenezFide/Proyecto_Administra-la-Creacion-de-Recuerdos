@@ -1,5 +1,6 @@
 ﻿using Proyecto_CreandoRecuerdos.base_de_datos;
 using Proyecto_CreandoRecuerdos.Filters;
+using Proyecto_CreandoRecuerdos.Models;
 using System;
 using System.IO;
 using System.Linq;
@@ -28,14 +29,24 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
-        [RolAuthorize("1")]
         [HttpGet]
+        [RolAuthorize("1")]
         public ActionResult menu_admin()
         {
 
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
-                var resultados = db.sp_consultar_productos().ToList();
+                var resultados = db.sp_consultar_productos().Select(p => new ProductoModel
+                {
+                    id_producto = p.id_producto,
+                    nombre = p.nombre,
+                    descripcion = p.descripcion,
+                    id_categoria = p.id_categoria,
+                    precio_por_unidad = p.precio_por_unidad,
+                    img_url = p.img_url,
+                    EsRecomendado = db.tabla_recomendaciones.Any(r => r.id_producto == p.id_producto)
+                })
+            .ToList();
 
                 // Agregá esta línea para enviar los productos recomendados a la vista
                 ViewBag.ProductosRecomendados = db.tabla_recomendaciones
@@ -54,11 +65,12 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 // Obtener TODOS los productos del menú, sin filtrar por recomendaciones
                 var productosDisponibles = db.tabla_productos
                     .Select(p => new {
-                        id_producto = p.id_producto,
-                        nombre = p.nombre,
-                        descripcion = p.descripcion,
-                        precio_por_unidad = p.precio_por_unidad,
-                        img_url = p.img_url
+                        p.id_producto,
+                        p.nombre,
+                        p.descripcion,
+                        p.id_categoria,
+                        p.precio_por_unidad,
+                        p.img_url
                     })
                     .ToList();
 
@@ -72,20 +84,22 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                     return new
                     {
-                        id_producto = producto.id_producto,
-                        nombre = producto.nombre,
-                        descripcion = producto.descripcion,
-                        precio_por_unidad = producto.precio_por_unidad,
+                        producto.id_producto,
+                        producto.nombre,
+                        producto.descripcion,
+                        producto.id_categoria,
+                        producto.precio_por_unidad,
                         img_url = imgUrlFinal
                     };
                 }).ToList();
 
 
-                return Json(productosDisponibles, JsonRequestBehavior.AllowGet);
+                return Json(productosConImagen, JsonRequestBehavior.AllowGet);
             }
         }
 
         [HttpPost]
+        [RolAuthorize("1")]
         public ActionResult menu_admin(long Id,string Nombre,string Descripcion,string Precio,string ImagenActual,int IdCategoria, HttpPostedFileBase Imagen)
         {
             try
@@ -137,6 +151,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
 
         [HttpPost]
+        [RolAuthorize("1")]
         public ActionResult crear_producto(string Nombre, string Descripcion, string Precio, int IdCategoria, HttpPostedFileBase Imagen)
         {
             try
@@ -191,8 +206,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
-
         [HttpPost]
+        [RolAuthorize("1")]
         public ActionResult eliminar_producto(int id)
         {
             try
@@ -218,6 +233,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         }
 
         [HttpPost]
+        [RolAuthorize("1")]
         public ActionResult GuardarRecomendacion(int productoId, string motivo)
         {
             try
@@ -233,18 +249,30 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
-
+       
+        [RolAuthorize("1")]
         public ActionResult Recomendaciones()
         {
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
-                // 1. Obtener los IDs recomendados
                 var idsRecomendados = db.tabla_recomendaciones.Select(r => r.id_producto).ToList();
 
-                // 2. Obtener los productos desde la tabla de menú
-                var productos = db.tabla_productos.Where(p => idsRecomendados.Contains(p.id_producto)).ToList();
+                var productos = db.tabla_productos
+                    .Where(p => idsRecomendados.Contains(p.id_producto))
+                    .Select(p => new ProductoModel
+                    {
+                        id_producto = p.id_producto,
+                        nombre = p.nombre,
+                        descripcion = p.descripcion,
+                        id_categoria = p.id_categoria,
+                        precio_por_unidad = p.precio_por_unidad,
+                        img_url = p.img_url,
+                        EsRecomendado = true
+                    })
+                    .ToList();
 
-                return View("menu_admin", productos); // reutilizamos la misma vista
+                ViewBag.ProductosRecomendados = idsRecomendados;
+                return View("menu_admin", productos);
             }
         }
 
@@ -257,14 +285,15 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 var productos = db.tabla_productos
                                   .Where(p => ids.Contains(p.id_producto))
                                   .Select(p => new {
-                                      id_producto = p.id_producto,
-                                      nombre = p.nombre
+                                      p.id_producto,
+                                      p.nombre
                                   }).ToList();
                 return Json(productos, JsonRequestBehavior.AllowGet);
             }
         }
 
         [HttpPost]
+        [RolAuthorize("1")]
         public ActionResult EliminarRecomendacion(int id)
         {
             try

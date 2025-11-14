@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     div.dataset.recomendado = p.recomendado;
 
                     div.innerHTML = `
-                        <div class="card h-100 border-0 shadow-sm product-card">
+    <div class="card h-100 border-0 shadow-sm product-card">
         <img src="/Templates/img/menu/${p.img_url}?v=${new Date().getTime()}" class="card-img-top" alt="${p.nombre}" style="max-height:120px;object-fit:cover;">
         <div class="card-body">
             <h5 class="card-title" style="font-family: 'Sono', sans-serif;">${p.nombre}</h5>
@@ -56,16 +56,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 <span class="fw-bold dark-violet">₡${Number(p.precio_por_unidad).toLocaleString('es-CR')}</span>
             </div>
             <div class="d-flex justify-content-between mt-2">
-                <a href="#" class="btn btn-primary btn-sm">
+                <a href="#" class="btn btn-primary btn-sm"
+                   data-id_edit="${p.id_producto}"
+                   data-nombre="${p.nombre || ''}"
+                   data-descripcion="${p.descripcion || ''}"
+                   data-precio="${p.precio_por_unidad}"
+                   data-img="${p.img_url || ''}"
+                   data-category="${p.id_categoria}">
                     <i class="fas fa-edit me-1"></i> Editar
                 </a>
-                <a href="#" class="btn btn-danger btn-sm">
+                <a href="#" class="btn btn-danger btn-sm" data-id_eliminar="${p.id_producto}">
                     <i class="fas fa-trash-alt me-1"></i> Eliminar
                 </a>
             </div>
         </div>
     </div>
-                    `;
+`;
                     contenedor.appendChild(div);
                 });
             });
