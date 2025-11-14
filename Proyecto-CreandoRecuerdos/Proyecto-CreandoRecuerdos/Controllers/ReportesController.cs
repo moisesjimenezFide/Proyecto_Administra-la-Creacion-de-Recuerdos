@@ -30,7 +30,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult ReportesIndex()
         {
             if (!UsuarioEsAdmin())
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
 
             return View("ReportesIndex");
         }
@@ -38,7 +38,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult HistorialVentas(string fechaInicio, string fechaFin)
         {
             if (!UsuarioEsAdmin())
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
 
             DateTime? inicio = null;
             DateTime? fin = null;
@@ -226,7 +226,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult VentasMensuales(int? anio)
         {
             if (!UsuarioEsAdmin())
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
 
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
@@ -251,7 +251,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
 
             if (!UsuarioEsAdmin())
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
 
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
@@ -275,7 +275,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult ProductosDisponibles()
         {
             if (!UsuarioEsAdmin())
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
 
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {

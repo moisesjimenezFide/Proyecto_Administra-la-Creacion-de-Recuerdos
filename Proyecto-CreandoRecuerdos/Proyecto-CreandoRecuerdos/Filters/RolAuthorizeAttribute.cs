@@ -20,11 +20,15 @@ namespace Proyecto_CreandoRecuerdos.Filters
             var user = filterContext.HttpContext.User as ClaimsPrincipal;
             var wasAuthenticatedSession = filterContext.HttpContext.Session["WasAuthenticated"] as bool?;
             var wasAuthenticatedCookie = filterContext.HttpContext.Request.Cookies["WasAuthenticated"]?.Value == "true";
+            var jwtCookie = filterContext.HttpContext.Request.Cookies["JWT"];
+            bool jwtExistia = jwtCookie != null && !string.IsNullOrEmpty(jwtCookie.Value);
+            var lastAuthCookie = filterContext.HttpContext.Request.Cookies["LastAuthenticated"];
+            bool lastAuthExistia = lastAuthCookie != null && !string.IsNullOrEmpty(lastAuthCookie.Value);
 
             // Si no hay usuario autenticado
             if (user == null || !user.Identity.IsAuthenticated)
             {
-                if (wasAuthenticatedSession == true || wasAuthenticatedCookie)
+                if (wasAuthenticatedSession == true || wasAuthenticatedCookie || jwtExistia || lastAuthExistia)
                 {
                     // Era autenticado y perdió la sesión: inactividad
                     filterContext.Controller.TempData["Message"] = "Tu sesión ha expirado por inactividad. Por favor inicia sesión nuevamente.";

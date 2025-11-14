@@ -20,21 +20,32 @@ namespace Proyecto_CreandoRecuerdos.Filters
                 HttpContext.Current.Session["Usuario"] = nombre;
                 HttpContext.Current.Session["WasAuthenticated"] = true;
 
-                // Guardar en cookie
+                // Guardar en cookie de estado
+                var sessionTimeout = 60; // minutos, igual que Web.config
                 var wasAuthCookie = new HttpCookie("WasAuthenticated", "true")
                 {
-                    Expires = DateTime.UtcNow.AddHours(1),
+                    Expires = DateTime.UtcNow.AddMinutes(sessionTimeout + 5), // 5 minutos extra
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Lax,
                 };
                 HttpContext.Current.Response.Cookies.Set(wasAuthCookie);
+                
+                // Guardar en cookie persistente
+                var lastAuthCookie = new HttpCookie("LastAuthenticated", DateTime.UtcNow.ToString("o"))
+                {
+                    Expires = DateTime.UtcNow.AddDays(1), // dura 1 día
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Lax,
+                };
+                HttpContext.Current.Response.Cookies.Set(lastAuthCookie);
             }
             else
             {
                 HttpContext.Current.Session["WasAuthenticated"] = false;
 
-                // Eliminar cookie
+                // Eliminar cookie de estado
                 var wasAuthCookie = new HttpCookie("WasAuthenticated", "")
                 {
                     Expires = DateTime.UtcNow.AddDays(-1),
@@ -43,6 +54,16 @@ namespace Proyecto_CreandoRecuerdos.Filters
                     SameSite = SameSiteMode.Lax,
                 };
                 HttpContext.Current.Response.Cookies.Set(wasAuthCookie);
+
+                // Eliminar cookie persistente
+                var lastAuthCookie = new HttpCookie("LastAuthenticated", "")
+                {
+                    Expires = DateTime.UtcNow.AddDays(-1),
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Lax,
+                };
+                HttpContext.Current.Response.Cookies.Set(lastAuthCookie);
             }
 
             base.OnActionExecuting(filterContext);

@@ -21,7 +21,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             if (Session["IdUsuario"] == null)
             {
                 // Redirige al login si la sesión ha expirado o el usuario no está autenticado
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
             }
 
             var solicitudes = db.tabla_solicitudes_ausencias.ToList();

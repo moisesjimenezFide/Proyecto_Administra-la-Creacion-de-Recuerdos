@@ -81,11 +81,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                     case 0: // Correo ya existe
                         TempData["ErrorMessage"] = "El correo electrónico ya está registrado";
-                        return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                        return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
 
                     default: // Otros errores
                         TempData["ErrorMessage"] = "Error al crear la cuenta. Por favor intente nuevamente";
-                        return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                        return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 if (info == null)
                 {
                     TempData["ErrorMessage"] = "No se pudo validar el usuario. Intente de nuevo.";
-                    return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                    return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
                 }
 
                 if (info != null)
@@ -120,7 +120,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             HttpOnly = true, // evita acceso por JS
                             Secure = true,   // solo HTTPS
                             SameSite = SameSiteMode.Lax,
-                            Expires = DateTime.UtcNow.AddMinutes(1)
+                            Expires = DateTime.UtcNow.AddMinutes(60)
                         };
                         Response.Cookies.Add(cookie);
 
@@ -138,19 +138,19 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     if (info.Resultado == 0)
                     {
                         TempData["ErrorMessage"] = "Credenciales incorrectas. Por favor verifique sus datos.";
-                        return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                        return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
                     }
 
                     if (info.Resultado == -1)
                     {
                         TempData["ErrorMessage"] = "Usuario inactivo.";
-                        return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                        return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
                     }
                 }
 
                 // Si info es null
                 TempData["ErrorMessage"] = "No se pudo validar el usuario. Intente de nuevo.";
-                return RedirectToAction("registro_usuarios", "Registro_Usuarios");
+                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
             }
         }
 

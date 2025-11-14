@@ -34,13 +34,13 @@ namespace Proyecto_CreandoRecuerdos.Filters
                             var username = principal.Identity.Name;
                             var role = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-                            var newToken = JwtManager.GenerateToken(username, role, 1);
+                            var newToken = JwtManager.GenerateToken(username, role, 60);
                             var newCookie = new HttpCookie("JWT", newToken)
                             {
                                 HttpOnly = true,
                                 Secure = true,
                                 SameSite = SameSiteMode.Lax,
-                                Expires = DateTime.UtcNow.AddMinutes(1)
+                                Expires = DateTime.UtcNow.AddMinutes(60)
                             };
                             HttpContext.Current.Response.Cookies.Add(newCookie);
                         }
