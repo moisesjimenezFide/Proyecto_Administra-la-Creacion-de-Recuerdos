@@ -38,7 +38,7 @@
                     <tr>
                         <td>@pedido.id_venta</td>
                         <td>@pedido.nombre_cliente</td>
-                        <td>@pedido.fecha_corta?.ToString("yyyy-MM-dd")</td>
+                        <td>@DateTime.Parse(pedido.fecha_corta).ToString("yyyy-MM-dd")</td>
                         <td>@pedido.estado_pedido</td>
                         <td>@pedido.tiempo_estimado</td>
                         <td>@pedido.metodo_pago</td>
