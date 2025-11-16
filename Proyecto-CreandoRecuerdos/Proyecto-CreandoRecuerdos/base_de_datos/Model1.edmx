@@ -2046,7 +2046,7 @@
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_consultar_productos" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_consultar_productos_Result)" />
-          <FunctionImport Name="sp_crear_cuenta">
+          <FunctionImport Name="sp_crear_cuenta" ReturnType="Collection(Int32)">
             <Parameter Name="nombre" Mode="In" Type="String" />
             <Parameter Name="correo" Mode="In" Type="String" />
             <Parameter Name="contrasenna" Mode="In" Type="String" />

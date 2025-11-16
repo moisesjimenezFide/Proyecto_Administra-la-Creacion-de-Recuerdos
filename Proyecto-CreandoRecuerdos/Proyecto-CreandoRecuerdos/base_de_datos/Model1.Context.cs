@@ -298,7 +298,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_consultar_productos_Result>("sp_consultar_productos");
         }
     
-        public virtual int sp_crear_cuenta(string nombre, string correo, string contrasenna)
+        public virtual ObjectResult<Nullable<int>> sp_crear_cuenta(string nombre, string correo, string contrasenna)
         {
             var nombreParameter = nombre != null ?
                 new ObjectParameter("nombre", nombre) :
@@ -312,7 +312,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
                 new ObjectParameter("contrasenna", contrasenna) :
                 new ObjectParameter("contrasenna", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_crear_cuenta", nombreParameter, correoParameter, contrasennaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_crear_cuenta", nombreParameter, correoParameter, contrasennaParameter);
         }
     
         public virtual int sp_crear_empleado(string nombre, Nullable<int> id_rol, string correo, string contrasenna, Nullable<bool> activo)

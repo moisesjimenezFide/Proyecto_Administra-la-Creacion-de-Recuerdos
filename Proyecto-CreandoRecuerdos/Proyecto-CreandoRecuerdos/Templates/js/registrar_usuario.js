@@ -24,7 +24,7 @@ function initFormHandlers() {
         });
     });
 
-    /* Validación de coincidencia de contraseñas
+    /* Validación de coincidencia de contraseñas ( ya esta en validaciones.css)
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', function (e) {
@@ -112,7 +112,7 @@ async function initFormHandlers() {
         });
     });
 
-    /* Validación de contraseñas
+    /* Validación de contraseñas ( ya esta en validaciones.css)
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', async function (e) {

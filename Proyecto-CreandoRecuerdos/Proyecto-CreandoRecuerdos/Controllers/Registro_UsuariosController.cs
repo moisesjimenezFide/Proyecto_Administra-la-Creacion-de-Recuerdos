@@ -66,18 +66,19 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
                 // Ejecutamos el stored procedure (versión que solo retorna valores numéricos)
-                var resultado = context.sp_crear_cuenta(
-                    model.nombre,
-                    model.correo,
-                    model.contrasenna
-                );
+                var resultado = context.Database.SqlQuery<int>(
+                    "EXEC sp_crear_cuenta @p0, @p1, @p2",
+                    model.nombre, model.correo, model.contrasenna
+                ).FirstOrDefault();
+
+                System.Diagnostics.Debug.WriteLine("Resultado SP: " + resultado);
 
                 // Manejamos los diferentes códigos de retorno
                 switch (resultado)
                 {
                     case 1: // Éxito
                         TempData["SuccessMessage"] = "¡Cuenta creada exitosamente!";
-                        return RedirectToAction("inicio", "Inicio");
+                        return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
 
                     case 0: // Correo ya existe
                         TempData["ErrorMessage"] = "El correo electrónico ya está registrado";
