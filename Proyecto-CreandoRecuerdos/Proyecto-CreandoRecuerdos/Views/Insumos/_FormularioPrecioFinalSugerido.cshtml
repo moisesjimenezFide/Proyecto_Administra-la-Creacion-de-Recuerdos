@@ -30,7 +30,10 @@
                 )
             </div>
             <input type="hidden" id="costo_total_receta" name="costo_total_receta" value="@(editando ? productoFinalEditado.costo_total_receta.ToString() : " 0")" />
-            <span class="invalid-feedback"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre_receta"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre_receta"]</span>
+            }
         </div>
 
         <div class="mb-3 text-start">
@@ -39,7 +42,10 @@
                 <input type="number" name="margen_de_utilidad" id="margen_de_utilidad" class="form-control" value="@(editando ? productoFinalEditado.margen_de_utilidad.ToString("0.##") : "")" min="0" max="100" />
                 <span class="input-group-text">%</span>
             </div>
-            <span class="invalid-feedback d-block"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("margen_de_utilidad"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["margen_de_utilidad"]</span>
+            }
         </div>
 
         <div class="mb-3 text-start">
@@ -52,7 +58,10 @@
                 <option value="DidiFood (30%)" @(editando && productoFinalEditado?.plataforma_de_envio == "DidiFood (30%)" ? "selected" : "")>DidiFood (30%)</option>
                 <option value="UberEats (40%)" @(editando && productoFinalEditado?.plataforma_de_envio == "UberEats (40%)" ? "selected" : "")>UberEats (40%)</option>
             </select>
-            <span class="invalid-feedback"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("plataforma_de_envio"))
+            {
+                <span class="invalid-feedback d-block" style="display:block">@ViewBag.ErroresPorCampo["plataforma_de_envio"]</span>
+            }
         </div>
 
         <!-- EMPAQUES y/o DECORACIONES -->
@@ -74,21 +83,31 @@
                                 "Seleccione un empaque o decoración",
                                 new { @class = "form-control" }
                             )
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                            }
                         </div>
 
                         <div class="col-md-3">
                             <br>
                             <label>Cantidad</label>
                             <input type="number" name="EmpaquesDecoracionesUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                            }
                         </div>
 
                         <div class="col-md-3">
                             <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="EmpaquesDecoracionesUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
-                            <span class="invalid-feedback"></span>
+                            <span class="help-block" style="font-size:11px;">Palabras permitidas: unidad, unidades</span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                            }
                         </div>
 
                         <div class="col-md-2">
@@ -109,21 +128,31 @@
                     ViewBag.EmpaquesDecoraciones as SelectList,
                     "Seleccione un empaque o decoración",
                     new { @class = "form-control" })
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                    }
                 </div>
 
                 <div class="col-md-3">
                     <br>
                     <label>Cantidad</label>
                     <input type="number" name="EmpaquesDecoracionesUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                    }
                 </div>
 
                 <div class="col-md-3">
                     <br>
                     <label>Unidad de medida</label>
                     <input type="text" name="EmpaquesDecoracionesUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    <span class="help-block" style="font-size:11px;">Palabras permitidas: unidad, unidades</span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                    }
                 </div>
 
                 <div class="col-md-2">
@@ -157,21 +186,31 @@
                             "Seleccione un implemento",
                             new { @class = "form-control" }
                         )
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                            }
                         </div>
 
                         <div class="col-md-3">
                             <br>
                             <label>Cantidad</label>
                             <input type="number" name="ImplementosUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                            }
                         </div>
 
                         <div class="col-md-3">
                             <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="ImplementosUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
-                            <span class="invalid-feedback"></span>
+                            <span class="help-block" style="font-size:11px;">Palabras permitidas: unidad, unidades</span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                            }
                         </div>
 
                         <div class="col-md-2">
@@ -191,21 +230,31 @@
                     ViewBag.Implementos as SelectList,
                     "Seleccione un implemento",
                     new { @class = "form-control" })
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                    }
                 </div>
 
                 <div class="col-md-3">
                     <br>
                     <label>Cantidad</label>
                     <input type="number" name="ImplementosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                    }
                 </div>
 
                 <div class="col-md-3">
                     <br>
                     <label>Unidad de medida</label>
                     <input type="text" name="ImplementosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    <span class="help-block" style="font-size:11px;">Palabras permitidas: unidad, unidades</span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                    }
                 </div>
 
                 <div class="col-md-2">
@@ -239,21 +288,31 @@
                             "Seleccione un suministro",
                             new { @class = "form-control" }
                         )
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                            }
                         </div>
 
                         <div class="col-md-2">
                             <br>
                             <label>Cantidad</label>
                             <input type="number" name="SuministrosUtilizados[@i].cantidad" class="form-control" value="@item.cantidad" />
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                            }
                         </div>
 
                         <div class="col-md-2">
                             <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="SuministrosUtilizados[@i].unidad_de_medida" class="form-control" value="@item.unidad_de_medida" />
-                            <span class="invalid-feedback"></span>
+                            <span class="help-block" style="font-size:11px;">Palabras permitidas: unidad, unidades</span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                            }
                         </div>
 
                         <div class="col-md-5 align-items-start">
@@ -286,21 +345,31 @@
                    ViewBag.Suministros as SelectList,
                    "Seleccione un suministro",
                    new { @class = "form-control" })
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                    }
                 </div>
 
                 <div class="col-md-2">
                     <br>
                     <label>Cantidad</label>
                     <input type="number" name="SuministrosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                    }
                 </div>
 
                 <div class="col-md-2">
                     <br>
                     <label>Unidad de medida</label>
                     <input type="text" name="SuministrosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    <span class="help-block" style="font-size:11px;">Palabras permitidas: unidad, unidades</span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                    }
                 </div>
 
                 <div class="col-md-5 align-items-start">
@@ -332,7 +401,10 @@
                 <input type="number" name="porcentaje_de_iva" id="porcentaje_de_iva" class="form-control" value="@(editando ? productoFinalEditado.porcentaje_de_iva.ToString("0.##") : "")" min="0" max="100" step="0.01" />
                 <span class="input-group-text">%</span>
             </div>
-            <span class="invalid-feedback d-block"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("porcentaje_de_iva"))
+            {
+                <span class="invalid-feedback"></span>
+            }
         </div>
 
         <div class="mb-3 text-start">
@@ -341,8 +413,13 @@
                 <input type="number" name="porcentaje_de_servicio" id="porcentaje_de_servicio" class="form-control" value="@(editando ? productoFinalEditado.porcentaje_de_servicio.ToString("0.##") : "")" min="0" max="100" step="0.01" />
                 <span class="input-group-text">%</span>
             </div>
-            <span class="invalid-feedback d-block"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("porcentaje_de_servicio"))
+            {
+                <span class="invalid-feedback">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+            }
         </div>
+
+        <!--RESULTADOS CALCULADOS-->
 
         <div class="mb-3 text-start">
             <label class="form-label">Costo de Receta (₡):</label>

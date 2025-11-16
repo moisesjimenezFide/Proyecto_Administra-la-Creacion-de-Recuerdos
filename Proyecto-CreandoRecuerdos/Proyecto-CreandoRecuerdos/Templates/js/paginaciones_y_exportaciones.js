@@ -26,24 +26,24 @@
             {
                 extend: 'copyHtml5',
                 text: 'Copiar',
-                className: 'btn btn-custom-pink btn-sm'
+                className: 'btn btn-custom-pink'
             },
             {
                 extend: 'excelHtml5',
                 text: 'Exportar a Excel',
-                className: 'btn btn-custom-pink btn-sm'
+                className: 'btn btn-custom-pink'
             },
             {
                 extend: 'pdfHtml5',
                 text: 'Exportar a PDF',
                 orientation: 'landscape',
                 pageSize: 'A4',
-                className: 'btn btn-custom-pink btn-sm'
+                className: 'btn btn-custom-pink'
             },
             {
                 extend: 'print',
                 text: 'Imprimir',
-                className: 'btn btn-custom-pink btn-sm'
+                className: 'btn btn-custom-pink'
             }
         ];
 

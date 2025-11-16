@@ -22,25 +22,37 @@
         <div class="mb-3 text-start">
             <label for="nombre" class="form-label">Nombre</label>
             <input type="text" name="nombre" id="nombre" class="form-control" value="@(editando ? implementoEditado.nombre : "")" />
-            <span class="invalid-feedback"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+            }
         </div>
 
         <div class="mb-3 text-start">
             <label for="marca" class="form-label">Marca</label>
             <input type="text" name="marca" id="marca" class="form-control" value="@(editando ? implementoEditado.marca : "")" />
-            <span class="invalid-feedback"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("marca"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["marca"]</span>
+            }
         </div>
 
         <div class="mb-3 text-start">
             <label for="presentacion" class="form-label">Presentación</label>
             <input type="text" name="presentacion" id="presentacion" class="form-control" value="@(editando ? implementoEditado.presentacion : "")" />
-            <span class="invalid-feedback"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("presentacion"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["presentacion"]</span>
+            }
         </div>
 
         <div class="mb-3 text-start">
             <label for="proveedor" class="form-label">Proveedor</label>
             <input type="text" name="proveedor" id="proveedor" class="form-control" value="@(editando ? implementoEditado.proveedor : "")" />
-            <span class="invalid-feedback"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("proveedor"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["proveedor"]</span>
+            }
         </div>
 
         <div class="mb-3 text-start">
@@ -49,20 +61,32 @@
                 <span class="input-group-text">₡</span>
                 <input type="number" name="costo" id="costo" class="form-control" value="@(editando ? implementoEditado.costo.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) : "")" step="0.01" lang="en" />
             </div>
-            <span class="invalid-feedback d-block"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("costo"))
+            {
+                <span class="invalid-feedback d-block" style="display:block">@ViewBag.ErroresPorCampo["costo"]</span>
+            }
         </div>
 
         <div class="mb-3 text-start">
             <label for="cantidad" class="form-label">Cantidad</label>
             <input type="number" name="cantidad" id="cantidad" class="form-control" value="@(editando ? implementoEditado.cantidad.ToString() : "")" />
-            <span class="invalid-feedback"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+            }
         </div>
 
         <div class="mb-3 text-start">
             <label for="unidad_de_medida" class="form-label">Unidad de Medida</label>
             <input type="text" name="unidad_de_medida" id="unidad_de_medida" class="form-control" value="@(editando ? implementoEditado.unidad_de_medida : "")" />
-            <span class="invalid-feedback"></span>
+            <span class="help-block" style="font-size:11px;">Palabras permitidas: unidad, unidades</span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+            }
         </div>
+
+        <!--RESULTADOS CALCULADOS-->
 
         <div class="mb-3 text-start">
             <label class="form-label">Costo por Cantidad (₡):</label>

@@ -76,6 +76,7 @@
         <div class="mb-3 text-start">
             <label for="unidad_de_medida_de_presentacion" class="form-label">Unidad de Medida de Presentación</label>
             <input type="text" name="unidad_de_medida_de_presentacion" id="unidad_de_medida_de_presentacion" class="form-control" value="@(editando ? productoPreparadoEditado.unidad_de_medida_de_presentacion : "")" />
+            <span class="help-block" style="font-size:11px;">Palabras permitidas: kg, kilo, kilos, kilogramo, kilogramos, g, grs, gramo, gramos, l, litro, litros, ml, mililitro, mililitros</span>
             @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida_de_presentacion"))
             {
                 <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida_de_presentacion"]</span>
@@ -106,11 +107,14 @@
         <div class="mb-3 text-start">
             <label for="unidad_de_medida_del_peso" class="form-label">Unidad de Medida del peso</label>
             <input type="text" name="unidad_de_medida_del_peso" id="unidad_de_medida_del_peso" class="form-control" value="@(editando ? productoPreparadoEditado.unidad_de_medida_del_peso : "")" />
+            <span class="help-block" style="font-size:11px;">Palabras permitidas: g, grs, gramo, gramos, ml, mililitro, mililitros</span>
             @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida_del_peso"))
             {
                 <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida_del_peso"]</span>
             }
         </div>
+
+        <!--RESULTADOS CALCULADOS-->
 
         <div class="mb-3 text-start">
             <label class="form-label">Volumen de Porción Convertido:</label>

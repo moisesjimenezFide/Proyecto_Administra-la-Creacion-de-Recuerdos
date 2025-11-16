@@ -22,13 +22,19 @@
         <div class="mb-3 text-start">
             <label for="nombre" class="form-label">Nombre</label>
             <input type="text" name="nombre" id="nombre" class="form-control" value="@(editando ? recetaEditada.nombre : "")" />
-            <span class="invalid-feedback"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+            }
         </div>
 
         <div class="mb-3 text-start">
             <label for="porcion" class="form-label">Porción</label>
             <input type="number" name="porcion" id="porcion" class="form-control" value="@(editando ? recetaEditada.porcion.ToString() : "")" />
-            <span class="invalid-feedback"></span>
+            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("porcion"))
+            {
+                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["porcion"]</span>
+            }
         </div>
 
         <!-- Materias Primas Utilizadas -->
@@ -55,21 +61,31 @@
                                 "Seleccione una materia prima",
                                 new { @class = "form-control" }
                             )
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                            }
                         </div>
 
                         <div class="col-md-3">
                             <br>
                             <label>Cantidad</label>
                             <input type="number" name="MateriasPrimasUtilizadas[@i].cantidad" class="form-control" value="@materia_prima.cantidad" />
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                            }
                         </div>
 
                         <div class="col-md-3">
                             <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="MateriasPrimasUtilizadas[@i].unidad_de_medida" class="form-control" value="@materia_prima.unidad_de_medida" />
-                            <span class="invalid-feedback"></span>
+                            <span class="help-block" style="font-size:11px;">Palabras permitidas: kg, kilo, kilos, kilogramo, kilogramos, g, grs, gramo, gramos, l, litro, litros, ml, mililitro, mililitros</span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                            }
                         </div>
 
                         <div class="col-md-2">
@@ -91,21 +107,31 @@
                         "Seleccione una materia prima",
                         new { @class = "form-control" }
                     )
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                    }
                 </div>
 
                 <div class="col-md-3">
                     <br>
                     <label>Cantidad</label>
                     <input type="number" name="MateriasPrimasUtilizadas[__index__].cantidad" placeholder="Cantidad" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                    }
                 </div>
 
                 <div class="col-md-3">
                     <br>
                     <label>Unidad de medida</label>
                     <input type="text" name="MateriasPrimasUtilizadas[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    <span class="help-block" style="font-size:11px;">Palabras permitidas: kg, kilo, kilos, kilogramo, kilogramos, g, grs, gramo, gramos, l, litro, litros, ml, mililitro, mililitros</span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                    }
                 </div>
 
                 <div class="col-md-2">
@@ -142,21 +168,31 @@
                                 "Seleccione un producto preparado",
                                 new { @class = "form-control" }
                             )
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                            }
                         </div>
 
                         <div class="col-md-3">
                             <br>
                             <label>Cantidad</label>
                             <input type="number" name="ProductosPreparadosUtilizados[@i].cantidad" class="form-control" value="@producto_preparado.cantidad" />
-                            <span class="invalid-feedback"></span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                            }
                         </div>
 
                         <div class="col-md-3">
                             <br>
                             <label>Unidad de medida</label>
                             <input type="text" name="ProductosPreparadosUtilizados[@i].unidad_de_medida" class="form-control" value="@producto_preparado.unidad_de_medida" />
-                            <span class="invalid-feedback"></span>
+                            <span class="help-block" style="font-size:11px;">Palabras permitidas: kg, kilo, kilos, kilogramo, kilogramos, g, grs, gramo, gramos, l, litro, litros, ml, mililitro, mililitros</span>
+                            @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                            {
+                                <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                            }
                         </div>
 
                         <div class="col-md-2">
@@ -178,21 +214,31 @@
                         "Seleccione un producto preparado",
                         new { @class = "form-control" }
                     )
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("nombre"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["nombre"]</span>
+                    }
                 </div>
 
                 <div class="col-md-3">
                     <br>
                     <label>Cantidad</label>
                     <input type="number" name="ProductosPreparadosUtilizados[__index__].cantidad" placeholder="Cantidad" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("cantidad"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["cantidad"]</span>
+                    }
                 </div>
 
                 <div class="col-md-3">
                     <br>
                     <label>Unidad de medida</label>
                     <input type="text" name="ProductosPreparadosUtilizados[__index__].unidad_de_medida" placeholder="Unidad de medida" class="form-control" />
-                    <span class="invalid-feedback"></span>
+                    <span class="help-block" style="font-size:11px;">Palabras permitidas: kg, kilo, kilos, kilogramo, kilogramos, g, grs, gramo, gramos, l, litro, litros, ml, mililitro, mililitros</span>
+                    @if (ViewBag.ErroresPorCampo != null && ViewBag.ErroresPorCampo.ContainsKey("unidad_de_medida"))
+                    {
+                        <span class="invalid-feedback" style="display:block">@ViewBag.ErroresPorCampo["unidad_de_medida"]</span>
+                    }
                 </div>
 
                 <div class="col-md-2">
@@ -204,6 +250,8 @@
             <button type="button" class="btn btn-custom-pink mt-2 btn-agregar-fila" data-container="productos_preparados-container" data-template="template-producto_preparado">+ Agregar Producto Preparado</button>
         </div>
         <br />
+
+        <!--RESULTADOS CALCULADOS-->
 
         <div class="mb-3 text-start">
             <label class="form-label">Costo Total de Receta (₡):</label>

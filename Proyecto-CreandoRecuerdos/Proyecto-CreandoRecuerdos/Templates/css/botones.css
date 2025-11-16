@@ -107,6 +107,18 @@
         color: var(--color-texto-claro);
     }
 
+    .btn-primary {
+    background-color: var(--color-principal-oscuro);
+    color: var(--color-texto-claro);
+    border-color: var(--color-principal-oscuro);
+}
+
+    .btn-primary:hover {
+        background-color: var(--color-principal-hover-botones);
+        color: var(--color-texto-claro);
+        border-color: var(--color-principal-hover-botones);
+    }
+
 .btn-group {
     display: flex;
     flex-wrap: nowrap;
@@ -114,6 +126,43 @@
     align-items: stretch;
     width: 100%;
     gap: 8px;
+}
+
+/* Botones de exportación */
+.dt-buttons .btn,
+.dt-buttons .btn-custom-pink {
+    min-width: 40px;
+    max-width: 185px;
+    height: 40px;
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px !important;
+    font-size: 0.95em;
+    text-align: center;
+    white-space: nowrap;
+    transition: background 0.2s;
+    box-shadow: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Sono", sans-serif;
+    font-weight: 500;
+}
+
+.d-flex > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+/* Espaciado entre botones de exportación */
+div.dt-buttons {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-start;
 }
 
 .switch-label {
