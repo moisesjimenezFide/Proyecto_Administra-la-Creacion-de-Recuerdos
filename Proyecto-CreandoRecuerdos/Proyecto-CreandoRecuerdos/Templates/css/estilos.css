@@ -253,6 +253,101 @@ html, body {
         color: var(--color-texto-oscuro);
     }
 
+#footer .col-md-4 {
+    flex: 1 1 0;
+    margin-bottom: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+#footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+#footer .social-icons {
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0.2rem !important;
+    margin: 0 8px !important;
+}
+
+    #footer .social-icons .social-row {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+#footer .social-row,
+#footer .social-row.tiktok-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.2rem; /* Espacio horizontal uniforme entre iconos */
+    margin: 0;
+}
+
+    #footer .social-row.tiktok-row {
+        margin-top: 1.2rem; /* Igual al gap horizontal */
+        margin-left: 0;
+        justify-content: center;
+    }
+
+#footer .social-icons a {
+    margin: 0 !important; /* Elimina margen extra de los enlaces */
+}
+
+#footer h3 {
+    margin-top: 0 !important;
+    margin-bottom: 0.2rem !important;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+#footer ul.list-unstyled {
+    margin-top: 0 !important;
+    margin-bottom: 0.2rem !important;
+    padding-left: 0;
+}
+
+    #footer ul.list-unstyled li {
+        margin-bottom: 0.2em !important;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+    }
+
+/* Centrado universal para el teléfono en el footer */
+#footer .footer-phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    gap: 0.5rem;
+    max-width: 260px; /* Ajusta según lo que se vea mejor */
+    margin-left: auto;
+    margin-right: auto;
+    white-space: nowrap;
+}
+
+    /* Opcional: para que el texto no se desborde en pantallas pequeñas */
+    #footer .footer-phone a {
+        white-space: nowrap;
+        word-break: normal;
+    }
+
 /* Responsive */
 
 /* dropdown-menu */
@@ -293,152 +388,402 @@ html, body {
     }
 }
 
-/* Previene el desplazamiento horizontal */
-html, body {
-    overflow-x: hidden;
+@media (min-width: 992px) {
+
+    #footer .footer-email {
+        display: flex;
+        align-items: flex-start;
+        font-size: 1rem;
+        color: #FFFFFF;
+        word-break: break-all;
+        white-space: normal;
+        gap: 0.5rem;
+    }
+
+        #footer .footer-email a {
+            color: #FFFFFF;
+            text-decoration: none;
+            word-break: break-all;
+            white-space: normal;
+            line-height: 1.2;
+            font-size: 0.9rem;
+        }
 }
 
-@media (min-width: 50px) and (max-width: 332px) {
-    .navbar::before {
-        top: 114px;
-        height: 8px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+@media (max-width: 767px) {
+    #footer .container {
+        text-align: center !important;
     }
 
-    .navbar.menu-abierto::before {
-        top: 250px; /* mueve la barra debajo del menú abierto */
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    #footer .row {
+        justify-content: center !important;
+        flex-direction: column !important;
+        align-items: center !important;
     }
 
-    /* La posición de la barra cuando el menú está CERRADO (Admin) */
-    .admin-session.navbar::before {
-        top: 114px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        #footer .row.g-4 {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 2rem !important;
+            width: 100%;
+        }
+
+    #footer .footer-central-group {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        gap: 1.2rem !important;
+        width: 100%;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
 
-    /* La posición de la barra cuando el menú está ABIERTO (Admin) */
-    .admin-session.navbar.menu-abierto::before {
-        top: 324px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        #footer .footer-central-group > .col-md-4 {
+            width: 33.333% !important;
+            max-width: 33.333% !important;
+            text-align: center !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+        }
+
+    #footer .footer-contact-row {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100%;
     }
 
-    /* La posición de la barra cuando el menú está CERRADO (Empleado) */
-    .empleado-session.navbar::before {
-        top: 114px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        #footer .footer-contact-row h3,
+        #footer .footer-horario h3 {
+            width: 100%;
+            text-align: center !important;
+            justify-content: center !important;
+            align-items: center !important;
+            display: flex !important;
+        }
+
+        #footer .footer-contact-row ul {
+            width: 100%;
+            text-align: center !important;
+            justify-content: center !important;
+            align-items: center !important;
+            display: flex !important;
+            flex-direction: column !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+            #footer .footer-contact-row ul li {
+                width: 100%;
+                text-align: center !important;
+                justify-content: center !important;
+                align-items: center !important;
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 0.5rem;
+            }
+
+                #footer .footer-contact-row ul li i{
+                    margin-right: 0.5rem;
+                    margin-left: 0 !important;
+                }
+
+    #footer .footer-horario {
+        display: inline-flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        text-align: left !important;
+        gap: 0.5rem !important;
     }
 
-    /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
-    .empleado-session.navbar.menu-abierto::before {
-        top: 290px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        #footer .footer-horario i {
+            margin-right: 0.1rem !important;
+            margin-left: 0 !important;
+            padding: 0 !important;
+        }
+
+    #footer ul,
+    #footer h3,
+    #footer .social-icons,
+    #footer img {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
     }
 
-    .admin-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 468px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    #footer .col-md-4 ul.list-unstyled {
+        padding-left: 0;
     }
 
-    .admin-session.insumos-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 628px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        #footer .col-md-4 ul.list-unstyled li {
+            display: block !important;
+            width: 100%;
+            text-align: center !important;
+            margin-bottom: 0.7em;
+        }
+
+            #footer .col-md-4 ul.list-unstyled li a {
+                display: inline-block;
+                width: auto;
+                text-align: center;
+            }
+
+    #footer .col-md-4 ul li {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: auto;
+        text-align: center !important;
     }
 
-    .admin-session.admin-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 668px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        #footer .col-md-4 ul li a,
+        #footer .col-md-4 ul li span {
+            text-align: center !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            width: 100%;
+            display: inline-block;
+        }
+
+    #footer .footer-logo-central {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem 0 1rem 0;
     }
 
-    .admin-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 445px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .empleado-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 428px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .empleado-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 405px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .navbar.clientes-section.menu-abierto.dropdown-abierto::before {
-        top: 388px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
+        #footer .footer-logo-central img {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
 }
 
-@media (min-width: 333px) and (max-width: 991px) {
-    .navbar::before {
-        top: 66px;
-        height: 8px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    @media (min-width: 768px) and (max-width: 991px) {
+
+        #footer .footer-contact-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        #footer .footer-email,
+        #footer .footer-horario {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            color: #FFFFFF;
+            word-break: break-all;
+            white-space: normal;
+            min-width: 0;
+            flex: 1 1 0;
+        }
+
+        #footer .footer-email {
+            display: flex;
+            align-items: flex-start;
+            font-size: 1rem;
+            color: #FFFFFF;
+            word-break: break-all;
+            white-space: normal;
+            gap: 0.5rem;
+        }
+
+            #footer .footer-email a {
+                color: #FFFFFF;
+                text-decoration: none;
+                word-break: break-all;
+                white-space: normal;
+                line-height: 1.2;
+                font-size: 0.9rem;
+            }
     }
 
-    .navbar.menu-abierto::before {
-        top: 202px; /* mueve la barra debajo del menú abierto */
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+@media (min-width: 768px) {
+    #footer .footer-row {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        justify-content: space-between !important;
+        gap: 0 !important;
+        width: 100%;
     }
 
-    /* La posición de la barra cuando el menú está CERRADO (Admin) */
-    .admin-session.navbar::before {
-        top: 66px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    #footer .col-md-4 {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        width: 33.333% !important;
+        max-width: 33.333% !important;
+        padding: 0 1rem;
     }
 
-    /* La posición de la barra cuando el menú está ABIERTO (Admin) */
-    .admin-session.navbar.menu-abierto::before {
-        top: 282px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
+        #footer .col-md-4.text-center {
+            align-items: center !important;
+            text-align: center !important;
+        }
 
-    /* La posición de la barra cuando el menú está CERRADO (Empleado) */
-    .empleado-session.navbar::before {
-        top: 66px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
-    .empleado-session.navbar.menu-abierto::before {
-        top: 243px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .admin-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 420px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .admin-session.insumos-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 580px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .admin-session.admin-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 620px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .admin-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 397px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .empleado-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 378px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .empleado-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
-        top: 357px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .navbar.clientes-section.menu-abierto.dropdown-abierto::before {
-        top: 340px;
-        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
+        #footer .col-md-4.text-md-end {
+            align-items: flex-end !important;
+            text-align: right !important;
+        }
 }
+
+    @media (min-width: 50px) and (max-width: 332px) {
+        .navbar::before {
+            top: 114px;
+            height: 8px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .navbar.menu-abierto::before {
+            top: 250px; /* mueve la barra debajo del menú abierto */
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* La posición de la barra cuando el menú está CERRADO (Admin) */
+        .admin-session.navbar::before {
+            top: 114px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* La posición de la barra cuando el menú está ABIERTO (Admin) */
+        .admin-session.navbar.menu-abierto::before {
+            top: 324px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* La posición de la barra cuando el menú está CERRADO (Empleado) */
+        .empleado-session.navbar::before {
+            top: 114px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
+        .empleado-session.navbar.menu-abierto::before {
+            top: 290px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .admin-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 468px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .admin-session.insumos-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 628px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .admin-session.admin-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 668px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .admin-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 445px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .empleado-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 428px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .empleado-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 405px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .navbar.clientes-section.menu-abierto.dropdown-abierto::before {
+            top: 388px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+    }
+
+    @media (min-width: 333px) and (max-width: 991px) {
+        .navbar::before {
+            top: 66px;
+            height: 8px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .navbar.menu-abierto::before {
+            top: 202px; /* mueve la barra debajo del menú abierto */
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* La posición de la barra cuando el menú está CERRADO (Admin) */
+        .admin-session.navbar::before {
+            top: 66px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* La posición de la barra cuando el menú está ABIERTO (Admin) */
+        .admin-session.navbar.menu-abierto::before {
+            top: 282px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* La posición de la barra cuando el menú está CERRADO (Empleado) */
+        .empleado-session.navbar::before {
+            top: 66px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
+        .empleado-session.navbar.menu-abierto::before {
+            top: 243px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .admin-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 420px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .admin-session.insumos-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 580px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .admin-session.admin-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 620px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .admin-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 397px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .empleado-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 378px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .empleado-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
+            top: 357px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .navbar.clientes-section.menu-abierto.dropdown-abierto::before {
+            top: 340px;
+            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+    }
 

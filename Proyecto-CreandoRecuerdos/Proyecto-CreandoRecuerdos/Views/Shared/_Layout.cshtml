@@ -199,9 +199,6 @@
                                 </ul>
                             </li>
                         }
-
-
-                        <!-- Boton visible solo para admin -->
                     </ul>
                 </div>
             </div>
@@ -222,45 +219,91 @@
         <!-- Footer -->
         <footer id="footer" class="footer text-white pt-5 pb-3">
             <div class="container">
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <h3 class="text-uppercase mb-4" style="font-family: 'Sono';">
-                            <i class="fas fa-map-marker-alt me-2 dark-pink"></i> Contacto
+                <div class="row g-4 footer-row">
+                    <div class="col-md-4 text-center text-md-start">
+
+                        <h3 class="text-uppercase mb-4" style="font-family: 'Sono', sans-serif;">
+                            <i class="fas fa-user me-2 dark-pink"></i>Contactos
                         </h3>
                         <ul class="list-unstyled">
-                            <li class="mb-2"><i class="fas fa-phone me-2 dark-pink"></i> +506 8888-8888</li>
-                            <li class="mb-2"><i class="fas fa-envelope me-2 dark-pink"></i> info@creandorecuerdos.com</li>
-                            <li><i class="fas fa-clock me-2 dark-pink"></i> Lunes a Sábado: 7am - 9pm</li>
+                            <li class="mb-2">
+                                <div class="footer-phone">
+                                    <i class="fas fa-phone me-2 dark-pink"></i>
+                                    <a href="tel:+50686868675" style="color:#FFFFFF;">
+                                        (+506) 8686-8675
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="mb-2" style="display: flex; align-items: center;">
+                                <div class="footer-email mb-3">
+                                    <i class="fas fa-envelope me-2 dark-pink"></i>
+                                    <a href="mailto:creandorecuerdospasteleriaymas@gmail.com" style="color:#FFFFFF;">
+                                        creandorecuerdospasteleriaymas@gmail.com
+                                    </a>
+                                </div>
+                            </li>
                         </ul>
+
                     </div>
+
                     <div class="col-md-4 text-center">
+
                         <h3 class="text-uppercase mb-4" style="font-family: 'Sono', sans-serif;">
                             <i class="fas fa-hashtag me-2 dark-pink"></i> Síguenos
                         </h3>
                         <div class="social-icons">
-                            <a href="#" class="text-white mx-2" aria-label="Facebook"><i class="fab fa-facebook-f fa-lg dark-pink"></i></a>
-                            <a href="#" class="text-white mx-2" aria-label="Instagram"><i class="fab fa-instagram fa-lg dark-pink"></i></a>
-                            <a href="#" class="text-white mx-2" aria-label="WhatsApp"><i class="fab fa-whatsapp fa-lg dark-pink"></i></a>
-                        </div>
-                        <div class="mt-4">
-                            <img src="@Url.Content("~/Templates/img/logo.png")"
-                                 alt="Logo"
-                                 style="max-height: 80px; width: auto; background-color: #FFFFFF; border-radius: 8px;">
+                            <div class="social-row">
+                                <a href="https://www.facebook.com/creandorecuerdospasteleriaymas/" class="text-white mx-2" aria-label="Facebook"><i class="fab fa-facebook-f fa-lg dark-pink"></i></a>
+                                <a href="https://www.instagram.com/creandorecuerdospasteleria/" class="text-white mx-2" aria-label="Instagram"><i class="fab fa-instagram fa-lg dark-pink"></i></a>
+                                <a href="https://wa.me/50686868675" class="text-white mx-2" aria-label="WhatsApp"><i class="fab fa-whatsapp fa-lg dark-pink"></i></a>
+                            </div>
+
+                            <div class="social-row tiktok-row">
+
+                                @{
+                                    var username = "@creandorecuerdospasteler";
+                                }
+
+                                <a href="https://www.tiktok.com/@username?_r=1&_t=ZM-91Sa5Gw8syu" class="text-white mx-2" aria-label="TikTok">
+                                    <i class="fa-brands fa-tiktok fa-lg dark-pink"></i>
+                                </a>
+                            </div>
                         </div>
 
+                        <h3 class="text-uppercase mb-4" style="font-family: 'Sono', sans-serif;">
+                            <i class="fas fa-clock me-2 dark-pink"></i> Horario
+                        </h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-2" style="display: flex; align-items: center;">
+                                <div class="footer-horario mb-3">
+                                    <i class="fas fa-calendar-days me-2 dark-pink text-white"></i>
+                                    <i class="fas fa-clock me-2 dark-pink text-white"></i>
+                                    <span style="font-family: 'Sono', sans-serif;">De <br /> Lunes <br /> a <br /> Viernes <br /> 11am-7pm</span>
+                                </div>
+                            </li>
+                        </ul>
+
                     </div>
+
                     <div class="col-md-4">
                         <h3 class="text-uppercase mb-4" style="font-family: 'Sono', sans-serif;">
                             <i class="fas fa-link me-2 dark-pink"></i> Enlaces
                         </h3>
                         <ul class="list-unstyled">
-                            <li class="mb-2"><a asp-controller="Pedidos" asp-action="Create" class="text-white text-decoration-none">Nuevo Pedido</a></li>
-                            <li class="mb-2"><a asp-controller="Menu" asp-action="Index" class="text-white text-decoration-none">Nuestro Menú</a></li>
+                            <li class="mb-2"><a asp-controller="Pedidos" href="@Url.Action("Pedidos", "Pedidos")" asp-action="Index" class="text-white text-decoration-none">Nuevo Pedido</a></li>
+                            <li class="mb-2"><a asp-controller="Menu" href="@Url.Action("Menu", "menu")" asp-action="Index" class="text-white text-decoration-none">Nuestro Menú</a></li>
+                            <li class="mb-2"><a asp-controller="Pedidos" href="@Url.Action("MisPedidos", "Pedidos")" asp-action="MisPedidos" class="text-white text-decoration-none">Mis Pedidos</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <hr class="mt-4 mb-3" style="border-color: rgba(0,0,0,0.1);">
+                <div class="mt-4 footer-logo-central">
+                    <img src="@Url.Content("~/Templates/img/logo.png")"
+                         alt="Logo"
+                         style="max-height: 160px; width: auto; background-color: #FFFFFF; border-radius: 8px;">
+                </div>
+
+                <hr align="center" width=100% >
 
                 <div class="row">
                     <div class="col-12 text-center">

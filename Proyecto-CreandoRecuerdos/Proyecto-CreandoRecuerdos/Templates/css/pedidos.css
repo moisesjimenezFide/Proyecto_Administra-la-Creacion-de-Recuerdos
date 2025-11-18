@@ -195,7 +195,7 @@
         margin: 0 5px;
         border: 1px solid #DDDDDD;
         border-radius: 3px;
-        font-family: 'Sono';
+        font-family: 'Sono', sans-serif;
     }
 
 .quantity-display {
