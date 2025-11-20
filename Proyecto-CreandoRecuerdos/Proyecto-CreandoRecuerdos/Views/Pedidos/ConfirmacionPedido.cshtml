@@ -1,7 +1,12 @@
 ﻿@model Proyecto_CreandoRecuerdos.Models.ConfirmacionPedidoViewModel
+
 @{
     ViewData["Title"] = "Confirmación de Pedido";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link href="@Url.Content("~/Templates/css/confirmacion_pedido.css")" rel="stylesheet" />
 }
 
 <div class="container my-5">
@@ -36,7 +41,7 @@
                     </dl>
                     @if (Model.MetodoPago == "sinpe")
                     {
-                        <div class="alert alert-info mt-3">
+                        <div class="alert alert-info mt-3 no-imprimir">
                             <h5><i class="fas fa-mobile-alt me-2"></i> Pago con SINPE Móvil</h5>
                             <p class="mb-0">Debe realizar el pago con el número que proporcionó.</p>
                             <p class="mb-0">El pago debe realizarse al número <strong>8686-8675</strong> a nombre de <strong>Marcela Valverde Solís</strong>.</p>
@@ -61,6 +66,7 @@
                     }
 
                 </div>
+
                 <div class="col-md-6">
                     <h4><i class="fas fa-list me-2"></i>Productos</h4>
                     <ul class="list-group">
@@ -85,7 +91,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 no-imprimir">
                 <a href="@Url.Action("Pedidos", "Pedidos")" class="btn btn-primary">
                     <i class="fas fa-utensils me-2"></i>Realizar otro pedido
                 </a>
@@ -93,6 +100,7 @@
                     <i class="fas fa-print me-2"></i>Imprimir comprobante
                 </button>
             </div>
+
         </div>
     </div>
 </div>

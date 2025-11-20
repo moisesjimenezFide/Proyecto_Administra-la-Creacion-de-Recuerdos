@@ -1163,7 +1163,7 @@
                 },
                 messages: {
                     telefonoSinpe: {
-                        required: "El teléfono SINPE es obligatorio",
+                        required: "El teléfono SINPE Móvil es obligatorio",
                         pattern: "Por favor ingrese un número de teléfono válido (8 dígitos)"
                     }
                 },

@@ -549,6 +549,7 @@
     <Content Include="base_de_datos\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\Fonts\DejaVuSans.ttf" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -562,6 +563,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Templates\css\admin_cliente.css" />
     <Content Include="Templates\css\botones.css" />
+    <Content Include="Templates\css\confirmacion_pedido.css" />
     <Content Include="Templates\css\gestion_usuarios.css" />
     <Content Include="Templates\css\home.css" />
     <Content Include="Templates\css\estilos.css" />

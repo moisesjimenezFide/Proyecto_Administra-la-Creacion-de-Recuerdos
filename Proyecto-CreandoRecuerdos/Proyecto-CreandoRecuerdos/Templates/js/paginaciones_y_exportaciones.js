@@ -21,31 +21,80 @@
         const valoresNumericos = [...opciones, -1];
         const valoresVisibles = [...opciones.map(n => n.toString()), "Todos"];
 
-        // Botones de exportación
-        const exportButtons = [
-            {
-                extend: 'copyHtml5',
-                text: 'Copiar',
-                className: 'btn btn-custom-pink'
-            },
-            {
-                extend: 'excelHtml5',
-                text: 'Exportar a Excel',
-                className: 'btn btn-custom-pink'
-            },
-            {
-                extend: 'pdfHtml5',
-                text: 'Exportar a PDF',
-                orientation: 'landscape',
-                pageSize: 'A4',
-                className: 'btn btn-custom-pink'
-            },
-            {
-                extend: 'print',
-                text: 'Imprimir',
-                className: 'btn btn-custom-pink'
-            }
-        ];
+      const columnasOcultas = tableElement.data('columnas-ocultas')
+          ? tableElement.data('columnas-ocultas').toString().split(',').map(Number)
+          : [];
+
+      const tituloExportacion = tableElement.data('titulo-exportacion') || "Exportación";
+
+      const totalColumnas = tableElement.find("thead th").length;
+
+      // columnas visibles = todas excepto las ocultas
+      const columnasVisibles = [...Array(totalColumnas).keys()].filter(i => !columnasOcultas.includes(i));
+
+      // Botones de exportación
+      const exportButtons = [
+
+          // ========================== COPIAR ==========================
+          {
+              extend: 'copyHtml5',
+              text: 'Copiar',
+              className: 'btn btn-custom-pink',
+              title: tituloExportacion,
+              exportOptions: { columns: columnasVisibles }
+          },
+
+          // ========================== EXCEL ==========================
+          {
+              extend: 'excelHtml5',
+              text: 'Exportar a Excel',
+              className: 'btn btn-custom-pink',
+              title: tituloExportacion,
+              exportOptions: { columns: columnasVisibles },
+          },
+
+          // ========================== PDF ==========================
+          {
+              extend: 'pdfHtml5',
+              text: 'Exportar a PDF',
+              className: 'btn btn-custom-pink',
+              title: tituloExportacion,
+              orientation: 'landscape',
+              pageSize: 'A4',
+              exportOptions: { columns: columnasVisibles },
+
+              customize: function (doc) {
+
+                  // -- Color del título --
+                  doc.styles.title = {
+                      fontSize: 16,
+                      bold: true,
+                      color: '#B54885'
+                  };
+
+                  // -- Encabezado de tabla --
+                  const headerColor = '#B54885';
+                  const textWhite = '#FFFFFF';
+
+                  doc.content[1].table.headerRows = 1;
+
+                  doc.content[1].table.body.forEach(function (row, index) {
+                      // primera fila = encabezado
+                      if (index === 0) {
+                          row.forEach(function (cell) {
+                              cell.fillColor = headerColor;
+                              cell.color = textWhite;
+                              cell.bold = true;
+                              cell.alignment = 'center';
+                          });
+                      }
+                  });
+
+                  // -- Márgenes --
+                  doc.pageMargins = [30, 30, 30, 30];
+              }
+          },
+      ];
 
         // Configuración de DataTables
         const dataTableConfig = {

@@ -22,24 +22,63 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
     public class ReportesController : Controller
     {
-        private bool UsuarioEsAdmin()
-        {
-            return Session["Rol"] != null && Convert.ToInt32(Session["Rol"]) == 1;
-        }
 
         public ActionResult ReportesIndex()
         {
-            if (!UsuarioEsAdmin())
-                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
-
             return View("ReportesIndex");
+        }
+
+        private readonly BaseColor ColorHeader = new BaseColor(181, 72, 133);  // #B54885
+        private readonly BaseColor ColorHover = new BaseColor(204, 143, 174);  // #CC8FAE
+        private readonly BaseColor ColorAcento = new BaseColor(255, 214, 235); // #FFD6EB
+        private readonly BaseColor ColorTexto = new BaseColor(44, 44, 44);     // #2C2C2C
+        private readonly BaseColor ColorBlanco = new BaseColor(255, 255, 255); // #FFFFFF
+
+        private static readonly string FontPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Fonts/DejaVuSans.ttf");
+        private static readonly Font FontNormal = FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL, new BaseColor(44, 44, 44));
+        private static readonly Font FontBold = FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.BOLD, new BaseColor(255, 255, 255));
+
+        private PdfPCell PdfHeader(string texto)
+        {
+            return new PdfPCell(new Phrase(texto, FontBold))
+            {
+                BackgroundColor = ColorHeader,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                Padding = 6,
+                BorderColor = ColorHover
+            };
+        }
+
+        private PdfPCell PdfCell(string texto)
+        {
+            return new PdfPCell(new Phrase(texto, FontNormal))
+            {
+                BackgroundColor = ColorBlanco,
+                Padding = 5,
+                BorderColor = ColorHover
+            };
+        }
+
+        private void AplicarEstilosExcel(IXLWorksheet ws, int columnas)
+        {
+            // Encabezado
+            var header = ws.Range(1, 1, 1, columnas);
+            header.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");  // color-principal-oscuro
+            header.Style.Font.FontColor = XLColor.FromHtml("#FFFFFF");        // blanco
+            header.Style.Font.Bold = true;
+            header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+            // Bordes y filas
+            var data = ws.Range(2, 1, ws.LastRowUsed().RowNumber(), columnas);
+            data.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+            data.Style.Border.BottomBorderColor = XLColor.FromHtml("#CC8FAE"); // color-principal-hover
+            data.Style.Fill.BackgroundColor = XLColor.FromHtml("#FFFFFF");     // blanco
+
+            ws.Columns().AdjustToContents();
         }
 
         public ActionResult HistorialVentas(string fechaInicio, string fechaFin)
         {
-            if (!UsuarioEsAdmin())
-                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
-
             DateTime? inicio = null;
             DateTime? fin = null;
 
@@ -156,24 +195,23 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         doc.Add(new Paragraph(" "));
 
                         var table = new PdfPTable(5);
-                        table.AddCell("ID Venta");
-                        table.AddCell("Fecha");
-                        table.AddCell("Total");
-                        table.AddCell("Cliente");
-                        table.AddCell("Vendedor");
-
-                        // --- SOLO CURRENCY (CR) ---
-                        var cr = new System.Globalization.CultureInfo("es-CR");
-                        cr.NumberFormat.CurrencySymbol = "₡";
-                        cr.NumberFormat.CurrencyPositivePattern = 0; // símbolo antes del número
+                        table.AddCell(PdfHeader("ID Venta"));
+                        table.AddCell(PdfHeader("Fecha"));
+                        table.AddCell(PdfHeader("Total"));
+                        table.AddCell(PdfHeader("Cliente"));
+                        table.AddCell(PdfHeader("Vendedor"));
 
                         foreach (var v in ventas)
                         {
-                            table.AddCell(v.IdVenta.ToString());
-                            table.AddCell(v.Fecha.ToString("dd/MM/yyyy"));
-                            table.AddCell(v.Total.ToString("C", cr)); // ₡ y formato CR
-                            table.AddCell(v.Cliente);
-                            table.AddCell(v.Usuario);
+                            // --- SOLO CURRENCY (CR) ---
+                            var cr = new System.Globalization.CultureInfo("es-CR");
+                            cr.NumberFormat.CurrencySymbol = "₡";
+                            cr.NumberFormat.CurrencyPositivePattern = 0; // símbolo antes del número
+                            table.AddCell(PdfCell(v.IdVenta.ToString()));
+                            table.AddCell(PdfCell(v.Fecha.ToString("dd/MM/yyyy")));
+                            table.AddCell(PdfCell("₡ " + v.Total.ToString("N2", cr)));
+                            table.AddCell(PdfCell(v.Cliente));
+                            table.AddCell(PdfCell(v.Usuario));
                         }
 
                         doc.Add(table);
@@ -203,6 +241,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             ws.Cell(i + 2, 5).Value = ventas[i].Usuario;
                         }
 
+                        AplicarEstilosExcel(ws, 5);
+
                         // --- SOLO CURRENCY (CR) ---
                         ws.Column(3).Style.NumberFormat.Format = "[$₡-es-CR] #,##0.00";
 
@@ -225,9 +265,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         public ActionResult VentasMensuales(int? anio)
         {
-            if (!UsuarioEsAdmin())
-                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
-
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 var resumen = db.tabla_ventas
@@ -249,10 +286,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         public ActionResult EmpleadosDisponibles()
         {
-
-            if (!UsuarioEsAdmin())
-                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
-
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 var empleados = db.tabla_usuarios
@@ -274,9 +307,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         public ActionResult ProductosDisponibles()
         {
-            if (!UsuarioEsAdmin())
-                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
-
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 var productos = db.tabla_productos
@@ -335,17 +365,17 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         doc.Add(new Paragraph(" "));
 
                         PdfPTable table = new PdfPTable(4);
-                        table.AddCell("Nombre");
-                        table.AddCell("Correo");
-                        table.AddCell("Rol");
-                        table.AddCell("Estado");
+                        table.AddCell(PdfHeader("Nombre"));
+                        table.AddCell(PdfHeader("Correo"));
+                        table.AddCell(PdfHeader("Rol"));
+                        table.AddCell(PdfHeader("Estado"));
 
                         foreach (var e in empleados)
                         {
-                            table.AddCell(e.NombreCompleto);
-                            table.AddCell(e.Usuario);
-                            table.AddCell(e.Rol);
-                            table.AddCell(e.Estado);
+                            table.AddCell(PdfCell(e.NombreCompleto));
+                            table.AddCell(PdfCell(e.Usuario));
+                            table.AddCell(PdfCell(e.Rol));
+                            table.AddCell(PdfCell(e.Estado));
                         }
 
                         doc.Add(table);
@@ -372,6 +402,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             worksheet.Cell(i + 2, 3).Value = empleados[i].Rol;
                             worksheet.Cell(i + 2, 4).Value = empleados[i].Estado;
                         }
+
+                        AplicarEstilosExcel(worksheet, 4);
 
                         using (var stream = new MemoryStream())
                         {
@@ -410,15 +442,18 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         doc.Add(new Paragraph(" "));
 
                         PdfPTable table = new PdfPTable(3);
-                        table.AddCell("Nombre");
-                        table.AddCell("Descripción");
-                        table.AddCell("Precio por Unidad");
+                        table.AddCell(PdfHeader("Nombre"));
+                        table.AddCell(PdfHeader("Descripción"));
+                        table.AddCell(PdfHeader("Precio por Unidad"));
 
                         foreach (var p in productos)
                         {
-                            table.AddCell(p.Nombre);
-                            table.AddCell(p.Descripcion);
-                            table.AddCell(p.PrecioUnidad.ToString("C"));
+                            var cr = new System.Globalization.CultureInfo("es-CR");
+                            cr.NumberFormat.CurrencySymbol = "₡";
+                            cr.NumberFormat.CurrencyPositivePattern = 0;
+                            table.AddCell(PdfCell(p.Nombre));
+                            table.AddCell(PdfCell(p.Descripcion));
+                            table.AddCell(PdfCell("₡ " + p.PrecioUnidad.ToString("N2", cr)));
                         }
 
                         doc.Add(table);
@@ -443,6 +478,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             worksheet.Cell(i + 2, 2).Value = productos[i].Descripcion;
                             worksheet.Cell(i + 2, 3).Value = productos[i].PrecioUnidad;
                         }
+
+                        AplicarEstilosExcel(worksheet, 3);
+
+                        // --- SOLO CURRENCY (CR) ---
+                        worksheet.Column(3).Style.NumberFormat.Format = "[$₡-es-CR] #,##0.00";
 
                         using (var stream = new MemoryStream())
                         {
@@ -481,20 +521,24 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         doc.Add(new Paragraph(" "));
 
                         PdfPTable table = new PdfPTable(2);
-                        table.AddCell("Categoría");
-                        table.AddCell("Costo Promedio");
+                        table.AddCell(PdfHeader("Categoría"));
+                        table.AddCell(PdfHeader("Costo Promedio"));
 
-                        table.AddCell("Recetas");
-                        table.AddCell(viewModel.PromedioCostosRecetas.ToString("C"));
+                        var cr = new System.Globalization.CultureInfo("es-CR");
+                        cr.NumberFormat.CurrencySymbol = "₡";
+                        cr.NumberFormat.CurrencyPositivePattern = 0;
 
-                        table.AddCell("Empaques");
-                        table.AddCell(viewModel.PromedioCostosEmpaques.ToString("C"));
+                        table.AddCell(PdfCell("Recetas"));
+                        table.AddCell(PdfCell("₡ " + viewModel.PromedioCostosRecetas.ToString("N2", cr)));
 
-                        table.AddCell("Implementos");
-                        table.AddCell(viewModel.PromedioCostosImplementos.ToString("C"));
+                        table.AddCell(PdfCell("Empaques"));
+                        table.AddCell(PdfCell("₡ " + viewModel.PromedioCostosEmpaques.ToString("N2", cr)));
 
-                        table.AddCell("Suministros");
-                        table.AddCell(viewModel.PromedioCostosSuministros.ToString("C"));
+                        table.AddCell(PdfCell("Implementos"));
+                        table.AddCell(PdfCell("₡ " + viewModel.PromedioCostosImplementos.ToString("N2", cr)));
+
+                        table.AddCell(PdfCell("Suministros"));
+                        table.AddCell(PdfCell("₡ " + viewModel.PromedioCostosSuministros.ToString("N2", cr)));
 
                         doc.Add(table);
                         doc.Close();
@@ -522,6 +566,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                         worksheet.Cell(5, 1).Value = "Suministros";
                         worksheet.Cell(5, 2).Value = viewModel.PromedioCostosSuministros;
+
+                        AplicarEstilosExcel(worksheet, 2);
+
+                        // --- SOLO CURRENCY (CR) ---
+                        worksheet.Column(2).Style.NumberFormat.Format = "[$₡-es-CR] #,##0.00";
 
                         using (var stream = new MemoryStream())
                         {
@@ -565,15 +614,21 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         doc.Add(new Paragraph(" "));
 
                         PdfPTable table = new PdfPTable(3);
-                        table.AddCell("Año");
-                        table.AddCell("Mes");
-                        table.AddCell("Total Ventas");
+                        table.AddCell(PdfHeader("Año"));
+                        table.AddCell(PdfHeader("Mes"));
+                        table.AddCell(PdfHeader("Total Ventas"));
+
 
                         foreach (var item in resumen)
                         {
-                            table.AddCell(item.Anio.ToString());
-                            table.AddCell(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(item.Mes));
-                            table.AddCell(item.Total.ToString("C"));
+                            var cr = new System.Globalization.CultureInfo("es-CR");
+                            cr.NumberFormat.CurrencySymbol = "₡";
+                            cr.NumberFormat.CurrencyPositivePattern = 0;
+                            table.AddCell(PdfCell(item.Anio.ToString()));
+                            table.AddCell(PdfCell(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(item.Mes)));
+                            // Agrega el símbolo manualmente si no aparece
+                            table.AddCell(PdfCell("₡ " + item.Total.ToString("N2", cr)));
+
                         }
 
                         doc.Add(table);
@@ -599,6 +654,12 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             worksheet.Cell(i + 2, 3).Value = resumen[i].Total;
                         }
 
+                        AplicarEstilosExcel(worksheet, 3);
+
+                        // --- SOLO CURRENCY (CR) ---
+                        worksheet.Column(3).Style.NumberFormat.Format = "[$₡-es-CR] #,##0.00";
+
+
                         using (var stream = new MemoryStream())
                         {
                             workbook.SaveAs(stream);
@@ -615,8 +676,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult VentasPorDia(string fechaInicio, string fechaFin)
         {
-            if (!UsuarioEsAdmin()) return new HttpStatusCodeResult(401);
-
             DateTime? inicio = null;
             DateTime? fin = null;
             string formato = "dd-MM-yyyy";
@@ -657,8 +716,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult VentasPorMes(string fechaInicio, string fechaFin)
         {
-            if (!UsuarioEsAdmin()) return new HttpStatusCodeResult(401);
-
             DateTime? inicio = null;
             DateTime? fin = null;
             string formato = "dd-MM-yyyy";
@@ -696,8 +753,5 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
-
-
-
     }
 }

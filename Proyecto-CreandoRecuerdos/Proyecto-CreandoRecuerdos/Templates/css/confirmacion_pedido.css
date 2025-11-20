@@ -1,0 +1,26 @@
+﻿@media print {
+
+    .no-imprimir {
+        display: none !important;
+    }
+
+    header, nav, footer {
+        display: none !important;
+    }
+
+    .container, .card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}

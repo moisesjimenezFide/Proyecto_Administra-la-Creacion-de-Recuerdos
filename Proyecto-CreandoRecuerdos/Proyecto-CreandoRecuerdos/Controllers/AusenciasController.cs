@@ -18,12 +18,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [RolAuthorize("1")]
         public ActionResult GestionSolicitudesAusencias()
         {
-            if (Session["IdUsuario"] == null)
-            {
-                // Redirige al login si la sesión ha expirado o el usuario no está autenticado
-                return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
-            }
-
             var solicitudes = db.tabla_solicitudes_ausencias.ToList();
             return View(solicitudes);
         }

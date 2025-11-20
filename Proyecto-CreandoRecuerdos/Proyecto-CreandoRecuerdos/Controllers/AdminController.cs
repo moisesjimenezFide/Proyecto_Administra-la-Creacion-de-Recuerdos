@@ -1,4 +1,6 @@
 ﻿using ClosedXML.Excel;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Newtonsoft.Json;
 using Proyecto_CreandoRecuerdos.base_de_datos;
 using Proyecto_CreandoRecuerdos.Filters;
@@ -17,6 +19,54 @@ namespace Proyecto_CreandoRecuerdos.Controllers
     [RolAuthorize("1")]
     public class AdminController : Controller
     {
+        private readonly BaseColor ColorHeader = new BaseColor(181, 72, 133);  // #B54885
+        private readonly BaseColor ColorHover = new BaseColor(204, 143, 174);  // #CC8FAE
+        private readonly BaseColor ColorAcento = new BaseColor(255, 214, 235); // #FFD6EB
+        private readonly BaseColor ColorTexto = new BaseColor(44, 44, 44);     // #2C2C2C
+        private readonly BaseColor ColorBlanco = new BaseColor(255, 255, 255); // #FFFFFF
+
+        private static readonly string FontPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Fonts/DejaVuSans.ttf");
+        private static readonly Font FontNormal = FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL, new BaseColor(44, 44, 44));
+        private static readonly Font FontBold = FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.BOLD, new BaseColor(255, 255, 255));
+
+        private PdfPCell PdfHeader(string texto)
+        {
+            return new PdfPCell(new Phrase(texto, FontBold))
+            {
+                BackgroundColor = ColorHeader,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                Padding = 6,
+                BorderColor = ColorHover
+            };
+        }
+
+        private PdfPCell PdfCell(string texto)
+        {
+            return new PdfPCell(new Phrase(texto, FontNormal))
+            {
+                BackgroundColor = ColorBlanco,
+                Padding = 5,
+                BorderColor = ColorHover
+            };
+        }
+
+        private void AplicarEstilosExcel(IXLWorksheet ws, int columnas)
+        {
+            // Encabezado
+            var header = ws.Range(1, 1, 1, columnas);
+            header.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");  // color-principal-oscuro
+            header.Style.Font.FontColor = XLColor.FromHtml("#FFFFFF");        // blanco
+            header.Style.Font.Bold = true;
+            header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+            // Bordes y filas
+            var data = ws.Range(2, 1, ws.LastRowUsed().RowNumber(), columnas);
+            data.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+            data.Style.Border.BottomBorderColor = XLColor.FromHtml("#CC8FAE"); // color-principal-hover
+            data.Style.Fill.BackgroundColor = XLColor.FromHtml("#FFFFFF");     // blanco
+
+            ws.Columns().AdjustToContents();
+        }
 
         [HttpGet]
         public ActionResult HistorialActividades()
@@ -92,10 +142,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             try
             {
-                if (Session["Rol"]?.ToString() != "1")
-                {
-                    throw new UnauthorizedAccessException("No autorizado");
-                }
 
                 using (var context = new BD_CREANDO_RECUERDOSEntities())
                 {
@@ -160,12 +206,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 worksheet.Cell(1, 5).Value = "ID Registro";
                 worksheet.Cell(1, 6).Value = "Descripción";
 
-                // Formato de encabezados
-                var headerRange = worksheet.Range("A1:F1");
-                headerRange.Style.Font.Bold = true;
-                headerRange.Style.Fill.BackgroundColor = XLColor.LightGray;
-                headerRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-
                 // Datos
                 for (int i = 0; i < actividades.Count; i++)
                 {
@@ -185,6 +225,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 }
 
                 worksheet.Columns().AdjustToContents();
+                AplicarEstilosExcel(worksheet, 6);
 
                 using (var stream = new MemoryStream())
                 {
@@ -221,22 +262,22 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 };
 
                 // Encabezados
-                AddCell(table, "Fecha/Hora", true);
-                AddCell(table, "Usuario", true);
-                AddCell(table, "Acción", true);
-                AddCell(table, "Tabla", true);
-                AddCell(table, "ID Registro", true);
-                AddCell(table, "Descripción", true);
+                table.AddCell(PdfHeader("Fecha/Hora"));
+                table.AddCell(PdfHeader("Usuario"));
+                table.AddCell(PdfHeader("Acción"));
+                table.AddCell(PdfHeader("Tabla"));
+                table.AddCell(PdfHeader("ID Registro"));
+                table.AddCell(PdfHeader("Descripción"));
 
                 // Datos
                 foreach (var act in actividades)
                 {
-                    AddCell(table, act.fecha_hora.ToString("g"));
-                    AddCell(table, act.nombre_usuario);
-                    AddCell(table, act.tipo_accion);
-                    AddCell(table, act.tabla_afectada);
-                    AddCell(table, act.id_registro_afectado?.ToString() ?? "N/A");
-                    AddCell(table, act.descripcion);
+                    table.AddCell(PdfCell(act.fecha_hora.ToString("g")));
+                    table.AddCell(PdfCell(act.nombre_usuario));
+                    table.AddCell(PdfCell(act.tipo_accion));
+                    table.AddCell(PdfCell(act.tabla_afectada));
+                    table.AddCell(PdfCell(act.id_registro_afectado?.ToString() ?? "N/A"));
+                    table.AddCell(PdfCell(act.descripcion));
                 }
 
                 document.Add(table);

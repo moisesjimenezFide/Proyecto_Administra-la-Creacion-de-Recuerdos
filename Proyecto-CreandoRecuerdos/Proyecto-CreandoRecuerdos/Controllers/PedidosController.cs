@@ -624,7 +624,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                                 success = false,
                                 showAlert = true,
                                 title = "Teléfono inválido",
-                                message = "Número SINPE móvil inválido (debe tener 8 dígitos)",
+                                message = "Número SINPE Móvil inválido (debe tener 8 dígitos)",
                                 icon = "error"
                             });
                         }
@@ -1390,7 +1390,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 return Convert.ToInt32(Session["IdUsuario"]);
             }
             // Redirigir al login si no está autenticado
-            Response.Redirect("~/Registro_Usuarios/registro_usuarios");
+            Response.Redirect("~/Registro_Usuarios/iniciar_sesion");
             return -1; // Opcional, nunca se ejecuta si hay redirección
 
         }

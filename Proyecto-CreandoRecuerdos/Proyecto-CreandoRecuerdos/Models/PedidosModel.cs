@@ -90,8 +90,8 @@ namespace Proyecto_CreandoRecuerdos.Models
 
         public decimal? Cambio { get; set; }
 
-        [RegularExpression(@"^\d{8}$", ErrorMessage = "Teléfono SINPE debe tener 8 dígitos")]
-        [RequiredIf("MetodoPago", "Sinpe", ErrorMessage = "Teléfono SINPE es requerido")]
+        [RegularExpression(@"^\d{8}$", ErrorMessage = "Teléfono SINPE Móvil debe tener 8 dígitos")]
+        [RequiredIf("MetodoPago", "Sinpe", ErrorMessage = "Teléfono SINPE Móvil es requerido")]
         public string TelefonoSinpe { get; set; }
 
         public class RequiredIfAttribute : ValidationAttribute
