@@ -6,7 +6,7 @@
 @section Styles {
     <link href="@Url.Content("~/Templates/css/pedidos.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Templates/css/validaciones.css")" rel="stylesheet" />
+
     <style>
 
         .pos-container {
@@ -185,7 +185,6 @@
                     <input type="text" class="form-control" id="customerName"
                            placeholder="Nombre completo del cliente" required
                            maxlength="100">
-                    <div class="invalid-feedback">Por favor ingrese su nombre completo</div>
                 </div>
                 <div class="mb-2">
                     <label for="customerPhone" class="form-label">Teléfono (opcional)</label>
@@ -193,7 +192,6 @@
                            placeholder="88888888" maxlength="8"
                            pattern="\d{8}" title="8 dígitos sin guiones">
                     <small class="text-muted">Ej: 88888888</small>
-                    <div class="invalid-feedback">El teléfono debe tener 8 dígitos</div>
                 </div>
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="takeawayOrder">
@@ -315,7 +313,6 @@
 </div>
 
 @section Scripts {
-    <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>
     <script src="@Url.Content("~/Templates/js/pedidos.js")"></script>
     <script>
         // SCRIPTS HECHOS CON LA AYUDA DE IA

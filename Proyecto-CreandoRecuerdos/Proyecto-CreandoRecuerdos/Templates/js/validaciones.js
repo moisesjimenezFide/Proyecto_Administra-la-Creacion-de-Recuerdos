@@ -1149,37 +1149,7 @@
             });
         }
 
-        // Reglas específicas para el formulario de pago
-        if (this.id === "formPago") {
-            $(this).validate({
-                rules: {
-                    telefonoSinpe: {
-                        required: function () {
-                            // Solo requerido si está visible (SINPE tab activo)
-                            return $('#sinpe').hasClass('show') && $('#sinpe').hasClass('active');
-                        },
-                        pattern: /^[0-9]{8}$/
-                    }
-                },
-                messages: {
-                    telefonoSinpe: {
-                        required: "El teléfono SINPE Móvil es obligatorio",
-                        pattern: "Por favor ingrese un número de teléfono válido (8 dígitos)"
-                    }
-                },
-                errorElement: 'span',
-                errorClass: 'invalid-feedback',
-                highlight: function (element) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function (element) {
-                    $(element).removeClass('is-invalid');
-                },
-                errorPlacement: function (error, element) {
-                    error.insertAfter(element);
-                }
-            });
-        } else {
+         else {
             // Validación genérica para otros formularios
             $(this).validate({
                 errorElement: 'span',

@@ -2,7 +2,6 @@
 
 @section Styles {
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Templates/css/validaciones.css")" rel="stylesheet" />
 }
 
 <div class="pago-container">
@@ -75,7 +74,6 @@
                                maxlength="8" required pattern="[0-9]{8}"
                                placeholder="88888888">
                         <small class="text-muted">Ingrese el número de teléfono registrado en SINPE Móvil que realizará el pago</small>
-                        <div class="invalid-feedback">Por favor ingrese un número de teléfono válido (8 dígitos)</div>
                     </div>
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>
@@ -97,7 +95,6 @@
 </div>
 
 @section Scripts {
-    <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>
     <script>
         // Función para calcular el cambio en efectivo
         function calcularCambio(total) {
