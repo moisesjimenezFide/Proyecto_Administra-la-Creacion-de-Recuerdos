@@ -19,121 +19,109 @@ namespace Proyecto_CreandoRecuerdos.Controllers
     [RolAuthorize("1")]
     public class AdminController : Controller
     {
-        private readonly BaseColor ColorHeader = new BaseColor(181, 72, 133);  // #B54885
-        private readonly BaseColor ColorHover = new BaseColor(204, 143, 174);  // #CC8FAE
-        private readonly BaseColor ColorAcento = new BaseColor(255, 214, 235); // #FFD6EB
-        private readonly BaseColor ColorTexto = new BaseColor(44, 44, 44);     // #2C2C2C
-        private readonly BaseColor ColorBlanco = new BaseColor(255, 255, 255); // #FFFFFF
 
-        private static readonly string FontPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Fonts/DejaVuSans.ttf");
-        private static readonly Font FontNormal = FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL, new BaseColor(44, 44, 44));
-        private static readonly Font FontBold = FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.BOLD, new BaseColor(255, 255, 255));
+		// ======================= COLORES =======================
 
-        private PdfPCell PdfHeader(string texto)
-        {
-            return new PdfPCell(new Phrase(texto, FontBold))
-            {
-                BackgroundColor = ColorHeader,
+		private readonly BaseColor ColorHeader = new BaseColor(181, 72, 133);   // #B54885
+		private readonly BaseColor ColorBlanco = new BaseColor(255, 255, 255);  // #FFFFFF
+		private readonly BaseColor ColorTextoyBordes = new BaseColor(44, 44, 44);     // #2C2C2C
 
-                // Alineación igual que pdfHtml5
-                HorizontalAlignment = Element.ALIGN_CENTER,
-                VerticalAlignment = Element.ALIGN_MIDDLE,
 
-                // Paddings EXACTOS del JS
-                PaddingLeft = 4,
-                PaddingRight = 4,
-                PaddingTop = 6,
-                PaddingBottom = 6,
+		// ======================= FUENTES =======================
 
-                // Bordes IGUALES al JS
-                BorderColor = ColorHover,
-                BorderWidth = 1f
-            };
-        }
+		private static readonly string FontPath =
+			System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Fonts/DejaVuSans.ttf");
 
-        private PdfPCell PdfCell(string texto, bool sombreado = false)
-        {
-            return new PdfPCell(new Phrase(texto, FontNormal))
-            {
-                BackgroundColor = sombreado
-                    ? new BaseColor(245, 245, 245)          // gris suave para filas alternadas
-                    : ColorBlanco,
+		private static readonly Font FontNormal =
+			FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11,
+				Font.NORMAL, new BaseColor(44, 44, 44));
 
-                HorizontalAlignment = Element.ALIGN_CENTER,
-                VerticalAlignment = Element.ALIGN_MIDDLE,
+		private static readonly Font FontBold =
+			FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12,
+				Font.BOLD, new BaseColor(255, 255, 255));
 
-                PaddingTop = 5,
-                PaddingBottom = 5,
-                PaddingLeft = 4,
-                PaddingRight = 4,
 
-                BorderColor = ColorHover,
-                BorderWidth = 0.8f
-            };
-        }
+		// ======================= CELDA HEADER =======================
 
-        private void AplicarEstilosExcel(IXLWorksheet ws, int columnas)
-        {
-            // ================================
-            // 1. ENCABEZADO
-            // ================================
-            var header = ws.Range(1, 1, 1, columnas);
+		private PdfPCell PdfHeader(string texto)
+		{
+			return new PdfPCell(new Phrase(texto, FontBold))
+			{
+				BackgroundColor = ColorHeader,
+				HorizontalAlignment = Element.ALIGN_CENTER,
+				VerticalAlignment = Element.ALIGN_MIDDLE,
+				PaddingLeft = 4,
+				PaddingRight = 4,
+				PaddingTop = 6,
+				PaddingBottom = 6,
+				BorderColor = ColorTextoyBordes,
+				BorderWidth = 1f
+			};
+		}
 
-            header.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885"); // Rosa oscuro
-            header.Style.Font.FontColor = XLColor.White;
-            header.Style.Font.Bold = true;
-            header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-            header.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
 
-            // Bordes del encabezado (pastel)
-            header.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-            header.Style.Border.OutsideBorderColor = XLColor.FromHtml("#2C2C2C");
-            header.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-            header.Style.Border.InsideBorderColor = XLColor.FromHtml("#2C2C2C");
+		// ======================= CELDA NORMAL =======================
 
-            // ================================
-            // 2. CUERPO DE LA TABLA
-            // ================================
-            var data = ws.Range(2, 1, ws.LastRowUsed().RowNumber(), columnas);
+		private PdfPCell PdfCell(string texto, bool sombreado = false)
+		{
+			return new PdfPCell(new Phrase(texto, FontNormal))
+			{
+				BackgroundColor = sombreado
+					? new BaseColor(245, 245, 245)
+					: ColorBlanco,
+				HorizontalAlignment = Element.ALIGN_CENTER,
+				VerticalAlignment = Element.ALIGN_MIDDLE,
+				PaddingTop = 5,
+				PaddingBottom = 5,
+				PaddingLeft = 4,
+				PaddingRight = 4,
+				BorderColor = ColorTextoyBordes, // Cambiado a #2C2C2C
+				BorderWidth = 0.8f
+			};
+		}
 
-            data.Style.Font.FontColor = XLColor.FromHtml("#2C2C2C"); // Texto gris oscuro
 
-            // Centrado total
-            data.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-            data.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+		private void AplicarEstilosExcel(IXLWorksheet ws, int columnas)
+		{
+			// 1. ENCABEZADO
+			var header = ws.Range(1, 1, 1, columnas);
+			header.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
+			header.Style.Font.FontColor = XLColor.White;
+			header.Style.Font.Bold = true;
+			header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+			header.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+			// El tamaño del título se ajusta fuera de aquí
 
-            // Bordes pastel
-            data.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-            data.Style.Border.OutsideBorderColor = XLColor.FromHtml("#2C2C2C");
-            data.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-            data.Style.Border.InsideBorderColor = XLColor.FromHtml("#2C2C2C");
+			// 2. CUERPO DE LA TABLA
+			int lastRow = ws.LastRowUsed().RowNumber();
+			var data = ws.Range(2, 1, lastRow, columnas);
+			data.Style.Font.FontColor = XLColor.FromHtml("#2C2C2C");
+			data.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+			data.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+			data.Style.Font.FontSize = 12; // Tamaño de datos
 
-            // ================================
-            // 3. SOMBREADO ALTERNADO (gris suave)
-            // ================================
-            int lastRow = ws.LastRowUsed().RowNumber();
+			// 3. SOMBREADO ALTERNADO
+			for (int row = 2; row <= lastRow; row++)
+			{
+				var fila = ws.Range(row, 1, row, columnas);
+				if (row % 2 == 1)
+					fila.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+				else
+					fila.Style.Fill.BackgroundColor = XLColor.White;
+			}
 
-            for (int row = 2; row <= lastRow; row++)
-            {
-                if (row % 2 == 1) // filas impares → gris suave
-                {
-                    ws.Range(row, 1, row, columnas)
-                      .Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2"); // Gris pastel
-                }
-                else
-                {
-                    ws.Range(row, 1, row, columnas)
-                      .Style.Fill.BackgroundColor = XLColor.White;
-                }
-            }
+			// 4. APLICAR BORDES AL FINAL
+			var tablaCompleta = ws.Range(1, 1, lastRow, columnas);
+			tablaCompleta.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+			tablaCompleta.Style.Border.OutsideBorderColor = XLColor.FromHtml("#2C2C2C");
+			tablaCompleta.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+			tablaCompleta.Style.Border.InsideBorderColor = XLColor.FromHtml("#2C2C2C");
 
-            // ================================
-            // 4. Ajuste de columnas
-            // ================================
-            ws.Columns().AdjustToContents();
-        }
+			// 5. Ajuste de columnas
+			ws.Columns().AdjustToContents();
+		}
 
-        [HttpGet]
+		[HttpGet]
         public ActionResult HistorialActividades()
         {
 
@@ -252,95 +240,71 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
         }
 
-        private ActionResult GenerarExcel(List<sp_obtener_historial_actividades_Result> actividades, string nombreArchivo)
-        {
-            using (var workbook = new XLWorkbook())
-            {
-                var ws = workbook.Worksheets.Add("HistorialActividades");
+		private ActionResult GenerarExcel(List<sp_obtener_historial_actividades_Result> actividades, string nombreArchivo)
+		{
+			using (var workbook = new XLWorkbook())
+			{
+				var ws = workbook.Worksheets.Add("HistorialActividades");
 
-                // ====================== CONFIG ======================
-                string titulo = "Historial de Actividades";
-                int columnas = 6;
+				string titulo = "Historial de Actividades";
+				int columnas = 6;
 
-                // ====================== TÍTULO ======================
-                ws.Cell(1, 1).Value = titulo;
-                ws.Range(1, 1, 1, columnas).Merge();
+				// Título
+				ws.Cell(1, 1).Value = titulo;
+				ws.Range(1, 1, 1, columnas).Merge();
+				var tituloRango = ws.Range(1, 1, 1, columnas);
+				tituloRango.Style.Font.Bold = true;
+				tituloRango.Style.Font.FontSize = 20;
+				tituloRango.Style.Font.FontColor = XLColor.FromHtml("#FFFFFF");
+				tituloRango.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+				tituloRango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+				tituloRango.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
+				ws.Row(1).Height = 30;
 
-                var tituloRango = ws.Range(1, 1, 1, columnas);
-                tituloRango.Style.Font.Bold = true;
-                tituloRango.Style.Font.FontSize = 18;
-                tituloRango.Style.Font.FontColor = XLColor.FromHtml("#FFFFFF");
-                tituloRango.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                tituloRango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-                tituloRango.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
-                ws.Row(1).Height = 30;
+				// Encabezados
+				ws.Cell(2, 1).Value = "Fecha y Hora";
+				ws.Cell(2, 2).Value = "Usuario";
+				ws.Cell(2, 3).Value = "Tipo de Acción";
+				ws.Cell(2, 4).Value = "Tabla Afectada";
+				ws.Cell(2, 5).Value = "ID Registro";
+				ws.Cell(2, 6).Value = "Descripción";
 
-                // ====================== ENCABEZADOS ======================
-                ws.Cell(2, 1).Value = "Fecha y Hora";
-                ws.Cell(2, 2).Value = "Usuario";
-                ws.Cell(2, 3).Value = "Tipo de Acción";
-                ws.Cell(2, 4).Value = "Tabla Afectada";
-                ws.Cell(2, 5).Value = "ID Registro";
-                ws.Cell(2, 6).Value = "Descripción";
+				// Datos
+				for (int i = 0; i < actividades.Count; i++)
+				{
+					int row = i + 3;
+					ws.Cell(row, 1).Value = actividades[i].fecha_hora.ToString("g");
+					ws.Cell(row, 2).Value = actividades[i].nombre_usuario;
+					ws.Cell(row, 3).Value = actividades[i].tipo_accion;
+					ws.Cell(row, 4).Value = actividades[i].tabla_afectada;
+					ws.Cell(row, 5).Value = actividades[i].id_registro_afectado?.ToString() ?? "N/A";
+					ws.Cell(row, 6).Value = actividades[i].descripcion;
+				}
 
-                // ====================== DATOS ======================
-                for (int i = 0; i < actividades.Count; i++)
-                {
-                    int row = i + 3;
+				// Aplica estilos y bordes a toda la tabla
+				AplicarEstilosExcel(ws, columnas);
 
-                    ws.Cell(row, 1).Value = actividades[i].fecha_hora.ToString("g");
-                    ws.Cell(row, 2).Value = actividades[i].nombre_usuario;
-                    ws.Cell(row, 3).Value = actividades[i].tipo_accion;
-                    ws.Cell(row, 4).Value = actividades[i].tabla_afectada;
-                    ws.Cell(row, 5).Value = actividades[i].id_registro_afectado?.ToString() ?? "N/A";
-                    ws.Cell(row, 6).Value = actividades[i].descripcion;
+				// Fondo y texto del encabezado
+				ws.Range(2, 1, 2, columnas).Style.Font.FontSize = 14;
+				ws.Range(2, 1, 2, columnas).Style.Font.Bold = true;
+				ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
+				ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
 
-                    // SOMBREADO ALTERNADO
-                    if (i % 2 == 1)
-                        ws.Range(row, 1, row, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#F5F5F5");
-                }
+				ws.Columns().AdjustToContents();
 
-                // ====================== ESTILOS GENERALES ======================
-                AplicarEstilosExcel(ws, columnas);
+				using (var stream = new MemoryStream())
+				{
+					workbook.SaveAs(stream);
+					return File(
+						stream.ToArray(),
+						"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+						$"{nombreArchivo}.xlsx"
+					);
+				}
+			}
+		}
 
-                var data = ws.Range(2, 1, ws.LastRowUsed().RowNumber(), columnas);
-                data.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                data.Style.Border.OutsideBorderColor = XLColor.FromHtml("#CC8FAE");
-                data.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-                data.Style.Border.InsideBorderColor = XLColor.FromHtml("#CC8FAE");
-                data.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                data.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-                data.Style.Font.FontColor = XLColor.FromHtml("#2C2C2C");
-
-                // ====================== REAPLICAR ESTILO ENCABEZADO ======================
-                var header = ws.Range(2, 1, 2, columnas);
-                header.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
-                header.Style.Font.FontColor = XLColor.White;
-                header.Style.Font.Bold = true;
-                header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                header.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-                header.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                header.Style.Border.OutsideBorderColor = XLColor.FromHtml("#2C2C2C");
-                header.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-                header.Style.Border.InsideBorderColor = XLColor.FromHtml("#2C2C2C");
-
-                // ====================== AJUSTAR COLUMNAS ======================
-                ws.Columns().AdjustToContents();
-
-                // ====================== DESCARGA ======================
-                using (var stream = new MemoryStream())
-                {
-                    workbook.SaveAs(stream);
-                    return File(
-                        stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        $"{nombreArchivo}.xlsx"
-                    );
-                }
-            }
-        }
-
-        private ActionResult GenerarPDF(List<sp_obtener_historial_actividades_Result> actividades, string nombreArchivo)
+		private ActionResult GenerarPDF(List<sp_obtener_historial_actividades_Result> actividades, string nombreArchivo)
         {
             using (var ms = new MemoryStream())
             {
@@ -351,7 +315,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                 // ====== TÍTULO ======
                 var titulo = new Paragraph("Historial de Actividades",
-                    FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTexto))
+                    FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTextoyBordes))
                 {
                     Alignment = Element.ALIGN_CENTER,
                     SpacingAfter = 20f

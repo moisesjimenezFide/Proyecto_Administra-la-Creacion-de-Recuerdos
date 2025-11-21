@@ -28,12 +28,13 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             return View("ReportesIndex");
         }
 
+
         // ======================= COLORES =======================
 
         private readonly BaseColor ColorHeader = new BaseColor(181, 72, 133);   // #B54885
-        private readonly BaseColor ColorHover = new BaseColor(204, 143, 174);  // #CC8FAE
         private readonly BaseColor ColorBlanco = new BaseColor(255, 255, 255);  // #FFFFFF
-        private readonly BaseColor ColorTexto = new BaseColor(44, 44, 44);     // #2C2C2C
+        private readonly BaseColor ColorTextoyBordes = new BaseColor(44, 44, 44);     // #2C2C2C
+
 
         // ======================= FUENTES =======================
 
@@ -48,6 +49,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12,
                 Font.BOLD, new BaseColor(255, 255, 255));
 
+
         // ======================= CELDA HEADER =======================
 
         private PdfPCell PdfHeader(string texto)
@@ -55,22 +57,17 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             return new PdfPCell(new Phrase(texto, FontBold))
             {
                 BackgroundColor = ColorHeader,
-
-                // Alineación igual que pdfHtml5
                 HorizontalAlignment = Element.ALIGN_CENTER,
                 VerticalAlignment = Element.ALIGN_MIDDLE,
-
-                // Paddings EXACTOS del JS
                 PaddingLeft = 4,
                 PaddingRight = 4,
                 PaddingTop = 6,
                 PaddingBottom = 6,
-
-                // Bordes IGUALES al JS
-                BorderColor = ColorHover,
+                BorderColor = ColorTextoyBordes,
                 BorderWidth = 1f
             };
         }
+
 
         // ======================= CELDA NORMAL =======================
 
@@ -79,82 +76,57 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             return new PdfPCell(new Phrase(texto, FontNormal))
             {
                 BackgroundColor = sombreado
-                    ? new BaseColor(245, 245, 245)          // gris suave para filas alternadas
+                    ? new BaseColor(245, 245, 245)
                     : ColorBlanco,
-
                 HorizontalAlignment = Element.ALIGN_CENTER,
                 VerticalAlignment = Element.ALIGN_MIDDLE,
-
                 PaddingTop = 5,
                 PaddingBottom = 5,
                 PaddingLeft = 4,
                 PaddingRight = 4,
-
-                BorderColor = ColorHover,
+                BorderColor = ColorTextoyBordes, // Cambiado a #2C2C2C
                 BorderWidth = 0.8f
             };
         }
 
+
         private void AplicarEstilosExcel(IXLWorksheet ws, int columnas)
         {
-            // ================================
             // 1. ENCABEZADO
-            // ================================
             var header = ws.Range(1, 1, 1, columnas);
-
-            header.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885"); // Rosa oscuro
+            header.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
             header.Style.Font.FontColor = XLColor.White;
             header.Style.Font.Bold = true;
             header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             header.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+            // El tamaño del título se ajusta fuera de aquí
 
-            // Bordes del encabezado (pastel)
-            header.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-            header.Style.Border.OutsideBorderColor = XLColor.FromHtml("#2C2C2C");
-            header.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-            header.Style.Border.InsideBorderColor = XLColor.FromHtml("#2C2C2C");
-
-
-            // ================================
             // 2. CUERPO DE LA TABLA
-            // ================================
-            var data = ws.Range(2, 1, ws.LastRowUsed().RowNumber(), columnas);
-
-            data.Style.Font.FontColor = XLColor.FromHtml("#2C2C2C"); // Texto gris oscuro
-
-            // Centrado total
+            int lastRow = ws.LastRowUsed().RowNumber();
+            var data = ws.Range(2, 1, lastRow, columnas);
+            data.Style.Font.FontColor = XLColor.FromHtml("#2C2C2C");
             data.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             data.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+            data.Style.Font.FontSize = 12; // Tamaño de datos
 
-            // Bordes pastel
-            data.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-            data.Style.Border.OutsideBorderColor = XLColor.FromHtml("#2C2C2C");
-            data.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-            data.Style.Border.InsideBorderColor = XLColor.FromHtml("#2C2C2C");
-
-
-            // ================================
-            // 3. SOMBREADO ALTERNADO (gris suave)
-            // ================================
-            int lastRow = ws.LastRowUsed().RowNumber();
-
+            // 3. SOMBREADO ALTERNADO
             for (int row = 2; row <= lastRow; row++)
             {
-                if (row % 2 == 1) // filas impares → gris suave
-                {
-                    ws.Range(row, 1, row, columnas)
-                      .Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2"); // Gris pastel
-                }
+                var fila = ws.Range(row, 1, row, columnas);
+                if (row % 2 == 1)
+                    fila.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
                 else
-                {
-                    ws.Range(row, 1, row, columnas)
-                      .Style.Fill.BackgroundColor = XLColor.White;
-                }
+                    fila.Style.Fill.BackgroundColor = XLColor.White;
             }
 
-            // ================================
-            // 4. Ajuste de columnas
-            // ================================
+            // 4. APLICAR BORDES AL FINAL
+            var tablaCompleta = ws.Range(1, 1, lastRow, columnas);
+            tablaCompleta.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+            tablaCompleta.Style.Border.OutsideBorderColor = XLColor.FromHtml("#2C2C2C");
+            tablaCompleta.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+            tablaCompleta.Style.Border.InsideBorderColor = XLColor.FromHtml("#2C2C2C");
+
+            // 5. Ajuste de columnas
             ws.Columns().AdjustToContents();
         }
 
@@ -273,7 +245,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                         // ---- TÍTULO
                         var titulo = new Paragraph("Historial de Ventas",
-                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTexto));
+                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTextoyBordes));
 
                         titulo.Alignment = Element.ALIGN_CENTER;
                         titulo.SpacingAfter = 20;
@@ -323,47 +295,47 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     {
                         var ws = workbook.Worksheets.Add("HistorialVentas");
 
-                        // >>> DECLARAR VARIABLES<<<
                         string titulo = "Historial de Ventas";
                         int columnas = 5;
 
-                        // ====================== Título pastel ======================
+                        // Título
                         ws.Cell(1, 1).Value = titulo;
                         ws.Range(1, 1, 1, columnas).Merge();
                         ws.Range(1, 1, 1, columnas).Style.Font.Bold = true;
-                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 18;
+                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 20; // Título tamaño 20
                         ws.Range(1, 1, 1, columnas).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         ws.Range(1, 1, 1, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
                         ws.Range(1, 1, 1, columnas).Style.Font.FontColor = XLColor.FromHtml("#FFFFFF");
                         ws.Row(1).Height = 25;
 
-                        // ======= Encabezados en fila 2 =======
+                        // Encabezados en fila 2
                         ws.Cell(2, 1).Value = "ID Venta";
                         ws.Cell(2, 2).Value = "Fecha";
                         ws.Cell(2, 3).Value = "Total";
                         ws.Cell(2, 4).Value = "Cliente";
                         ws.Cell(2, 5).Value = "Vendedor";
 
-                        AplicarEstilosExcel(ws, columnas);
-
-                        // Fondo y texto del encabezado
-                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
-                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
 
                         // ======= Datos desde fila 3 =======
                         for (int i = 0; i < ventas.Count; i++)
                         {
                             int row = i + 3;
-
                             ws.Cell(row, 1).Value = ventas[i].IdVenta;
                             ws.Cell(row, 2).Value = ventas[i].Fecha.ToString("dd/MM/yyyy");
                             ws.Cell(row, 3).Value = ventas[i].Total;
                             ws.Cell(row, 4).Value = ventas[i].Cliente;
                             ws.Cell(row, 5).Value = ventas[i].Usuario;
-
-                            if (i % 2 == 1)
-                                ws.Range(row, 1, row, 5).Style.Fill.BackgroundColor = XLColor.FromHtml("#F5F5F5");
                         }
+
+                        // Ahora SÍ aplica los estilos y bordes a toda la tabla
+                        AplicarEstilosExcel(ws, columnas);
+
+                        // Fondo y texto del encabezado
+                        // Encabezados de columna tamaño 14
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontSize = 14;
+                        ws.Range(2, 1, 2, columnas).Style.Font.Bold = true;
+                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
 
                         // Formato moneda
                         ws.Column(3).Style.NumberFormat.Format = "[$₡-es-CR] #,##0.00";
@@ -484,7 +456,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         doc.Open();
 
                         var titulo = new Paragraph("Empleados Disponibles",
-                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTexto));
+                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTextoyBordes));
                         titulo.Alignment = Element.ALIGN_CENTER;
                         titulo.SpacingAfter = 20;
                         doc.Add(titulo);
@@ -530,7 +502,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         ws.Cell(1, 1).Value = titulo;
                         ws.Range(1, 1, 1, columnas).Merge();
                         ws.Range(1, 1, 1, columnas).Style.Font.Bold = true;
-                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 18;
+                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 20; // Título tamaño 20
                         ws.Range(1, 1, 1, columnas).Style.Font.FontColor = XLColor.FromHtml("#FFFFFF");
                         ws.Range(1, 1, 1, columnas).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         ws.Range(1, 1, 1, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
@@ -541,24 +513,24 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         ws.Cell(2, 3).Value = "Rol";
                         ws.Cell(2, 4).Value = "Estado";
 
-                        AplicarEstilosExcel(ws, columnas);
-
-                        // Fondo y texto del encabezado
-                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
-                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
-
+                        // Llena los datos primero
                         for (int i = 0; i < empleados.Count; i++)
                         {
                             int row = i + 3;
-
                             ws.Cell(row, 1).Value = empleados[i].NombreCompleto;
                             ws.Cell(row, 2).Value = empleados[i].Usuario;
                             ws.Cell(row, 3).Value = empleados[i].Rol;
                             ws.Cell(row, 4).Value = empleados[i].Estado;
-
-                            if (i % 2 == 1)
-                                ws.Range(row, 1, row, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#F5F5F5");
                         }
+
+                        // Ahora aplica los estilos y bordes
+                        AplicarEstilosExcel(ws, columnas);
+
+                        // Fondo y texto del encabezado
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontSize = 14;
+                        ws.Range(2, 1, 2, columnas).Style.Font.Bold = true;
+                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
 
                         using (var stream = new MemoryStream())
                         {
@@ -601,7 +573,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         doc.Open();
 
                         var titulo = new Paragraph("Productos del Menú",
-                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTexto));
+                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTextoyBordes));
                         titulo.Alignment = Element.ALIGN_CENTER;
                         titulo.SpacingAfter = 20;
                         doc.Add(titulo);
@@ -641,11 +613,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         string titulo = "Productos del Menú";
                         int columnas = 3;
 
-                        // === TÍTULO PASTEL ===
+                        // Título
                         ws.Cell(1, 1).Value = titulo;
                         ws.Range(1, 1, 1, columnas).Merge();
                         ws.Range(1, 1, 1, columnas).Style.Font.Bold = true;
-                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 18;
+                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 20; // Título tamaño 20
                         ws.Range(1, 1, 1, columnas).Style.Font.FontColor = XLColor.FromHtml("#FFFFFF");
                         ws.Range(1, 1, 1, columnas).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         ws.Range(1, 1, 1, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
@@ -656,24 +628,25 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         ws.Cell(2, 2).Value = "Descripción";
                         ws.Cell(2, 3).Value = "Precio por Unidad";
 
-                        AplicarEstilosExcel(ws, columnas);
-
-                        // Fondo y texto del encabezado
-                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
-                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
-
+                        // Llena los datos primero
                         for (int i = 0; i < productos.Count; i++)
                         {
                             int row = i + 3;
-
                             ws.Cell(row, 1).Value = productos[i].Nombre;
                             ws.Cell(row, 2).Value = productos[i].Descripcion;
                             ws.Cell(row, 3).Value = productos[i].PrecioUnidad;
-
-                            if (i % 2 == 1)
-                                ws.Range(row, 1, row, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#F5F5F5");
                         }
 
+                        // Ahora aplica los estilos y bordes
+                        AplicarEstilosExcel(ws, columnas);
+
+                        // Fondo y texto del encabezado
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontSize = 14;
+                        ws.Range(2, 1, 2, columnas).Style.Font.Bold = true;
+                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
+
+                        // Formato moneda
                         ws.Column(3).Style.NumberFormat.Format = "[$₡-es-CR] #,##0.00";
 
                         using (MemoryStream stream = new MemoryStream())
@@ -714,7 +687,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                         // ---- Título pastel
                         var titulo = new Paragraph("Costos Operativos Promedios",
-                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTexto));
+                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTextoyBordes));
                         titulo.Alignment = Element.ALIGN_CENTER;
                         titulo.SpacingAfter = 20;
                         doc.Add(titulo);
@@ -759,27 +732,21 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         string titulo = "Costos Operativos Promedios";
                         int columnas = 2;
 
-                        // ====================== TÍTULO PASTEL ======================
+                        // Título
                         ws.Cell(1, 1).Value = titulo;
                         ws.Range(1, 1, 1, columnas).Merge();
                         ws.Range(1, 1, 1, columnas).Style.Font.Bold = true;
-                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 18;
+                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 20; // Título tamaño 20
                         ws.Range(1, 1, 1, columnas).Style.Font.FontColor = XLColor.FromHtml("#FFFFFF");
                         ws.Range(1, 1, 1, columnas).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         ws.Range(1, 1, 1, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
                         ws.Row(1).Height = 25;
 
-                        // ===== Encabezados en fila 2 =====
+                        // Encabezados en fila 2
                         ws.Cell(2, 1).Value = "Categoría";
                         ws.Cell(2, 2).Value = "Costo Promedio";
 
-                        AplicarEstilosExcel(ws, columnas);
-
-                        // Fondo y texto del encabezado
-                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
-                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
-
-                        // ===== Datos desde fila 3 =====
+                        // Datos desde fila 3
                         ws.Cell(3, 1).Value = "Recetas";
                         ws.Cell(3, 2).Value = viewModel.PromedioCostosRecetas;
 
@@ -792,12 +759,16 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         ws.Cell(6, 1).Value = "Suministros";
                         ws.Cell(6, 2).Value = viewModel.PromedioCostosSuministros;
 
-                        // sombreado alternado gris claro
-                        for (int r = 3; r <= 6; r++)
-                            if (r % 2 == 1)
-                                ws.Range(r, 1, r, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#F5F5F5");
+                        // Ahora aplica los estilos y bordes
+                        AplicarEstilosExcel(ws, columnas);
 
-                        // formato moneda CR
+                        // Fondo y texto del encabezado
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontSize = 14;
+                        ws.Range(2, 1, 2, columnas).Style.Font.Bold = true;
+                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
+
+                        // Formato moneda CR
                         ws.Column(2).Style.NumberFormat.Format = "[$₡-es-CR] #,##0.00";
 
                         using (var stream = new MemoryStream())
@@ -841,7 +812,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         doc.Open();
 
                         var titulo = new Paragraph("Ventas Mensuales",
-                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTexto));
+                            FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTextoyBordes));
                         titulo.Alignment = Element.ALIGN_CENTER;
                         titulo.SpacingAfter = 20;
                         doc.Add(titulo);
@@ -884,39 +855,40 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         string titulo = "Ventas Mensuales";
                         int columnas = 3;
 
+                        // Título
                         ws.Cell(1, 1).Value = titulo;
                         ws.Range(1, 1, 1, columnas).Merge();
                         ws.Range(1, 1, 1, columnas).Style.Font.Bold = true;
-                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 18;
+                        ws.Range(1, 1, 1, columnas).Style.Font.FontSize = 20;
                         ws.Range(1, 1, 1, columnas).Style.Font.FontColor = XLColor.FromHtml("#FFFFFF");
-                        ws.Range(1, 1, 1, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
                         ws.Range(1, 1, 1, columnas).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-
+                        ws.Range(1, 1, 1, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
                         ws.Row(1).Height = 25;
 
-                        // encabezados en fila 2
+                        // Encabezados en fila 2
                         ws.Cell(2, 1).Value = "Año";
                         ws.Cell(2, 2).Value = "Mes";
                         ws.Cell(2, 3).Value = "Total Ventas";
 
-                        AplicarEstilosExcel(ws, columnas);
-
-                        // Fondo y texto del encabezado
-                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
-                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
-
+                        // Llena los datos primero
                         for (int i = 0; i < resumen.Count; i++)
                         {
                             int row = i + 3;
-
                             ws.Cell(row, 1).Value = resumen[i].Anio;
                             ws.Cell(row, 2).Value = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(resumen[i].Mes);
                             ws.Cell(row, 3).Value = resumen[i].Total;
-
-                            if (i % 2 == 1)
-                                ws.Range(row, 1, row, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#F5F5F5");
                         }
 
+                        // Ahora aplica los estilos y bordes
+                        AplicarEstilosExcel(ws, columnas);
+
+                        // Fondo y texto del encabezado
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontSize = 14;
+                        ws.Range(2, 1, 2, columnas).Style.Font.Bold = true;
+                        ws.Range(2, 1, 2, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885");
+                        ws.Range(2, 1, 2, columnas).Style.Font.FontColor = XLColor.White;
+
+                        // Formato moneda
                         ws.Column(3).Style.NumberFormat.Format = "[$₡-es-CR] #,##0.00";
 
                         using (var stream = new MemoryStream())

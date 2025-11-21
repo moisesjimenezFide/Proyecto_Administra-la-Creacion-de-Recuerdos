@@ -51,6 +51,128 @@
                 className: 'btn btn-custom-pink',
                 title: tituloExportacion,
                 exportOptions: { columns: columnasVisibles },
+                customize: function (xlsx) {
+                    // 1) Referencias a sheet y styles
+                    const sheet = xlsx.xl.worksheets['sheet1.xml'];
+                    const styles = xlsx.xl['styles.xml'];
+
+                    // 2) jQuery XML wrappers
+                    const $sheet = $(sheet);
+                    const $styles = $(styles);
+
+                    // 3) Asegurar nodos base en styles.xml
+                    const ensureNode = (selector, xml) => {
+                        if ($styles.find(selector).length === 0) {
+                            $styles.find('styleSheet').append(xml);
+                        }
+                        return $styles.find(selector);
+                    };
+
+                    // Crear secciones si no existen
+                    ensureNode('fonts', '<fonts count="0"></fonts>');
+                    ensureNode('fills', '<fills count="0"></fills>');
+                    ensureNode('borders', '<borders count="0"></borders>');
+                    ensureNode('cellXfs', '<cellXfs count="0"></cellXfs>');
+
+                    const $fonts = $styles.find('fonts');
+                    const $fills = $styles.find('fills');
+                    const $borders = $styles.find('borders');
+                    const $cellXfs = $styles.find('cellXfs');
+
+                    // 4) Añadir recursos de estilos (font, fill, border)
+                    
+                    // Fuente para título (tamaño 20, negrita, centrado)
+                    $fonts.append(
+                        '<font><sz val="20"/><color rgb="FFFFFFFF"/><name val="Calibri"/><b/></font>'
+                    );
+                    const titleFontId = $fonts.find('font').length - 1;
+
+                    // Relleno para título (rosa oscuro #B54885)
+                    $fills.append(
+                        '<fill><patternFill patternType="solid"><fgColor rgb="FFB54885"/></patternFill></fill>'
+                    );
+                    const titleFillId = $fills.find('fill').length - 1;
+
+                    // Fuente encabezado (blanca, negrita, 14)
+                    $fonts.append(
+                        '<font><sz val="14"/><color rgb="FFFFFFFF"/><name val="Calibri"/><b/></font>'
+                    );
+                    const headerFontId = $fonts.find('font').length - 1;
+
+                    // Fuente filas (oscura, 12)
+                    $fonts.append(
+                        '<font><sz val="12"/><color rgb="FF2C2C2C"/><name val="Calibri"/></font>'
+                    );
+                    const rowFontId = $fonts.find('font').length - 1;
+
+                    // Rellenos: rosa oscuro, blanco, rosa pastel
+                    $fills.append(
+                        '<fill><patternFill patternType="solid"><fgColor rgb="FFB54885"/></patternFill></fill>'
+                    );
+                    const darkPinkFillId = $fills.find('fill').length - 1;
+
+                    $fills.append(
+                        '<fill><patternFill patternType="solid"><fgColor rgb="FFFFFFFF"/></patternFill></fill>'
+                    );
+                    const whiteFillId = $fills.find('fill').length - 1;
+
+                    $fills.append(
+                        '<fill><patternFill patternType="solid"><fgColor rgb="FFF9F9F9"/></patternFill></fill>'
+                    );
+                    const grayFillId = $fills.find('fill').length - 1;
+
+                    // Borde completo en color oscuro #2C2C2C
+                    $borders.append(
+                        '<border>' +
+                        '<left style="thin"><color rgb="FF2C2C2C"/></left>' +
+                        '<right style="thin"><color rgb="FF2C2C2C"/></right>' +
+                        '<top style="thin"><color rgb="FF2C2C2C"/></top>' +
+                        '<bottom style="thin"><color rgb="FF2C2C2C"/></bottom>' +
+                        '</border>'
+                    );
+                    const darkBorderId = $borders.find('border').length - 1;
+
+                    // 5) Crear estilos de celda (cellXfs)
+                    const addXf = (fontId, fillId, borderId, alignCenter) => {
+                        const alignment = alignCenter
+                            ? '<alignment horizontal="center" vertical="center"/>'
+                            : '<alignment vertical="center"/>';
+                        const xf =
+                            `<xf xfId="0" fontId="${fontId}" fillId="${fillId}" borderId="${borderId}" applyFont="1" applyFill="1" applyBorder="1">${alignment}</xf>`;
+                        $cellXfs.append(xf);
+                        return $cellXfs.find('xf').length - 1;
+                    };
+
+                    // Estilo para título
+                    const titleStyleId = addXf(titleFontId, titleFillId, darkBorderId, true);
+
+                    // Estilo para encabezado
+                    const headerStyleId = addXf(headerFontId, darkPinkFillId, darkBorderId, true);
+
+                    // Estilos para filas alternas
+                    const rowWhiteStyleId = addXf(rowFontId, whiteFillId, darkBorderId, true);
+                    const rowPastelStyleId = addXf(rowFontId, grayFillId, darkBorderId, true);
+
+                    // Actualizar atributos count
+                    $fonts.attr('count', $fonts.find('font').length);
+                    $fills.attr('count', $fills.find('fill').length);
+                    $borders.attr('count', $borders.find('border').length);
+                    $cellXfs.attr('count', $cellXfs.find('xf').length);
+
+                    // 6) Aplicar estilos
+                    // Título: primera fila
+                    $sheet.find('sheetData row').first().find('c').attr('s', titleStyleId);
+
+                    // Encabezados de columnas (segunda fila)
+                    $sheet.find('sheetData row').eq(1).find('c').attr('s', headerStyleId);
+
+                    // Filas alternas de datos (desde la tercera fila en adelante)
+                    $sheet.find('sheetData row').slice(2).each(function (idx, row) {
+                        const styleId = idx % 2 === 0 ? rowWhiteStyleId : rowPastelStyleId;
+                        $(row).find('c').attr('s', styleId);
+                    });
+
+                }
             },
 
             // ========================== PDF ==========================
@@ -100,7 +222,7 @@
                             margin: [0, 0, 0, 15]
                         },
 
-                        // TRUCO DEFINITIVO: tabla centrada con columnas fantasma
+                        // Tabla centrada con columnas fantasma
                         {
                             columns: [
                                 { width: '*', text: '' },  // empuja desde la izquierda
