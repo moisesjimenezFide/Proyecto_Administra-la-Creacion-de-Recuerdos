@@ -59,39 +59,87 @@
               text: 'Exportar a PDF',
               className: 'btn btn-custom-pink',
               title: tituloExportacion,
+              pageSize: 'TABLOID',
               orientation: 'landscape',
-              pageSize: 'A4',
               exportOptions: { columns: columnasVisibles },
 
               customize: function (doc) {
 
-                  // -- Color del título --
-                  doc.styles.title = {
-                      fontSize: 16,
-                      bold: true,
-                      color: '#B54885'
+                  // === 1. Página TABLOID horizontal ===
+                  doc.pageSize = {
+                      width: 1284,
+                      height: 1684
                   };
 
-                  // -- Encabezado de tabla --
-                  const headerColor = '#B54885';
-                  const textWhite = '#FFFFFF';
+                  // === 2. Márgenes ===
+                  doc.pageMargins = [20, 20, 20, 20];
 
-                  doc.content[1].table.headerRows = 1;
+                  // === 3. Guardamos tabla original ===
+                  var originalTable = doc.content[1].table;
+                  var colCount = originalTable.body[0].length;
 
-                  doc.content[1].table.body.forEach(function (row, index) {
-                      // primera fila = encabezado
-                      if (index === 0) {
-                          row.forEach(function (cell) {
-                              cell.fillColor = headerColor;
-                              cell.color = textWhite;
-                              cell.bold = true;
-                              cell.alignment = 'center';
-                          });
-                      }
+                  // === 4. Centrar todas las celdas ===
+                  originalTable.body.forEach(row => {
+                      row.forEach(cell => {
+                          if (cell && typeof cell === "object") {
+                              cell.alignment = "center";
+                          }
+                      });
                   });
 
-                  // -- Márgenes --
-                  doc.pageMargins = [30, 30, 30, 30];
+                  // === 5. REEMPLAZAR contenido por columnas que empujan la tabla al centro ===
+                  doc.content = [
+
+                      // Título centrado
+                      {
+                          text: tituloExportacion,
+                          style: 'title',
+                          alignment: 'center',
+                          bold: true,
+                          fontSize: 20,
+                          margin: [0, 0, 0, 15]
+                      },
+
+                      // TRUCO DEFINITIVO: tabla centrada con columnas fantasma
+                      {
+                          columns: [
+                              { width: '*', text: '' },  // empuja desde la izquierda
+                              {
+                                  width: 'auto',
+                                  table: {
+                                      widths: Array(colCount).fill('auto'),
+                                      body: originalTable.body
+                                  },
+                                  layout: {
+                                      hLineWidth: () => 0.3,
+                                      vLineWidth: () => 0.3,
+                                      hLineColor: () => '#999',
+                                      vLineColor: () => '#999',
+                                      paddingLeft: () => 2,
+                                      paddingRight: () => 2,
+                                      paddingTop: () => 2,
+                                      paddingBottom: () => 2
+                                  }
+                              },
+                              { width: '*', text: '' }   // empuja desde la derecha
+                          ]
+                      }
+                  ];
+
+                  // === 6. Fuente global ===
+                  doc.defaultStyle = {
+                      font: 'DejaVuSans',
+                      fontSize: 12
+                  };
+
+                  // === 7. Encabezado pastel centrado ===
+                  doc.styles.tableHeader = {
+                      fillColor: '#B54885',
+                      color: 'white',
+                      bold: true,
+                      alignment: 'center',
+                      fontSize: 14
+                  };
               }
           },
       ];

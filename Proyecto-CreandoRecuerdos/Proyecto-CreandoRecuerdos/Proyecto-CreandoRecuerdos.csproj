@@ -629,6 +629,7 @@
     <Content Include="Templates\js\insumos.js" />
     <Content Include="Templates\js\menu.js" />
     <Content Include="Templates\js\paginaciones_y_exportaciones.js" />
+    <Content Include="Templates\js\pdf\vfs_fonts.js" />
     <Content Include="Templates\js\pedidos.js" />
     <Content Include="Templates\js\registrar_usuario.js" />
     <Content Include="Templates\js\registro_ventas.js" />

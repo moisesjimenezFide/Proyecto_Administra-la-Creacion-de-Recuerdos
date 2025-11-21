@@ -1038,7 +1038,7 @@ function createDisabledPseudo( disabled ) {
 			// All such elements have a "form" property.
 			if ( elem.parentNode && elem.disabled === false ) {
 
-				// Option elements defer to a parent optgroup if present
+				// Option elements to a parent optgroup if present
 				if ( "label" in elem ) {
 					if ( "label" in elem.parentNode ) {
 						return elem.parentNode.disabled === disabled;
@@ -3166,11 +3166,11 @@ function createOptions( options ) {
  *
  * Possible options:
  *
- *	once:			will ensure the callback list can only be fired once (like a Deferred)
+ *	once:			will ensure the callback list can only be fired once (like ared)
  *
  *	memory:			will keep track of previous values and will call any callback added
  *					after the list has been fired right away with the latest "memorized"
- *					values (like a Deferred)
+ *					values (like ared)
  *
  *	unique:			will ensure a callback can only be added once (no duplicate in the list)
  *
@@ -3403,7 +3403,7 @@ function adoptValue( value, resolve, reject, noValue ) {
 
 	// For Promises/A+, convert exceptions into rejections
 	// Since jQuery.when doesn't unwrap thenables, we can skip the extra checks appearing in
-	// Deferred#then to conditionally suppress rejection.
+	//red#then to conditionally suppress rejection.
 	} catch ( value ) {
 
 		// Support: Android 4.0 only
@@ -3449,9 +3449,9 @@ jQuery.extend( {
 							// Map tuples (progress, done, fail) to arguments (done, fail, progress)
 							var fn = isFunction( fns[ tuple[ 4 ] ] ) && fns[ tuple[ 4 ] ];
 
-							// deferred.progress(function() { bind to newDefer or newDefer.notify })
-							// deferred.done(function() { bind to newDefer or newDefer.resolve })
-							// deferred.fail(function() { bind to newDefer or newDefer.reject })
+							//red.progress(function() { bind to newDefer or newDefer.notify })
+							//red.done(function() { bind to newDefer or newDefer.resolve })
+							//red.fail(function() { bind to newDefer or newDefer.reject })
 							deferred[ tuple[ 1 ] ]( function() {
 								var returned = fn && fn.apply( this, arguments );
 								if ( returned && isFunction( returned.promise ) ) {
@@ -3472,7 +3472,7 @@ jQuery.extend( {
 				},
 				then: function( onFulfilled, onRejected, onProgress ) {
 					var maxDepth = 0;
-					function resolve( depth, deferred, handler, special ) {
+					function resolve( depth,red, handler, special ) {
 						return function() {
 							var that = this,
 								args = arguments,
@@ -3490,7 +3490,7 @@ jQuery.extend( {
 
 									// Support: Promises/A+ section 2.3.1
 									// https://promisesaplus.com/#point-48
-									if ( returned === deferred.promise() ) {
+									if ( returned ===red.promise() ) {
 										throw new TypeError( "Thenable self-resolution" );
 									}
 
@@ -3514,8 +3514,8 @@ jQuery.extend( {
 										if ( special ) {
 											then.call(
 												returned,
-												resolve( maxDepth, deferred, Identity, special ),
-												resolve( maxDepth, deferred, Thrower, special )
+												resolve( maxDepth,red, Identity, special ),
+												resolve( maxDepth,red, Thrower, special )
 											);
 
 										// Normal processors (resolve) also hook into progress
@@ -3526,9 +3526,9 @@ jQuery.extend( {
 
 											then.call(
 												returned,
-												resolve( maxDepth, deferred, Identity, special ),
-												resolve( maxDepth, deferred, Thrower, special ),
-												resolve( maxDepth, deferred, Identity,
+												resolve( maxDepth,red, Identity, special ),
+												resolve( maxDepth,red, Thrower, special ),
+												resolve( maxDepth,red, Identity,
 													deferred.notifyWith )
 											);
 										}
@@ -3545,7 +3545,7 @@ jQuery.extend( {
 
 										// Process the value(s)
 										// Default process is resolve
-										( special || deferred.resolveWith )( that, args );
+										( special ||red.resolveWith )( that, args );
 									}
 								},
 
@@ -3642,7 +3642,7 @@ jQuery.extend( {
 					} ).promise();
 				},
 
-				// Get a promise for this deferred
+				// Get a promise for thisred
 				// If obj is provided, the promise aspect is added to the object
 				promise: function( obj ) {
 					return obj != null ? jQuery.extend( obj, promise ) : promise;
@@ -3691,33 +3691,33 @@ jQuery.extend( {
 			// rejected_handlers.fire
 			list.add( tuple[ 3 ].fire );
 
-			// deferred.notify = function() { deferred.notifyWith(...) }
-			// deferred.resolve = function() { deferred.resolveWith(...) }
-			// deferred.reject = function() { deferred.rejectWith(...) }
+			//red.notify = function() {red.notifyWith(...) }
+			//red.resolve = function() {red.resolveWith(...) }
+			//red.reject = function() {red.rejectWith(...) }
 			deferred[ tuple[ 0 ] ] = function() {
-				deferred[ tuple[ 0 ] + "With" ]( this === deferred ? undefined : this, arguments );
+				deferred[ tuple[ 0 ] + "With" ]( this ===red ? undefined : this, arguments );
 				return this;
 			};
 
-			// deferred.notifyWith = list.fireWith
-			// deferred.resolveWith = list.fireWith
-			// deferred.rejectWith = list.fireWith
+			//red.notifyWith = list.fireWith
+			//red.resolveWith = list.fireWith
+			//red.rejectWith = list.fireWith
 			deferred[ tuple[ 0 ] + "With" ] = list.fireWith;
 		} );
 
-		// Make the deferred a promise
-		promise.promise( deferred );
+		// Make thered a promise
+		promise.promise(red );
 
 		// Call given func if any
 		if ( func ) {
-			func.call( deferred, deferred );
+			func.call(red,red );
 		}
 
 		// All done!
-		return deferred;
+		returnred;
 	},
 
-	// Deferred helper
+	//red helper
 	when: function( singleValue ) {
 		var
 
@@ -3731,7 +3731,7 @@ jQuery.extend( {
 			resolveContexts = Array( i ),
 			resolveValues = slice.call( arguments ),
 
-			// the primary Deferred
+			// the primaryred
 			primary = jQuery.Deferred(),
 
 			// subordinate callback factory
@@ -3797,7 +3797,7 @@ jQuery.readyException = function( error ) {
 
 
 
-// The deferred used on DOM ready
+// Thered used on DOM ready
 var readyList = jQuery.Deferred();
 
 jQuery.fn.ready = function( fn ) {
@@ -4422,7 +4422,7 @@ jQuery.fn.extend( {
 			}
 		}
 		resolve();
-		return defer.promise( obj );
+		return.promise( obj );
 	}
 } );
 var pnum = ( /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/ ).source;

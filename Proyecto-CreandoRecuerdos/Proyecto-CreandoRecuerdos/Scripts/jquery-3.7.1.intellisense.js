@@ -413,8 +413,8 @@ intellisense.annotate(jQuery, {
   },
   'when': function() {
     /// <signature>
-    ///   <summary>Provides a way to execute callback functions based on one or more objects, usually Deferred objects that represent asynchronous events.</summary>
-    ///   <param name="deferreds" type="Deferred">One or more Deferred objects, or plain JavaScript objects.</param>
+    ///   <summary>Provides a way to execute callback functions based on one or more objects, usuallyred objects that represent asynchronous events.</summary>
+    ///   <param name="deferreds" type="Deferred">One or morered objects, or plain JavaScript objects.</param>
     ///   <returns type="Promise" />
     /// </signature>
   },
@@ -496,46 +496,46 @@ var _object = _731531622(func);
 intellisense.annotate(_object, {
   'always': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is either resolved or rejected.</summary>
-    ///   <param name="alwaysCallbacks" type="Function">A function, or array of functions, that is called when the Deferred is resolved or rejected.</param>
-    ///   <param name="alwaysCallbacks" type="Function">Optional additional functions, or arrays of functions, that are called when the Deferred is resolved or rejected.</param>
+    ///   <summary>Add handlers to be called when thered object is either resolved or rejected.</summary>
+    ///   <param name="alwaysCallbacks" type="Function">A function, or array of functions, that is called when thered is resolved or rejected.</param>
+    ///   <param name="alwaysCallbacks" type="Function">Optional additional functions, or arrays of functions, that are called when thered is resolved or rejected.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'done': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is resolved.</summary>
-    ///   <param name="doneCallbacks" type="Function">A function, or array of functions, that are called when the Deferred is resolved.</param>
-    ///   <param name="doneCallbacks" type="Function">Optional additional functions, or arrays of functions, that are called when the Deferred is resolved.</param>
+    ///   <summary>Add handlers to be called when thered object is resolved.</summary>
+    ///   <param name="doneCallbacks" type="Function">A function, or array of functions, that are called when thered is resolved.</param>
+    ///   <param name="doneCallbacks" type="Function">Optional additional functions, or arrays of functions, that are called when thered is resolved.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'fail': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is rejected.</summary>
-    ///   <param name="failCallbacks" type="Function">A function, or array of functions, that are called when the Deferred is rejected.</param>
-    ///   <param name="failCallbacks" type="Function">Optional additional functions, or arrays of functions, that are called when the Deferred is rejected.</param>
+    ///   <summary>Add handlers to be called when thered object is rejected.</summary>
+    ///   <param name="failCallbacks" type="Function">A function, or array of functions, that are called when thered is rejected.</param>
+    ///   <param name="failCallbacks" type="Function">Optional additional functions, or arrays of functions, that are called when thered is rejected.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'isRejected': function() {
-    /// <summary>Determine whether a Deferred object has been rejected.</summary>
+    /// <summary>Determine whether ared object has been rejected.</summary>
     /// <returns type="Boolean" />
   },
   'isResolved': function() {
-    /// <summary>Determine whether a Deferred object has been resolved.</summary>
+    /// <summary>Determine whether ared object has been resolved.</summary>
     /// <returns type="Boolean" />
   },
   'notify': function() {
     /// <signature>
-    ///   <summary>Call the progressCallbacks on a Deferred object with the given args.</summary>
+    ///   <summary>Call the progressCallbacks on ared object with the given args.</summary>
     ///   <param name="args" type="Object">Optional arguments that are passed to the progressCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'notifyWith': function() {
     /// <signature>
-    ///   <summary>Call the progressCallbacks on a Deferred object with the given context and args.</summary>
+    ///   <summary>Call the progressCallbacks on ared object with the given context and args.</summary>
     ///   <param name="context" type="Object">Context passed to the progressCallbacks as the this object.</param>
     ///   <param name="args" type="Object">Optional arguments that are passed to the progressCallbacks.</param>
     ///   <returns type="Deferred" />
@@ -543,43 +543,43 @@ intellisense.annotate(_object, {
   },
   'pipe': function() {
     /// <signature>
-    ///   <summary>Utility method to filter and/or chain Deferreds.</summary>
-    ///   <param name="doneFilter" type="Function">An optional function that is called when the Deferred is resolved.</param>
-    ///   <param name="failFilter" type="Function">An optional function that is called when the Deferred is rejected.</param>
+    ///   <summary>Utility method to filter and/or chainreds.</summary>
+    ///   <param name="doneFilter" type="Function">An optional function that is called when thered is resolved.</param>
+    ///   <param name="failFilter" type="Function">An optional function that is called when thered is rejected.</param>
     ///   <returns type="Promise" />
     /// </signature>
     /// <signature>
-    ///   <summary>Utility method to filter and/or chain Deferreds.</summary>
-    ///   <param name="doneFilter" type="Function">An optional function that is called when the Deferred is resolved.</param>
-    ///   <param name="failFilter" type="Function">An optional function that is called when the Deferred is rejected.</param>
-    ///   <param name="progressFilter" type="Function">An optional function that is called when progress notifications are sent to the Deferred.</param>
+    ///   <summary>Utility method to filter and/or chainreds.</summary>
+    ///   <param name="doneFilter" type="Function">An optional function that is called when thered is resolved.</param>
+    ///   <param name="failFilter" type="Function">An optional function that is called when thered is rejected.</param>
+    ///   <param name="progressFilter" type="Function">An optional function that is called when progress notifications are sent to thered.</param>
     ///   <returns type="Promise" />
     /// </signature>
   },
   'progress': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object generates progress notifications.</summary>
-    ///   <param name="progressCallbacks" type="">A function, or array of functions, to be called when the Deferred generates progress notifications.</param>
+    ///   <summary>Add handlers to be called when thered object generates progress notifications.</summary>
+    ///   <param name="progressCallbacks" type="">A function, or array of functions, to be called when thered generates progress notifications.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'promise': function() {
     /// <signature>
-    ///   <summary>Return a Deferred's Promise object.</summary>
+    ///   <summary>Return ared's Promise object.</summary>
     ///   <param name="target" type="Object">Object onto which the promise methods have to be attached</param>
     ///   <returns type="Promise" />
     /// </signature>
   },
   'reject': function() {
     /// <signature>
-    ///   <summary>Reject a Deferred object and call any failCallbacks with the given args.</summary>
+    ///   <summary>Reject ared object and call any failCallbacks with the given args.</summary>
     ///   <param name="args" type="Anything">Optional arguments that are passed to the failCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'rejectWith': function() {
     /// <signature>
-    ///   <summary>Reject a Deferred object and call any failCallbacks with the given context and args.</summary>
+    ///   <summary>Reject ared object and call any failCallbacks with the given context and args.</summary>
     ///   <param name="context" type="Object">Context passed to the failCallbacks as the this object.</param>
     ///   <param name="args" type="Array">An optional array of arguments that are passed to the failCallbacks.</param>
     ///   <returns type="Deferred" />
@@ -587,42 +587,42 @@ intellisense.annotate(_object, {
   },
   'resolve': function() {
     /// <signature>
-    ///   <summary>Resolve a Deferred object and call any doneCallbacks with the given args.</summary>
+    ///   <summary>Resolve ared object and call any doneCallbacks with the given args.</summary>
     ///   <param name="args" type="Anything">Optional arguments that are passed to the doneCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'resolveWith': function() {
     /// <signature>
-    ///   <summary>Resolve a Deferred object and call any doneCallbacks with the given context and args.</summary>
+    ///   <summary>Resolve ared object and call any doneCallbacks with the given context and args.</summary>
     ///   <param name="context" type="Object">Context passed to the doneCallbacks as the this object.</param>
     ///   <param name="args" type="Array">An optional array of arguments that are passed to the doneCallbacks.</param>
     ///   <returns type="Deferred" />
     /// </signature>
   },
   'state': function() {
-    /// <summary>Determine the current state of a Deferred object.</summary>
+    /// <summary>Determine the current state of ared object.</summary>
     /// <returns type="String" />
   },
   'then': function() {
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is resolved, rejected, or still in progress.</summary>
-    ///   <param name="doneFilter" type="Function">A function that is called when the Deferred is resolved.</param>
-    ///   <param name="failFilter" type="Function">An optional function that is called when the Deferred is rejected.</param>
-    ///   <param name="progressFilter" type="Function">An optional function that is called when progress notifications are sent to the Deferred.</param>
+    ///   <summary>Add handlers to be called when thered object is resolved, rejected, or still in progress.</summary>
+    ///   <param name="doneFilter" type="Function">A function that is called when thered is resolved.</param>
+    ///   <param name="failFilter" type="Function">An optional function that is called when thered is rejected.</param>
+    ///   <param name="progressFilter" type="Function">An optional function that is called when progress notifications are sent to thered.</param>
     ///   <returns type="Promise" />
     /// </signature>
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is resolved, rejected, or still in progress.</summary>
-    ///   <param name="doneCallbacks" type="Function">A function, or array of functions, called when the Deferred is resolved.</param>
-    ///   <param name="failCallbacks" type="Function">A function, or array of functions, called when the Deferred is rejected.</param>
+    ///   <summary>Add handlers to be called when thered object is resolved, rejected, or still in progress.</summary>
+    ///   <param name="doneCallbacks" type="Function">A function, or array of functions, called when thered is resolved.</param>
+    ///   <param name="failCallbacks" type="Function">A function, or array of functions, called when thered is rejected.</param>
     ///   <returns type="Promise" />
     /// </signature>
     /// <signature>
-    ///   <summary>Add handlers to be called when the Deferred object is resolved, rejected, or still in progress.</summary>
-    ///   <param name="doneCallbacks" type="Function">A function, or array of functions, called when the Deferred is resolved.</param>
-    ///   <param name="failCallbacks" type="Function">A function, or array of functions, called when the Deferred is rejected.</param>
-    ///   <param name="progressCallbacks" type="Function">A function, or array of functions, called when the Deferred notifies progress.</param>
+    ///   <summary>Add handlers to be called when thered object is resolved, rejected, or still in progress.</summary>
+    ///   <param name="doneCallbacks" type="Function">A function, or array of functions, called when thered is resolved.</param>
+    ///   <param name="failCallbacks" type="Function">A function, or array of functions, called when thered is rejected.</param>
+    ///   <param name="progressCallbacks" type="Function">A function, or array of functions, called when thered notifies progress.</param>
     ///   <returns type="Promise" />
     /// </signature>
   },

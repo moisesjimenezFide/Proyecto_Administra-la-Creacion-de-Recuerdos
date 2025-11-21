@@ -64,7 +64,7 @@
     {
         <hr />
         <h4 class="mt-5 mb-3" style="font-family: 'Sono', sans-serif;">Historial de Solicitudes</h4>
-        <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3" data-titulo-exportacion="Listado de Solicitudes de Ausencias">
+        <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3" data-titulo-exportacion="Listado de Solicitudes de Ausencias (Empleado)">
             <thead class="tabla-global">
                 <tr>
                     <th>Fecha de Inicio</th>
@@ -104,8 +104,17 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" defer></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js" defer></script>
-    <script src="@Url.Content("~/Templates/js/paginaciones_y_exportaciones.js")" defer></script>
-    <script src="@Url.Content("~/Templates/js/selects.js")" defer></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.bundle.min.js"></script>
+    <script src="@Url.Content("~/Templates/js/pdf/vfs_fonts.js")"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+    <script src="@Url.Content("~/Templates/js/paginaciones_y_exportaciones.js")"></script>
+    <script src="@Url.Content("~/Templates/js/selects.js")"></script>
 }
