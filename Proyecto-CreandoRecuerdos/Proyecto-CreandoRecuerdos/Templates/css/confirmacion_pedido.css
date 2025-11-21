@@ -5,7 +5,11 @@
     #s_s2,
     div[onmouseover*="S_s"],
     a[href*="somee.com"],
-    div[style*="Somee"] {
+    div[style*="Somee"],
+    div[style*="position: fixed"],
+    div[style*="z-index"],
+    div[style*="somee"],
+    a[href*="somee.com"] {
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
