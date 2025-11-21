@@ -1,5 +1,5 @@
-﻿window.inicializarDataTables = function () {
-  $('.dataTable').each(function () {
+﻿indow.inicializarDataTables = function () {
+    $('.dataTable').each(function () {
         const tableElement = $(this);
         const tableId = '#' + tableElement.attr('id');
         const totalFilas = tableElement.find('tbody tr').length;
@@ -21,128 +21,128 @@
         const valoresNumericos = [...opciones, -1];
         const valoresVisibles = [...opciones.map(n => n.toString()), "Todos"];
 
-      const columnasOcultas = tableElement.data('columnas-ocultas')
-          ? tableElement.data('columnas-ocultas').toString().split(',').map(Number)
-          : [];
+        const columnasOcultas = tableElement.data('columnas-ocultas')
+            ? tableElement.data('columnas-ocultas').toString().split(',').map(Number)
+            : [];
 
-      const tituloExportacion = tableElement.data('titulo-exportacion') || "Exportación";
+        const tituloExportacion = tableElement.data('titulo-exportacion') || "Exportación";
 
-      const totalColumnas = tableElement.find("thead th").length;
+        const totalColumnas = tableElement.find("thead th").length;
 
-      // columnas visibles = todas excepto las ocultas
-      const columnasVisibles = [...Array(totalColumnas).keys()].filter(i => !columnasOcultas.includes(i));
+        // columnas visibles = todas excepto las ocultas
+        const columnasVisibles = [...Array(totalColumnas).keys()].filter(i => !columnasOcultas.includes(i));
 
-      // Botones de exportación
-      const exportButtons = [
+        // Botones de exportación
+        const exportButtons = [
 
-          // ========================== COPIAR ==========================
-          {
-              extend: 'copyHtml5',
-              text: 'Copiar',
-              className: 'btn btn-custom-pink',
-              title: tituloExportacion,
-              exportOptions: { columns: columnasVisibles }
-          },
+            // ========================== COPIAR ==========================
+            {
+                extend: 'copyHtml5',
+                text: 'Copiar',
+                className: 'btn btn-custom-pink',
+                title: tituloExportacion,
+                exportOptions: { columns: columnasVisibles }
+            },
 
-          // ========================== EXCEL ==========================
-          {
-              extend: 'excelHtml5',
-              text: 'Exportar a Excel',
-              className: 'btn btn-custom-pink',
-              title: tituloExportacion,
-              exportOptions: { columns: columnasVisibles },
-          },
+            // ========================== EXCEL ==========================
+            {
+                extend: 'excelHtml5',
+                text: 'Exportar a Excel',
+                className: 'btn btn-custom-pink',
+                title: tituloExportacion,
+                exportOptions: { columns: columnasVisibles },
+            },
 
-          // ========================== PDF ==========================
-          {
-              extend: 'pdfHtml5',
-              text: 'Exportar a PDF',
-              className: 'btn btn-custom-pink',
-              title: tituloExportacion,
-              pageSize: 'TABLOID',
-              orientation: 'landscape',
-              exportOptions: { columns: columnasVisibles },
+            // ========================== PDF ==========================
+            {
+                extend: 'pdfHtml5',
+                text: 'Exportar a PDF',
+                className: 'btn btn-custom-pink',
+                title: tituloExportacion,
+                pageSize: 'TABLOID',
+                orientation: 'landscape',
+                exportOptions: { columns: columnasVisibles },
 
-              customize: function (doc) {
+                customize: function (doc) {
 
-                  // === 1. Página TABLOID horizontal ===
-                  doc.pageSize = {
-                      width: 1284,
-                      height: 1684
-                  };
+                    // === 1. Página TABLOID horizontal ===
+                    doc.pageSize = {
+                        width: 1284,
+                        height: 1684
+                    };
 
-                  // === 2. Márgenes ===
-                  doc.pageMargins = [20, 20, 20, 20];
+                    // === 2. Márgenes ===
+                    doc.pageMargins = [20, 20, 20, 20];
 
-                  // === 3. Guardamos tabla original ===
-                  var originalTable = doc.content[1].table;
-                  var colCount = originalTable.body[0].length;
+                    // === 3. Guardamos tabla original ===
+                    var originalTable = doc.content[1].table;
+                    var colCount = originalTable.body[0].length;
 
-                  // === 4. Centrar todas las celdas ===
-                  originalTable.body.forEach(row => {
-                      row.forEach(cell => {
-                          if (cell && typeof cell === "object") {
-                              cell.alignment = "center";
-                          }
-                      });
-                  });
+                    // === 4. Centrar todas las celdas ===
+                    originalTable.body.forEach(row => {
+                        row.forEach(cell => {
+                            if (cell && typeof cell === "object") {
+                                cell.alignment = "center";
+                            }
+                        });
+                    });
 
-                  // === 5. REEMPLAZAR contenido por columnas que empujan la tabla al centro ===
-                  doc.content = [
+                    // === 5. REEMPLAZAR contenido por columnas que empujan la tabla al centro ===
+                    doc.content = [
 
-                      // Título centrado
-                      {
-                          text: tituloExportacion,
-                          style: 'title',
-                          alignment: 'center',
-                          bold: true,
-                          fontSize: 20,
-                          margin: [0, 0, 0, 15]
-                      },
+                        // Título centrado
+                        {
+                            text: tituloExportacion,
+                            style: 'title',
+                            alignment: 'center',
+                            bold: true,
+                            fontSize: 20,
+                            margin: [0, 0, 0, 15]
+                        },
 
-                      // TRUCO DEFINITIVO: tabla centrada con columnas fantasma
-                      {
-                          columns: [
-                              { width: '*', text: '' },  // empuja desde la izquierda
-                              {
-                                  width: 'auto',
-                                  table: {
-                                      widths: Array(colCount).fill('auto'),
-                                      body: originalTable.body
-                                  },
-                                  layout: {
-                                      hLineWidth: () => 0.3,
-                                      vLineWidth: () => 0.3,
-                                      hLineColor: () => '#999',
-                                      vLineColor: () => '#999',
-                                      paddingLeft: () => 2,
-                                      paddingRight: () => 2,
-                                      paddingTop: () => 2,
-                                      paddingBottom: () => 2
-                                  }
-                              },
-                              { width: '*', text: '' }   // empuja desde la derecha
-                          ]
-                      }
-                  ];
+                        // TRUCO DEFINITIVO: tabla centrada con columnas fantasma
+                        {
+                            columns: [
+                                { width: '*', text: '' },  // empuja desde la izquierda
+                                {
+                                    width: 'auto',
+                                    table: {
+                                        widths: Array(colCount).fill('auto'),
+                                        body: originalTable.body
+                                    },
+                                    layout: {
+                                        hLineWidth: () => 0.3,
+                                        vLineWidth: () => 0.3,
+                                        hLineColor: () => '#999',
+                                        vLineColor: () => '#999',
+                                        paddingLeft: () => 2,
+                                        paddingRight: () => 2,
+                                        paddingTop: () => 2,
+                                        paddingBottom: () => 2
+                                    }
+                                },
+                                { width: '*', text: '' }   // empuja desde la derecha
+                            ]
+                        }
+                    ];
 
-                  // === 6. Fuente global ===
-                  doc.defaultStyle = {
-                      font: 'DejaVuSans',
-                      fontSize: 12
-                  };
+                    // === 6. Fuente global ===
+                    doc.defaultStyle = {
+                        font: 'DejaVuSans',
+                        fontSize: 12
+                    };
 
-                  // === 7. Encabezado pastel centrado ===
-                  doc.styles.tableHeader = {
-                      fillColor: '#B54885',
-                      color: 'white',
-                      bold: true,
-                      alignment: 'center',
-                      fontSize: 14
-                  };
-              }
-          },
-      ];
+                    // === 7. Encabezado pastel centrado ===
+                    doc.styles.tableHeader = {
+                        fillColor: '#B54885',
+                        color: 'white',
+                        bold: true,
+                        alignment: 'center',
+                        fontSize: 14
+                    };
+                }
+            },
+        ];
 
         // Configuración de DataTables
         const dataTableConfig = {
@@ -167,43 +167,43 @@
             }
         };
 
-      // DOM dinámico según si hay botones de exportación
-      if (hasExportButtons) {
-          dataTableConfig.dom = "<'dt-toolbar d-flex align-items-center'B l f>rt<'dt-info-bar' i><'dt-paginate-bar' p>";
-          dataTableConfig.buttons = exportButtons;
-      } else {
-          dataTableConfig.dom = "<'dt-toolbar d-flex align-items-center'l f>rt<'dt-info-bar' i><'dt-paginate-bar' p>";
-      }
-
-      // Destruir instancia previa si existe
-      if ($.fn.DataTable.isDataTable(tableElement)) {
-          tableElement.DataTable().destroy();
-      }
-
-      // Inicializa DataTables
-      const table = tableElement.DataTable(dataTableConfig);
-
-    function createCustomLengthDropdown() {
-        var lengthContainer = tableElement.closest('.dataTables_wrapper').find('.dataTables_length');
-        var originalSelect = lengthContainer.find('select');
-        // Elimina el select original antes de agregar el dropdown personalizado
-        if (originalSelect.length > 0) {
-            originalSelect.remove();
-        }
-        if (lengthContainer.find('.custom-length-dropdown').length > 0) {
-            return;
+        // DOM dinámico según si hay botones de exportación
+        if (hasExportButtons) {
+            dataTableConfig.dom = "<'dt-toolbar d-flex align-items-center'B l f>rt<'dt-info-bar' i><'dt-paginate-bar' p>";
+            dataTableConfig.buttons = exportButtons;
+        } else {
+            dataTableConfig.dom = "<'dt-toolbar d-flex align-items-center'l f>rt<'dt-info-bar' i><'dt-paginate-bar' p>";
         }
 
-        // Crear HTML del dropdown personalizado para la cantidad de registros por página
-        var dropdownItems = '';
-        for (let i = 0; i < valoresNumericos.length; i++) {
-            const value = valoresNumericos[i];
-            const text = valoresVisibles[i];
-            const activeClass = value === 3 ? 'active' : '';
-            dropdownItems += `<div class="custom-dropdown-item ${activeClass}" data-value="${value}">${text}</div>`;
+        // Destruir instancia previa si existe
+        if ($.fn.DataTable.isDataTable(tableElement)) {
+            tableElement.DataTable().destroy();
         }
 
-        var customDropdown = $(`
+        // Inicializa DataTables
+        const table = tableElement.DataTable(dataTableConfig);
+
+        function createCustomLengthDropdown() {
+            var lengthContainer = tableElement.closest('.dataTables_wrapper').find('.dataTables_length');
+            var originalSelect = lengthContainer.find('select');
+            // Elimina el select original antes de agregar el dropdown personalizado
+            if (originalSelect.length > 0) {
+                originalSelect.remove();
+            }
+            if (lengthContainer.find('.custom-length-dropdown').length > 0) {
+                return;
+            }
+
+            // Crear HTML del dropdown personalizado para la cantidad de registros por página
+            var dropdownItems = '';
+            for (let i = 0; i < valoresNumericos.length; i++) {
+                const value = valoresNumericos[i];
+                const text = valoresVisibles[i];
+                const activeClass = value === 3 ? 'active' : '';
+                dropdownItems += `<div class="custom-dropdown-item ${activeClass}" data-value="${value}">${text}</div>`;
+            }
+
+            var customDropdown = $(`
                 <div class="custom-length-dropdown">
                     <div class="custom-dropdown-button" id="lengthDropdownBtn">${pageLength}</div>
                     <div class="custom-dropdown-menu" id="lengthDropdownMenu">
@@ -212,25 +212,25 @@
                 </div>
             `);
 
-        // Reemplazar el select por el dropdown personalizado para la cantidad de registros por página
-        lengthContainer.append(customDropdown);
+            // Reemplazar el select por el dropdown personalizado para la cantidad de registros por página
+            lengthContainer.append(customDropdown);
 
-        var label = lengthContainer.find('label');
-        label.contents().filter(function () {
-            return this.nodeType === 3;
-        }).remove();
-        label.prepend('Mostrar ');
-        label.append(' registros por página');
-    }
+            var label = lengthContainer.find('label');
+            label.contents().filter(function () {
+                return this.nodeType === 3;
+            }).remove();
+            label.prepend('Mostrar ');
+            label.append(' registros por página');
+        }
 
-      // Llama a la función cada vez que la tabla se dibuja
+        // Llama a la función cada vez que la tabla se dibuja
         table.on('draw', function () {
             createCustomLengthDropdown();
         });
 
         // Llama la primera vez
         createCustomLengthDropdown();
-  });
+    });
 };
 
 function formatearBotonesPaginacion() {

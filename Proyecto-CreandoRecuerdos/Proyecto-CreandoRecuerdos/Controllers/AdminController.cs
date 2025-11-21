@@ -191,120 +191,143 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             using (var workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add("Historial");
+                var ws = workbook.Worksheets.Add("HistorialActividades");
 
-                // Establecer propiedades del documento
-                workbook.Properties.Title = "Historial de Actividades";
-                workbook.Properties.Author = "Creando Recuerdos";
-                workbook.Properties.Company = "Creando Recuerdos";
+                // ====================== CONFIG ======================
+                string titulo = "Historial de Actividades";
+                int columnas = 6;
 
-                // Encabezados
-                worksheet.Cell(1, 1).Value = "Fecha y Hora";
-                worksheet.Cell(1, 2).Value = "Usuario";
-                worksheet.Cell(1, 3).Value = "Tipo de Acción";
-                worksheet.Cell(1, 4).Value = "Tabla Afectada";
-                worksheet.Cell(1, 5).Value = "ID Registro";
-                worksheet.Cell(1, 6).Value = "Descripción";
+                // ====================== TÍTULO ======================
+                ws.Cell(1, 1).Value = titulo;
+                ws.Range(1, 1, 1, columnas).Merge();
 
-                // Datos
+                var tituloRango = ws.Range(1, 1, 1, columnas);
+                tituloRango.Style.Font.Bold = true;
+                tituloRango.Style.Font.FontSize = 18;
+                tituloRango.Style.Font.FontColor = XLColor.FromHtml("#2C2C2C");
+                tituloRango.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                tituloRango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                tituloRango.Style.Fill.BackgroundColor = XLColor.FromHtml("#FFD6EB"); // pastel suave
+                ws.Row(1).Height = 30;
+
+                // ====================== ENCABEZADOS ======================
+                ws.Cell(2, 1).Value = "Fecha y Hora";
+                ws.Cell(2, 2).Value = "Usuario";
+                ws.Cell(2, 3).Value = "Tipo de Acción";
+                ws.Cell(2, 4).Value = "Tabla Afectada";
+                ws.Cell(2, 5).Value = "ID Registro";
+                ws.Cell(2, 6).Value = "Descripción";
+
+                var header = ws.Range(2, 1, 2, columnas);
+                header.Style.Fill.BackgroundColor = XLColor.FromHtml("#B54885"); // rosa oscuro
+                header.Style.Font.FontColor = XLColor.White;
+                header.Style.Font.Bold = true;
+                header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                header.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                header.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                header.Style.Border.OutsideBorderColor = XLColor.FromHtml("#CC8FAE");
+                header.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                header.Style.Border.InsideBorderColor = XLColor.FromHtml("#CC8FAE");
+
+                // ====================== DATOS ======================
                 for (int i = 0; i < actividades.Count; i++)
                 {
-                    var row = i + 2;
-                    worksheet.Cell(row, 1).Value = actividades[i].fecha_hora.ToString("g");
-                    worksheet.Cell(row, 2).Value = actividades[i].nombre_usuario;
-                    worksheet.Cell(row, 3).Value = actividades[i].tipo_accion;
-                    worksheet.Cell(row, 4).Value = actividades[i].tabla_afectada;
-                    worksheet.Cell(row, 5).Value = actividades[i].id_registro_afectado?.ToString() ?? "N/A";
-                    worksheet.Cell(row, 6).Value = actividades[i].descripcion;
+                    int row = i + 3;
 
-                    if (i % 2 == 0)
-                    {
-                        var rowRange = worksheet.Range($"A{row}:F{row}");
-                        rowRange.Style.Fill.BackgroundColor = XLColor.WhiteSmoke;
-                    }
+                    ws.Cell(row, 1).Value = actividades[i].fecha_hora.ToString("g");
+                    ws.Cell(row, 2).Value = actividades[i].nombre_usuario;
+                    ws.Cell(row, 3).Value = actividades[i].tipo_accion;
+                    ws.Cell(row, 4).Value = actividades[i].tabla_afectada;
+                    ws.Cell(row, 5).Value = actividades[i].id_registro_afectado?.ToString() ?? "N/A";
+                    ws.Cell(row, 6).Value = actividades[i].descripcion;
+
+                    // SOMBREADO ALTERNADO
+                    if (i % 2 == 1)
+                        ws.Range(row, 1, row, columnas).Style.Fill.BackgroundColor = XLColor.FromHtml("#F5F5F5");
                 }
 
-                worksheet.Columns().AdjustToContents();
-                AplicarEstilosExcel(worksheet, 6);
+                // ====================== ESTILOS GENERALES ======================
+                var data = ws.Range(2, 1, ws.LastRowUsed().RowNumber(), columnas);
 
+                data.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                data.Style.Border.OutsideBorderColor = XLColor.FromHtml("#CC8FAE");
+                data.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                data.Style.Border.InsideBorderColor = XLColor.FromHtml("#CC8FAE");
+
+                data.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                data.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                data.Style.Font.FontColor = XLColor.FromHtml("#2C2C2C");
+
+                // ====================== AJUSTAR COLUMNAS ======================
+                ws.Columns().AdjustToContents();
+
+                // ====================== DESCARGA ======================
                 using (var stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
                     return File(
                         stream.ToArray(),
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        $"{nombreArchivo}.xlsx");
+                        $"{nombreArchivo}.xlsx"
+                    );
                 }
             }
         }
 
         private ActionResult GenerarPDF(List<sp_obtener_historial_actividades_Result> actividades, string nombreArchivo)
         {
-            using (var memoryStream = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
-                var document = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4.Rotate());
-                var writer = iTextSharp.text.pdf.PdfWriter.GetInstance(document, memoryStream);
+                var doc = new Document(PageSize.A4.Rotate(), 20, 20, 20, 20);
+                PdfWriter.GetInstance(doc, ms).CloseStream = false;
 
-                document.Open();
+                doc.Open();
 
-                // Agregar título
-                var titulo = new iTextSharp.text.Paragraph("Historial de Actividades",
-                    iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.HELVETICA_BOLD, 18));
-                titulo.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
-                document.Add(titulo);
+                // ====== TÍTULO ======
+                var titulo = new Paragraph("Historial de Actividades",
+                    FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTexto))
+                {
+                    Alignment = Element.ALIGN_CENTER,
+                    SpacingAfter = 20f
+                };
+                doc.Add(titulo);
 
-                // Crear tabla
-                var table = new iTextSharp.text.pdf.PdfPTable(6)
+                // ====== TABLA ======
+                PdfPTable tabla = new PdfPTable(6)
                 {
                     WidthPercentage = 100,
-                    SpacingBefore = 10f,
-                    SpacingAfter = 10f
+                    SpacingBefore = 10f
                 };
 
-                // Encabezados
-                table.AddCell(PdfHeader("Fecha/Hora"));
-                table.AddCell(PdfHeader("Usuario"));
-                table.AddCell(PdfHeader("Acción"));
-                table.AddCell(PdfHeader("Tabla"));
-                table.AddCell(PdfHeader("ID Registro"));
-                table.AddCell(PdfHeader("Descripción"));
+                tabla.SetWidths(new float[] { 20, 20, 20, 20, 15, 45 });
 
-                // Datos
+                tabla.AddCell(PdfHeader("Fecha/Hora"));
+                tabla.AddCell(PdfHeader("Usuario"));
+                tabla.AddCell(PdfHeader("Acción"));
+                tabla.AddCell(PdfHeader("Tabla"));
+                tabla.AddCell(PdfHeader("ID Registro"));
+                tabla.AddCell(PdfHeader("Descripción"));
+
+                int index = 0;
                 foreach (var act in actividades)
                 {
-                    table.AddCell(PdfCell(act.fecha_hora.ToString("g")));
-                    table.AddCell(PdfCell(act.nombre_usuario));
-                    table.AddCell(PdfCell(act.tipo_accion));
-                    table.AddCell(PdfCell(act.tabla_afectada));
-                    table.AddCell(PdfCell(act.id_registro_afectado?.ToString() ?? "N/A"));
-                    table.AddCell(PdfCell(act.descripcion));
+                    bool shade = index % 2 == 1;
+
+                    tabla.AddCell(PdfCell(act.fecha_hora.ToString("g"), shade));
+                    tabla.AddCell(PdfCell(act.nombre_usuario, shade));
+                    tabla.AddCell(PdfCell(act.tipo_accion, shade));
+                    tabla.AddCell(PdfCell(act.tabla_afectada, shade));
+                    tabla.AddCell(PdfCell(act.id_registro_afectado?.ToString() ?? "N/A", shade));
+                    tabla.AddCell(PdfCell(act.descripcion, shade));
+
+                    index++;
                 }
 
-                document.Add(table);
-                document.Close();
+                doc.Add(tabla);
+                doc.Close();
 
-                return File(memoryStream.ToArray(), "application/pdf", $"{nombreArchivo}.pdf");
+                return File(ms.ToArray(), "application/pdf", $"{nombreArchivo}.pdf");
             }
-        }
-
-        private void AddCell(iTextSharp.text.pdf.PdfPTable table, string text, bool isHeader = false)
-        {
-            var font = isHeader
-                ? iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.HELVETICA_BOLD, 10)
-                : iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.HELVETICA, 9);
-
-            var cell = new iTextSharp.text.pdf.PdfPCell(new iTextSharp.text.Phrase(text, font))
-            {
-                HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT,
-                Padding = 5f
-            };
-
-            if (isHeader)
-            {
-                cell.BackgroundColor = new iTextSharp.text.BaseColor(220, 220, 220);
-            }
-
-            table.AddCell(cell);
         }
     }
 }
