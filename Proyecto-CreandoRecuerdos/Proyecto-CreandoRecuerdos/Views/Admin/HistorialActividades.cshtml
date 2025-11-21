@@ -35,9 +35,10 @@
                 top: 0;
                 width: 20px;
                 height: 20px;
-                border: 2px solid #FFFFFF;
+                border: 2px solid #B54885; /* borde rosa oscuro */
                 border-radius: 50%;
                 background: #FFFFFF;
+                box-shadow: 0 2px 6px rgba(44,44,44,0.10); /* sombra suave */
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -46,10 +47,10 @@
 
                 /* Ícono (oculto inicialmente) */
                 .custom-radio label span i.fas.fa-circle {
-                    font-size: 10px; /* ajusta al gusto */
-                    color: #B54885; /* tu color */
-                    opacity: 0; /* oculto */
-                    transform: scale(0.3); /* pequeño */
+                    font-size: 10px;
+                    color: #B54885;
+                    opacity: 0;
+                    transform: scale(0.3);
                     transition: opacity .25s ease, transform .25s ease;
                 }
 
@@ -57,7 +58,13 @@
         .custom-radio input[type="radio"]:checked + label span {
             background-color: #B54885;
             box-shadow: 0 0 0 .2rem rgba(226,122,176,.25);
+            border-color: #B54885;
         }
+
+            .custom-radio input[type="radio"]:checked + label span i.fas.fa-circle {
+                opacity: 1;
+                transform: scale(1);
+            }
 
         /* Hover */
         .custom-radio label:hover span {

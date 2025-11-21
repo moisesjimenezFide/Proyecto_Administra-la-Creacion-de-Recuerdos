@@ -1,4 +1,4 @@
-﻿indow.inicializarDataTables = function () {
+﻿window.inicializarDataTables = function () {
     $('.dataTable').each(function () {
         const tableElement = $(this);
         const tableId = '#' + tableElement.attr('id');
