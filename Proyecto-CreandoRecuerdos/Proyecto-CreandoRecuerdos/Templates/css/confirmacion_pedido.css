@@ -1,5 +1,17 @@
 ﻿@media print {
 
+    /* Oculta el banner inyectado por Somee */
+    #s_s1,
+    #s_s2,
+    div[onmouseover*="S_s"],
+    a[href*="somee.com"],
+    div[style*="Somee"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+    }
+
     .no-imprimir {
         display: none !important;
     }
