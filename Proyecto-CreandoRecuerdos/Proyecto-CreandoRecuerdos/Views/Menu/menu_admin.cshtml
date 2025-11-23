@@ -9,6 +9,32 @@
 @section Styles {
     <link href="@Url.Content("~/Templates/css/menu.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
+
+    <style>
+        .botones-admin {
+            display: inline-flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-admin-uniforme {
+            width: 200px;
+            min-width: 200px;
+        }
+
+        /* Para el grupo de dropdown */
+        .btn-group.btn-admin-uniforme {
+            width: 200px;
+        }
+
+            .btn-group.btn-admin-uniforme .dropdown-toggle {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+    </style>
 }
 
 <br />
@@ -24,18 +50,20 @@
         <h2 style="font-family: 'Sono', sans-serif;">
             <i class="fas fa-utensils me-2"></i> Categorías
         </h2>
-        <button id="crear_producto" class="btn btn-sm btn-outline-dark-pink active">
-            <i class="fas fa-plus me-1"></i> Crear producto
-        </button>
-        <br><br>
-        <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-dark-pink dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-plus me-1"></i> Recomendación
+        <div class="botones-admin">
+            <button id="crear_producto" class="btn btn-sm btn-outline-dark-pink active btn-admin-uniforme">
+                <i class="fas fa-plus me-1"></i> Crear producto
             </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" id="crearRecomendacionOpcion">Crear recomendación</a></li>
-                <li><a class="dropdown-item" href="#" id="quitarRecomendacionOpcion">Quitar recomendación</a></li>
-            </ul>
+
+            <div class="btn-group btn-admin-uniforme">
+                <button type="button" class="btn btn-sm btn-outline-dark-pink dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-plus me-1"></i> Recomendación
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" id="crearRecomendacionOpcion">Crear recomendación</a></li>
+                    <li><a class="dropdown-item" href="#" id="quitarRecomendacionOpcion">Quitar recomendación</a></li>
+                </ul>
+            </div>
         </div>
         <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
             <button class="btn btn-sm btn-outline-dark-pink active" data-category="todos">
@@ -421,8 +449,8 @@
                 e.preventDefault();
                 $.get('/Menu/RecomendacionesAjax', function (productos) {
                     let selectHtml = `<label for="eliminarRecomendacion">Quitar recomendación existente:</label>
-                                <select id="eliminarRecomendacion" class="swal2-select">
-                                    <option value="">Seleccione una recomendación</option>`;
+                                    <select id="eliminarRecomendacion" class="swal2-select">
+                                        <option value="">Seleccione una recomendación</option>`;
                     productos.forEach(prod => {
                         selectHtml += `<option value="${prod.id_producto}">${prod.nombre}</option>`;
                     });

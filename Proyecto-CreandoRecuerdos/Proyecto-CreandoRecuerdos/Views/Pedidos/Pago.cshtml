@@ -2,6 +2,126 @@
 
 @section Styles {
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
+
+    <style>
+
+    .resumen-pedido {
+        background-color: #FFFFFF;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(181, 72, 133, 0.1);
+    }
+
+    .item-pedido {
+        display: flex;
+        flex-direction: column;
+        padding: 12px 0;
+        border-bottom: 1px dashed #E8C495;
+        transition: all 0.2s ease;
+    }
+
+    .item-pedido:hover {
+        background-color: rgba(255, 214, 235, 0.1);
+        border-radius: 6px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .item-pedido:last-child {
+        border-bottom: none;
+    }
+
+    .nombre-producto {
+        font-family: 'Sono', sans-serif;
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: #2C2C2C;
+        margin-bottom: 4px;
+    }
+
+    .precio-producto {
+        font-family: 'Sono', sans-serif;
+        font-weight: 700;
+        color: #B54885;
+        font-size: 1rem;
+        text-align: right;
+        margin-bottom: 6px;
+    }
+
+    .notas-producto {
+        background-color: #FFF8F9;
+        border-left: 3px solid #E8C495;
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin-top: 6px;
+    }
+
+    .notas-producto small {
+        color: #666;
+        font-family: 'Sono', sans-serif;
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .totales-pedido {
+        background-color: #FFF8F9;
+        border-radius: 10px;
+        padding: 20px;
+        border: 1px solid rgba(181, 72, 133, 0.15);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .total-linea {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        font-family: 'Sono', sans-serif;
+    }
+
+    .total-linea:not(.total) {
+        border-bottom: 1px dotted rgba(181, 72, 133, 0.2);
+    }
+
+    .total-linea span:first-child {
+        color: #2C2C2C;
+        font-weight: 500;
+    }
+
+    .total-linea .valor {
+        color: #2C2C2C;
+        font-weight: 600;
+    }
+
+    .total-linea.total {
+        font-size: 1.2rem;
+        margin-top: 10px;
+        padding-top: 12px;
+        border-top: 2px solid #E8C495;
+    }
+
+    .total-linea.total .valor {
+        color: #B54885;
+        font-weight: 800;
+    }
+
+    h4 {
+        font-family: 'Sono', sans-serif;
+        font-weight: 700;
+        color: #B54885;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    h4 i {
+        color: #E8C495;
+        margin-right: 10px;
+    }
+
+    </style>
 }
 
 <div class="pago-container">
@@ -116,7 +236,7 @@
             }
         }
 
-         //Validación de teléfono SINPE
+        //Validación de teléfono SINPE
         function validarTelefonoSinpe(telefono) {
             return /^\d{8}$/.test(telefono);
         }

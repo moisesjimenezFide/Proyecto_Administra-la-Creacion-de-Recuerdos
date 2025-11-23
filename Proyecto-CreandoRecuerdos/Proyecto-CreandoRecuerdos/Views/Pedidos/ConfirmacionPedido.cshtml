@@ -9,6 +9,11 @@
     <link href="@Url.Content("~/Templates/css/confirmacion_pedido.css")" rel="stylesheet" />
 }
 
+@{
+    decimal subtotal = Model.Productos.Sum(p => p.PrecioUnitario * p.Cantidad);
+    decimal impuestos = subtotal * 0.13m;
+}
+
 <div class="container my-5">
     <div class="card shadow">
         <div class="card-header bg-success text-white">
@@ -32,6 +37,12 @@
 
                         <dt class="col-sm-4">Tiempo Estimado:</dt>
                         <dd class="col-sm-8">@Model.TiempoEstimado minutos</dd>
+
+                        <dt class="col-sm-4">Subtotal:</dt>
+                        <dd class="col-sm-8">₡@subtotal.ToString("N2")</dd>
+
+                        <dt class="col-sm-4">Impuestos (13%):</dt>
+                        <dd class="col-sm-8">₡@impuestos.ToString("N2")</dd>
 
                         <dt class="col-sm-4">Total:</dt>
                         <dd class="col-sm-8">₡@Model.Total.ToString("N2")</dd>
