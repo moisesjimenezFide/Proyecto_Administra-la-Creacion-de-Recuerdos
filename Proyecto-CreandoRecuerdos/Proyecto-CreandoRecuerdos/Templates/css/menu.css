@@ -96,13 +96,6 @@
     font-weight: bold;
 }
 
-@media (max-width: 768px) {
-    .product-card {
-        margin-bottom: 10px;
-        /* Más compacto en móviles */
-    }
-}
-
 /* Contenedor de la card - Añade esto */
 .card {
     display: flex;
@@ -152,4 +145,79 @@
 
 .pos-products {
     padding: 20px;
+}
+
+@media (max-width: 768px) {
+    .product-card {
+        margin-bottom: 10px;
+        /* Más compacto en móviles */
+    }
+}
+
+@media (max-width: 425px) {
+
+    .swal2-popup {
+        /* Restablece el padding por defecto de SweetAlert2 */
+        padding: 2.25em !important;
+    }
+
+    .swal2-container {
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        padding: 0 !important;
+        min-height: 100vh !important;
+        height: 100vh !important;
+        box-sizing: border-box !important;
+    }
+
+    .swal2-html-container,
+    .swal2-content {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    .swal2-input,
+    .swal2-textarea,
+    .swal2-select,
+    .swal2-file,
+    input[type="file"] {
+        width: calc(100% - 2rem) !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+        display: block;
+    }
+
+        input[type="file"]::-webkit-file-upload-button {
+            max-width: 100vw !important;
+            width: auto !important;
+            box-sizing: border-box !important;
+            font-size: 16px !important;
+            padding: 6px 2px !important;
+        }
+
+    .custom-select,
+    .custom-select-menu,
+    .custom-select-button {
+        width: calc(100% - 2rem) !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+        display: block;
+    }
+
+    html, body, .swal2-container {
+        overflow-x: hidden !important;
+    }
 }
