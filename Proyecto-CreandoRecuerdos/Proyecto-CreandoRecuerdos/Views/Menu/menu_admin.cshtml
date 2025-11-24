@@ -9,6 +9,7 @@
 @section Styles {
     <link href="@Url.Content("~/Templates/css/menu.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
 
     <style>
         .botones-admin {
@@ -162,6 +163,88 @@
     <script>var esAdmin = true;</script>
     <script src="@Url.Content("~/Templates/js/menu.js")"></script>
     <script>
+        function SwalSelect(containerSelector, opciones, textoDefault = "Seleccione") {
+
+            const container = document.querySelector(containerSelector);
+            if (!container) return;
+
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.value = "";
+            hiddenInput.className = "swal-custom-select-value";
+
+            const wrapper = document.createElement("div");
+            wrapper.className = "custom-select";
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "custom-select-button";
+            button.textContent = textoDefault;
+
+            const menu = document.createElement("div");
+            menu.className = "custom-select-menu";
+
+            Object.entries(opciones).forEach(([texto, valor]) => {
+                const item = document.createElement("div");
+                item.className = "custom-select-item";
+                item.dataset.value = valor;
+                item.textContent =
+                    texto.charAt(0).toUpperCase() + texto.slice(1).replace("-", " ");
+
+                item.onclick = () => {
+                    hiddenInput.value = valor;
+                    button.textContent = item.textContent;
+
+                    menu.querySelectorAll(".custom-select-item")
+                        .forEach(i => i.classList.remove("active"));
+                    item.classList.add("active");
+
+                    menu.classList.remove("show");
+                    button.classList.remove("open");
+                };
+
+                menu.appendChild(item);
+            });
+
+            button.onclick = () => {
+                button.classList.toggle("open");
+                menu.classList.toggle("show");
+            };
+
+            document.addEventListener("click", (e) => {
+                if (!wrapper.contains(e.target)) {
+                    button.classList.remove("open");
+                    menu.classList.remove("show");
+                }
+            });
+
+            wrapper.appendChild(button);
+            wrapper.appendChild(menu);
+
+            container.innerHTML = "";
+            container.appendChild(wrapper);
+            container.appendChild(hiddenInput);
+
+            // Método para seleccionar valor al abrir Swal
+            hiddenInput.setValue = (valor) => {
+                hiddenInput.value = valor;
+
+                const item = menu.querySelector(`[data-value="${valor}"]`);
+                if (item) {
+                    // activar visual
+                    menu.querySelectorAll(".custom-select-item")
+                        .forEach(i => i.classList.remove("active"));
+
+                    item.classList.add("active");
+                    button.textContent = item.textContent;
+                }
+            };
+
+            return hiddenInput;
+        }
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const productContainer = document.getElementById('product-container');
             const crearBtn = document.getElementById('crear_producto');
@@ -210,77 +293,68 @@
         };
 
         function editar_funcion(btn) {
-            // Tomar datos
-            const id = btn.getAttribute('data-id_edit');
-            let nombre = btn.getAttribute('data-nombre');
-            let descripcion = btn.getAttribute('data-descripcion');
-            let precio = btn.getAttribute('data-precio');
-            let img = btn.getAttribute('data-img');
-            let idCategoriaActual = btn.getAttribute('data-category') || '';
 
-            nombre = (nombre === "null" || nombre == null) ? "" : nombre;
-            descripcion = (descripcion === "null" || descripcion == null) ? "" : descripcion;
-            precio = (precio === "null" || precio == null) ? "" : precio;
-            img = (img === "null" || img == null) ? "" : img;
-            idCategoriaActual = (idCategoriaActual === "null" || idCategoriaActual == null) ? "" : idCategoriaActual;
+            const id = btn.dataset.id_edit;
+            let nombre = btn.dataset.nombre || "";
+            let descripcion = btn.dataset.descripcion || "";
+            let precio = btn.dataset.precio || "";
+            let img = btn.dataset.img || "";
+            const categoriaActual = btn.dataset.category || "";
 
-            const imgUrlFinal = (!img || img === "null") ? 'default.png' : img;
+            const imgUrlFinal = img ? img : "default.png";
 
-            // Dropdown
-            let optionsHtml = '<select id="swal-categoria" class="swal2-select"><option value="">Seleccione una categoría</option>';
-            for (const [nombreCat, catId] of Object.entries(categoryMap)) {
-                const selected = catId.toString() === idCategoriaActual.toString() ? 'selected' : '';
-                optionsHtml += `<option value="${catId}" ${selected}>${nombreCat.charAt(0).toUpperCase() + nombreCat.slice(1).replace('-', ' ')}</option>`;
-            }
-
-            optionsHtml += '</select>';
-
-            // Código Swal.fire...
             Swal.fire({
                 title: `Editar Producto: ${nombre}`,
                 html:
-                    `<label for="swal-nombre">Nombre:</label>` +
-                    `<input id="swal-nombre" class="swal2-input" value="${nombre}">` +
+                    `<label>Nombre:</label>
+                 <input id="swal-nombre" class="swal2-input" value="${nombre}">
 
-                    `<input id="swal-id" type="hidden" value="${id}">` +
+                 <input type="hidden" id="swal-id" value="${id}">
 
-                    `<label for="swal-descripcion">Descripción:</label>` +
-                    `<textarea id="swal-descripcion" class="swal2-textarea">${descripcion}</textarea>` +
+                 <label>Descripción:</label>
+                 <textarea id="swal-descripcion" class="swal2-textarea">${descripcion}</textarea>
 
-                    `<label for="swal-precio">Precio:</label>` +
-                    `<input id="swal-precio" class="swal2-input" value="${precio}" inputmode="decimal" pattern="^\\d*\\.?\\d*$" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">` +
+                 <label>Precio:</label>
+                 <input id="swal-precio" class="swal2-input" value="${precio}"
+                    oninput="this.value=this.value.replace(/[^0-9.]/g,'');">
 
-                    `<label for="swal-categoria" class="mt-2">Categoría:</label>` +
-                    optionsHtml +
+                 <label>Categoría:</label>
+                 <div id="swal-categoria"></div>
 
-                    `<p class="mt-2">Imagen actual:</p>` +
-                    `<img src="/Templates/img/menu/${imgUrlFinal}?v=${new Date().getTime()}" class="swal2-image" style="max-height:100px;">` +
+                 <p class="mt-2">Imagen actual:</p>
+                 <img src="/Templates/img/menu/${imgUrlFinal}" class="swal2-image" style="max-height:100px;">
 
-                    `<p class="mt-2">Cargar nueva imagen:</p>` +
-                    `<input type="file" id="swal-img" class="swal2-file">`,
+                 <p class="mt-2">Cargar nueva imagen:</p>
+                 <input type="file" id="swal-img" class="swal2-file">
+                `,
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Guardar',
+
+                didOpen: () => {
+                    window._categoriaInput = SwalSelect("#swal-categoria", categoryMap);
+                    _categoriaInput.setValue(categoriaActual);
+                },
+
                 preConfirm: () => {
                     const nombreVal = document.getElementById('swal-nombre').value.trim();
                     const descripcionVal = document.getElementById('swal-descripcion').value.trim();
                     const precioStr = document.getElementById('swal-precio').value.trim();
-                    const categoriaVal = document.getElementById('swal-categoria').value;
+                    const categoriaVal = _categoriaInput.value;
 
                     if (!nombreVal || !descripcionVal || !precioStr || !categoriaVal) {
-                        Swal.showValidationMessage('Todos los campos son obligatorios.');
+                        Swal.showValidationMessage("Todos los campos son obligatorios.");
                         return false;
                     }
 
-                    // Validar que precio sea float válido
                     const precioVal = parseFloat(precioStr);
                     if (isNaN(precioVal) || precioVal <= 0) {
-                        Swal.showValidationMessage('El precio debe ser un número válido mayor que cero.');
+                        Swal.showValidationMessage("El precio debe ser mayor que cero.");
                         return false;
                     }
 
                     return {
-                        id: document.getElementById('swal-id').value,
+                        id: id,
                         nombre: nombreVal,
                         descripcion: descripcionVal,
                         precio: precioVal,
@@ -289,36 +363,35 @@
                         imagenActual: img
                     };
                 }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const datos = result.value;
-                    const formData = new FormData();
-                    formData.append('Id', datos.id);
-                    formData.append('Nombre', datos.nombre);
-                    formData.append('Descripcion', datos.descripcion);
-                    formData.append('Precio', datos.precio);
-                    formData.append('IdCategoria', datos.categoria);
-                    formData.append('ImagenActual', datos.imagenActual);
-                    if (datos.imagen) {
-                        formData.append('Imagen', datos.imagen);
-                    }
+            }).then(r => {
+                if (!r.isConfirmed) return;
 
-                    $.ajax({
-                        url: '/Menu/menu_admin',
-                        type: 'POST',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        success: function () {
-                            Swal.fire('¡Guardado!', 'El producto fue actualizado.', 'success').then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function () {
-                            Swal.fire('Error', 'Ocurrió un problema al actualizar.', 'error');
-                        }
-                    });
-                }
+                const datos = r.value;
+                const formData = new FormData();
+
+                formData.append('Id', datos.id);
+                formData.append('Nombre', datos.nombre);
+                formData.append('Descripcion', datos.descripcion);
+                formData.append('Precio', datos.precio);
+                formData.append('IdCategoria', datos.categoria);
+                formData.append('ImagenActual', datos.imagenActual);
+
+                if (datos.imagen) formData.append('Imagen', datos.imagen);
+
+                $.ajax({
+                    url: '/Menu/menu_admin',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        Swal.fire('¡Guardado!', 'El producto fue actualizado.', 'success')
+                            .then(() => location.reload());
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'Ocurrió un problema al actualizar.', 'error');
+                    }
+                });
             });
         }
 
@@ -359,38 +432,40 @@
         }
 
         function crear_funcion() {
-            // Generar opciones del dropdown
-            let optionsHtml = '<select id="swal-categoria" class="swal2-select"><option value="">Seleccione una categoría</option>';
-            for (const [nombre, id] of Object.entries(categoryMap)) {
-                optionsHtml += `<option value="${id}">${nombre.charAt(0).toUpperCase() + nombre.slice(1).replace('-', ' ')}</option>`;
-            }
-            optionsHtml += '</select>';
 
             Swal.fire({
                 title: 'Crear nuevo producto',
                 html:
-                    `<label for="swal-nombre">Nombre:</label>` +
-                    `<input id="swal-nombre" class="swal2-input">` +
+                    `<label>Nombre:</label>
+                 <input id="swal-nombre" class="swal2-input">
 
-                    `<label for="swal-descripcion">Descripción:</label>` +
-                    `<textarea id="swal-descripcion" class="swal2-textarea"></textarea>` +
+                 <label>Descripción:</label>
+                 <textarea id="swal-descripcion" class="swal2-textarea"></textarea>
 
-                    `<label for="swal-precio">Precio:</label>` +
-                    `<input id="swal-precio" class="swal2-input" inputmode="decimal" pattern="^\\d*\\.?\\d*$" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">` +
+                 <label>Precio:</label>
+                 <input id="swal-precio" class="swal2-input" inputmode="decimal"
+                    oninput="this.value=this.value.replace(/[^0-9.]/g,'');">
 
-                    `<label for="swal-categoria">Categoría:</label>` +
-                    optionsHtml +
+                 <label>Categoría:</label>
+                 <div id="swal-categoria"></div>
 
-                    `<p class="mt-2">Cargar imagen:</p>` +
-                    `<input type="file" id="swal-img" class="swal2-file">`,
+                 <p class="mt-2">Cargar imagen:</p>
+                 <input type="file" id="swal-img" class="swal2-file">
+                `,
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Crear',
+
+                didOpen: () => {
+                    window._categoriaInput = SwalSelect("#swal-categoria", categoryMap);
+                },
+
                 preConfirm: () => {
+
                     const nombre = document.getElementById('swal-nombre').value.trim();
                     const descripcion = document.getElementById('swal-descripcion').value.trim();
                     const precioStr = document.getElementById('swal-precio').value.trim();
-                    const categoria = document.getElementById('swal-categoria').value;
+                    const categoria = _categoriaInput.value;
                     const imagen = document.getElementById('swal-img').files[0];
 
                     if (!nombre || !descripcion || !precioStr || !imagen || !categoria) {
@@ -398,40 +473,40 @@
                         return false;
                     }
 
-                    // Validar que precio sea un float positivo válido
                     const precio = parseFloat(precioStr);
                     if (isNaN(precio) || precio <= 0) {
-                        Swal.showValidationMessage('El precio debe ser un número válido mayor que cero.');
+                        Swal.showValidationMessage('El precio debe ser mayor que cero.');
                         return false;
                     }
 
                     return { nombre, descripcion, precio, categoria, imagen };
                 }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const datos = result.value;
-                    const formData = new FormData();
-                    formData.append('Nombre', datos.nombre);
-                    formData.append('Descripcion', datos.descripcion);
-                    formData.append('Precio', datos.precio);
-                    formData.append('IdCategoria', datos.categoria);
-                    formData.append('Imagen', datos.imagen);
+            }).then(r => {
+                if (!r.isConfirmed) return;
 
-                    $.ajax({
-                        url: '/Menu/crear_producto',
-                        type: 'POST',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        success: function () {
-                            Swal.fire('¡Creado!', 'El producto fue registrado exitosamente.', 'success')
-                                .then(() => location.reload());
-                        },
-                        error: function () {
-                            Swal.fire('Error', 'No se pudo crear el producto.', 'error');
-                        }
-                    });
-                }
+                const datos = r.value;
+                const formData = new FormData();
+
+                formData.append('Nombre', datos.nombre);
+                formData.append('Descripcion', datos.descripcion);
+                formData.append('Precio', datos.precio);
+                formData.append('IdCategoria', datos.categoria);
+                formData.append('Imagen', datos.imagen);
+
+                $.ajax({
+                    url: '/Menu/crear_producto',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        Swal.fire('¡Creado!', 'El producto fue registrado exitosamente.', 'success')
+                            .then(() => location.reload());
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'No se pudo crear el producto.', 'error');
+                    }
+                });
             });
         }
     </script>
@@ -444,37 +519,57 @@
                 abrirFormularioRecomendacion();
             });
 
-            // Opción 2: Quitar recomendación (abre SweetAlert con select)
+            // Opción 2: Quitar recomendación (abre SweetAlert con select personalizado)
             $('#quitarRecomendacionOpcion').click(function (e) {
                 e.preventDefault();
+
                 $.get('/Menu/RecomendacionesAjax', function (productos) {
-                    let selectHtml = `<label for="eliminarRecomendacion">Quitar recomendación existente:</label>
-                                        <select id="eliminarRecomendacion" class="swal2-select">
-                                            <option value="">Seleccione una recomendación</option>`;
+
+                    // Convertimos el array en un map para SwalSelect()
+                    let map = {};
                     productos.forEach(prod => {
-                        selectHtml += `<option value="${prod.id_producto}">${prod.nombre}</option>`;
+                        map[prod.nombre] = prod.id_producto;
                     });
-                    selectHtml += `</select>`;
 
                     Swal.fire({
                         title: 'Quitar recomendación',
-                        html: selectHtml,
+                        html: `
+                <label>Quitar recomendación existente:</label>
+                <div id="swal-quitar-recomendacion"></div>
+            `,
                         showCancelButton: true,
                         confirmButtonText: 'Eliminar',
+
+                        didOpen: () => {
+                            // Crear dropdown pastel con los productos recomendados
+                            window._inputQuitarRecomendacion = SwalSelect(
+                                "#swal-quitar-recomendacion",
+                                map,
+                                "Seleccione una recomendación"
+                            );
+                        },
+
                         preConfirm: () => {
-                            const id = document.getElementById('eliminarRecomendacion').value;
+                            const id = _inputQuitarRecomendacion.value;
+
                             if (!id) {
                                 Swal.showValidationMessage('Debes seleccionar una recomendación.');
                                 return false;
                             }
+
                             return id;
                         }
+
                     }).then(result => {
                         if (result.isConfirmed) {
+
                             $.post('/Menu/EliminarRecomendacion', { id: result.value }, function () {
+
                                 Swal.fire('Eliminado', 'La recomendación fue quitada.', 'success')
                                     .then(() => location.reload());
+
                             }).fail(() => {
+
                                 Swal.fire('Error', 'No se pudo quitar la recomendación.', 'error');
                             });
                         }
@@ -484,24 +579,30 @@
         });
 
         function abrirFormularioRecomendacion() {
+
             $.get('/Menu/ObtenerProductosDisponibles', function (productos) {
-                let selectHtml = '<label for="productoRecomendado">Seleccionar producto:</label>' +
-                    '<select id="productoRecomendado" class="swal2-select">' +
-                    '<option value="">Seleccione un producto</option>';
-                productos.forEach(p => {
-                    selectHtml += `<option value="${p.id_producto}">${p.nombre}</option>`;
-                });
-                selectHtml += '</select>';
+
+                let map = {};
+                productos.forEach(p => map[p.nombre] = p.id_producto);
 
                 Swal.fire({
                     title: 'Crear recomendación',
-                    html: selectHtml +
-                        '<label for="motivo">Motivo:</label>' +
-                        '<textarea id="motivo" class="swal2-textarea" placeholder="Ej: Producto más vendido, alta demanda, etc."></textarea>',
+                    html:
+                        `<label>Seleccionar producto:</label>
+                 <div id="swal-producto"></div>
+
+                 <label for="motivo">Motivo:</label>
+                 <textarea id="motivo" class="swal2-textarea" placeholder="Ej: Producto más vendido, alta demanda, etc."></textarea>`,
+
                     showCancelButton: true,
                     confirmButtonText: 'Crear',
+
+                    didOpen: () => {
+                        window._productoInput = SwalSelect("#swal-producto", map);
+                    },
+
                     preConfirm: () => {
-                        const idProducto = document.getElementById('productoRecomendado').value;
+                        const idProducto = _productoInput.value;
                         const motivo = document.getElementById('motivo').value.trim();
 
                         if (!idProducto || !motivo) {
@@ -509,18 +610,17 @@
                             return false;
                         }
 
-                        return { productoId: idProducto, motivo: motivo };
+                        return { productoId: idProducto, motivo };
+                    }
+                }).then(r => {
+                    if (!r.isConfirmed) return;
 
-                    }
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        $.post('/Menu/GuardarRecomendacion', result.value, function () {
-                            Swal.fire('¡Listo!', 'Recomendación creada con éxito.', 'success')
-                                .then(() => location.reload());
-                        }).fail(() => {
-                            Swal.fire('Error', 'No se pudo crear la recomendación.', 'error');
-                        });
-                    }
+                    $.post('/Menu/GuardarRecomendacion', r.value, function () {
+                        Swal.fire('¡Listo!', 'Recomendación creada con éxito.', 'success')
+                            .then(() => location.reload());
+                    }).fail(() => {
+                        Swal.fire('Error', 'No se pudo crear la recomendación.', 'error');
+                    });
                 });
             });
         }
