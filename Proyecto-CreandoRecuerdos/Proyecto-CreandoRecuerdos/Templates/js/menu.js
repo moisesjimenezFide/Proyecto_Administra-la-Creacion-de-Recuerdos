@@ -46,6 +46,27 @@ document.addEventListener('DOMContentLoaded', function () {
                     div.dataset.category = p.id_categoria;
                     div.dataset.recomendado = p.recomendado;
 
+                    // Solo muestra los botones si es admin
+                    let botonesHtml = '';
+                    if (typeof esAdmin !== 'undefined' && esAdmin) {
+                        botonesHtml = `
+                            <div class="d-flex justify-content-between mt-2">
+                                <a href="#" class="btn btn-primary btn-sm"
+                                   data-id_edit="${p.id_producto}"
+                                   data-nombre="${p.nombre || ''}"
+                                   data-descripcion="${p.descripcion || ''}"
+                                   data-precio="${p.precio_por_unidad}"
+                                   data-img="${p.img_url || ''}"
+                                   data-category="${p.id_categoria}">
+                                    <i class="fas fa-edit me-1"></i> Editar
+                                </a>
+                                <a href="#" class="btn btn-danger btn-sm" data-id_eliminar="${p.id_producto}">
+                                    <i class="fas fa-trash-alt me-1"></i> Eliminar
+                                </a>
+                            </div>
+                        `;
+                    }
+
                     div.innerHTML = `
     <div class="card h-100 border-0 shadow-sm product-card">
         <img src="/Templates/img/menu/${p.img_url}?v=${new Date().getTime()}" class="card-img-top" alt="${p.nombre}" style="max-height:120px;object-fit:cover;">
@@ -55,20 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-bold dark-violet">₡${Number(p.precio_por_unidad).toLocaleString('es-CR')}</span>
             </div>
-            <div class="d-flex justify-content-between mt-2">
-                <a href="#" class="btn btn-primary btn-sm"
-                   data-id_edit="${p.id_producto}"
-                   data-nombre="${p.nombre || ''}"
-                   data-descripcion="${p.descripcion || ''}"
-                   data-precio="${p.precio_por_unidad}"
-                   data-img="${p.img_url || ''}"
-                   data-category="${p.id_categoria}">
-                    <i class="fas fa-edit me-1"></i> Editar
-                </a>
-                <a href="#" class="btn btn-danger btn-sm" data-id_eliminar="${p.id_producto}">
-                    <i class="fas fa-trash-alt me-1"></i> Eliminar
-                </a>
-            </div>
+            ${botonesHtml}
         </div>
     </div>
 `;

@@ -159,7 +159,7 @@
 </div>
 
 @section Scripts {
-
+    <script>var esAdmin = true;</script>
     <script src="@Url.Content("~/Templates/js/menu.js")"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -449,8 +449,8 @@
                 e.preventDefault();
                 $.get('/Menu/RecomendacionesAjax', function (productos) {
                     let selectHtml = `<label for="eliminarRecomendacion">Quitar recomendación existente:</label>
-                                    <select id="eliminarRecomendacion" class="swal2-select">
-                                        <option value="">Seleccione una recomendación</option>`;
+                                        <select id="eliminarRecomendacion" class="swal2-select">
+                                            <option value="">Seleccione una recomendación</option>`;
                     productos.forEach(prod => {
                         selectHtml += `<option value="${prod.id_producto}">${prod.nombre}</option>`;
                     });

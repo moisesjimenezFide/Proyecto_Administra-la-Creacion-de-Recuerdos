@@ -62,7 +62,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
-                // Obtener TODOS los productos del menú, sin filtrar por recomendaciones
+                var idsRecomendados = db.tabla_recomendaciones.Select(r => r.id_producto).ToList();
+
                 var productosDisponibles = db.tabla_productos
                     .Select(p => new {
                         p.id_producto,
@@ -74,7 +75,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     })
                     .ToList();
 
-                // Crear una nueva lista con la imagen corregida si es necesario
                 var productosConImagen = productosDisponibles.Select(producto =>
                 {
                     var imgPath = Server.MapPath($"~/Templates/img/menu/{producto.img_url}");
@@ -89,10 +89,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         producto.descripcion,
                         producto.id_categoria,
                         producto.precio_por_unidad,
-                        img_url = imgUrlFinal
+                        img_url = imgUrlFinal,
+                        recomendado = idsRecomendados.Contains(producto.id_producto)
                     };
                 }).ToList();
-
 
                 return Json(productosConImagen, JsonRequestBehavior.AllowGet);
             }
