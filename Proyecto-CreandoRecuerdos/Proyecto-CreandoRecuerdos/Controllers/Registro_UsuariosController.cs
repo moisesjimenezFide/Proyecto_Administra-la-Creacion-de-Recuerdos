@@ -296,8 +296,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         var notificacion = util.EnviarCorreo(info.correo, mensaje, "Acceso a Creando Recuerdos");
 
                         if (notificacion)
-                            return RedirectToAction("Login", "Usuario");
-                    }
+                        return RedirectToAction("iniciar_sesion");
+                }
 
                     ViewBag.Mensaje = "Su acceso no se ha podido reestablecer correctamente";
                     return View(model);
