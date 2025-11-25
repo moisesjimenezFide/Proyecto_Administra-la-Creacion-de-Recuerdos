@@ -96,8 +96,10 @@ let ventas = [
       text: 'Esta acción eliminará la venta del historial.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#E74C3C',
+        cancelButtonColor: '#6C757D'
     }).then((result) => {
       if (result.isConfirmed) {
         ventasActuales.splice(index, 1);

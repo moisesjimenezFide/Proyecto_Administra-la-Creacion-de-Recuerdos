@@ -8,7 +8,7 @@
         });
     }
 
-    // Mostrar confirmaci�n
+    // Mostrar confirmación
     function showConfirm(title, text, callback) {
         Swal.fire({
             title: title,

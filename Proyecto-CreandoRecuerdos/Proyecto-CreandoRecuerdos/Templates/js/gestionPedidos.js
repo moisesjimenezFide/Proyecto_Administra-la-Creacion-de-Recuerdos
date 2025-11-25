@@ -81,6 +81,8 @@ class GestionPedidos {
             showCancelButton: true,
             confirmButtonText: 'Actualizar',
             cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#B54885',
+            cancelButtonColor: '#6C757D',
             focusConfirm: false,
             allowOutsideClick: false,
             preConfirm: () => {

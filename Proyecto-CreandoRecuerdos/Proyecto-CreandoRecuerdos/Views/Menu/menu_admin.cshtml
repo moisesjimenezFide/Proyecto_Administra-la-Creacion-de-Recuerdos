@@ -330,6 +330,8 @@
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Guardar',
+                confirmButtonColor: '#B54885',
+                cancelButtonColor: '#6C757D',
 
                 didOpen: () => {
                     window._categoriaInput = SwalSelect("#swal-categoria", categoryMap);
@@ -406,6 +408,8 @@
                 showCancelButton: true,
                 confirmButtonText: 'Eliminar',
                 cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#E74C3C',
+                cancelButtonColor: '#6C757D',
                 preConfirm: (valor) => {
                     if (valor !== 'CONFIRMAR') {
                         Swal.showValidationMessage('Debes escribir CONFIRMAR exactamente.');
@@ -455,6 +459,8 @@
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Crear',
+                confirmButtonColor: '#B54885',
+                cancelButtonColor: '#6C757D',
 
                 didOpen: () => {
                     window._categoriaInput = SwalSelect("#swal-categoria", categoryMap);
@@ -539,6 +545,8 @@
             `,
                         showCancelButton: true,
                         confirmButtonText: 'Eliminar',
+                        confirmButtonColor: '#E74C3C',
+                        cancelButtonColor: '#6C757D',
 
                         didOpen: () => {
                             // Crear dropdown pastel con los productos recomendados
@@ -596,6 +604,8 @@
 
                     showCancelButton: true,
                     confirmButtonText: 'Crear',
+                    confirmButtonColor: '#B54885', 
+                    cancelButtonColor: '#6C757D',
 
                     didOpen: () => {
                         window._productoInput = SwalSelect("#swal-producto", map);

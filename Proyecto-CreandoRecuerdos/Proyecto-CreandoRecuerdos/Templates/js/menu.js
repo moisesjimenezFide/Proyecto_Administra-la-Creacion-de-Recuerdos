@@ -132,6 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         `<textarea id="swal-motivo" class="swal2-textarea" placeholder="Ingrese el motivo de la recomendación"></textarea>`,
                     showCancelButton: true,
                     confirmButtonText: 'Guardar',
+                    confirmButtonColor: '#B54885',
+                    cancelButtonColor: '#6C757D',
                     preConfirm: () => {
                         const productoId = document.getElementById('swal-producto').value;
                         const motivo = document.getElementById('swal-motivo').value.trim();

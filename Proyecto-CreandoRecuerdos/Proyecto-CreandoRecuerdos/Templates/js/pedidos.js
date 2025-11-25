@@ -96,6 +96,8 @@ class SistemaPedidos {
             inputLabel: 'Indicaciones especiales (ej: sin cebolla)',
             inputPlaceholder: 'Escribe aquí las personalizaciones...',
             showCancelButton: true,
+            cancelButtonColor: '#6C757D',
+            cancelButtonText: 'Cancelar'
             inputValidator: (value) => {
                 if (value && value.length > 500) {
                     return 'Las personalizaciones no pueden exceder 500 caracteres';

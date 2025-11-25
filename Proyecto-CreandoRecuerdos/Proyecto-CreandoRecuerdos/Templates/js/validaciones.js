@@ -1039,12 +1039,12 @@
 
                     Swal.fire({
                         title: `Confirmar ${action} empleado`,
-                        text: `Confirma estar seguro de desear ${action} este empleado`,
+                        text: `Confirma estar seguro de ${action} este empleado`,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#B54885',
                         cancelButtonColor: '#6C757D',
-                        confirmButtonText: 'Si, continuar',
+                        confirmButtonText: 'Sí, continuar',
                         cancelButtonText: 'Cancelar'
                     }).then((result) => {
                         if (result.isConfirmed) {

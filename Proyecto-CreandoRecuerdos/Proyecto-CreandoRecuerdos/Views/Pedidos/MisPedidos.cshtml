@@ -275,7 +275,9 @@
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Sí, cancelar',
-                    cancelButtonText: 'No, volver'
+                    cancelButtonText: 'No, volver',
+                    confirmButtonColor: '#E74C3C',
+                    cancelButtonColor: '#6C757D'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
@@ -325,7 +327,9 @@
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Sí, cancelar',
-                    cancelButtonText: 'No, volver'
+                    cancelButtonText: 'No, volver',
+                    confirmButtonColor: '#E74C3C',
+                    cancelButtonColor: '#6C757D'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();
