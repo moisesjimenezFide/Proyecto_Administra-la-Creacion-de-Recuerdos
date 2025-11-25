@@ -267,7 +267,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                 context.sp_actualizar_usuario(idUsuario, model.nombre, model.id_rol);
             }
-            return RedirectToAction("gestion_usuarios");
+            return RedirectToAction("gestion_usuarios", "Registro_Usuarios");
         }
 
 
@@ -296,7 +296,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         var notificacion = util.EnviarCorreo(info.correo, mensaje, "Acceso a Creando Recuerdos");
 
                         if (notificacion)
-                        return RedirectToAction("iniciar_sesion");
+                        return RedirectToAction("iniciar_sesion", "Registro_Usuarios");
                 }
 
                     ViewBag.Mensaje = "Su acceso no se ha podido reestablecer correctamente";
