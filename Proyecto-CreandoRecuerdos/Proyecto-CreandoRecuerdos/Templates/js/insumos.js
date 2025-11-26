@@ -574,7 +574,7 @@ $(document).ready(function () {
             text: "¡Esta acción no se puede deshacer!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#E74C3C',
+            confirmButtonColor: '#DC3545',
             cancelButtonColor: '#6C757D',
             confirmButtonText: 'Aceptar',
             cancelButtonText: 'Cancelar'

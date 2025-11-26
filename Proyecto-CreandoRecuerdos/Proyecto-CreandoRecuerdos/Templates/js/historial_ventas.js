@@ -98,7 +98,7 @@ let ventas = [
       showCancelButton: true,
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#E74C3C',
+        confirmButtonColor: '#DC3545',
         cancelButtonColor: '#6C757D'
     }).then((result) => {
       if (result.isConfirmed) {
