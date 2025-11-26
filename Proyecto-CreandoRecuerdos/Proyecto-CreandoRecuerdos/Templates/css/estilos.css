@@ -684,7 +684,7 @@ html, body {
         }
 }
 
-    @media (min-width: 50px) and (max-width: 332px) {
+    @media (min-width: 0px) and (max-width: 347px) {
         .navbar::before {
             top: 114px;
             height: 8px;
@@ -716,7 +716,7 @@ html, body {
 
         /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
         .empleado-session.navbar.menu-abierto::before {
-            top: 290px;
+            top: 314px;
             transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
@@ -741,12 +741,12 @@ html, body {
         }
 
         .empleado-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
-            top: 428px;
+            top: 452px;
             transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
         .empleado-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
-            top: 405px;
+            top: 429px;
             transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
@@ -756,75 +756,75 @@ html, body {
         }
     }
 
-    @media (min-width: 333px) and (max-width: 991px) {
-        .navbar::before {
-            top: 66px;
-            height: 8px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .navbar.menu-abierto::before {
-            top: 202px; /* mueve la barra debajo del menú abierto */
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        /* La posición de la barra cuando el menú está CERRADO (Admin) */
-        .admin-session.navbar::before {
-            top: 66px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        /* La posición de la barra cuando el menú está ABIERTO (Admin) */
-        .admin-session.navbar.menu-abierto::before {
-            top: 282px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        /* La posición de la barra cuando el menú está CERRADO (Empleado) */
-        .empleado-session.navbar::before {
-            top: 66px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
-        .empleado-session.navbar.menu-abierto::before {
-            top: 243px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .admin-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
-            top: 420px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .admin-session.insumos-section.navbar.menu-abierto.dropdown-abierto::before {
-            top: 580px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .admin-session.admin-section.navbar.menu-abierto.dropdown-abierto::before {
-            top: 620px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .admin-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
-            top: 397px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .empleado-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
-            top: 378px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .empleado-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
-            top: 357px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
-
-        .navbar.clientes-section.menu-abierto.dropdown-abierto::before {
-            top: 340px;
-            transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        }
+@media (min-width: 348px) and (max-width: 991px) {
+    .navbar::before {
+        top: 66px;
+        height: 8px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
+
+    .navbar.menu-abierto::before {
+        top: 202px; /* mueve la barra debajo del menú abierto */
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está CERRADO (Admin) */
+    .admin-session.navbar::before {
+        top: 66px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está ABIERTO (Admin) */
+    .admin-session.navbar.menu-abierto::before {
+        top: 282px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está CERRADO (Empleado) */
+    .empleado-session.navbar::before {
+        top: 66px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* La posición de la barra cuando el menú está ABIERTO (Empleado) */
+    .empleado-session.navbar.menu-abierto::before {
+        top: 242px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .admin-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
+        top: 420px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .admin-session.insumos-section.navbar.menu-abierto.dropdown-abierto::before {
+        top: 580px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .admin-session.admin-section.navbar.menu-abierto.dropdown-abierto::before {
+        top: 620px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .admin-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
+        top: 397px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .empleado-session.clientes-section.navbar.menu-abierto.dropdown-abierto::before {
+        top: 378px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .empleado-session.profile-section.navbar.menu-abierto.dropdown-abierto::before {
+        top: 357px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .navbar.clientes-section.menu-abierto.dropdown-abierto::before {
+        top: 340px;
+        transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+}
 
