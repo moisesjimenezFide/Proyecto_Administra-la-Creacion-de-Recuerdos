@@ -249,7 +249,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     RolesDisponibles = roles.Select(r => new SelectListItem
                     {
                         Value = r.id_rol.ToString(),
-                        Text = r.nombre
+                        Text = r.nombre == "trabajador" ? "colaborador" : r.nombre
                     }).ToList()
                 };
 
