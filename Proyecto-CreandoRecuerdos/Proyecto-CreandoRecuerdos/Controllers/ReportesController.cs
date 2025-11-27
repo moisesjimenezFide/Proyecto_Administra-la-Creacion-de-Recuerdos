@@ -494,7 +494,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 {
                     using (var workbook = new XLWorkbook())
                     {
-                        var ws = workbook.Worksheets.Add("ColaboradoresDisponibles");
+                        var ws = workbook.Worksheets.Add("EmpleadosDisponibles");
 
                         string titulo = "Colaboradores Disponibles";
                         int columnas = 4;
