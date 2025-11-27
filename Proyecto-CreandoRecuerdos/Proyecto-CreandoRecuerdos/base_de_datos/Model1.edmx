@@ -904,6 +904,8 @@
           <Parameter Name="id_usuario" Type="int" Mode="In" />
           <Parameter Name="tipo_accion" Type="nvarchar" Mode="In" />
           <Parameter Name="descripcion" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="tabla_afectada" Type="nvarchar" Mode="In" />
+          <Parameter Name="id_registro_afectado" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_registrar_auditoria" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_usuario" Type="int" Mode="In" />
@@ -2172,6 +2174,8 @@
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
             <Parameter Name="tipo_accion" Mode="In" Type="String" />
             <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="tabla_afectada" Mode="In" Type="String" />
+            <Parameter Name="id_registro_afectado" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_registrar_auditoria">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />

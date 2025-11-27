@@ -404,7 +404,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     db.sp_registrar_actividad(
                         idUsuario,
                         "UPDATE",
-                        $"Actualizado estado del pedido {idPedido} a {nuevoEstado}"
+                        $"Actualizado estado del pedido {idPedido} a {nuevoEstado}",
+                        "tabla_ventas",
+                        idPedido
                     );
 
                     // Marcar notificación como no leída para el cliente
@@ -426,7 +428,18 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Error al actualizar el estado: " + ex.Message;
+                var mensajeError = new StringBuilder();
+                mensajeError.AppendLine("Error al actualizar el estado: " + ex.Message);
+
+                // Agrega detalles de la excepción interna si existe
+                var inner = ex.InnerException;
+                while (inner != null)
+                {
+                    mensajeError.AppendLine(inner.Message);
+                    inner = inner.InnerException;
+                }
+
+                TempData["ErrorMessage"] = mensajeError.ToString();
                 return RedirectToAction("DetallePedido", new { id = idPedido });
             }
         }
@@ -532,7 +545,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     db.sp_registrar_actividad(
                         idUsuario,
                         "UPDATE",
-                        $"Estado del pedido {idPedido} actualizado a {nuevoEstado}"
+                        $"Estado del pedido {idPedido} actualizado a {nuevoEstado}",
+                        "tabla_ventas",
+                        idPedido
                     );
 
                     // Marcar notificación como no leída para el cliente
@@ -1297,7 +1312,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     db.sp_registrar_actividad(
                         idUsuario,
                         "NOTIFICATION",
-                        $"Notificación enviada para pedido {idPedido}: {mensaje}"
+                        $"Notificación enviada para pedido {idPedido}: {mensaje}",
+                        "tabla_ventas",
+                        idPedido
                     );
 
                     return Json(new
@@ -1326,7 +1343,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     db.sp_registrar_actividad(
                         GetUserId(),
                         "NOTIFICATION",
-                        $"Notificación de valoración enviada para pedido {idPedido}"
+                        $"Notificación de valoración enviada para pedido {idPedido}",
+                        "tabla_ventas",
+                        idPedido
                     );
                 }
 

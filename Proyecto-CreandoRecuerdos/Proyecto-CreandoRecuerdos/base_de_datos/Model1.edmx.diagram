@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="19812c5b0f884f6dbf247696c1b0b87d" Name="Diagram1">
+      <Diagram DiagramId="40593e7da20946ea99a8e96575f021c8" Name="Diagram1">
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.costos_receta_materias_primas_utilizadas" Width="1.5" PointX="14" PointY="20.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.costos_receta_productos_preparados_utilizados" Width="1.5" PointX="17" PointY="20.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.precios_empaques_decoraciones_utilizados" Width="1.5" PointX="16.25" PointY="27.625" IsExpanded="true" />

@@ -719,7 +719,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_obtener_usuarios_Result>("sp_obtener_usuarios");
         }
     
-        public virtual int sp_registrar_actividad(Nullable<int> id_usuario, string tipo_accion, string descripcion)
+        public virtual int sp_registrar_actividad(Nullable<int> id_usuario, string tipo_accion, string descripcion, string tabla_afectada, Nullable<int> id_registro_afectado)
         {
             var id_usuarioParameter = id_usuario.HasValue ?
                 new ObjectParameter("id_usuario", id_usuario) :
@@ -733,7 +733,15 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
                 new ObjectParameter("descripcion", descripcion) :
                 new ObjectParameter("descripcion", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_registrar_actividad", id_usuarioParameter, tipo_accionParameter, descripcionParameter);
+            var tabla_afectadaParameter = tabla_afectada != null ?
+                new ObjectParameter("tabla_afectada", tabla_afectada) :
+                new ObjectParameter("tabla_afectada", typeof(string));
+    
+            var id_registro_afectadoParameter = id_registro_afectado.HasValue ?
+                new ObjectParameter("id_registro_afectado", id_registro_afectado) :
+                new ObjectParameter("id_registro_afectado", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_registrar_actividad", id_usuarioParameter, tipo_accionParameter, descripcionParameter, tabla_afectadaParameter, id_registro_afectadoParameter);
         }
     
         public virtual int sp_registrar_auditoria(Nullable<int> id_usuario, string tipo_accion, string tabla_afectada, Nullable<int> id_registro_afectado, string valores_anteriores, string valores_nuevos, string descripcion)
