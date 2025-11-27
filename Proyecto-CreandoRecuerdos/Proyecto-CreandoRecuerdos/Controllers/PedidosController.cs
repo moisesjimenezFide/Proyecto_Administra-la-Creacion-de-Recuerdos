@@ -401,13 +401,17 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     db.SaveChanges();
 
                     // Registrar actividad
-                    db.sp_registrar_actividad(
-                        idUsuario,
-                        "UPDATE",
-                        $"Actualizado estado del pedido {idPedido} a {nuevoEstado}",
-                        "tabla_ventas",
-                        idPedido
-                    );
+                    var usuarioExiste = db.tabla_usuarios.Any(u => u.id_usuario == idUsuario);
+                    if (usuarioExiste)
+                    {
+                        db.sp_registrar_actividad(
+                            idUsuario,
+                            "UPDATE",
+                            $"Actualizado estado del pedido {idPedido} a {nuevoEstado}",
+                            "tabla_ventas",
+                            idPedido
+                        );
+                    }
 
                     // Marcar notificación como no leída para el cliente
                     var cliente = db.tabla_clientes.Find(pedido.id_cliente);
@@ -542,13 +546,19 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     db.SaveChanges();
 
                     // Registrar actividad
-                    db.sp_registrar_actividad(
-                        idUsuario,
-                        "UPDATE",
-                        $"Estado del pedido {idPedido} actualizado a {nuevoEstado}",
-                        "tabla_ventas",
-                        idPedido
-                    );
+                    // Antes de llamar a sp_registrar_actividad, valida que el usuario exista:
+                    var usuarioExiste = db.tabla_usuarios.Any(u => u.id_usuario == idUsuario);
+                    if (usuarioExiste)
+                    {
+                        db.sp_registrar_actividad(
+                            idUsuario,
+                            "UPDATE",
+                            $"Estado del pedido {idPedido} actualizado a {nuevoEstado}",
+                            "tabla_ventas",
+                            idPedido
+                        );
+                    }
+                    
 
                     // Marcar notificación como no leída para el cliente
                     var cliente = db.tabla_clientes.Find(pedido.id_cliente);
@@ -1309,13 +1319,17 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     db.SaveChanges();
 
                     // Registrar actividad
-                    db.sp_registrar_actividad(
-                        idUsuario,
-                        "NOTIFICATION",
-                        $"Notificación enviada para pedido {idPedido}: {mensaje}",
-                        "tabla_ventas",
-                        idPedido
-                    );
+                    var usuarioExiste = db.tabla_usuarios.Any(u => u.id_usuario == idUsuario);
+                    if (usuarioExiste)
+                    {
+                        db.sp_registrar_actividad(
+                            idUsuario,
+                            "NOTIFICATION",
+                            $"Notificación enviada para pedido {idPedido}: {mensaje}",
+                            "tabla_ventas",
+                            idPedido
+                        );
+                    }
 
                     return Json(new
                     {
@@ -1340,13 +1354,17 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 using (var db = new BD_CREANDO_RECUERDOSEntities())
                 {
                     // Registrar actividad de valoración
-                    db.sp_registrar_actividad(
-                        GetUserId(),
-                        "NOTIFICATION",
-                        $"Notificación de valoración enviada para pedido {idPedido}",
-                        "tabla_ventas",
-                        idPedido
-                    );
+                    var usuarioExiste = db.tabla_usuarios.Any(u => u.id_usuario == GetUserId());
+                    if (usuarioExiste)
+                    {
+                        db.sp_registrar_actividad(
+                            GetUserId(),
+                            "NOTIFICATION",
+                            $"Notificación de valoración enviada para pedido {idPedido}",
+                            "tabla_ventas",
+                            idPedido
+                        );
+                    }
                 }
 
                 return Json(new
