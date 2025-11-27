@@ -60,6 +60,10 @@
         display: none;
         max-height: 250px;
         overflow-y: auto;
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+        overflow-x: hidden;
     }
 
         .custom-select .custom-select-menu.show {
@@ -78,6 +82,10 @@
         -webkit-user-select: none;
         user-select: none;
         -webkit-tap-highlight-color: transparent;
+        width: 100%; /* El fondo cubre todo el ancho */
+        box-sizing: border-box;
+        white-space: normal; /* Permite que el texto haga salto de línea */
+        word-break: break-word; /* Rompe palabras largas */
     }
 
         .custom-select .custom-select-item:last-child {
