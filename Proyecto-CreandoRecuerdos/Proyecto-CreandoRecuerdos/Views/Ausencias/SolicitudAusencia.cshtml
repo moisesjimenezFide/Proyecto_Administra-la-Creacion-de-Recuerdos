@@ -78,8 +78,8 @@
                 @foreach (var s in solicitudes)
                 {
                     <tr>
-                        <td>@s.fecha_inicio.ToShortDateString()</td>
-                        <td>@s.fecha_fin.ToShortDateString()</td>
+                        <td>@s.fecha_inicio.ToString("dd/MM/yyyy")</td>
+                        <td>@s.fecha_fin.ToString("dd/MM/yyyy")</td>
                         <td>@s.tipo</td>
                         <td>@s.motivo</td>
                         <td>

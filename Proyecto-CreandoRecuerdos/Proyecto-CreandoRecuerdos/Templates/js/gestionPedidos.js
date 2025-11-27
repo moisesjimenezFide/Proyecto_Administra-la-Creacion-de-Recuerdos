@@ -248,8 +248,8 @@ class GestionPedidos {
 <tr>
     <td>${pedido.numero_pedido}</td>
     <td>${pedido.id_cliente}</td>
-    <td>${new Date(pedido.fecha).toLocaleString()}</td>
-    <td>${pedido.fecha_fin ? new Date(pedido.fecha_fin).toLocaleString() : 'N/A'}</td>
+    <td>${formatearFechaDMYHM(pedido.fecha)}</td>
+    <td>${pedido.fecha_fin ? formatearFechaDMYHM(pedido.fecha_fin) : 'N/A'}</td>
     <td>${pedido.cantidad_productos} productos</td>
     <td class="text-end">₡${pedido.total.toLocaleString('es-CR')}</td>
     <td>
@@ -300,4 +300,13 @@ class GestionPedidos {
         };
         return clases[estado] || 'bg-light text-dark';
     }
+}
+
+// --- Función utilitaria para formatear fechas ---
+function formatearFechaDMYHM(fechaIso) {
+    if (!fechaIso) return "N/A";
+    const d = new Date(fechaIso);
+    if (isNaN(d)) return "N/A";
+    const pad = n => n.toString().padStart(2, '0');
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }

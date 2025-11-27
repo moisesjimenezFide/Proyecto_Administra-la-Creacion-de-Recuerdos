@@ -1,4 +1,15 @@
-﻿window.inicializarDataTables = function () {
+﻿jQuery.extend(jQuery.fn.dataTable.ext.type.order, {
+    "date-eu-pre": function (date) {
+        if (!date) return 0;
+        if (date.indexOf('/') === -1) return Date.parse(date) || 0;
+        var parts = date.split('/');
+        return Date.parse(parts[2] + '-' + parts[1] + '-' + parts[0]) || 0;
+    },
+    "date-eu-asc": function (a, b) { return a - b; },
+    "date-eu-desc": function (a, b) { return b - a; }
+});
+
+window.inicializarDataTables = function () {
     $('.dataTable').each(function () {
         const tableElement = $(this);
         const tableId = '#' + tableElement.attr('id');
@@ -6,6 +17,18 @@
         const pageLength = tableElement.data('page-length') || 10;
         const hasExportButtons = tableElement.hasClass('con-exportaciones');
         const hasSearch = tableElement.hasClass('con-busqueda');
+
+        // === DETECCIÓN AUTOMÁTICA DE COLUMNAS DE FECHA ===
+        // Busca los índices de columnas cuyo encabezado contiene "Fecha" (ignora mayúsculas/minúsculas y tildes)
+        const fechaRegex = /fecha|f\.?inicio|f\.?fin|fecha\/hora/i;
+        const ths = tableElement.find('thead th');
+        const columnasFecha = [];
+        ths.each(function (i, th) {
+            const texto = $(th).text().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            if (fechaRegex.test(texto)) {
+                columnasFecha.push(i);
+            }
+        });
 
         // Opciones de cantidad de registros
         let opciones = [];
@@ -288,6 +311,13 @@
                 }
             }
         };
+
+        // Aplica el tipo de columna 'date-eu' a las columnas detectadas como fecha
+        if (columnasFecha.length > 0) {
+            dataTableConfig.columnDefs = [
+                { type: 'date-eu', targets: columnasFecha }
+            ];
+        }
 
         // DOM dinámico según si hay botones de exportación
         if (hasExportButtons) {
