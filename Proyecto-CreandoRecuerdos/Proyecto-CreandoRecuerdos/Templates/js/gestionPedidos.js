@@ -234,57 +234,60 @@ class GestionPedidos {
         const tbody = document.getElementById('pedidosBody');
         if (!tbody) return;
 
-        // Destruye SOLO la instancia de DataTable de esta tabla
+        // Destruye la instancia de DataTable ANTES de modificar el DOM
         if ($.fn.DataTable.isDataTable($tabla)) {
             $tabla.DataTable().destroy();
+            // Elimina wrappers personalizados si existen
             $tabla.closest('.dataTables_wrapper').find('.custom-length-dropdown').remove();
         }
 
+        // Ahora sí, modifica el tbody
         tbody.innerHTML = pedidos.length === 0
             ? `<tr><td colspan="12" class="text-center py-4"><i class="fas fa-clipboard-list fa-2x mb-2 text-muted"></i><p>No se encontraron pedidos con los filtros seleccionados</p></td></tr>`
             : pedidos.map(pedido => `
-    <tr>
-        <td>${pedido.numero_pedido}</td>
-        <td>${pedido.id_cliente}</td>
-        <td>${new Date(pedido.fecha).toLocaleString()}</td>
-        <td>${pedido.fecha_fin ? new Date(pedido.fecha_fin).toLocaleString() : 'N/A'}</td>
-        <td>${pedido.cantidad_productos} productos</td>
-        <td class="text-end">₡${pedido.total.toLocaleString('es-CR')}</td>
-        <td>
-            <span class="badge ${this.obtenerClaseEstado(pedido.estado)}">
-                ${pedido.estado}
-            </span>
-        </td>
-        <td>${pedido.metodo_pago}</td>
-        <td>${pedido.para_llevar ? 'Sí' : 'No'}</td>
-        <td>
-            ${pedido.tiempo_estimado} min
-            <button class="btn btn-sm btn-outline-secondary btn-tiempo ms-1" 
-                    data-id="${pedido.id_pedido}" 
-                    data-tiempo="${pedido.tiempo_estimado}"
-                    title="Modificar tiempo estimado">
-                <i class="fas fa-clock"></i>
+<tr>
+    <td>${pedido.numero_pedido}</td>
+    <td>${pedido.id_cliente}</td>
+    <td>${new Date(pedido.fecha).toLocaleString()}</td>
+    <td>${pedido.fecha_fin ? new Date(pedido.fecha_fin).toLocaleString() : 'N/A'}</td>
+    <td>${pedido.cantidad_productos} productos</td>
+    <td class="text-end">₡${pedido.total.toLocaleString('es-CR')}</td>
+    <td>
+        <span class="badge ${this.obtenerClaseEstado(pedido.estado)}">
+            ${pedido.estado}
+        </span>
+    </td>
+    <td>${pedido.metodo_pago}</td>
+    <td>${pedido.para_llevar ? 'Sí' : 'No'}</td>
+    <td>
+        ${pedido.tiempo_estimado} min
+        <button class="btn btn-sm btn-outline-secondary btn-tiempo ms-1" 
+                data-id="${pedido.id_pedido}" 
+                data-tiempo="${pedido.tiempo_estimado}"
+                title="Modificar tiempo estimado">
+            <i class="fas fa-clock"></i>
+        </button>
+    </td>
+    <td>
+        <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary btn-detalle" 
+                    data-id="${pedido.id_pedido}"
+                    title="Ver detalles">
+                <i class="fas fa-eye"></i>
             </button>
-        </td>
-        <td>
-            <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-outline-primary btn-detalle" 
-                        data-id="${pedido.id_pedido}"
-                        title="Ver detalles">
-                    <i class="fas fa-eye"></i>
-                </button>
-            </div>
-        </td>
-    </tr>
+        </div>
+    </td>
+</tr>
 `).join('');
-
-        console.log('Registros tras filtrar:', $('#tablaGestionarPedidos tbody tr').length);
 
         // Asegura que la clase dataTable esté presente
         $tabla.addClass('dataTable');
         $tabla.removeClass('no-auto-dt');
 
-        window.inicializarDataTables();
+        // Inicializa DataTables SOLO si hay datos
+        if (pedidos.length > 0) {
+            window.inicializarDataTables();
+        }
     }
 
     obtenerClaseEstado(estado) {
