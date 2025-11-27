@@ -987,7 +987,7 @@
                 },
                 messages: {
                     nombre: {
-                        required: "Por favor ingrese el nombre del empleado",
+                        required: "Por favor ingrese el nombre del colaborador",
                         maxlength: "El nombre no puede exceder los 100 caracteres"
                     },
                     correo: {
@@ -1038,8 +1038,8 @@
                     const action = idUsuario === '0' ? 'registrar' : 'actualizar';
 
                     Swal.fire({
-                        title: `Confirmar ${action} empleado`,
-                        text: `Confirma estar seguro de ${action} este empleado`,
+                        title: `Confirmar ${action} colaborador`,
+                        text: `Confirma estar seguro de ${action} este colaborador`,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#B54885',
@@ -1087,7 +1087,7 @@
                     hora_salida: { required: true }
                 },
                 messages: {
-                    id_usuario: { required: "Por favor seleccione un empleado" },
+                    id_usuario: { required: "Por favor seleccione un colaborador" },
                     'dias_semana': { atLeastOneDay: "Por favor seleccione al menos un día" },
                     hora_entrada: { required: "Por favor ingrese la hora de entrada" },
                     hora_salida: { required: "Por favor ingrese la hora de salida" }

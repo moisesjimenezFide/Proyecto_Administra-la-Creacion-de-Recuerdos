@@ -455,7 +455,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         PdfWriter.GetInstance(doc, stream).CloseStream = false;
                         doc.Open();
 
-                        var titulo = new Paragraph("Empleados Disponibles",
+                        var titulo = new Paragraph("Colaboradores Disponibles",
                             FontFactory.GetFont(FontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 20, Font.BOLD, ColorTextoyBordes));
                         titulo.Alignment = Element.ALIGN_CENTER;
                         titulo.SpacingAfter = 20;
@@ -485,7 +485,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         doc.Add(table);
                         doc.Close();
 
-                        return File(stream.ToArray(), "application/pdf", "EmpleadosDisponibles.pdf");
+                        return File(stream.ToArray(), "application/pdf", "ColaboradoresDisponibles.pdf");
                     }
                 }
 
@@ -494,9 +494,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 {
                     using (var workbook = new XLWorkbook())
                     {
-                        var ws = workbook.Worksheets.Add("EmpleadosDisponibles");
+                        var ws = workbook.Worksheets.Add("ColaboradoresDisponibles");
 
-                        string titulo = "Empleados Disponibles";
+                        string titulo = "Colaboradores Disponibles";
                         int columnas = 4;
 
                         ws.Cell(1, 1).Value = titulo;
@@ -538,7 +538,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             return File(
                                 stream.ToArray(),
                                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                "EmpleadosDisponibles.xlsx"
+                                "ColaboradoresDisponibles.xlsx"
                             );
                         }
                     }

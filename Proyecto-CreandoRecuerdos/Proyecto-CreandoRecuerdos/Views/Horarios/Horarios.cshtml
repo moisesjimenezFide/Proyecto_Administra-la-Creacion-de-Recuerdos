@@ -94,7 +94,7 @@
     <!-- Tabs superiores -->
     <ul class="nav nav-tabs mb-4 justify-content-center">
         <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("Empleados", "Empleados")">Empleados</a>
+            <a class="nav-link" href="@Url.Action("Empleados", "Empleados")">Colaboradores</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="#">Horarios</a>
@@ -110,7 +110,7 @@
                 <div class="row mb-3">
                     <div class="col-md-3 mb-3 text-start">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Empleado</label>
+                            <label class="form-label fw-bold">Colaborador</label>
                             <div>
                                 @Html.DropDownList("id_usuario", ViewBag.Empleados as List<SelectListItem>, "-- Seleccione --", new { @class = "form-select" })
                                 <span class="invalid-feedback"></span>
@@ -182,7 +182,7 @@
         <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="2">
             <thead class="tabla-global">
                 <tr>
-                    <th>Empleado</th>
+                    <th>Colaborador</th>
                     <th>Día</th>
                     <th>Entrada</th>
                     <th>Salida</th>

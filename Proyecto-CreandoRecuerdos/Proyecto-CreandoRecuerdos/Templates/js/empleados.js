@@ -43,7 +43,7 @@
                 scrollTop: $('#formEmpleado').offset().top - 20
             }, 500);
         }).fail(function () {
-            showAlert('error', 'Error', 'No se pudo cargar la informacion del empleado');
+            showAlert('error', 'Error', 'No se pudo cargar la informacion del colaborador');
         });
     });
 
@@ -54,17 +54,17 @@
 
         showConfirm(
             'Eliminar empleado',
-            `Confirma que deseas eliminar al empleado ${nombre}?`,
+            `Confirma que deseas eliminar al colaborador ${nombre}?`,
             function () {
                 $.post('/Empleados/EliminarEmpleado', { id: id })
                     .done(function () {
-                        showAlert('success', 'Exito', 'Empleado eliminado correctamente');
+                        showAlert('success', 'Exito', 'Colaborador eliminado correctamente');
                         setTimeout(() => {
                             window.location.reload();
                         }, 1500);
                     })
                     .fail(function (xhr) {
-                        showAlert('error', 'Error', xhr.responseText || 'Ocurrio un error al eliminar el empleado');
+                        showAlert('error', 'Error', xhr.responseText || 'Ocurrio un error al eliminar el colaborador');
                     });
             }
         );

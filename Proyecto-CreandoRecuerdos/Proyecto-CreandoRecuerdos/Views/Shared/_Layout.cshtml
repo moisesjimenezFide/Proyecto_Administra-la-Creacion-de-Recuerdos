@@ -138,7 +138,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownAdmin">
                                     <li><a class="dropdown-item" asp-controller="gestion" href="@Url.Action("gestion_usuarios", "Registro_Usuarios")" asp-action="Gestionar">Gestión de usuarios</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Empleados", "Empleados")">Empleados</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Empleados", "Empleados")">Colaboradores</a></li>
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("GestionSolicitudesAusencias", "Ausencias")">
                                             Gestión de Solicitudes de Ausencias
@@ -154,7 +154,7 @@
                             <!-- Botones visibles solo para admin -->
                         }
 
-                        <!-- Botones visibles solo para empleados -->
+                        <!-- Botones visibles solo para colaboradores -->
                         @if (rol == "2")
                         {
                             <li class="nav-item">
@@ -163,7 +163,7 @@
                                 </a>
                             </li>
                         }
-                        <!-- Botones visibles solo para empleados -->
+                        <!-- Botones visibles solo para colaboradores -->
 
                         @if (rol == null)
                         {

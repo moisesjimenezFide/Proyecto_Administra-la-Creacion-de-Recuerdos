@@ -106,13 +106,13 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     context.tabla_usuarios.Add(nuevoEmpleado);
                     context.SaveChanges();
 
-                    TempData["SuccessMessage"] = "Empleado registrado exitosamente.";
+                    TempData["SuccessMessage"] = "Colaborador registrado exitosamente.";
                     return RedirectToAction("Empleados");
                 }
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Error al registrar empleado: {ex.Message}";
+                TempData["ErrorMessage"] = $"Error al registrar colaborador: {ex.Message}";
                 return RedirectToAction("Empleados");
             }
         }
@@ -134,7 +134,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                     if (empleado == null || empleado.id_rol == 3)
                     {
-                        TempData["ErrorMessage"] = "Empleado no encontrado o es cliente.";
+                        TempData["ErrorMessage"] = "Colaborador no encontrado o es cliente.";
                         return RedirectToAction("Empleados");
                     }
 
@@ -164,13 +164,13 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                     context.SaveChanges();
 
-                    TempData["SuccessMessage"] = "Empleado actualizado exitosamente.";
+                    TempData["SuccessMessage"] = "Colaborador actualizado exitosamente.";
                     return RedirectToAction("Empleados");
                 }
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Error al actualizar empleado: {ex.Message}";
+                TempData["ErrorMessage"] = $"Error al actualizar el colaborador: {ex.Message}";
                 return RedirectToAction("Empleados");
             }
         }
@@ -186,7 +186,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                     if (empleado == null || empleado.id_rol == 3)
                     {
-                        TempData["ErrorMessage"] = "Empleado no encontrado o es cliente.";
+                        TempData["ErrorMessage"] = "Colaborador no encontrado o es cliente.";
                         return RedirectToAction("Empleados");
                     }
 
@@ -194,13 +194,13 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     {
                         empleado.activo = false;
                         context.SaveChanges();
-                        TempData["SuccessMessage"] = "El empleado tiene registros asociados, se ha marcado como inactivo.";
+                        TempData["SuccessMessage"] = "El colaborador tiene registros asociados, se ha marcado como inactivo.";
                     }
                     else
                     {
                         context.tabla_usuarios.Remove(empleado);
                         context.SaveChanges();
-                        TempData["SuccessMessage"] = "Empleado eliminado exitosamente.";
+                        TempData["SuccessMessage"] = "Colaborador eliminado exitosamente.";
                     }
 
                     return RedirectToAction("Empleados");
@@ -208,7 +208,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Error al eliminar empleado: {ex.Message}";
+                TempData["ErrorMessage"] = $"Error al eliminar el colaborador: {ex.Message}";
                 return RedirectToAction("Empleados");
             }
         }

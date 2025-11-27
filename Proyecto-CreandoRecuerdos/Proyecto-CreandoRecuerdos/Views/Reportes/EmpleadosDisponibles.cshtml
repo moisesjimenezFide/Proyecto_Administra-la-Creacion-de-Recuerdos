@@ -1,7 +1,7 @@
 ﻿@model List<Proyecto_CreandoRecuerdos.ViewModels.EmpleadosDisponiblesViewModel>
 
 @{
-    ViewData["Title"] = "Empleados Disponibles";
+    ViewData["Title"] = "Colaboradores Disponibles";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,7 +13,7 @@
 
 <br />
 
-<h2>👥 Empleados Disponibles</h2>
+<h2>👥 Colaboradores Disponibles</h2>
 
 <div class="mb-3">
     <a href="@Url.Action("ExportarEmpleados", "Reportes", new { formato = "PDF" })" class="btn btn-danger">Exportar PDF</a>
@@ -47,7 +47,7 @@
 }
 else
 {
-    <p>No se encontraron empleados disponibles.</p>
+<p>No se encontraron colaboradores disponibles.</p>
 }
 
 @section Scripts {
