@@ -82,15 +82,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                 {
                     context.SaveChanges();
                 }
-                catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+                catch (System.Data.Entity.Validation.DbEntityValidationException)
                 {
-                    foreach (var validationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
-                        }
-                    }
                     throw;
                 }
 
@@ -104,7 +97,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
                 var horario = context.tabla_horarios.Find(id);
-                if (horario == null) return HttpNotFound();
+                if (horario == null) 
+                    return View("NoEncontrado404");
 
                 context.tabla_horarios.Remove(horario);
                 context.SaveChanges();

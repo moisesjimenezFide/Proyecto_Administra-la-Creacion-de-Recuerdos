@@ -179,7 +179,12 @@ $(document).ready(function () {
                         }
                     },
                     error: function () {
-                        alert('Error al actualizar el producto preparado.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error al actualizar el producto preparado.',
+                            confirmButtonColor: '#B54885'
+                        });
                     }
                 });
             });

@@ -261,7 +261,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult EditarMateriaPrima(int id)
         {
             var m = db.tabla_materias_primas.Find(id);
-            if (m == null) return HttpNotFound();
+            if (m == null) 
+                return View("NoEncontrado404");
+
             var materia_prima = new MateriaPrima
             {
                 id = m.id,
@@ -729,7 +731,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult EditarProductoPreparado(int id)
         {
             var p = db.tabla_productos_preparados.Find(id);
-            if (p == null) return HttpNotFound();
+            if (p == null) 
+                return View("NoEncontrado404");
 
             var producto_preparado = new ProductoPreparado
             {
@@ -1128,7 +1131,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult EditarEmpaqueDecoracion(int id)
         {
             var ed = db.tabla_empaques_decoraciones.Find(id);
-            if (ed == null) return HttpNotFound();
+            if (ed == null) 
+                return View("NoEncontrado404");
+
             var empaque_decoracion = new EmpaqueDecoracion
             {
                 id = ed.id,
@@ -1462,7 +1467,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult EditarImplemento(int id)
         {
             var i = db.tabla_implementos.Find(id);
-            if (i == null) return HttpNotFound();
+            if (i == null) 
+                return View("NoEncontrado404");
+
             var implemento = new Implemento
             {
                 id = i.id,
@@ -1793,7 +1800,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult EditarSuministro(int id)
         {
             var s = db.tabla_suministros.Find(id);
-            if (s == null) return HttpNotFound();
+            if (s == null) 
+                return View("NoEncontrado404");
+
             var suministro = new Suministro
             {
                 id = s.id,
@@ -2338,7 +2347,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult EditarReceta(int id)
         {
             var r = db.tabla_costos_recetas.Find(id);
-            if (r == null) return HttpNotFound();
+            if (r == null) 
+                return View("NoEncontrado404");
 
             // Receta a editar
             var receta = new Receta
@@ -2635,7 +2645,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             decimal costoPorPorcion = (receta.porcion > 0) ? (costoTotalReceta / receta.porcion) : 0;
 
             var r = db.tabla_costos_recetas.Find(receta.id);
-            if (r == null) return HttpNotFound();
+            if (r == null) 
+                return View("NoEncontrado404");
 
             r.nombre = receta.nombre;
             r.porcion = receta.porcion;
@@ -3360,7 +3371,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         public ActionResult EditarProductoFinal(int id)
         {
             var pf = db.tabla_precios_finales_sugeridos.Find(id);
-            if (pf == null) return HttpNotFound();
+            if (pf == null) 
+                return View("NoEncontrado404");
 
             var producto_final = new ProductoFinal
             {

@@ -36,9 +36,8 @@ namespace Proyecto_CreandoRecuerdos.Helpers
                     );
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                System.Diagnostics.Debug.WriteLine($"Error al registrar auditoría: {ex.Message}");
             }
         }
 

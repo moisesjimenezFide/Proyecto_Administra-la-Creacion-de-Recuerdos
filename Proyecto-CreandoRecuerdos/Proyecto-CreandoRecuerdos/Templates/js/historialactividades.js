@@ -11,8 +11,13 @@ function cargarActividades() {
                 window.inicializarDataTables();
             }
         },
-        error: function (xhr, status, error) {
-            alert('Error al cargar las actividades: ' + error);
+        error: function (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al cargar las actividades: ' + error,
+                confirmButtonColor: '#B54885'
+            });
         }
     });
 }
@@ -20,44 +25,57 @@ function cargarActividades() {
 // Función para manejar la exportación del historial
 function exportarHistorial(formato) {
     var exportUrl = $('#filtroForm').data('export-url');
-    var form = document.createElement('form');
-    form.action = exportUrl;
-    form.method = 'POST';
-    form.style.display = 'none';
+    var data = $('#filtroForm').serialize() + '&formato=' + encodeURIComponent(formato);
 
-    // Agregar campos del formulario de filtros
-    $('#filtroForm').find('input, select, textarea').each(function () {
-        if (this.name && (this.type !== 'checkbox' && this.type !== 'radio' || this.checked)) {
-            var input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = this.name;
-            input.value = $(this).val();
-            form.appendChild(input);
+    $.ajax({
+        url: exportUrl,
+        type: 'POST',
+        data: data,
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (data, status, xhr) {
+            var disposition = xhr.getResponseHeader('Content-Disposition');
+            var type = xhr.getResponseHeader('Content-Type');
+            if (type && type.indexOf('application/json') !== -1) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var json = JSON.parse(reader.result);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: json.message,
+                        confirmButtonColor: '#B54885'
+                    });
+                };
+                reader.readAsText(data);
+            } else if (type && type.indexOf('text/html') !== -1) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    $('body').append(reader.result);
+                };
+                reader.readAsText(data);
+            } else if (disposition && disposition.indexOf('attachment') !== -1) {
+                var filename = disposition.split('filename=')[1].replace(/"/g, '');
+                var blob = new Blob([data], { type: type });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        },
+        error: function (xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al exportar: ' + xhr.statusText,
+                confirmButtonColor: '#B54885'
+            });
         }
     });
 
-    // Agregar campo de formato
-    var formatoInput = document.createElement('input');
-    formatoInput.type = 'hidden';
-    formatoInput.name = 'formato';
-    formatoInput.value = formato;
-    form.appendChild(formatoInput);
-
-    // Agregar token antifalsificación si existe
-    var token = $('input[name="__RequestVerificationToken"]').val();
-    if (token) {
-        var tokenInput = document.createElement('input');
-        tokenInput.type = 'hidden';
-        tokenInput.name = '__RequestVerificationToken';
-        tokenInput.value = token;
-        form.appendChild(tokenInput);
-    }
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-
-    // Restaurar el texto del botón después de 1 segundo
     setTimeout(function () {
         $('#btnExportar').html('Exportar');
     }, 1000);
@@ -83,7 +101,12 @@ $(document).ready(function () {
     $('#confirmExport').click(function () {
         var formato = $('input[name="exportFormat"]:checked').val();
         if (!formato) {
-            alert('Seleccione un formato de exportación.');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Atención',
+                text: 'Seleccione un formato de exportación.',
+                confirmButtonColor: '#B54885'
+            });
             return;
         }
         $('#btnExportar').html('<i class="fas fa-spinner fa-spin"></i> Exportando...');

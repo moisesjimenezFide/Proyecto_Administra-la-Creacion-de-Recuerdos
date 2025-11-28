@@ -55,7 +55,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                 if (empleado == null)
                 {
-                    return HttpNotFound();
+                    return View("NoEncontrado404");
                 }
 
                 return Json(empleado, JsonRequestBehavior.AllowGet);

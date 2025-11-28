@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Error";
+﻿
+@{
+    ViewBag.Title = "Error: #404 NoEncontrado";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,7 +9,9 @@
 }
 
 <div class="text-center mt-5">
-    <h2 class="text-danger">Error</h2>
-    <p> Se produjo un error al procesar su solicitud.</p>
+    <h2 class="text-danger">Error: #404</h2>
+    <h2 class="text-danger">¡Ups! Página no encontrada</h2>
+    <p> La página que buscas no existe o fue movida o eliminada.</p>
     <a href="@Url.Action("inicio", "Inicio")" class="btn btn-primary">Volver al inicio</a>
 </div>
+

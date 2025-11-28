@@ -166,7 +166,12 @@ $(document).ready(function () {
                         }
                     },
                     error: function () {
-                        alert('Error al actualizar el suministro.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error al actualizar el suministro.',
+                            confirmButtonColor: '#B54885'
+                        });
                     }
                 });
             });

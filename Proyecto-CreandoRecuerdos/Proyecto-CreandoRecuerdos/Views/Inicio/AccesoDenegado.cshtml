@@ -3,6 +3,10 @@
     var mensaje = TempData["Message"] as string ?? "Acceso denegado.";
 }
 
+@section Styles {
+    <link href="@Url.Content("~/Templates/css/botones.css")" rel="stylesheet" />
+}
+
 <div class="text-center mt-5">
     <h2 class="text-danger">🚫 Acceso Denegado</h2>
     <p>@mensaje</p>

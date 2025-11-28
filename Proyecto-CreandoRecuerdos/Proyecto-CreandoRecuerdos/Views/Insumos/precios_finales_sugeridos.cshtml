@@ -369,7 +369,12 @@ $(document).ready(function () {
                         }
                     },
                     error: function () {
-                        alert('Error al actualizar la receta.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error al actualizar el producto final.',
+                            confirmButtonColor: '#B54885'
+                        });
                     }
                 });
             });

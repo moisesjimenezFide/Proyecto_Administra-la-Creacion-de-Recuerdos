@@ -71,8 +71,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                     model.nombre, model.correo, model.contrasenna
                 ).FirstOrDefault();
 
-                System.Diagnostics.Debug.WriteLine("Resultado SP: " + resultado);
-
                 // Manejamos los diferentes códigos de retorno
                 switch (resultado)
                 {
@@ -235,7 +233,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             {
                 var usuario = context.sp_obtener_usuarios().FirstOrDefault(u => u.id_usuario == id);
                 if (usuario == null)
-                    return HttpNotFound();
+                    return View("NoEncontrado404");
 
                 // Aquí llamas al procedimiento para obtener roles
                 var roles = context.sp_obtener_roles().ToList();

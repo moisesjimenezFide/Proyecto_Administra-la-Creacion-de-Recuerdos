@@ -154,10 +154,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public ActionResult FiltrarActividades(FiltroActividadesModel filtros)
         {
-            if (Session["Rol"]?.ToString() != "1")
-            {
-                return Json(new { success = false, message = "No autorizado" });
-            }
 
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
@@ -221,7 +217,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         case "EXCEL":
                             return GenerarExcel(actividades, nombreArchivo); 
                         default:
-                            throw new NotSupportedException("Formato no soportado. Use PDF o Excel.");
+                            var mensaje = "Formato de exportación no soportado. Por favor, seleccione PDF o Excel.";
+                            return Content("<script>Swal.fire({icon: 'error', title: 'Error', text: '" + mensaje.Replace("'", "\\'") + "', confirmButtonColor: '#B54885'});</script>", "text/html");
                     }
                 }
             }
@@ -229,14 +226,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             {
                 if (Request.IsAjaxRequest())
                 {
-                    return Json(new
-                    {
-                        success = false,
-                        message = ex.Message,
-                    });
+                    return Content("<script>Swal.fire({icon: 'error', title: 'Error', text: '" + ex.Message.Replace("'", "\\'") + "', confirmButtonColor: '#B54885'});</script>", "text/html");
                 }
-
-                return Content($"<script>alert('Error al exportar: {ex.Message}');</script>", "text/html");
+                return Content("<script>Swal.fire({icon: 'error', title: 'Error', text: '" + ex.Message.Replace("'", "\\'") + "', confirmButtonColor: '#B54885'});</script>", "text/html");
             }
         }
 

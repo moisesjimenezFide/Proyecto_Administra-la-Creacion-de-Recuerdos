@@ -462,6 +462,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AusenciasController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
+    <Compile Include="Controllers\ErroresController.cs" />
     <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\InicioController.cs" />
     <Compile Include="Controllers\InsumosController.cs" />
@@ -690,6 +691,7 @@
     <Content Include="Views\Insumos\_FormularioPrecioFinalSugerido.cshtml" />
     <Content Include="Views\Insumos\_FormularioProductoPreparado.cshtml" />
     <Content Include="Views\Insumos\_FormularioSuministro.cshtml" />
+    <Content Include="Views\Shared\NoEncontrado404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

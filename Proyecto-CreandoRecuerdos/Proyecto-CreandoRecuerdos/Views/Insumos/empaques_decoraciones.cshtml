@@ -166,7 +166,12 @@ $(document).ready(function () {
                         }
                     },
                     error: function () {
-                        alert('Error al actualizar el empaque o la decoración.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error al actualizar el empaque o la decoración.',
+                            confirmButtonColor: '#B54885'
+                        });
                     }
                 });
             });

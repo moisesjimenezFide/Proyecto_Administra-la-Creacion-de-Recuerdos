@@ -312,7 +312,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                 if (pedido == null)
                 {
-                    return HttpNotFound();
+                    return View("NoEncontrado404");
                 }
 
                 // Determinar fecha de finalización si está entregado
