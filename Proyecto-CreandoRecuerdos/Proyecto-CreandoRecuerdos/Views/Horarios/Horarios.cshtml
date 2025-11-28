@@ -1,4 +1,5 @@
-﻿@model List<Proyecto_CreandoRecuerdos.base_de_datos.tabla_horarios>
+﻿@model List<Proyecto_CreandoRecuerdos.Models.HorarioModel>
+
 @{
     ViewData["Title"] = "Gestión de Horarios";
 }
@@ -179,21 +180,25 @@
 
     <!-- Tabla -->
     <div class="table-responsive">
-        <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable" data-page-length="2">
-            <thead class="tabla-global">
+        <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones con-busqueda" data-page-length="2" data-columnas-ocultas="6" data-titulo-exportacion="Listado de Horarios">
+            <thead>
                 <tr>
-                    <th>Colaborador</th>
+                    <th>ID Horario</th>
+                    <th>ID Colaborador</th>
+                    <th>Nombre</th>
                     <th>Día</th>
                     <th>Entrada</th>
                     <th>Salida</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody class="tabla-global">
+            <tbody>
                 @foreach (var h in Model)
                 {
                     <tr>
+                        <td>@h.id_horario</td>
                         <td>@h.id_usuario</td>
+                        <td>@h.nombre_usuario</td>
                         <td>@h.dia_semana</td>
                         <td>@h.hora_entrada</td>
                         <td>@h.hora_salida</td>
@@ -215,6 +220,15 @@
 @section Scripts {
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.bundle.min.js"></script>
+    <script src="@Url.Content("~/Templates/js/pdf/vfs_fonts.js")"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
     <script src="@Url.Content("~/Templates/js/paginaciones_y_exportaciones.js")"></script>
     <script src="@Url.Content("~/Templates/js/selects.js")"></script>
     <script src="@Url.Content("~/Templates/js/validaciones.js")"></script>

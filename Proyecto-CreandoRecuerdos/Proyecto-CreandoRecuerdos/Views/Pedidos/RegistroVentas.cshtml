@@ -20,7 +20,7 @@
 <div class="container">
     <div class="table-responsive">
         <table id="tabla_ventas_web" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-busqueda con-exportaciones" data-page-length="16" data-titulo-exportacion="Listado de Ventas">
-            <thead class="tabla-global">
+            <thead>
                 <tr>
                     <th>ID</th>
                     <th>Cliente</th>
@@ -33,7 +33,7 @@
                     <th>Teléfono SINPE Móvil</th>
                 </tr>
             </thead>
-            <tbody class="tabla-global">
+            <tbody>
                 @foreach (var pedido in Model)
                 {
                     <tr>

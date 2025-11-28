@@ -6,6 +6,7 @@ namespace Proyecto_CreandoRecuerdos.Models
     {
         public int IdSolicitud { get; set; }
         public int IdUsuario { get; set; }
+        public string NombreUsuario { get; set; } // <-- Agrega esta línea
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public string Tipo { get; set; } // "Vacaciones" o "Permiso"

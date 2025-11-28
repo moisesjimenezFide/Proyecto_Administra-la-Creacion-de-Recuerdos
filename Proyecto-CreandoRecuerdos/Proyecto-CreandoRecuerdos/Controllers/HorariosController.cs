@@ -4,6 +4,7 @@ using Proyecto_CreandoRecuerdos.Filters;
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using Proyecto_CreandoRecuerdos.Models;
 
 namespace Proyecto_CreandoRecuerdos.Controllers
 {
@@ -16,10 +17,22 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult Horarios()
         {
-
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
-                var horarios = context.tabla_horarios.ToList();
+                var horarios = context.tabla_horarios
+                    .Join(context.tabla_usuarios,
+                    h => h.id_usuario,
+                    u => u.id_usuario,
+                    (h, u) => new HorarioModel
+                    {
+                        id_horario = h.id_horario,
+                        id_usuario = h.id_usuario,
+                        dia_semana = h.dia_semana,
+                        hora_entrada = h.hora_entrada,
+                        hora_salida = h.hora_salida,
+                        nombre_usuario = u.nombre
+                    })
+                    .ToList();
 
                 ViewBag.Empleados = context.tabla_usuarios
                     .Where(u => u.id_rol != 3)

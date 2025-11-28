@@ -55,7 +55,7 @@
         {
             <div class="table-responsive">
                 <table id="tabla_insumos" class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="3" data-columnas-ocultas="9" data-titulo-exportacion="Listado de Costos de Recetas">
-                    <thead class="tabla-global">
+                    <thead>
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
@@ -69,7 +69,7 @@
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody class="tabla-global">
+                    <tbody>
                         @foreach (var receta in Model.CostosRecetas)
                         {
                             <tr>

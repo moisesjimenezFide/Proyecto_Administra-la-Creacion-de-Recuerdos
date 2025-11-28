@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<Proyecto_CreandoRecuerdos.base_de_datos.tabla_solicitudes_ausencias>
+@model IEnumerable<Proyecto_CreandoRecuerdos.Models.SolicitudAusenciaModel>
 
 @{
     ViewData["Title"] = "Gestión de Solicitudes de Ausencias";
@@ -22,51 +22,57 @@
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
 
-    <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="10" data-columnas-ocultas="6" data-titulo-exportacion="Listado de Solicitudes de Ausencias (Administrador)">
-        <thead class="tabla-global">
-            <tr>
-                <th>Colaborador (ID)</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Fin</th>
-                <th>Tipo</th>
-                <th>Motivo</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    @section ListadoSolicitudesAusencias {
+        <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones" data-page-length="10" data-columnas-ocultas="8" data-titulo-exportacion="Listado de Solicitudes de Ausencias (Administrador)">
+            <thead>
                 <tr>
-                    <td>@item.id_usuario</td>
-                    <td>@item.fecha_inicio.ToString("dd/MM/yyyy")</td>
-                    <td>@item.fecha_fin.ToString("dd/MM/yyyy")</td>
-                    <td>@item.tipo</td>
-                    <td>@item.motivo</td>
-                    <td>@item.estado</td>
-                    <td>
-                        @if (item.estado == "Pendiente")
-                        {
-                            using (Html.BeginForm("Aprobar", "Ausencias", new { id = item.id_solicitud }, FormMethod.Post, new { style = "display:inline;" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
-                            }
-                            using (Html.BeginForm("Rechazar", "Ausencias", new { id = item.id_solicitud }, FormMethod.Post, new { style = "display:inline;" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
-                            }
-                        }
-                        else
-                        {
-                            <span>-</span>
-                        }
-                    </td>
+                    <th>ID Solicitud</th>
+                    <th>ID Colaborador</th>
+                    <th>Nombre</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Final</th>
+                    <th>Tipo</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.IdSolicitud</td>
+                        <td>@item.IdUsuario</td>
+                        <td>@item.NombreUsuario</td>
+                        <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
+                        <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+                        <td>@item.Tipo</td>
+                        <td>@item.Motivo</td>
+                        <td>@item.Estado</td>
+                        <td>
+                            @if (item.Estado == "Pendiente")
+                            {
+                                using (Html.BeginForm("Aprobar", "Ausencias", new { id = item.IdSolicitud }, FormMethod.Post, new { style = "display:inline;" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
+                                }
+                                using (Html.BeginForm("Rechazar", "Ausencias", new { id = item.IdSolicitud }, FormMethod.Post, new { style = "display:inline;" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                                }
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
 
 @section Scripts {
@@ -81,6 +87,5 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
-    <script src="@Url.Content("~/Templates/js/paginaciones_y_exportaciones.js")"></script>
     <script src="@Url.Content("~/Templates/js/paginaciones_y_exportaciones.js")"></script>
 }

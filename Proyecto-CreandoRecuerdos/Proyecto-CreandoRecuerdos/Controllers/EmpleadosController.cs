@@ -17,7 +17,6 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult Empleados()
         {
-
             List<EmpleadoModel> empleados = new List<EmpleadoModel>();
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {

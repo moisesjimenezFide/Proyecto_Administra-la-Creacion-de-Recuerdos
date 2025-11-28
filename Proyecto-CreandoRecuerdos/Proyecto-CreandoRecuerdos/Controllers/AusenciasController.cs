@@ -18,7 +18,23 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [RolAuthorize("1")]
         public ActionResult GestionSolicitudesAusencias()
         {
-            var solicitudes = db.tabla_solicitudes_ausencias.ToList();
+            var solicitudes = db.tabla_solicitudes_ausencias
+                .Join(db.tabla_usuarios,
+                s => s.id_usuario,
+                u => u.id_usuario,
+                (s, u) => new SolicitudAusenciaModel
+                {
+                    IdSolicitud = s.id_solicitud,
+                    IdUsuario = s.id_usuario,
+                    NombreUsuario = u.nombre,
+                    FechaInicio = s.fecha_inicio,
+                    FechaFin = s.fecha_fin,
+                    Tipo = s.tipo,
+                    Motivo = s.motivo,
+                    Estado = s.estado
+                })
+                .ToList();
+
             return View(solicitudes);
         }
 

@@ -30,14 +30,14 @@
 @if (Model != null && Model.Any())
 {
     <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-busqueda" data-page-length="3">
-        <thead class="tabla-global">
+        <thead>
             <tr>
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Precio por Unidad</th>
             </tr>
         </thead>
-        <tbody class="tabla-global">
+        <tbody>
             @foreach (var producto in Model)
             {
                 <tr>
