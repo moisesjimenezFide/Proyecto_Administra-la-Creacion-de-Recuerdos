@@ -632,7 +632,6 @@
     <Content Include="Templates\js\pdf\vfs_fonts.js" />
     <Content Include="Templates\js\pedidos.js" />
     <Content Include="Templates\js\registrar_usuario.js" />
-    <Content Include="Templates\js\registro_ventas.js" />
     <Content Include="Templates\js\selects.js" />
     <Content Include="Templates\js\validaciones.js" />
     <Content Include="Web.config" />
