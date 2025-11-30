@@ -34,7 +34,8 @@ namespace Proyecto_CreandoRecuerdos.Filters
                             var username = principal.Identity.Name;
                             var role = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-                            var newToken = JwtManager.GenerateToken(username, role, 60);
+                            var userId = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "";
+                            var newToken = JwtManager.GenerateToken(username, role, userId, 60);
                             var newCookie = new HttpCookie("JWT", newToken)
                             {
                                 HttpOnly = true,

@@ -24,6 +24,21 @@
                 border-color: #FFF8F9;
             }
 
+        /* Centrar el card SIEMPRE */
+        .card.mb-4, .card {
+            margin-left: auto !important;
+            margin-right: auto !important;
+            float: none !important;
+        }
+
+        /* Centrar controles y botones SIEMPRE, pero NO el form ni los .form-group */
+        .form-group input,
+        .form-group select,
+        .form-group textarea,
+        .form-group .custom-datepicker {
+            text-align: center;
+        }
+
         /* Estilos para el checkbox de suministros utilizados */
 
         .custom-checkbox {
@@ -91,6 +106,7 @@
     <h2 class="mb-4" style="font-family: 'Sono', sans-serif;">
         <i class="fas fa-clock me-2"></i> Gestión de Horarios
     </h2>
+</div>
 
     <!-- Tabs superiores -->
     <ul class="nav nav-tabs mb-4 justify-content-center">
@@ -215,7 +231,6 @@
             </tbody>
         </table>
     </div>
-</div>
 
 @section Scripts {
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

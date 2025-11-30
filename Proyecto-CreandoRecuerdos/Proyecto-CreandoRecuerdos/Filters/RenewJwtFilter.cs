@@ -31,7 +31,8 @@ namespace Proyecto_CreandoRecuerdos.Filters
 
                         if (!string.IsNullOrEmpty(username))
                         {
-                            var newToken = JwtManager.GenerateToken(username, role);
+                            var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "";
+                            var newToken = JwtManager.GenerateToken(username, role, userId);
                             HttpContext.Current.Response.Headers.Add("X-Renewed-Token", newToken);
                         }
                     }

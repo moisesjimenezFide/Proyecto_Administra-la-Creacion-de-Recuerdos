@@ -110,7 +110,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         var token = JwtManager.GenerateToken(
                             info.NombreUsuario,
                             info.RolID.ToString(),
-                            1 // minutos de expiración
+                            info.UsuarioID.ToString(),
+                            60 // minutos de expiración
                         );
 
                         // 🟢 Guardar el token en una cookie

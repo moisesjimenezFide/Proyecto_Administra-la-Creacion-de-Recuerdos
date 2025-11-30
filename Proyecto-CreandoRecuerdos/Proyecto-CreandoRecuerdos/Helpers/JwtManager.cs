@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,7 +15,7 @@ namespace Proyecto_CreandoRecuerdos.Helpers
         private static string Secret = ConfigurationManager.AppSettings["JwtSecretKey"];
 
         // 🔹 Generar el token
-        public static string GenerateToken(string username, string role, int expireMinutes = 60)
+        public static string GenerateToken(string username, string role, string userId, int expireMinutes = 60)
         {
             var key = Encoding.UTF8.GetBytes(Secret);
             var handler = new JwtSecurityTokenHandler();
@@ -25,7 +26,7 @@ namespace Proyecto_CreandoRecuerdos.Helpers
                 {
                     new Claim(ClaimTypes.Name, username),
                     new Claim(ClaimTypes.Role, role),
-                    new Claim(ClaimTypes.NameIdentifier, username),
+                    new Claim(ClaimTypes.NameIdentifier, userId),
                     new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "JWT")
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(expireMinutes),

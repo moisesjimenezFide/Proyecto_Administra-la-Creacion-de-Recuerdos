@@ -72,6 +72,12 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [RolAuthorize("2")]
         public ActionResult SolicitudAusencia()
         {
+            if (Session["IdUsuario"] == null)
+            {
+                // Redirige a Acceso Denegado
+                return RedirectToAction("AccesoDenegado", "Inicio");
+            }
+
             int idUsuario = (int)Session["IdUsuario"];
             var solicitudes = db.tabla_solicitudes_ausencias
                 .Where(s => s.id_usuario == idUsuario)

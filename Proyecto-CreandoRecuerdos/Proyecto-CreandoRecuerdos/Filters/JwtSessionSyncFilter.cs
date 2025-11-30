@@ -16,9 +16,21 @@ namespace Proyecto_CreandoRecuerdos.Filters
                 var rol = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
                 var nombre = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
+                var idUsuario = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(idUsuario) && int.TryParse(idUsuario, out int idUsuarioInt))
+                    HttpContext.Current.Session["IdUsuario"] = idUsuarioInt;
+                else
+                    HttpContext.Current.Session["IdUsuario"] = null;
+
                 HttpContext.Current.Session["Rol"] = rol;
                 HttpContext.Current.Session["Usuario"] = nombre;
                 HttpContext.Current.Session["WasAuthenticated"] = true;
+
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] IdUsuario en sesión: {HttpContext.Current.Session["IdUsuario"]}");
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] WasAuthenticated en sesión: {HttpContext.Current.Session["WasAuthenticated"]}");
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] Rol en sesión: {HttpContext.Current.Session["Rol"]}");
+                foreach (var claim in user.Claims)
+                    System.Diagnostics.Debug.WriteLine($"[CLAIM] {claim.Type}: {claim.Value}");
 
                 // Guardar en cookie de estado
                 var sessionTimeout = 60; // minutos, igual que Web.config
