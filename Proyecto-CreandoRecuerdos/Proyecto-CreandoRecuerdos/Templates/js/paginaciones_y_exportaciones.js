@@ -1,6 +1,6 @@
 ﻿jQuery.extend(jQuery.fn.dataTable.ext.type.order, {
     "date-eu-pre": function (date) {
-        if (!date) return 0;
+        if (!date || date === "N/A") return -Infinity; // "N/A" siempre al final/inicio
         if (date.indexOf('/') === -1) return Date.parse(date) || 0;
         var parts = date.split('/');
         return Date.parse(parts[2] + '-' + parts[1] + '-' + parts[0]) || 0;
@@ -335,34 +335,50 @@ window.inicializarDataTables = function () {
         // Inicializa DataTables
         const table = tableElement.DataTable(dataTableConfig);
 
-        function createCustomLengthDropdown() {
+        function createCustomLengthDropdown(table, tableElement, pageLength) {
             var lengthContainer = tableElement.closest('.dataTables_wrapper').find('.dataTables_length');
             var originalSelect = lengthContainer.find('select');
+
             // Elimina el select original antes de agregar el dropdown personalizado
             if (originalSelect.length > 0) {
                 originalSelect.remove();
             }
-            if (lengthContainer.find('.custom-length-dropdown').length > 0) {
-                return;
+            lengthContainer.find('.custom-length-dropdown').remove();
+
+            // Usa el total filtrado, no el total original
+            var info = table.page.info();
+            var totalFiltrado = info.recordsDisplay;
+
+            // Opciones de cantidad de registros
+            let opciones = [];
+            for (let i = 5; i <= totalFiltrado; i += 5) {
+                opciones.push(i);
             }
+            const ultimoMultiplo = Math.floor(totalFiltrado / 5) * 5;
+            const siguienteValor = totalFiltrado !== ultimoMultiplo ? totalFiltrado : null;
+            if (siguienteValor && !opciones.includes(siguienteValor)) {
+                opciones.push(siguienteValor);
+            }
+            opciones.sort((a, b) => a - b);
+            const valoresNumericos = [...opciones, -1];
+            const valoresVisibles = [...opciones.map(n => n.toString()), "Todos"];
 
             // Crear HTML del dropdown personalizado para la cantidad de registros por página
             var dropdownItems = '';
             for (let i = 0; i < valoresNumericos.length; i++) {
                 const value = valoresNumericos[i];
                 const text = valoresVisibles[i];
-                const activeClass = value === 3 ? 'active' : '';
-                dropdownItems += `<div class="custom-dropdown-item ${activeClass}" data-value="${value}">${text}</div>`;
+                dropdownItems += `<div class="custom-dropdown-item" data-value="${value}">${text}</div>`;
             }
 
             var customDropdown = $(`
-                <div class="custom-length-dropdown">
-                    <div class="custom-dropdown-button" id="lengthDropdownBtn">${pageLength}</div>
-                    <div class="custom-dropdown-menu" id="lengthDropdownMenu">
-                        ${dropdownItems}
-                    </div>
-                </div>
-            `);
+        <div class="custom-length-dropdown">
+            <div class="custom-dropdown-button" id="lengthDropdownBtn">${pageLength}</div>
+            <div class="custom-dropdown-menu" id="lengthDropdownMenu">
+                ${dropdownItems}
+            </div>
+        </div>
+    `);
 
             // Reemplazar el select por el dropdown personalizado para la cantidad de registros por página
             lengthContainer.append(customDropdown);
@@ -377,11 +393,11 @@ window.inicializarDataTables = function () {
 
         // Llama a la función cada vez que la tabla se dibuja
         table.on('draw', function () {
-            createCustomLengthDropdown();
+            createCustomLengthDropdown(table, tableElement, table.page.len());
         });
 
         // Llama la primera vez
-        createCustomLengthDropdown();
+        createCustomLengthDropdown(table, tableElement, pageLength);
     });
 };
 

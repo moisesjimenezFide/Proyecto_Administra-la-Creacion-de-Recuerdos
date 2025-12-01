@@ -179,8 +179,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         // Obtener pedidos con filtros y paginación
         [HttpGet]
         [RolAuthorize("1")]
-        public JsonResult ObtenerPedidos(string estado = null, string fechaInicio = null, string fechaFin = null,
-    string metodoPago = null)
+        public JsonResult ObtenerPedidos(string estado = null, string fechaInicio = null, string fechaFin = null, string metodoPago = null)
         {
             try
             {
@@ -191,10 +190,10 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
                     // Parsear fechas de filtro
                     if (!string.IsNullOrEmpty(fechaInicio))
-                        fechaDesde = DateTime.Parse(fechaInicio);
+                        fechaDesde = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
                     if (!string.IsNullOrEmpty(fechaFin))
-                        fechaHasta = DateTime.Parse(fechaFin).AddDays(1);
+                        fechaHasta = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture).AddDays(1);
 
                     // Consulta base con includes
                     var query = db.tabla_ventas
@@ -209,14 +208,32 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         query = query.Where(p => p.tabla_estados_pedido.nombre == estado);
                     }
 
-                    if (fechaDesde.HasValue)
+                    if (fechaDesde.HasValue && fechaHasta.HasValue)
                     {
-                        query = query.Where(p => p.fecha >= fechaDesde.Value);
-                    }
+                        var fechaInicioTrunc = fechaDesde.Value.Date;
+                        var fechaFinTrunc = fechaHasta.Value.Date;
 
-                    if (fechaHasta.HasValue)
+                        // Filtrar pedidos cuya fecha de inicio esté en rango
+                        // O cuya fecha de finalización esté en rango
+                        query = query.Where(p =>
+                            (p.fecha != null && DbFunctions.TruncateTime(p.fecha) >= fechaInicioTrunc && DbFunctions.TruncateTime(p.fecha) <= fechaFinTrunc)
+                            || (p.fecha_actualizacion != null && DbFunctions.TruncateTime(p.fecha_actualizacion) >= fechaInicioTrunc && DbFunctions.TruncateTime(p.fecha_actualizacion) <= fechaFinTrunc)
+                        );
+                    }
+                    else if (fechaDesde.HasValue)
                     {
-                        query = query.Where(p => p.fecha < fechaHasta.Value);
+                        var fechaUnica = fechaDesde.Value.Date;
+                        // Solo filtra por fecha de inicio
+                        query = query.Where(p => p.fecha != null && DbFunctions.TruncateTime(p.fecha) == fechaUnica);
+                    }
+                    else if (fechaHasta.HasValue)
+                    {
+                        var fechaUnica = fechaHasta.Value.Date;
+                        // Solo filtra por fecha final
+                        query = query.Where(p =>
+                            p.fecha_actualizacion != null &&
+                            DbFunctions.TruncateTime(p.fecha_actualizacion) <= fechaUnica
+                        );
                     }
 
                     if (!string.IsNullOrEmpty(metodoPago))
