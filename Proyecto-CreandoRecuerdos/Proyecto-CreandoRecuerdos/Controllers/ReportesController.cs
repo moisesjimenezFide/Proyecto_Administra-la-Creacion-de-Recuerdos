@@ -171,6 +171,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         join c in db.tabla_clientes on v.id_cliente equals c.id_cliente into clienteJoin
                         from cj in clienteJoin.DefaultIfEmpty()
                         where v.fecha >= inicio && v.fecha <= fin
+                              && v.id_estado != 5
                         orderby v.fecha ascending
                         select new HistorialVentasViewModel
                         {
@@ -206,6 +207,7 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                         from uj in usuarioJoin.DefaultIfEmpty()
                         join c in db.tabla_clientes on v.id_cliente equals c.id_cliente into clienteJoin
                         from cj in clienteJoin.DefaultIfEmpty()
+                        where v.id_estado != 5
                         select new
                         {
                             v.id_venta,
@@ -361,7 +363,8 @@ namespace Proyecto_CreandoRecuerdos.Controllers
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 var resumen = db.tabla_ventas
-                    .Where(v => !anio.HasValue || v.fecha.Value.Year == anio.Value)
+                    .Where(v => v.id_estado != 5 &&
+                    (!anio.HasValue || v.fecha.Value.Year == anio.Value))
                     .GroupBy(v => new { v.fecha.Value.Year, v.fecha.Value.Month })
                     .Select(g => new VentasMensualesViewModel
                     {
