@@ -33,8 +33,7 @@
         }
 
         .form-control,
-        .custom-datepicker,
-        .btn {
+        .custom-datepicker {
             width: 100% !important;
             max-width: 100% !important;
             margin-left: auto;
@@ -101,60 +100,62 @@
         <h4 class="mt-5 mb-3" style="font-family: 'Sono', sans-serif;">Historial de Solicitudes</h4>
     </div>
 
-        @section ListadoSolicitudesAusencias {
-            <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones con-busqueda" data-page-length="3" data-titulo-exportacion="Listado de Solicitudes de Ausencias (Colaborador)">
-                <thead>
-                    <tr>
-                        <th>ID Solicitud</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Final</th>
-                        <th>Tipo</th>
-                        <th>Motivo</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var s in solicitudes)
-                    {
+    @section ListadoSolicitudesAusencias {
+            <div class="table-responsive">
+                <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones con-busqueda" data-page-length="3" data-titulo-exportacion="Listado de Solicitudes de Ausencias (Colaborador)">
+                    <thead>
                         <tr>
-                            <td>@s.id_solicitud</td>
-                            <td>@s.fecha_inicio.ToString("dd/MM/yyyy")</td>
-                            <td>@s.fecha_fin.ToString("dd/MM/yyyy")</td>
-                            <td>@s.tipo</td>
-                            <td>@s.motivo</td>
-                            <td>
-                                @if (s.estado == "Aprobado")
-                                {
-                                    <span class="badge bg-success">Aprobado</span>
-                                }
-                                else if (s.estado == "Rechazado")
-                                {
-                                    <span class="badge bg-danger">Rechazado</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Pendiente</span>
-                                }
-                            </td>
+                            <th>ID Solicitud</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Final</th>
+                            <th>Tipo</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        }
+                    </thead>
+                    <tbody>
+                        @foreach (var s in solicitudes)
+                        {
+                            <tr>
+                                <td>@s.id_solicitud</td>
+                                <td>@s.fecha_inicio.ToString("dd/MM/yyyy")</td>
+                                <td>@s.fecha_fin.ToString("dd/MM/yyyy")</td>
+                                <td>@s.tipo</td>
+                                <td>@s.motivo</td>
+                                <td>
+                                    @if (s.estado == "Aprobado")
+                                    {
+                                        <span class="badge bg-success">Aprobado</span>
+                                    }
+                                    else if (s.estado == "Rechazado")
+                                    {
+                                        <span class="badge bg-danger">Rechazado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Pendiente</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+    }
+}
 
-        @section Scripts {
-            <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-            <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.bundle.min.js"></script>
-            <script src="@Url.Content("~/Templates/js/pdf/vfs_fonts.js")"></script>
-            <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
-            <script src="@Url.Content("~/Templates/js/paginaciones_y_exportaciones.js")"></script>
-            <script src="@Url.Content("~/Templates/js/selects.js")"></script>
-        }
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.bundle.min.js"></script>
+    <script src="@Url.Content("~/Templates/js/pdf/vfs_fonts.js")"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+    <script src="@Url.Content("~/Templates/js/paginaciones_y_exportaciones.js")"></script>
+    <script src="@Url.Content("~/Templates/js/selects.js")"></script>
+}
