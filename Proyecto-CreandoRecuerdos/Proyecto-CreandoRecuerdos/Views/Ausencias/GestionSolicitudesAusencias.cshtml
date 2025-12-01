@@ -18,12 +18,13 @@
     </h2>
 </div>
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-    }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
 
-    @section ListadoSolicitudesAusencias {
+@section ListadoSolicitudesAusencias {
+    <div class="table-responsive">
         <table class="table mb-0 table-bordered table-striped tabla-global text-center dataTable con-exportaciones con-busqueda" data-page-length="10" data-columnas-ocultas="8" data-titulo-exportacion="Listado de Solicitudes de Ausencias (Administrador)">
             <thead>
                 <tr>
@@ -73,7 +74,8 @@
                 }
             </tbody>
         </table>
-    }
+    </div>
+}
 
 @section Scripts {
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
