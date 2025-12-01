@@ -5,122 +5,121 @@
 
     <style>
 
-    .resumen-pedido {
-        background-color: #FFFFFF;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        padding: 20px;
-        margin-bottom: 20px;
-        border: 1px solid rgba(181, 72, 133, 0.1);
-    }
+        .resumen-pedido {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(181, 72, 133, 0.1);
+        }
 
-    .item-pedido {
-        display: flex;
-        flex-direction: column;
-        padding: 12px 0;
-        border-bottom: 1px dashed #E8C495;
-        transition: all 0.2s ease;
-    }
+        .item-pedido {
+            display: flex;
+            flex-direction: column;
+            padding: 12px 0;
+            border-bottom: 1px dashed #E8C495;
+            transition: all 0.2s ease;
+        }
 
-    .item-pedido:hover {
-        background-color: rgba(255, 214, 235, 0.1);
-        border-radius: 6px;
-        padding-left: 8px;
-        padding-right: 8px;
-    }
+            .item-pedido:hover {
+                background-color: rgba(255, 214, 235, 0.1);
+                border-radius: 6px;
+                padding-left: 8px;
+                padding-right: 8px;
+            }
 
-    .item-pedido:last-child {
-        border-bottom: none;
-    }
+            .item-pedido:last-child {
+                border-bottom: none;
+            }
 
-    .nombre-producto {
-        font-family: 'Sono', sans-serif;
-        font-weight: 600;
-        font-size: 1.05rem;
-        color: #2C2C2C;
-        margin-bottom: 4px;
-    }
+        .nombre-producto {
+            font-family: 'Sono', sans-serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #2C2C2C;
+            margin-bottom: 4px;
+        }
 
-    .precio-producto {
-        font-family: 'Sono', sans-serif;
-        font-weight: 700;
-        color: #B54885;
-        font-size: 1rem;
-        text-align: right;
-        margin-bottom: 6px;
-    }
+        .precio-producto {
+            font-family: 'Sono', sans-serif;
+            font-weight: 700;
+            color: #B54885;
+            font-size: 1rem;
+            text-align: right;
+            margin-bottom: 6px;
+        }
 
-    .notas-producto {
-        background-color: #FFF8F9;
-        border-left: 3px solid #E8C495;
-        padding: 8px 12px;
-        border-radius: 4px;
-        margin-top: 6px;
-    }
+        .notas-producto {
+            background-color: #FFF8F9;
+            border-left: 3px solid #E8C495;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-top: 6px;
+        }
 
-    .notas-producto small {
-        color: #666;
-        font-family: 'Sono', sans-serif;
-        font-size: 0.85rem;
-        line-height: 1.4;
-    }
+            .notas-producto small {
+                color: #666;
+                font-family: 'Sono', sans-serif;
+                font-size: 0.85rem;
+                line-height: 1.4;
+            }
 
-    .totales-pedido {
-        background-color: #FFF8F9;
-        border-radius: 10px;
-        padding: 20px;
-        border: 1px solid rgba(181, 72, 133, 0.15);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
+        .totales-pedido {
+            background-color: #FFF8F9;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(181, 72, 133, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
 
-    .total-linea {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
-        font-family: 'Sono', sans-serif;
-    }
+        .total-linea {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-family: 'Sono', sans-serif;
+        }
 
-    .total-linea:not(.total) {
-        border-bottom: 1px dotted rgba(181, 72, 133, 0.2);
-    }
+            .total-linea:not(.total) {
+                border-bottom: 1px dotted rgba(181, 72, 133, 0.2);
+            }
 
-    .total-linea span:first-child {
-        color: #2C2C2C;
-        font-weight: 500;
-    }
+            .total-linea span:first-child {
+                color: #2C2C2C;
+                font-weight: 500;
+            }
 
-    .total-linea .valor {
-        color: #2C2C2C;
-        font-weight: 600;
-    }
+            .total-linea .valor {
+                color: #2C2C2C;
+                font-weight: 600;
+            }
 
-    .total-linea.total {
-        font-size: 1.2rem;
-        margin-top: 10px;
-        padding-top: 12px;
-        border-top: 2px solid #E8C495;
-    }
+            .total-linea.total {
+                font-size: 1.2rem;
+                margin-top: 10px;
+                padding-top: 12px;
+                border-top: 2px solid #E8C495;
+            }
 
-    .total-linea.total .valor {
-        color: #B54885;
-        font-weight: 800;
-    }
+                .total-linea.total .valor {
+                    color: #B54885;
+                    font-weight: 800;
+                }
 
-    h4 {
-        font-family: 'Sono', sans-serif;
-        font-weight: 700;
-        color: #B54885;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-    }
+        h4 {
+            font-family: 'Sono', sans-serif;
+            font-weight: 700;
+            color: #B54885;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
 
-    h4 i {
-        color: #000000;
-        margin-right: 10px;
-    }
-
+            h4 i {
+                color: #000000;
+                margin-right: 10px;
+            }
     </style>
 }
 
@@ -248,66 +247,84 @@
         });
 
         // Botón confirmar pago
-        document.getElementById('confirmarPago').addEventListener('click', function () {
-            const metodoPago = document.querySelector('#metodosPagoTab .nav-link.active').id.replace('-tab', '');
-            const pagoData = {
-                MetodoPago: metodoPago,
-                TelefonoSinpe: document.getElementById('telefonoSinpe')?.value,
-            };
-
-            let valido = true;
-            let mensajeError = '';
-
-            switch (metodoPago) {
-                case 'efectivo':
-                    break;
-
-                case 'sinpe':
-                    if (!validarTelefonoSinpe(pagoData.TelefonoSinpe)) {
-                        valido = false;
-                        mensajeError = 'Teléfono SINPE Móvil inválido (debe tener 8 dígitos)';
-                    }
-                    break;
-            }
-
-            if (!valido) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error en el pago',
-                    text: mensajeError
-                });
-                return;
-            }
-
-            const btn = this;
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Procesando...';
-            btn.disabled = true;
-
-            fetch('/Pedidos/ProcesarPago', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(pagoData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = data.redirectUrl;
-                    } else {
-                        throw new Error(data.message || 'Error al procesar el pago');
-                    }
-                })
-                .catch(error => {
+        document.addEventListener('DOMContentLoaded', function () {
+            const confirmarPagoBtn = document.querySelector('#confirmarPago');
+            if (confirmarPagoBtn) {
+                confirmarPagoBtn.addEventListener('click', function () {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Error en el pago',
-                        text: error.message,
+                        title: 'Confirmar Pedido',
+                        text: '¿Estás seguro de realizar este pedido? Una vez confirmado, no podrá ser cancelado.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, confirmar',
+                        cancelButtonText: 'No, cancelar',
+                        confirmButtonColor: '#DC3545',
+                        cancelButtonColor: '#6C757D'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const metodoPago = document.querySelector('#metodosPagoTab .nav-link.active').id.replace('-tab', '');
+                            const pagoData = {
+                                MetodoPago: metodoPago,
+                                TelefonoSinpe: document.getElementById('telefonoSinpe')?.value,
+                            };
+
+                            let valido = true;
+                            let mensajeError = '';
+
+                            switch (metodoPago) {
+                                case 'efectivo':
+                                    break;
+
+                                case 'sinpe':
+                                    if (!/^\d{8}$/.test(pagoData.TelefonoSinpe)) {
+                                        valido = false;
+                                        mensajeError = 'Teléfono SINPE Móvil inválido (debe tener 8 dígitos)';
+                                    }
+                                    break;
+                            }
+
+                            if (!valido) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error en el pago',
+                                    text: mensajeError
+                                });
+                                return;
+                            }
+
+                            const btn = this;
+                            const originalText = btn.innerHTML;
+                            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Procesando...';
+                            btn.disabled = true;
+
+                            fetch('/Pedidos/ProcesarPago', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(pagoData)
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        window.location.href = data.redirectUrl;
+                                    } else {
+                                        throw new Error(data.message || 'Error al procesar el pago');
+                                    }
+                                })
+                                .catch(error => {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error en el pago',
+                                        text: error.message,
+                                    });
+                                })
+                                .finally(() => {
+                                    btn.innerHTML = originalText;
+                                    btn.disabled = false;
+                                });
+                        }
                     });
-                })
-                .finally(() => {
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
                 });
+            }
         });
     </script>
 }

@@ -114,6 +114,11 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpPost]
         public JsonResult CancelarPedido(int idPedido)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return Json(new { success = false, message = "No tienes permiso para cancelar pedidos." });
+            }
+
             try
             {
                 using (var db = new BD_CREANDO_RECUERDOSEntities())
@@ -1028,6 +1033,12 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CancelarPedidoInvitado(int idPedido, string pin)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                TempData["ErrorMessage"] = "No tienes permiso para cancelar pedidos.";
+                return RedirectToAction("MisPedidos");
+            }
+
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
                 var pedido = db.tabla_ventas.FirstOrDefault(v =>

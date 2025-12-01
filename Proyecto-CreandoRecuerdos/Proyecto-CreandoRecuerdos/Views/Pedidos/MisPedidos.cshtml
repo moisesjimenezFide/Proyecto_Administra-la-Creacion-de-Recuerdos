@@ -94,17 +94,6 @@
                                                             <i class="fas fa-star"></i>
                                                         </a>
                                                     }
-                                                    @if (pedido.Estado == "Pendiente" || pedido.Estado == "En preparación")
-                                                    {
-                                                        <form method="post" action="@Url.Action("CancelarPedidoInvitado", "Pedidos")" class="form-cancelar-invitado" style="display:inline;">
-                                                            @Html.AntiForgeryToken()
-                                                            <input type="hidden" name="idPedido" value="@pedido.IdPedido" />
-                                                            <input type="hidden" name="pin" value="@pin" />
-                                                            <button type="submit" class="btn btn-sm btn-outline-danger btn-cancelar" data-bs-toggle="tooltip" title="Cancelar pedido">
-                                                                <i class="fas fa-times"></i>
-                                                            </button>
-                                                        </form>
-                                                    }
                                                 </div>
                                             </td>
                                         </tr>
@@ -204,16 +193,6 @@
                                                        title="Valorar pedido">
                                                         <i class="fas fa-star"></i>
                                                     </a>
-                                                }
-                                                @if (pedido.Estado == "Pendiente" || pedido.Estado == "En preparación")
-                                                {
-                                                    <button class="btn btn-sm btn-outline-danger btn-cancelar"
-                                                            data-id="@pedido.IdPedido"
-                                                            data-pin="@pedido.Pin"
-                                                            data-bs-toggle="tooltip"
-                                                            title="Cancelar pedido">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
                                                 }
                                             </div>
                                         </td>
