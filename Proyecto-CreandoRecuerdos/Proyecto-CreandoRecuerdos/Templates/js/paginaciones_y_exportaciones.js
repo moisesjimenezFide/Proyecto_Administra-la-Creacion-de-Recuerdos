@@ -368,17 +368,27 @@ window.inicializarDataTables = function () {
             for (let i = 0; i < valoresNumericos.length; i++) {
                 const value = valoresNumericos[i];
                 const text = valoresVisibles[i];
-                dropdownItems += `<div class="custom-dropdown-item" data-value="${value}">${text}</div>`;
+                const isActive = String(value) === String(pageLength) ? ' active' : '';
+                dropdownItems += `<div class="custom-dropdown-item${isActive}" data-value="${value}">${text}</div>`;
+            }
+
+            // Busca el texto visible correspondiente al valor seleccionado
+            let displayText = pageLength;
+            for (let i = 0; i < valoresNumericos.length; i++) {
+                if (String(valoresNumericos[i]) === String(pageLength)) {
+                    displayText = valoresVisibles[i];
+                    break;
+                }
             }
 
             var customDropdown = $(`
-        <div class="custom-length-dropdown">
-            <div class="custom-dropdown-button" id="lengthDropdownBtn">${pageLength}</div>
-            <div class="custom-dropdown-menu" id="lengthDropdownMenu">
-                ${dropdownItems}
-            </div>
+    <div class="custom-length-dropdown">
+        <div class="custom-dropdown-button" id="lengthDropdownBtn">${displayText}</div>
+        <div class="custom-dropdown-menu" id="lengthDropdownMenu">
+            ${dropdownItems}
         </div>
-    `);
+    </div>
+`);
 
             // Reemplazar el select por el dropdown personalizado para la cantidad de registros por página
             lengthContainer.append(customDropdown);
