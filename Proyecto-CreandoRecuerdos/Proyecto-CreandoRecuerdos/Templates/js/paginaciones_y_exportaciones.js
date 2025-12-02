@@ -1,12 +1,19 @@
 ﻿jQuery.extend(jQuery.fn.dataTable.ext.type.order, {
     "date-eu-pre": function (date) {
-        if (!date || date === "N/A") return -Infinity; // "N/A" siempre al final/inicio
-        if (date.indexOf('/') === -1) return Date.parse(date) || 0;
-        var parts = date.split('/');
-        return Date.parse(parts[2] + '-' + parts[1] + '-' + parts[0]) || 0;
+        if (!date || date === "N/A") return -Infinity;
+        // Soporta formato "dd/MM/yyyy HH:mm"
+        var match = date.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?$/);
+        if (match) {
+            var day = parseInt(match[1], 10);
+            var month = parseInt(match[2], 10) - 1; // JS months 0-based
+            var year = parseInt(match[3], 10);
+            var hour = match[4] !== undefined ? parseInt(match[4], 10) : 0;
+            var min = match[5] !== undefined ? parseInt(match[5], 10) : 0;
+            return new Date(year, month, day, hour, min).getTime();
+        }
+        // Si no es formato esperado, intenta parsear normal
+        return Date.parse(date) || 0;
     },
-    "date-eu-asc": function (a, b) { return a - b; },
-    "date-eu-desc": function (a, b) { return b - a; }
 });
 
 window.inicializarDataTables = function () {
