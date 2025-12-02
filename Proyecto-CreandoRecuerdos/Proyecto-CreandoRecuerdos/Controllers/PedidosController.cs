@@ -112,12 +112,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         // Cancelar un pedido existente
         [HttpPost]
+        [RolAuthorize("1")]
         public JsonResult CancelarPedido(int idPedido)
         {
-            if (!User.IsInRole("Admin"))
-            {
-                return Json(new { success = false, message = "No tienes permiso para cancelar pedidos." });
-            }
 
             try
             {
