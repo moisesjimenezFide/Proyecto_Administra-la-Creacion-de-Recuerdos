@@ -1045,13 +1045,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RolAuthorize("1")]
         public ActionResult CancelarPedidoInvitado(int idPedido, string pin)
         {
-            if (!User.IsInRole("Admin"))
-            {
-                TempData["ErrorMessage"] = "No tienes permiso para cancelar pedidos.";
-                return RedirectToAction("MisPedidos");
-            }
 
             using (var db = new BD_CREANDO_RECUERDOSEntities())
             {
