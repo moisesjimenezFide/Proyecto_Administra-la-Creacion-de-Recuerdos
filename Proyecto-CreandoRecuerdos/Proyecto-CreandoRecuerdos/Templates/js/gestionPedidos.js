@@ -303,10 +303,17 @@ class GestionPedidos {
 }
 
 // --- Función utilitaria para formatear fechas ---
-function formatearFechaDMYHM(fechaIso) {
-    if (!fechaIso) return "N/A";
-    const d = new Date(fechaIso);
-    if (isNaN(d)) return "N/A";
+function formatearFechaDMYHM(fechaStr) {
+    if (!fechaStr) return "N/A";
+    // Espera formato "dd/MM/yyyy HH:mm"
+    const match = fechaStr.match(/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})$/);
+    if (!match) return fechaStr; // Si no es el formato esperado, retorna el original
+
+    const [, dd, MM, yyyy, HH, mm] = match;
+    // Crea la fecha correctamente interpretando día y mes
+    const d = new Date(`${yyyy}-${MM}-${dd}T${HH}:${mm}:00`);
+    if (isNaN(d)) return fechaStr;
+
     const pad = n => n.toString().padStart(2, '0');
     return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }

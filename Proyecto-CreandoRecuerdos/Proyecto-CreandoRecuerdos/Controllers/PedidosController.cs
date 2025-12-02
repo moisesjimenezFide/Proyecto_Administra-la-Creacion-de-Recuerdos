@@ -263,9 +263,9 @@ namespace Proyecto_CreandoRecuerdos.Controllers
                             nombre_cliente = (p.id_usuario == null && !string.IsNullOrEmpty(p.nombre_cliente)) ? p.nombre_cliente : p.tabla_clientes.nombre + " " + p.tabla_clientes.apellido,
                             telefono = p.tabla_clientes.telefono ?? "N/A",
                             cantidad_productos = p.tabla_detalle_venta.Count,
-                            fecha = p.fecha?.ToString("yyyy-MM-dd HH:mm") ?? "N/A",
+                            fecha = p.fecha?.ToString("dd/MM/yyyy HH:mm") ?? "N/A",
                             fecha_fin = (p.tabla_estados_pedido.nombre == "Entregado" && p.fecha_actualizacion != null) ?
-                                p.fecha_actualizacion.Value.ToString("yyyy-MM-dd HH:mm") : null,
+                                p.fecha_actualizacion.Value.ToString("dd/MM/yyyy HH:mm") : null,
                             total = p.total,
                             estado = p.tabla_estados_pedido.nombre,
                             metodo_pago = p.metodo_pago ?? "N/A",
