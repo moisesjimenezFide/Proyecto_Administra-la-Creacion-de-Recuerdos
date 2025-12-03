@@ -8,9 +8,25 @@
     <link href="@Url.Content("~/Templates/css/tablas.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/paginaciones_y_exportaciones.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Templates/css/selects.css")" rel="stylesheet" />
+    <style>
+        .gestionar_container {
+            max-width: auto;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100%;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            float: none !important;
+            display: block;
+        }
+    </style>
 }
 
-<div class="container-fluid">
+<div class="container-fluid gestionar_container">
     <div class="card shadow p-4">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
