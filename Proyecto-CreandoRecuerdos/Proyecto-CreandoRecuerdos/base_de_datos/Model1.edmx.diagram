@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="13d280c34889464484f188f1d3ca41ae" Name="Diagram1">
+      <Diagram DiagramId="296618ddd9294c4ab1ba80a4dd539849" Name="Diagram1">
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.costos_receta_materias_primas_utilizadas" Width="1.5" PointX="14" PointY="20.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.costos_receta_productos_preparados_utilizados" Width="1.5" PointX="17" PointY="20.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.precios_empaques_decoraciones_utilizados" Width="1.5" PointX="16.25" PointY="27.625" IsExpanded="true" />
@@ -12,7 +12,7 @@
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.precios_suministros_utilizados" Width="1.5" PointX="16.25" PointY="31.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_actividades" Width="1.5" PointX="5.25" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_categorias" Width="1.5" PointX="5.25" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_categorias" Width="1.5" PointX="5.25" PointY="19.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_clientes" Width="1.5" PointX="5.25" PointY="8.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_costos_recetas" Width="1.5" PointX="11.75" PointY="20.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_detalle_venta" Width="1.5" PointX="9.75" PointY="9.5" IsExpanded="true" />
@@ -21,7 +21,7 @@
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_horarios" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_implementos" Width="1.5" PointX="17" PointY="35.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_materias_primas" Width="1.5" PointX="11.75" PointY="24.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_notificaciones_vistas" Width="1.5" PointX="12.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_notificaciones_vistas" Width="1.5" PointX="12.75" PointY="9.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_precios_finales_sugeridos" Width="1.5" PointX="14" PointY="25.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_productos" Width="1.5" PointX="7.5" PointY="18.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BD_CREANDO_RECUERDOSModel.tabla_productos_preparados" Width="1.5" PointX="14.75" PointY="14.875" IsExpanded="true" />

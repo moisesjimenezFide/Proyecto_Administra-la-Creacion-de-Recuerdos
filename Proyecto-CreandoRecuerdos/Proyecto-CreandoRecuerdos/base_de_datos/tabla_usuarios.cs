@@ -33,6 +33,7 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
         public Nullable<bool> activo { get; set; }
         public Nullable<System.DateTime> fecha_creacion { get; set; }
         public string contrasenna { get; set; }
+        public string jti { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tabla_actividades> tabla_actividades { get; set; }

@@ -321,6 +321,7 @@
           <Property Name="activo" Type="bit" />
           <Property Name="fecha_creacion" Type="datetime" />
           <Property Name="contrasenna" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="jti" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tabla_valoraciones">
           <Key>
@@ -775,6 +776,9 @@
         <Function Name="sp_cancelar_pedido" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_pedido" Type="int" Mode="In" />
           <Parameter Name="pin" Type="nvarchar" Mode="In" />
+          <Parameter Name="id_usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_cerrar_sesion_usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_usuario" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_consultar_productos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -1433,6 +1437,7 @@
           <Property Name="activo" Type="Boolean" />
           <Property Name="fecha_creacion" Type="DateTime" Precision="3" />
           <Property Name="contrasenna" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="jti" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tabla_actividades" Relationship="Self.FK__tabla_act__id_us__123EB7A3" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
           <NavigationProperty Name="tabla_actividades1" Relationship="Self.FK_tabla_actividades_usuarios" FromRole="tabla_usuarios" ToRole="tabla_actividades" />
           <NavigationProperty Name="tabla_clientes" Relationship="Self.FK_clientes_usuarios" FromRole="tabla_usuarios" ToRole="tabla_clientes" />
@@ -2045,6 +2050,9 @@
           <FunctionImport Name="sp_cancelar_pedido" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_cancelar_pedido_Result)">
             <Parameter Name="id_pedido" Mode="In" Type="Int32" />
             <Parameter Name="pin" Mode="In" Type="String" />
+            <Parameter Name="id_usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_cerrar_sesion_usuario">
             <Parameter Name="id_usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_consultar_productos" ReturnType="Collection(BD_CREANDO_RECUERDOSModel.sp_consultar_productos_Result)" />
@@ -2716,6 +2724,7 @@
                 <ScalarProperty Name="activo" ColumnName="activo" />
                 <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
                 <ScalarProperty Name="contrasenna" ColumnName="contrasenna" />
+                <ScalarProperty Name="jti" ColumnName="jti" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2826,6 +2835,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_cerrar_sesion_usuario" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_cerrar_sesion_usuario" />
           <FunctionImportMapping FunctionImportName="sp_consultar_productos" FunctionName="BD_CREANDO_RECUERDOSModel.Store.sp_consultar_productos">
             <ResultMapping>
               <ComplexTypeMapping TypeName="BD_CREANDO_RECUERDOSModel.sp_consultar_productos_Result">

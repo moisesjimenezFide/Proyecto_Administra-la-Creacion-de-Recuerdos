@@ -33,5 +33,7 @@ namespace Proyecto_CreandoRecuerdos.Models
 
         public int? id_cliente { get; set; }
         public string apellido { get; set; }
+
+        public string jti { get; set; }
     }
 }

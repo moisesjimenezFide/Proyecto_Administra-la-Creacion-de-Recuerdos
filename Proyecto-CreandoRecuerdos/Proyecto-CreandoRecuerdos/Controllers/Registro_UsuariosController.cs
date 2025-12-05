@@ -20,6 +20,17 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         [HttpGet]
         public ActionResult logout()
         {
+
+            // 🔹 Limpiar el campo jti en la base de datos usando el ID
+            if (Session["IdUsuario"] != null)
+            {
+                int idUsuario = Convert.ToInt32(Session["IdUsuario"]);
+                using (var context = new BD_CREANDO_RECUERDOSEntities())
+                {
+                    context.Database.ExecuteSqlCommand("EXEC sp_cerrar_sesion_usuario @p0", idUsuario);
+                }
+            }
+
             // 🔹 Borrar todas las variables de sesión
             Session.Clear();
             Session.RemoveAll();
@@ -94,6 +105,16 @@ namespace Proyecto_CreandoRecuerdos.Controllers
         {
             using (var context = new BD_CREANDO_RECUERDOSEntities())
             {
+                // Buscar usuario por correo
+                var usuario = context.tabla_usuarios.FirstOrDefault(u => u.correo == model.correo && u.activo == true);
+
+                // Si ya tiene un jti (ya está logueado en otro lado)
+                if (usuario != null && !string.IsNullOrEmpty(usuario.jti))
+                {
+                    TempData["Message"] = "Ya tienes una sesión activa en otro dispositivo o navegador o modo de navegación.. Por favor, cierra la sesión anterior antes de iniciar una nueva sesión.";
+                    return RedirectToAction("AccesoDenegado", "Inicio");
+                }
+
                 var info = context.sp_autenticar_usuario(model.correo, model.contrasenna).FirstOrDefault();
 
                 if (info == null)

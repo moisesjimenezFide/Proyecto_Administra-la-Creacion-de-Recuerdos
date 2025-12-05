@@ -293,6 +293,15 @@ namespace Proyecto_CreandoRecuerdos.base_de_datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_cancelar_pedido_Result>("sp_cancelar_pedido", id_pedidoParameter, pinParameter, id_usuarioParameter);
         }
     
+        public virtual int sp_cerrar_sesion_usuario(Nullable<int> id_usuario)
+        {
+            var id_usuarioParameter = id_usuario.HasValue ?
+                new ObjectParameter("id_usuario", id_usuario) :
+                new ObjectParameter("id_usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_cerrar_sesion_usuario", id_usuarioParameter);
+        }
+    
         public virtual ObjectResult<sp_consultar_productos_Result> sp_consultar_productos()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_consultar_productos_Result>("sp_consultar_productos");

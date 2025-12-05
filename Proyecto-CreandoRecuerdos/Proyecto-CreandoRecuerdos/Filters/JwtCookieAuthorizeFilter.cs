@@ -27,6 +27,8 @@ namespace Proyecto_CreandoRecuerdos.Filters
                         var token = handler.ReadJwtToken(cookie.Value);
                         var exp = token.ValidTo;
                         var tiempoRestante = exp - DateTime.UtcNow;
+                        var jti = principal.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
+                        var userId = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
                         // 🔁 renovar si faltan menos de 20 s
                         if (tiempoRestante.TotalSeconds < 20)
@@ -34,7 +36,7 @@ namespace Proyecto_CreandoRecuerdos.Filters
                             var username = principal.Identity.Name;
                             var role = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-                            var userId = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "";
+                            // Usa la variable userId ya existente
                             var newToken = JwtManager.GenerateToken(username, role, userId, 60);
                             var newCookie = new HttpCookie("JWT", newToken)
                             {
@@ -44,6 +46,19 @@ namespace Proyecto_CreandoRecuerdos.Filters
                                 Expires = DateTime.UtcNow.AddMinutes(60)
                             };
                             HttpContext.Current.Response.Cookies.Add(newCookie);
+                        }
+
+                        // Verifica que el jti coincida con el guardado en la BD
+                        if (!JwtManager.JtiValido(userId, jti))
+                        {
+                            // Token inválido por sesión múltiple
+                            var expired = new HttpCookie("JWT", "")
+                            {
+                                Expires = DateTime.Now.AddDays(-1)
+                            };
+                            HttpContext.Current.Response.Cookies.Add(expired);
+                            filterContext.Result = new RedirectResult("~/Inicio/AccesoDenegado");
+                            return;
                         }
                     }
                 }
